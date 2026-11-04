@@ -111,10 +111,10 @@ $cursorId)`.
       bắt buộc ở adapter và bộ lọc phòng thủ ở use case).
 - [x] Kiểm thử danh sách gồm cả Run và Submit, mỗi bản ghi nêu rõ loại.
 - [x] Kiểm thử lọc theo loại và theo Problem, tập trả về vẫn giới hạn trong sở hữu.
-- [ ] Kiểm thử nhiều bản ghi trùng `created_at` → lật trang không lặp và không bỏ sót. Mới kiểm thử
-      câu SQL ghép; chưa chạy trên PostgreSQL thật.
-- [ ] Kiểm thử thêm bản ghi mới giữa lúc lật trang → bản ghi cũ không bị bỏ sót hay lặp lại. Cùng
-      lý do như trên.
+- [ ] Kiểm thử nhiều bản ghi trùng `created_at` → lật trang không lặp và không bỏ sót. Đã viết kiểm thử
+      tích hợp trong `typeorm-submission.repository.integration.spec.ts`; chưa chạy trên PostgreSQL thật.
+- [ ] Kiểm thử thêm bản ghi mới giữa lúc lật trang → bản ghi cũ không bị bỏ sót hay lặp lại. Đã viết
+      trong cùng file tích hợp; chưa chạy trên PostgreSQL thật.
 - [x] Kiểm thử `cursor` thiếu `cursorId` hoặc ngược lại → `400`.
 - [x] Kiểm thử `limit` vượt tối đa → `400`, phản hồi giữ kích thước đã phê duyệt.
 - [x] Kiểm thử chi tiết có đủ nhóm trường "Chi tiết".
