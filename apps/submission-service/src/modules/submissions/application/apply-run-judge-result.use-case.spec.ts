@@ -100,4 +100,22 @@ describe('ApplyRunJudgeResultUseCase', () => {
     expect(outcome).toEqual({ outcome: 'ignored', reason: 'already-terminal' });
     expect(realtime.publishResult).not.toHaveBeenCalled();
   });
+
+  it('ignores a result whose submission does not exist and publishes nothing', async () => {
+    const repository = {
+      findById: jest.fn().mockResolvedValue(null),
+      applyRunResultOnce: jest.fn(),
+    } as unknown as jest.Mocked<SubmissionRepositoryPort>;
+    const realtime = { publishResult: jest.fn() } as unknown as jest.Mocked<RealtimePort>;
+
+    const outcome = await new ApplyRunJudgeResultUseCase(repository, realtime).execute({
+      submissionId: run.id,
+      mode: 'RUN',
+      status: 'ACCEPTED',
+    });
+
+    expect(outcome).toEqual({ outcome: 'ignored', reason: 'not-found' });
+    expect(repository.applyRunResultOnce).not.toHaveBeenCalled();
+    expect(realtime.publishResult).not.toHaveBeenCalled();
+  });
 });

@@ -1,4 +1,5 @@
 import type { RabbitMqService } from '@app/common';
+import { Logger } from '@nestjs/common';
 import type { ApplyRunJudgeResultUseCase } from '@submission/modules/submissions/application/apply-run-judge-result.use-case';
 import type { ApplySubmitJudgeResultUseCase } from '@submission/modules/submissions/application/apply-submit-judge-result.use-case';
 
@@ -48,6 +49,17 @@ describe('JudgeResultConsumer', () => {
     ).rejects.toThrow('Malformed judge result');
     expect(applyRunResult.execute).not.toHaveBeenCalled();
     expect(applySubmitResult.execute).not.toHaveBeenCalled();
+  });
+
+  it('logs a warning when a Run result names an unknown submission', async () => {
+    const { applyRunResult, consumer } = setup();
+    applyRunResult.execute.mockResolvedValue({ outcome: 'ignored', reason: 'not-found' });
+    const warn = jest.spyOn(Logger.prototype, 'warn').mockImplementation(() => undefined);
+
+    await consumer.handleResult({ ...result, mode: 'RUN' });
+
+    expect(warn).toHaveBeenCalledWith('Ignored RUN judge result: not-found');
+    warn.mockRestore();
   });
 
   it('propagates a rejected result so RabbitMQ retries and dead-letters it', async () => {
