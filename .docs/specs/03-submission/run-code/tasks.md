@@ -85,7 +85,7 @@ thực tế; tích một mục nghĩa là mục đó đã hoàn thành và đã 
 - [x] Xác minh `JudgeRequest` với `mode: 'RUN'` được phát qua `bkpractice.judge` / `judge.request`.
 - [x] Xác minh consumer phân biệt `mode: 'RUN'` và **không** gọi accepted-event port.
 - [x] Xác minh hành vi khi giao lại trùng: bản ghi kết quả không bị tạo lần hai.
-- [ ] Xác minh kết quả có `submissionId` không tồn tại bị loại và ghi log cảnh báo.
+- [x] Xác minh kết quả có `submissionId` không tồn tại bị loại và ghi log cảnh báo.
 
 ## Realtime
 
@@ -121,8 +121,8 @@ thực tế; tích một mục nghĩa là mục đó đã hoàn thành và đã 
 
 ## Tài liệu
 
-- [ ] Cập nhật [`docs/architecture/submission-service.md`](../../../architecture/submission-service.md)
-      khi trạng thái từ PARTIALLY ALIGNED chuyển sang ALIGNED cho phần Run.
+- [x] Cập nhật [`.docs/architecture/submission-service.md`](../../../architecture/submission-service.md)
+      khi trạng thái từ PARTIALLY ALIGNED chuyển sang ALIGNED cho phần Run. Đã ALIGNED ngày 2026-10-27.
 - [ ] Ghi chú migration `stdin` vào tài liệu vận hành.
 - [x] N/A — tài liệu tương tác phía Gateway không thay đổi.
 
