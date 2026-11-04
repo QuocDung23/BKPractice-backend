@@ -57,6 +57,9 @@ describe('ApplyRunJudgeResultUseCase', () => {
       status: SubmissionStatus.Executed,
       ready: true,
     });
+    expect(repository.applyRunResultOnce.mock.invocationCallOrder[0]).toBeLessThan(
+      realtime.publishResult.mock.invocationCallOrder[0] ?? 0,
+    );
     expect(outcome).toEqual({ outcome: 'applied' });
   });
 
