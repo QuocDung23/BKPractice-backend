@@ -1,6 +1,6 @@
 # JDG-005 Tasks Sandbox
 
-**Trạng thái:** Đang thực hiện (2026-11-07): port/adapter, lifecycle, OOM, quyền workspace và unit test xong; integration test Docker đã viết, chờ chạy với Docker daemon. Phụ thuộc [spec Approved v1.0](./spec.md) và [plan reviewed](./plan.md).
+**Trạng thái:** Đang thực hiện (2026-11-07): port/adapter, lifecycle, OOM, quyền workspace và unit test xong; integration test Docker 8/8 pass; còn symlink/disk/PID/FD và security review. Phụ thuộc [spec Approved v1.0](./spec.md) và [plan reviewed](./plan.md).
 
 ## Cổng trước triển khai
 
@@ -59,7 +59,7 @@ Các bước dưới đây chia nhỏ SR/AC thành phần có thể triển khai
 - [x] **JDG005-T15 — Unit tests adapter:** kiểm tra argv/flags, container lifecycle, bounded output, timeout handling, failure classification và cleanup.
 - [ ] **JDG005-T16 — Isolation tests:** thử network access, privilege escalation/capabilities, đọc filesystem host, PID/process flood và truy cập workspace execution khác.
 - [ ] **JDG005-T17 — Resource abuse tests:** CPU loop, memory pressure, output flood, disk fill, FD pressure, compile timeout và runtime timeout theo từng giới hạn.
-- [ ] **JDG005-T18 — OOM/exit tests:** test có OOM evidence, exit 137 không có evidence, daemon failure; xác nhận không gán MLE chỉ từ exit code.
+- [x] **JDG005-T18 — OOM/exit tests:** test có OOM evidence, exit 137 không có evidence, daemon failure; xác nhận không gán MLE chỉ từ exit code.
 - [ ] **JDG005-T19 — Cleanup/concurrency tests:** chạy song song, inject failure ở start/execute/kill/remove; xác nhận không sót container/workspace sau policy cleanup.
 - [ ] **JDG005-T20 — Security review:** soát `judge-security.md`, Docker options thực tế, config templates và log redaction; ghi evidence cho từng SR/AC.
 - [ ] **JDG005-T21 — Hoàn tất:** chạy các lệnh DoD khi triển khai, rà tất cả SR/AC, cập nhật tasks/worked entry và nêu giới hạn chưa kiểm chứng.

@@ -66,14 +66,18 @@ output thì `docker kill`, sau đó `docker inspect` lấy `ExitCode`/`OOMKilled
 - `pnpm exec eslint apps/judge-service`: sạch.
 - `pnpm lint`, `pnpm typecheck`, `pnpm test`: chỉ lỗi ở `test/account-import.integration.spec.ts`
   (`officialName`), có sẵn trên `origin/main`, ngoài phạm vi Judge.
-- Not verified: integration test Docker thật (network, UID/fs, timeout, output flood, OOM, exit 137,
-  workspace song song) — Docker daemon đang tắt; chạy bằng
-  `pnpm judge:images:build` rồi `JUDGE_DOCKER_IT=1 pnpm exec jest docker-sandbox.adapter.integration --runInBand`.
-  Compose với `USER node` + `group_add` chưa chạy thử.
+- Docker Desktop 29.8.2: `pnpm judge:images:build` rồi
+  `JUDGE_DOCKER_IT=1 pnpm exec jest docker-sandbox.adapter.integration --runInBand` → 8/8 pass:
+  stdin/cleanup (AC-005), không network (AC-001), UID 1000 + không ghi ngoài workspace (AC-008/010),
+  timeout kill + xoá container (AC-003/011), output flood (AC-013), OOM từ `OOMKilled` (SR-022),
+  exit 137 không bị coi là OOM (AC-015), workspace song song cách ly (AC-004). Sau khi chạy không
+  còn container sandbox nào (`docker ps -a`).
+- Not verified: symlink/path traversal, disk fill tmpfs, PID/fork flood, FD pressure; compose với
+  `USER node` + `group_add` trên host Linux.
 
 ## Remaining
 
-- Chạy integration test với Docker (T16–T19), bổ sung thử symlink/path, disk fill tmpfs, PID flood (T10/T16/T17).
+- Bổ sung integration test symlink/path, disk fill tmpfs, PID flood, FD pressure (T10/T16/T17/T19 phần inject lỗi).
 - T20 security review và T21 hoàn tất sau khi có evidence Docker.
 - JDG-001 sửa các deviation còn lại: `score || 100`, stage validate payload, poison message/ACK.
 - Xác nhận cách hiểu D-07.1 với chủ sở hữu repo.
