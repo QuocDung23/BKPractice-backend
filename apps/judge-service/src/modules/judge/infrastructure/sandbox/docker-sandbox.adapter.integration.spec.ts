@@ -1,4 +1,4 @@
-import { mkdtemp, readdir, rm } from 'node:fs/promises';
+import { mkdtemp, readdir, rm, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 
@@ -130,5 +130,67 @@ describeDocker('DockerSandboxAdapter (real Docker)', () => {
     ]);
     expect(first.stdout.trim()).toBe("['main.py', 'mine.txt']");
     expect(second.stdout.trim()).toBe("['main.py', 'mine.txt']");
+  });
+
+  it('cannot reach host files next to the workspace via .. or symlink (SR-017/AC-010)', async () => {
+    await writeFile(join(root, 'host-secret.txt'), 'HOST_SECRET');
+    const outcome = await runPython(
+      'it-path',
+      [
+        'import os',
+        'os.symlink("/workspace/..", "up")',
+        'found = []',
+        'for p in ["../host-secret.txt", "up/host-secret.txt", "/host-secret.txt"]:',
+        '  try:',
+        '    found.append(open(p).read())',
+        '  except OSError:',
+        '    pass',
+        'print(found)',
+      ].join('\n'),
+    );
+    expect(outcome.stdout.trim()).toBe('[]');
+  });
+
+  it('caps writable /tmp so filling it fails inside the sandbox (SR-015/AC-009)', async () => {
+    const outcome = await runPython(
+      'it-tmpfs',
+      [
+        'chunk = b"x" * (1024 * 1024)',
+        'written = 0',
+        'try:',
+        '  with open("/tmp/fill", "wb") as f:',
+        '    for _ in range(200):',
+        '      f.write(chunk); f.flush(); written += 1',
+        'except OSError as e:',
+        '  print("full", e.errno, written)',
+      ].join('\n'),
+      { memoryLimitMb: 256 },
+    );
+    const [label, errno, written] = outcome.stdout.trim().split(' ');
+    expect(label).toBe('full');
+    expect(errno).toBe('28');
+    expect(Number(written)).toBeLessThanOrEqual(64);
+  });
+
+  it('limits process count so a fork bomb cannot exceed 64 PIDs (SR-003/AC-001)', async () => {
+    const outcome = await runPython(
+      'it-pids',
+      [
+        'import os, time',
+        'n = 0',
+        'try:',
+        '  for _ in range(200):',
+        '    if os.fork() == 0:',
+        '      time.sleep(30); os._exit(0)',
+        '    n += 1',
+        'except OSError:',
+        '  pass',
+        'print(n)',
+        'os._exit(0)',
+      ].join('\n'),
+      { timeoutMs: 10_000 },
+    );
+    expect(Number(outcome.stdout.trim())).toBeLessThan(64);
+    await expect(remainingContainers('it-pids')).resolves.toBe('');
   });
 });
