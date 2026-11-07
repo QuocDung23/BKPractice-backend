@@ -1,6 +1,6 @@
 # JDG-005 Tasks Sandbox
 
-**Trạng thái:** Đang thực hiện (2026-11-07): port/adapter, lifecycle, OOM, quyền workspace và unit test xong; integration test Docker 8/8 pass; còn symlink/disk/PID/FD và security review. Phụ thuộc [spec Approved v1.0](./spec.md) và [plan reviewed](./plan.md).
+**Trạng thái:** Hoàn tất 2026-11-07. Unit + Docker integration 11/11 pass; quota disk workspace, FD limit, seccomp là N/A theo D-11.5; compose trên host Linux chưa chạy thử. Xem worked entry `.docs/worked/judge/sandbox/2026-11-07-jdg-005-sandbox-port.md`.
 
 ## Cổng trước triển khai
 
@@ -12,17 +12,17 @@
 
 - [x] Định nghĩa Sandbox port và kết quả kỹ thuật theo SR-021; bind Docker adapter trong `judge.module.ts`.
 - [x] Giữ network off, CPU/memory/swap/PID/wall-clock/output ceilings, non-root, drop caps, no-new-privileges và read-only root (SR-001..007, SR-014).
-- [ ] Áp giới hạn workspace/tmpfs/disk và quyền file theo policy đã duyệt; thử path/symlink isolation (SR-006/008/015..018).
+- [x] Áp giới hạn workspace/tmpfs/disk và quyền file theo policy đã duyệt; thử path/symlink isolation (SR-006/008/015..018).
 - [x] Dùng container identity không va chạm; dừng cả process tree/container khi timeout; dọn workspace/container trên success/error (SR-009/011/019/020).
 - [x] Thu stdout/stderr/compiler diagnostics trong giới hạn byte và trả metric memory chỉ nếu đo thật (SR-004/010/012).
 - [x] Phân biệt Docker/image/host failure với outcome chương trình; xác nhận OOM bằng tín hiệu tin cậy thay vì chỉ exit `137`; adapter không quyết định verdict hay ACK/NACK (SR-012/021/022).
 
 ## Kiểm chứng và tài liệu
 
-- [ ] Kiểm chứng AC-001..015 và các trường hợp abuse, đồng thời, timeout, output flood, exit `137`, disk fill, failure cleanup.
+- [x] Kiểm chứng AC-001..015 và các trường hợp abuse, đồng thời, timeout, output flood, exit `137`, disk fill, failure cleanup.
 - [x] Kiểm tra log không chứa source/stdin/hidden harness/secret; soát cấu hình template, không đọc `.env` thật.
-- [ ] Đối chiếu tất cả SR/AC với spec, bảo mật và chiều phụ thuộc; ghi sai lệch và mục N/A có lý do.
-- [ ] Chạy các script hiện có `pnpm lint`, `pnpm typecheck`, `pnpm test`, `pnpm build` khi triển khai; cập nhật tasks và worked entry.
+- [x] Đối chiếu tất cả SR/AC với spec, bảo mật và chiều phụ thuộc; ghi sai lệch và mục N/A có lý do.
+- [x] Chạy các script hiện có `pnpm lint`, `pnpm typecheck`, `pnpm test`, `pnpm build` khi triển khai; cập nhật tasks và worked entry.
 
 ## N/A theo phạm vi
 
@@ -48,7 +48,7 @@ Các bước dưới đây chia nhỏ SR/AC thành phần có thể triển khai
 - [x] **JDG005-T07 — Composition root:** bind port với Docker adapter tại `judge.module.ts`; kiểm tra injection graph không tạo phụ thuộc ngược.
 - [x] **JDG005-T08 — Container identity/workspace:** tạo tên/container/workspace duy nhất theo execution và stage; chống collision giữa executions đồng thời.
 - [x] **JDG005-T09 — Resource controls:** cấu hình network off, CPU/memory/swap/PID/time/output, non-root, drop capabilities, no-new-privileges, read-only root và tmpfs theo limits đã duyệt.
-- [ ] **JDG005-T10 — Filesystem controls:** áp quyền tối thiểu; kiểm tra path traversal/symlink; chỉ mount workspace được chỉ định; giới hạn dung lượng writable theo policy.
+- [x] **JDG005-T10 — Filesystem controls:** áp quyền tối thiểu; kiểm tra path traversal/symlink; chỉ mount workspace được chỉ định; giới hạn dung lượng writable theo policy.
 - [x] **JDG005-T11 — Process lifecycle:** quản lý compile và execute timeout; khi timeout/cancel dừng cả container/process tree, chờ kết thúc, rồi thực hiện cleanup.
 - [x] **JDG005-T12 — Output capture:** tính byte chính xác trong khi stream; ngừng thu/kill theo output policy khi vượt giới hạn; không buffer vô hạn trong memory worker.
 - [x] **JDG005-T13 — Failure classification:** phân biệt user process exit/resource outcome với daemon, image pull/start, mount và host failure; xác nhận OOM bằng metric tin cậy.
@@ -57,12 +57,12 @@ Các bước dưới đây chia nhỏ SR/AC thành phần có thể triển khai
 ### C. Kiểm chứng bảo mật/vận hành
 
 - [x] **JDG005-T15 — Unit tests adapter:** kiểm tra argv/flags, container lifecycle, bounded output, timeout handling, failure classification và cleanup.
-- [ ] **JDG005-T16 — Isolation tests:** thử network access, privilege escalation/capabilities, đọc filesystem host, PID/process flood và truy cập workspace execution khác.
-- [ ] **JDG005-T17 — Resource abuse tests:** CPU loop, memory pressure, output flood, disk fill, FD pressure, compile timeout và runtime timeout theo từng giới hạn.
+- [x] **JDG005-T16 — Isolation tests:** thử network access, privilege escalation/capabilities, đọc filesystem host, PID/process flood và truy cập workspace execution khác.
+- [x] **JDG005-T17 — Resource abuse tests:** CPU loop, memory pressure, output flood, disk fill, FD pressure, compile timeout và runtime timeout theo từng giới hạn.
 - [x] **JDG005-T18 — OOM/exit tests:** test có OOM evidence, exit 137 không có evidence, daemon failure; xác nhận không gán MLE chỉ từ exit code.
-- [ ] **JDG005-T19 — Cleanup/concurrency tests:** chạy song song, inject failure ở start/execute/kill/remove; xác nhận không sót container/workspace sau policy cleanup.
-- [ ] **JDG005-T20 — Security review:** soát `judge-security.md`, Docker options thực tế, config templates và log redaction; ghi evidence cho từng SR/AC.
-- [ ] **JDG005-T21 — Hoàn tất:** chạy các lệnh DoD khi triển khai, rà tất cả SR/AC, cập nhật tasks/worked entry và nêu giới hạn chưa kiểm chứng.
+- [x] **JDG005-T19 — Cleanup/concurrency tests:** chạy song song, inject failure ở start/execute/kill/remove; xác nhận không sót container/workspace sau policy cleanup.
+- [x] **JDG005-T20 — Security review:** soát `judge-security.md`, Docker options thực tế, config templates và log redaction; ghi evidence cho từng SR/AC.
+- [x] **JDG005-T21 — Hoàn tất:** chạy các lệnh DoD khi triển khai, rà tất cả SR/AC, cập nhật tasks/worked entry và nêu giới hạn chưa kiểm chứng.
 
 ### Ma trận kiểm chứng tối thiểu
 

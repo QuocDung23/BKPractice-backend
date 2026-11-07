@@ -61,23 +61,47 @@ output thì `docker kill`, sau đó `docker inspect` lấy `ExitCode`/`OOMKilled
 
 ## Verification
 
-- `pnpm exec jest apps/judge-service --runInBand`: 5 suite pass, 31 test pass, 1 suite integration skip.
-- `pnpm build:judge`: thành công.
-- `pnpm exec eslint apps/judge-service`: sạch.
+- `pnpm exec jest apps/judge-service --runInBand`: 31 unit test pass, 11 integration skip mặc định.
+- `pnpm build:judge`: thành công. `pnpm exec eslint apps/judge-service`: sạch.
 - `pnpm lint`, `pnpm typecheck`, `pnpm test`: chỉ lỗi ở `test/account-import.integration.spec.ts`
   (`officialName`), có sẵn trên `origin/main`, ngoài phạm vi Judge.
 - Docker Desktop 29.8.2: `pnpm judge:images:build` rồi
-  `JUDGE_DOCKER_IT=1 pnpm exec jest docker-sandbox.adapter.integration --runInBand` → 8/8 pass:
-  stdin/cleanup (AC-005), không network (AC-001), UID 1000 + không ghi ngoài workspace (AC-008/010),
-  timeout kill + xoá container (AC-003/011), output flood (AC-013), OOM từ `OOMKilled` (SR-022),
-  exit 137 không bị coi là OOM (AC-015), workspace song song cách ly (AC-004). Sau khi chạy không
-  còn container sandbox nào (`docker ps -a`).
-- Not verified: symlink/path traversal, disk fill tmpfs, PID/fork flood, FD pressure; compose với
-  `USER node` + `group_add` trên host Linux.
+  `JUDGE_DOCKER_IT=1 pnpm exec jest docker-sandbox.adapter.integration --runInBand` → 11/11 pass;
+  sau khi chạy `docker ps -aq --filter label=bkpractice.judge.sandbox=1` rỗng.
+- Not verified: compose với `USER node` + `group_add` trên host Linux; hành vi trên Linux host
+  thật (Docker Desktop chạy trong VM, quyền bind mount khác Linux).
+
+## Security review (T20)
+
+| SR/AC                          | Bằng chứng                                                                                        |
+| ------------------------------ | ------------------------------------------------------------------------------------------------- |
+| SR-001, AC-001/008             | `--network none`; IT "no network access"; không có `--privileged` (unit)                          |
+| SR-002/014, AC-002             | `--cpus 1`, `--memory`=`--memory-swap`; trần không lấy từ request ngoài memory (unit)             |
+| SR-003                         | `--pids-limit 64`; IT fork bomb dừng dưới 64                                                      |
+| SR-004/010, AC-013             | `runBoundedProcess` gộp byte, cắt đúng trần và kill (unit + IT output flood)                      |
+| SR-005                         | `--user 1000:1000`, `--cap-drop ALL`, `no-new-privileges` (unit); IT xác nhận UID 1000            |
+| SR-006/015, AC-009             | `--read-only`, tmpfs `/tmp` 64 MiB `noexec,nosuid`; IT ghi `/etc` bị từ chối, đầy tmpfs → ENOSPC  |
+| SR-007, AC-006                 | argv không qua shell; image/command từ runner; unit "never passes stdin or source through argv"   |
+| SR-008, AC-004                 | `mkdtemp` riêng mỗi request; IT hai workspace song song                                           |
+| SR-009/011/020, AC-003/005/011 | `kill` khi timeout/flood, `rm --force` trong `finally`; IT không còn container                    |
+| SR-012, AC-007                 | create/inspect/binary lỗi → `SandboxUnavailableError` → `INTERNAL_ERROR` (unit adapter + engine)  |
+| SR-013                         | Workspace xoá sau request; không lưu gì khác                                                      |
+| SR-016                         | Thư mục `0700`, file `0600`; worker UID 1000 (unit, kiểm tra mode trên non-Windows)               |
+| SR-017, AC-010                 | Tên file whitelist; IT `..`/symlink không đọc được file host cạnh workspace                       |
+| SR-019, AC-012                 | Tên container có `randomUUID()` (unit)                                                            |
+| SR-021                         | Port không phụ thuộc RabbitMQ/ACK; adapter chỉ trả outcome kỹ thuật                               |
+| SR-022, AC-015                 | `inspect .State.OOMKilled`; IT OOM thật và exit 137 tự nguyện                                     |
+| AC-014                         | Compile `max(3×TL, 10s)` → TLE khi quá hạn (unit engine)                                          |
+| Log                            | Log chỉ có `executionId`, stage, tên lỗi, stderr Docker ≤500 byte; không log source/stdin/harness |
+
+N/A theo D-11.5: quota disk workspace, FD limit, seccomp/apparmor — không thêm trong bản này.
+
+Rủi ro mới do bỏ `--rm`: worker chết giữa `create` và `rm` để lại container. Container được gắn label
+`bkpractice.judge.sandbox=1`; README ghi lệnh dọn thủ công. Không tự quét khi khởi động vì nhiều
+worker có thể chạy song song và sẽ xoá container của nhau.
 
 ## Remaining
 
-- Bổ sung integration test symlink/path, disk fill tmpfs, PID flood, FD pressure (T10/T16/T17/T19 phần inject lỗi).
-- T20 security review và T21 hoàn tất sau khi có evidence Docker.
+- Chạy thử compose `USER node` + `group_add` trên host Linux trước khi deploy.
 - JDG-001 sửa các deviation còn lại: `score || 100`, stage validate payload, poison message/ACK.
 - Xác nhận cách hiểu D-07.1 với chủ sở hữu repo.
