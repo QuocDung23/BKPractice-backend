@@ -1,49 +1,44 @@
-import { chmod, mkdtemp, mkdir, rm, writeFile } from 'node:fs/promises';
-import { join, resolve } from 'node:path';
-
 import type { JudgeRequest, JudgeResult, JudgeStatus } from '@app/contracts';
 import { normalizeJudgeOutput } from '@app/shared';
-import { Injectable } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
+import { Inject, Injectable } from '@nestjs/common';
 
+import { SANDBOX_PORT } from './application/ports/out/sandbox.port';
+import type {
+  SandboxOutcome,
+  SandboxPort,
+  SandboxWorkspace,
+} from './application/ports/out/sandbox.port';
 import { parseCompilerError } from './compiler-error.parser';
 import { RunnerRegistry } from './runners/runner.registry';
-import { DockerSandboxExecutor } from './sandbox/docker-sandbox.executor';
 
 @Injectable()
 export class JudgeEngine {
   constructor(
     private readonly runners: RunnerRegistry,
-    private readonly sandbox: DockerSandboxExecutor,
-    private readonly config: ConfigService,
+    @Inject(SANDBOX_PORT) private readonly sandbox: SandboxPort,
   ) {}
 
   async judge(request: JudgeRequest): Promise<JudgeResult> {
-    const root = resolve(this.config.getOrThrow<string>('JUDGE_WORKSPACE_ROOT'));
-    await mkdir(root, { recursive: true, mode: 0o700 });
-    const workspace = await mkdtemp(join(root, `${request.executionId}-`));
-    await chmod(workspace, 0o777);
+    let workspace: SandboxWorkspace | undefined;
     try {
       const runner = this.runners.get(request.language);
       const source = request.hiddenHarness
         ? `${request.sourceCode}\n\n${request.hiddenHarness}`
         : request.sourceCode;
-      await writeFile(join(workspace, runner.sourceFile), source, {
-        encoding: 'utf8',
-        mode: 0o666,
-      });
+      workspace = await this.sandbox.createWorkspace(request.executionId, [
+        { name: runner.sourceFile, content: source },
+      ]);
 
       if (runner.compileCommand) {
-        const compilation = await this.sandbox.execute({
-          executionId: `${request.executionId}-compile`,
-          workspace,
+        const compilation = await this.sandbox.execute(workspace, {
+          stage: 'compile',
           image: runner.image,
           command: runner.compileCommand,
           stdin: '',
           timeoutMs: Math.max(request.timeLimitMs * 3, 10_000),
           memoryLimitMb: request.memoryLimitMb,
         });
-        if (compilation.exitCode !== 0) {
+        if (compilation.exitCode !== 0 || compilation.timedOut) {
           const output = `${compilation.stdout}${compilation.stderr}`;
           return {
             executionId: request.executionId,
@@ -62,9 +57,8 @@ export class JudgeEngine {
       let lastStdout = '';
       let lastStderr = '';
       for (const testCase of request.testCases) {
-        const execution = await this.sandbox.execute({
-          executionId: `${request.executionId}-${passedTests}`,
-          workspace,
+        const execution = await this.sandbox.execute(workspace, {
+          stage: `test-${passedTests}`,
           image: runner.image,
           command: runner.executeCommand,
           stdin: testCase.stdin,
@@ -121,18 +115,15 @@ export class JudgeEngine {
         stderr: error instanceof Error ? error.message : 'Unknown judge error',
       };
     } finally {
-      await rm(workspace, { recursive: true, force: true });
+      if (workspace) await this.sandbox.disposeWorkspace(workspace);
     }
   }
 
-  private executionErrorStatus(result: {
-    timedOut: boolean;
-    outputLimitExceeded: boolean;
-    exitCode: number;
-  }): JudgeStatus | undefined {
+  private executionErrorStatus(result: SandboxOutcome): JudgeStatus | undefined {
     if (result.timedOut) return 'TIME_LIMIT_EXCEEDED';
     if (result.outputLimitExceeded) return 'RUNTIME_ERROR';
-    if (result.exitCode === 137) return 'MEMORY_LIMIT_EXCEEDED';
+    // JDG-005-SR-022: only a runtime-reported OOM kill counts; a bare exit 137 does not.
+    if (result.oomKilled) return 'MEMORY_LIMIT_EXCEEDED';
     if (result.exitCode !== 0) return 'RUNTIME_ERROR';
     return undefined;
   }
