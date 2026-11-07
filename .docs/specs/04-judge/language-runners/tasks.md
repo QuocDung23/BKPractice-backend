@@ -1,10 +1,10 @@
 # JDG-002 Tasks Language Runners
 
-**Trạng thái:** Draft for review; chưa thực hiện. Phụ thuộc [spec Proposed v0.2](./spec.md), [plan draft](./plan.md) và Sandbox JDG-005.
+**Trạng thái:** Chưa thực hiện. Phụ thuộc [spec Approved v1.0](./spec.md), [plan reviewed](./plan.md) và Sandbox JDG-005.
 
 ## Cổng trước triển khai
 
-- [ ] Chốt toolchain/version policy, Java entrypoint, Python syntax check và source/diagnostic limits; cập nhật spec/plan.
+- [x] Chốt toolchain/version policy, Java entrypoint, Python syntax check và source/diagnostic limits — xong 2026-10-07 theo [REVIEW.md](../REVIEW.md) D-08; ghi vào bảng toolchain và FR-005/012/016 của spec.
 - [ ] Xác nhận spec Approved, plan được review, kiến trúc Judge và trạng thái worktree.
 
 ## Runner và contract

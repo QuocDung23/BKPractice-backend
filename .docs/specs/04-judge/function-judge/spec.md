@@ -2,7 +2,7 @@
 
 ## Trạng thái
 
-Proposed — phiên bản 0.2, ngày 2026-09-30.
+Approved — phiên bản 1.0, ngày 2026-10-07.
 
 ## Mục tiêu
 
@@ -28,12 +28,16 @@ language đang bật.
 - **JDG-003-FR-005:** Input Test Case được chuyển tới harness theo contract đã định nghĩa cho loại
   FUNCTION; Judge MUST NOT tự suy đoán schema dữ liệu có cấu trúc.
 - **JDG-003-FR-006:** Compile, timeout, runtime, output, verdict và điểm tuân theo JDG-001/JDG-002/
-  JDG-005 sau khi semantics FUNCTION được xác định.
+  JDG-005.
 - **JDG-003-FR-007:** Nếu mã người học lỗi compile, Judge báo `COMPILE_ERROR` và không chạy test.
-  Nếu lỗi do harness/configuration, Judge báo `INTERNAL_ERROR`; cách xác định nguồn lỗi phải được
-  chốt trước Approved và không được chỉ dựa trên exit code.
-- **JDG-003-FR-008:** Lỗi assertion/kiểm tra trong harness phải được chuyển thành kết quả test sai
-  hoặc lỗi thực thi theo quy ước được chốt, không làm lộ harness.
+  Nếu lỗi do harness/configuration (thiếu harness, harness không biên dịch được, entrypoint sai),
+  Judge báo `INTERNAL_ERROR`. Nguồn lỗi được xác định theo vùng code khi chẩn đoán cho biết dòng
+  lỗi: dòng thuộc vùng harness → lỗi harness; dòng thuộc vùng người học → lỗi người học. Trường hợp
+  không có chẩn đoán dòng chỉ quy tắc exit code làm thất bại thực thi → `RUNTIME_ERROR`.
+- **JDG-003-FR-008:** Harness kiểm tra và phát hiện lời giải sai bằng cách tạo output không khớp
+  `expectedOutput`; comparator JDG-001 ánh xạ thành `WRONG_ANSWER`. Exception/crash phát sinh trong
+  vùng người học là `RUNTIME_ERROR`; crash được chẩn báo là từ vùng harness là `INTERNAL_ERROR`.
+  Thông báo lỗi không được làm lộ source harness.
 - **JDG-003-FR-009 — Input testcase:** Judge MUST chuyển nguyên văn `stdin` của testcase tới process
   chạy harness; Judge không parse chuỗi thành JSON hay suy diễn kiểu tham số.
 - **JDG-003-FR-010 — Expected output:** `expectedOutput` là stdout mong đợi do harness tạo ra cho
@@ -43,12 +47,18 @@ language đang bật.
   ngoài những gì policy cho phép.
 - **JDG-003-FR-012 — Không đánh giá harness như đáp án:** Kết quả compile/runtime của harness và
   implementation được phân loại theo nguyên nhân; thông báo không được làm lộ source harness.
+- **JDG-003-FR-013 — Bố cục source:** `sourceCode` và `hiddenHarness` được ghép thành một file nguồn
+  duy nhất, harness đặt sau code người học. Judge KHÔNG hỗ trợ nhiều file trong bản này; mở rộng
+  transport là contract change phải duyệt với Learning/Submission.
 
 ## Quy tắc nghiệp vụ
 
 FUNCTION là loại Problem do Learning khai báo. Learning định nghĩa contract callable theo từng
-language; Judge thực hiện contract đó nhưng không diễn dịch mô hình bài tập riêng ngoài những quy tắc
-được thống nhất giữa Learning và Judge. Harness do server sở hữu, không đến từ client.
+language (tên hàm, kiểu tham số, filename); Judge thực thi contract đó nhưng không diễn dịch mô hình
+bài tập riêng. Contract callable thuộc sở hữu của Learning và là ngoài phạm vi JDG-003; Judge chỉ yêu
+cầu harness tương thích language và từ chối request thiếu harness. Harness do server sở hữu, không
+đến từ client. Mỗi testcase chạy một process/container riêng; implementation chỉ dùng thư viện có
+sẵn trong image runner, không thêm file hay package ngoài image.
 
 ## Đầu vào/đầu ra
 
@@ -68,8 +78,8 @@ compile chỉ phát sinh từ harness. Harness do Learning cấp nhưng vẫn kh
 - **JDG-003-AC-002:** Thiếu harness không được chạy như STANDARD.
 - **JDG-003-AC-003:** Harness và nội dung test ẩn không xuất hiện trong result/log hướng client.
 - **JDG-003-AC-004:** Harness hoặc submission gây timeout/resource exhaustion vẫn bị sandbox giới hạn.
-- **JDG-003-AC-005:** Compile/runtime/test failure được phân loại theo contract chung sau khi policy
-  FUNCTION được chốt.
+- **JDG-003-AC-005:** Compile/runtime/test failure được phân loại theo quy tắc vùng code ở
+  FR-007/FR-008 và contract chung JDG-001.
 
 ## Ngoài phạm vi
 
@@ -82,24 +92,22 @@ conventions (JDG-004), lịch sử/điểm chính thức (Submission).
 [JDG-001](../standard-judge/spec.md), [JDG-002](../language-runners/spec.md),
 [JDG-005](../sandbox/spec.md), `JudgeRequest`.
 
-## Câu hỏi mở
+## Quyết định khi duyệt
 
-1. FUNCTION contract theo language gồm signature nào: tên hàm/class, kiểu tham số/return, overload,
-   visibility, namespace/package và filename?
-2. Harness được ghép vào source hay đặt thành file riêng? Contract hiện chỉ có một chuỗi
-   `hiddenHarness` và một `sourceCode`.
-3. Với C/C++, có quy tắc tên symbol/prototype/linking nào không; với Java, tên class/package nào bắt
-   buộc; với Python, callable/import rule nào bắt buộc?
-4. Assertion failure/expected exception của harness được ánh xạ sang `WRONG_ANSWER` hay
-   `RUNTIME_ERROR`? Các trường hợp harness sai cấu hình được báo thế nào?
-5. Có giới hạn API/library nào cho implementation không? Có cho phép file phụ/import ngoài image
-   mặc định không?
-6. Mỗi testcase chạy process mới hay cùng process? Nếu cùng process, state giữa testcase có chủ ý
-   được chia sẻ không?
+Phiên bản này được duyệt ngày 2026-10-07 theo phiếu [`.docs/specs/04-judge/REVIEW.md`](../REVIEW.md):
+
+| Quyết định | Nội dung chốt                                                                                                                                                                                                                            |
+| ---------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| D-09.1     | Contract callable (tên hàm, kiểu, filename) do Learning định nghĩa và sở hữu; JDG-003 ngoài phạm vi, Judge chỉ yêu cầu harness tương thích language.                                                                                     |
+| D-09.2     | Harness ghép vào sau `sourceCode` thành một file duy nhất; multi-file ngoài phạm vi (FR-013).                                                                                                                                            |
+| D-09.3     | Quy tắc lỗi theo vùng code: compile lỗi vùng harness → `INTERNAL_ERROR`, vùng người học → `COMPILE_ERROR`; crash có chẩn đoán vùng harness → `INTERNAL_ERROR`, vùng người học → `RUNTIME_ERROR`; không chẩn đoán được → `RUNTIME_ERROR`. |
+| D-09.4     | Harness phát hiện lời giải sai qua output không khớp → `WRONG_ANSWER` theo comparator JDG-001.                                                                                                                                           |
+| D-09.5     | Chỉ dùng thư viện có sẵn trong image runner; không thêm file/package ngoài image; mỗi testcase một process/container riêng.                                                                                                              |
 
 ## Lịch sử sửa đổi
 
-| Ngày       | Phiên bản | Tác giả/Người review | Tóm tắt                                          |
-| ---------- | --------- | -------------------- | ------------------------------------------------ |
-| 2026-09-30 | 0.1       | Codex / chờ review   | SRS đề xuất                                      |
-| 2026-09-30 | 0.2       | Codex / chờ review   | Làm rõ stdin thô và expected output theo LRN-002 |
+| Ngày       | Phiên bản | Tác giả/Người review    | Tóm tắt                                                                      |
+| ---------- | --------- | ----------------------- | ---------------------------------------------------------------------------- |
+| 2026-09-30 | 0.1       | Codex / chờ review      | SRS đề xuất                                                                  |
+| 2026-09-30 | 0.2       | Codex / chờ review      | Làm rõ stdin thô và expected output theo LRN-002                             |
+| 2026-10-07 | 1.0       | Codex / Chủ sở hữu repo | Duyệt: bố cục single-file, quy tắc lỗi theo vùng code, scope contract (D-09) |

@@ -2,7 +2,7 @@
 
 ## Trạng thái
 
-Proposed — phiên bản 0.2, ngày 2026-09-30.
+Approved — phiên bản 1.0, ngày 2026-10-07.
 
 ## Mục tiêu
 
@@ -36,12 +36,13 @@ verdict và số liệu đã đánh giá.
 4. Compile một lần nếu runner yêu cầu. Compile failure kết thúc đánh giá.
 5. Duyệt testcase theo thứ tự: truyền stdin, chạy trong sandbox, phân loại process outcome; nếu
    process thành công thì chuẩn hóa stdout và so với expected output.
-6. Cập nhật passed count, score và runtime theo policy đã duyệt; áp dụng stop/continue rule đã duyệt.
+6. Dừng đánh giá ở testcase sai đầu tiên; cộng passed count, score và runtime theo các testcase đã
+   qua.
 7. Tạo result mang định danh gốc, publish tới Submission; chỉ hoàn tất delivery sau publisher confirm.
    Workspace/container được cleanup trên mọi đường đi.
 
-Compile một lần/request là hành vi pipeline hiện có. Process state giữa testcase, cách dùng lại artifact
-đã biên dịch và runtime budget tổng thể cần được review vì ảnh hưởng trực tiếp đến kết quả chấm.
+Compile một lần mỗi request. Testcase dùng chung artifact đã biên dịch và workspace của request;
+mỗi testcase chạy một process/container riêng nên không chia sẻ state process giữa các testcase.
 
 ## Yêu cầu chức năng
 
@@ -58,40 +59,47 @@ Compile một lần/request là hành vi pipeline hiện có. Process state gi�
   chọn runner, biên dịch khi cần, thực thi, đánh giá và phân loại theo thứ tự. Thất bại ở bước trước
   MUST không chạy các bước sau không còn ý nghĩa.
 - **JDG-001-FR-005 — Biên dịch một lần:** Runner cần biên dịch MUST được biên dịch một lần cho mỗi
-  request trước khi chạy Test Case. Lỗi biên dịch MUST kết thúc request với `COMPILE_ERROR`, ngoại
-  trừ phân loại timeout biên dịch được chốt tại JDG-002/JDG-005.
+  request trước khi chạy Test Case. Lỗi biên dịch MUST kết thúc request với `COMPILE_ERROR`; biên
+  dịch quá thời hạn MUST kết thúc với `TIME_LIMIT_EXCEEDED` theo JDG-002/JDG-005.
 - **JDG-001-FR-006 — Test Case có thứ tự:** Judge MUST đánh giá Test Case theo thứ tự nhận từ
   Learning qua request; Judge MUST NOT sắp xếp lại. Test Case `SAMPLE` và `HIDDEN` do Learning gửi
   đều được đánh giá như nhau khi Submit theo LRN-002.
 - **JDG-001-FR-007 — So sánh output:** Judge MUST so sánh stdout với `expectedOutput`; không so
-  sánh stderr như output đáp án. Đề xuất giữ comparator hiện tại: đổi CRLF thành LF rồi loại bỏ toàn
-  bộ whitespace cuối chuỗi; các whitespace ở giữa chuỗi được giữ nguyên. Chính sách này cần review vì
-  `trimEnd()` bỏ nhiều hơn một newline cuối.
+  sánh stderr như output đáp án. Trước khi so, Judge MUST chuẩn hóa CRLF thành LF rồi loại bỏ toàn
+  bộ whitespace cuối chuỗi (`trimEnd()`); whitespace ở giữa chuỗi MUST được giữ nguyên. Judge MUST
+  KHÔNG áp chuẩn hóa Unicode. Testcase không có `expectedOutput` (RUN) MUST được coi là đạt phần
+  so sánh này.
 - **JDG-001-FR-008 — Verdict:** Judge MUST phân biệt ít nhất các trạng thái contract hiện có:
   `ACCEPTED`, `WRONG_ANSWER`, `COMPILE_ERROR`, `RUNTIME_ERROR`, `TIME_LIMIT_EXCEEDED`,
   `MEMORY_LIMIT_EXCEEDED`, `INTERNAL_ERROR`.
 - **JDG-001-FR-009 — Đếm kết quả:** Result MUST báo `passedTests` và `totalTests` khi đánh giá bộ
   Test Case; test bị lỗi hoặc sai không được tính là passed.
-- **JDG-001-FR-010 — Điểm:** Judge MUST báo điểm theo trọng số Test Case đã qua theo chính sách điểm
-  được chốt; Judge MUST NOT dùng điểm để suy ra verdict. Judge MUST NOT biến một bộ Test Case rỗng
-  thành một lần chấm đạt.
-- **JDG-001-FR-011 — Thời gian:** Result MUST báo runtime theo quy tắc đo thống nhất và không vượt
-  giới hạn nền tảng. Cách cộng thời gian giữa compile/startup/các test là câu hỏi mở.
-- **JDG-001-FR-012 — Bộ nhớ:** Nếu contract báo `memoryKb`, giá trị MUST phản ánh số đo được hoặc
-  quy ước không khả dụng đã chốt; MUST NOT giả lập số đo.
+- **JDG-001-FR-010 — Điểm:** Judge MUST báo điểm là tổng `score` của các Test Case đã đạt, cộng dồn
+  theo thứ tự cho tới khi dừng; Judge MUST KHÔNG chuẩn hoá về thang cố định và MUST NOT dùng điểm
+  để suy ra verdict. Judge MUST NOT biến một bộ Test Case rỗng thành một lần chấm đạt. Kết quả
+  `ACCEPTED` với điểm 0 là hợp lệ theo SUB-002; Judge chỉ báo đúng số đo, không tự gán điểm mặc định.
+- **JDG-001-FR-011 — Thời gian:** `runtimeMs` MUST là tổng thời gian thực thi của các Test Case đã
+  chạy, MAY gồm thời gian startup của từng lần chạy trong giới hạn đó; MUST KHÔNG tính thời gian
+  biên dịch hay thời gian setup workspace. Giá trị MUST không vượt giới hạn nền tảng.
+- **JDG-001-FR-012 — Bộ nhớ:** Judge KHÔNG đo số liệu bộ nhớ; result MUST KHÔNG gửi `memoryKb`.
+  Submission lưu giá trị chưa có khi trường vắng theo SUB-002/SUB-003. Judge MUST KHÔNG giả lập số
+  đo.
 - **JDG-001-FR-013 — Bảo toàn định danh:** Result MUST giữ đúng `executionId`, `submissionId` và
   `mode` từ request.
 - **JDG-001-FR-014 — Không trả dữ liệu ẩn:** Result MUST NOT chứa trường Test Case, expected output,
-  harness, source code, tên file nội bộ hay Docker command. stdout/stderr của một lần Submit có thể
-  phản chiếu input ẩn do chính chương trình in ra; các trường này MUST chỉ được gửi nếu chính sách
-  lọc/giới hạn và quyền đọc tương ứng đã được phê duyệt. Khi chưa có chính sách, Submit result MUST
-  bỏ các trường output thô đó.
+  harness, source code, tên file nội bộ hay Docker command. stdout/stderr đại diện lần execute cuối
+  cùng được chạy (với RUN là lần execute duy nhất) và bị kẹp bởi trần output; Judge MUST gửi chúng
+  cho cả RUN và SUBMIT để Submission lưu theo SUB-002-FR-019. Việc chỉ trả stdout/stderr của RUN cho
+  người học và không bao giờ trả của SUBMIT là chính sách xem của SUB-003, không phải của Judge.
 - **JDG-001-FR-015 — Chẩn đoán biên dịch:** Với `COMPILE_ERROR`, result MAY có thông báo biên dịch
-  đã được lọc phù hợp; nếu không phân tích được line/column thì vẫn trả thông báo tổng quát.
+  đã được lọc phù hợp; Judge MUST loại đường dẫn workspace tuyệt đối, tham số lệnh và thông tin
+  sandbox khỏi thông báo trước khi gửi. Nếu không phân tích được line/column thì vẫn trả thông báo
+  tổng quát. Submission lưu theo SUB-002-FR-019 và SUB-003 quyết định quyền xem.
 - **JDG-001-FR-016 — Output người dùng:** Judge MUST NOT dùng stdout/stderr làm kênh trao đổi với
   client công khai; việc lưu/hiển thị output Run thuộc Submission.
 - **JDG-001-FR-017 — Dọn workspace:** Mọi đường kết thúc thành công, lỗi, timeout hoặc exception MUST
-  cố gắng dọn workspace tạm của request.
+  cố gắng dọn workspace tạm của request. Việc dọn thất bại MUST được ghi log và MUST KHÔNG làm mất
+  result đã tính hay khiến request bị tính lại; result vẫn được publish và request được ACK.
 - **JDG-001-FR-018 — Ưu tiên lỗi thực thi:** Nếu execution không kết thúc thành công, Judge MUST phân
   loại timeout/resource/exit outcome trước khi so output; testcase bị terminate MUST NOT được so với
   expected output.
@@ -105,8 +113,11 @@ Compile một lần/request là hành vi pipeline hiện có. Process state gi�
   tiếp theo MUST giữ nguyên executionId, submissionId, mode, status và các số liệu đã tính.
 - **JDG-001-FR-023 — ACK sau publish:** Request MUST NOT được ACK thành công trước khi publish result
   được broker xác nhận.
-- **JDG-001-FR-024 — Payload lỗi không retry vô hạn:** Request không thể parse/validate MUST không
-  chạy mã và MUST đi theo chính sách bounded retry/DLQ đã duyệt.
+- **JDG-001-FR-024 — Payload lỗi không retry vô hạn:** Request không thể parse hoặc không còn đủ
+  định danh để tạo result tương quan MUST không chạy mã; Judge MUST ghi log an toàn (không kèm
+  payload) rồi ACK và bỏ message. Request sai validation nhưng còn đủ định danh MUST tạo
+  `INTERNAL_ERROR` và publish trước khi ACK. Lỗi hạ tầng khác (publish, consume) đi theo bounded
+  retry tối đa ba lần rồi DLQ theo contract messaging hiện có.
 - **JDG-001-FR-025 — Log an toàn:** Judge MUST NOT ghi source, stdin/expected output ẩn, harness,
   credentials hay raw payload vào log vận hành.
 
@@ -114,13 +125,16 @@ Compile một lần/request là hành vi pipeline hiện có. Process state gi�
 
 - `ACCEPTED` có nghĩa chương trình hoàn tất mọi Test Case theo semantics của loại Problem; nó không
   tự quyết định hoàn tất Submission hoặc cập nhật tiến độ.
+- Với `mode=RUN`, Judge báo chạy thành công bằng `ACCEPTED` kèm `mode=RUN` theo contract hiện có;
+  Submission ánh xạ thành `EXECUTED` cho Run theo SUB-001. Judge không mở rộng enum `JudgeStatus`.
 - `INTERNAL_ERROR` biểu thị Judge không thể kết luận do lỗi hệ thống, không phải lỗi lời giải.
 - Test Case rỗng không được coi là bằng chứng lời giải đúng. LRN-002 yêu cầu Problem xuất bản có
-  Test Case ẩn và tổng điểm dương; Judge đề xuất từ chối request không có testcase trước khi chạy.
-  Việc mapping thành result hay DLQ phụ thuộc khả năng tương quan message và retry policy.
-- SUB-002 quy định Submission coi kết quả đầu tiên đến là kết quả cuối cùng; đó là quy tắc ở
-  Submission, không tự quy định Judge dừng ở testcase sai đầu tiên. Stop-on-first-failure là chính sách
-  Judge riêng và hiện còn mở.
+  Test Case ẩn và tổng điểm dương; Judge từ chối request Submit không có testcase trước khi chạy và
+  báo `INTERNAL_ERROR` khi còn đủ định danh.
+- **Dừng ở testcase sai đầu tiên:** khi một testcase báo sai, Judge dừng ngay, không chạy các
+  testcase sau; `passedTests` chỉ đếm các testcase đã đạt và điểm là tổng score của chúng. Giao
+  trùng cùng `executionId` không tính lại; Submission giữ kết quả đến trước theo SUB-001-FR-015/
+  SUB-002-FR-018.
 - Submission sở hữu ý nghĩa lưu trữ/chính thức của điểm, tiến độ và trạng thái bản ghi.
 
 ## Quyền và ranh giới
@@ -133,8 +147,9 @@ harness, runner command hay giới hạn để vượt chính sách Learning/Jud
 
 `JudgeRequest`: `executionId`, `submissionId`, `mode`, `problemType`, `language`, `sourceCode`,
 `testCases[]` (`stdin`, `expectedOutput`, `score`), tùy chọn `hiddenHarness`, `timeLimitMs`,
-`memoryLimitMb`. Ràng buộc byte tối đa của LRN-002 áp dụng cho gói Test Case/harness; giới hạn mã
-nguồn và trần execution của Judge cần được chốt.
+`memoryLimitMb`. Ràng buộc byte tối đa của LRN-002 áp dụng cho gói Test Case/harness; `sourceCode`
+tối đa 1 MiB (1.048.576 byte UTF-8), đồng nhất với trần từng trường của LRN-002; trần message
+RabbitMQ 16 MiB là giới hạn bao ngoài.
 
 | Trường                        | Kiểm tra tối thiểu đề xuất                             | Ghi chú                                                                                 |
 | ----------------------------- | ------------------------------------------------------ | --------------------------------------------------------------------------------------- |
@@ -142,7 +157,7 @@ nguồn và trần execution của Judge cần được chốt.
 | `mode`                        | Chỉ `RUN` hoặc `SUBMIT`                                | Giá trị khác bị từ chối                                                                 |
 | `problemType`                 | Chỉ `STANDARD`, `FUNCTION`, `OOP`                      | Type-specific ở JDG-003/004                                                             |
 | `language`                    | Nằm trong registry được hỗ trợ                         | Không nhận compiler/image tùy ý                                                         |
-| `sourceCode`                  | Chuỗi UTF-8 trong giới hạn                             | Maximum chưa được chốt                                                                  |
+| `sourceCode`                  | Chuỗi UTF-8 tối đa 1 MiB                               | Trần thống nhất với LRN-002                                                             |
 | `testCases`                   | Mảng có thứ tự, không rỗng; với Submit tối đa 100 item | Giới hạn gói Learning trong LRN-002                                                     |
 | `stdin`, `expectedOutput`     | Với Submit là chuỗi UTF-8; mỗi trường tối đa 1 MiB     | Gói Test Case/harness tối đa 8 MiB theo LRN-002; `expectedOutput` có thể vắng trong RUN |
 | `score`                       | Với Submit là số nguyên không âm ở mỗi testcase        | Learning sở hữu trọng số; tổng điểm của Problem xuất bản dương                          |
@@ -157,35 +172,38 @@ Các kiểm tra này mô tả hành vi cần có, không chọn thư viện hay 
 `runtimeMs`, `memoryKb`, chẩn đoán compile. Kết quả gửi trên `judge.result` về Submission. Kết quả
 không tạo bản ghi tại Judge.
 
-| Trường                      | Quy tắc hiện đề xuất                                                                              |
-| --------------------------- | ------------------------------------------------------------------------------------------------- |
-| ID, mode, status            | Có trên mọi result có thể tương quan                                                              |
-| `passedTests`, `totalTests` | Có khi request chứa testcase array hợp lệ; dùng đúng nghĩa ở trên                                 |
-| `score`                     | Chỉ có theo scoring policy; không tự gán 100/default khi thiếu dữ liệu                            |
-| `runtimeMs`                 | Chỉ báo theo cách đo đã duyệt; không giả thành runtime toàn request                               |
-| `memoryKb`                  | Chỉ báo nếu sandbox có metric thực đo tin cậy                                                     |
-| stdout/stderr               | Với RUN cần có output để người học xem; với SUBMIT chỉ gửi theo chính sách lọc/quyền đọc đã duyệt |
-| `compileOutput`, `error`    | Có thể vắng mặt; nếu có phải giới hạn và lọc nội dung                                             |
+| Trường                      | Quy tắc hiện đề xuất                                                                                |
+| --------------------------- | --------------------------------------------------------------------------------------------------- |
+| ID, mode, status            | Có trên mọi result có thể tương quan                                                                |
+| `passedTests`, `totalTests` | Có khi request chứa testcase array hợp lệ; dùng đúng nghĩa ở trên                                   |
+| `score`                     | Chỉ có theo scoring policy; không tự gán 100/default khi thiếu dữ liệu                              |
+| `runtimeMs`                 | Tổng thời gian execute các test đã chạy; không gồm compile/setup                                    |
+| `memoryKb`                  | Judge không gửi trường này; Submission lưu "chưa có" khi vắng                                       |
+| stdout/stderr               | Đại diện lần execute cuối cùng; RUN để người học xem, SUBMIT Submission lưu, SUB-003 quyết định xem |
+| `compileOutput`, `error`    | Có thể vắng mặt; nếu có phải giới hạn và lọc nội dung                                               |
 
-Contract hiện cho phép `stdout`/`stderr` tùy chọn. Cần chốt chúng đại diện test cuối, test lỗi hay
-output duy nhất của RUN; implementation hiện tại trả output của lần execute cuối cùng được chạy.
+stdout/stderr đại diện lần execute cuối cùng được chạy; với RUN đó là output duy nhất mà người học
+cần, với SUBMIT đó là dữ liệu lưu trữ thô do Submission quản lý quyền xem.
 
 ## Tình huống lỗi
 
-| Trường hợp                                        | Kết quả yêu cầu                                                                |
-| ------------------------------------------------- | ------------------------------------------------------------------------------ |
-| Payload sai hoặc thiếu trường                     | Không chạy mã; result tương quan nếu còn đủ ID, ngược lại xử lý poison message |
-| Ngôn ngữ không hỗ trợ                             | Không chạy mã; `INTERNAL_ERROR`                                                |
-| Compile thất bại                                  | `COMPILE_ERROR`; không chạy Test Case                                          |
-| Compile/run timeout                               | Verdict timeout theo chính sách compile/runtime được chốt                      |
-| Output vượt trần                                  | Kết thúc tiến trình; phân loại theo chính sách output được chốt                |
-| Mismatch                                          | `WRONG_ANSWER`; xử lý các test còn lại theo chính sách dừng sớm                |
-| Sandbox/container không sẵn sàng hoặc lỗi hạ tầng | `INTERNAL_ERROR`, không gán lỗi cho lời giải                                   |
-| Lỗi bất ngờ                                       | `INTERNAL_ERROR`; không phát raw secret hay dữ liệu test ẩn                    |
+| Trường hợp                                        | Kết quả yêu cầu                                                            |
+| ------------------------------------------------- | -------------------------------------------------------------------------- |
+| Payload sai hoặc thiếu trường                     | Không chạy mã; còn đủ ID thì `INTERNAL_ERROR`, thiếu ID thì log + ACK + bỏ |
+| Ngôn ngữ không hỗ trợ                             | Không chạy mã; `INTERNAL_ERROR`                                            |
+| Compile thất bại                                  | `COMPILE_ERROR`; không chạy Test Case                                      |
+| Compile quá thời hạn                              | `TIME_LIMIT_EXCEEDED`; không chạy Test Case                                |
+| Runtime quá thời hạn                              | `TIME_LIMIT_EXCEEDED` cho testcase đó                                      |
+| Output vượt trần                                  | Kết thúc tiến trình; `RUNTIME_ERROR`                                       |
+| Mismatch                                          | `WRONG_ANSWER`; dừng ngay, các testcase sau không chạy                     |
+| Sandbox/container không sẵn sàng hoặc lỗi hạ tầng | `INTERNAL_ERROR`, không gán lỗi cho lời giải                               |
+| Lỗi bất ngờ                                       | `INTERNAL_ERROR`; không phát raw secret hay dữ liệu test ẩn                |
 
-Message JSON không parse được chưa có JudgeRequest để tạo JudgeResult có định danh. Broker hiện retry
-handler failure tối đa ba lần rồi dead-letter. Vì vậy lỗi parse/thiếu ID không được mô tả như một
-JudgeResult có thể tương quan; xử lý poison message thuộc contract messaging và cần review.
+Message JSON không parse được hoặc thiếu định danh không có JudgeRequest để tạo JudgeResult có thể
+tương quan; Judge ghi log an toàn rồi ACK và bỏ message, không chạy mã, không retry vô hạn. Broker
+retry handler failure tối đa ba lần rồi dead-letter áp dụng cho lỗi hạ tầng còn lại (publish,
+consume). Request sai validation nhưng còn đủ định danh được publish dưới `INTERNAL_ERROR` trước khi
+ACK.
 
 ## Tình huống biên
 
@@ -195,8 +213,8 @@ JudgeResult có thể tương quan; xử lý poison message thuộc contract mes
 - Nhiều Test Case, lỗi ở test đầu/giữa/cuối, và một executionId được giao lại.
 - Timeout khi compile, timeout khi khởi động, timeout khi chạy test; tiến trình bị kill nhưng container
   còn sống.
-- Submission gửi `RUN` chỉ có một Test Case và không có expected output; semantics của trường hợp
-  này cần khớp SUB-001.
+- Submission gửi `RUN` chỉ có một Test Case và không có expected output: hợp lệ, không so output,
+  chạy thành công là `ACCEPTED` kèm `mode=RUN` theo SUB-001.
 
 ## Tiêu chí nghiệm thu
 
@@ -210,9 +228,15 @@ JudgeResult có thể tương quan; xử lý poison message thuộc contract mes
 - **JDG-001-AC-006:** Không trường hợp nào trong result làm lộ stdin ẩn, expected output hoặc harness.
 - **JDG-001-AC-007:** Workspace được dọn sau cả success và các đường lỗi có thể phục hồi.
 - **JDG-001-AC-008:** Bộ Test Case rỗng không thể nhận `ACCEPTED` hay điểm tối đa theo mặc định.
-- **JDG-001-AC-009:** `memoryKb` không được báo như số đo nếu sandbox không cung cấp số đo đáng tin.
+- **JDG-001-AC-009:** Result không bao giờ chứa `memoryKb`; Submission ghi giá trị chưa có cho bản
+  ghi tương ứng.
 - **JDG-001-AC-010:** Khi publish result thất bại, request không được ACK; khi message được giao lại,
   result vẫn giữ cùng executionId/submissionId/mode và Submission có thể bỏ kết quả terminal trùng.
+- **JDG-001-AC-011:** Cho một request ba Test Case sai ở testcase thứ hai, result là
+  `WRONG_ANSWER`, `passedTests=1`, `totalTests=3`, điểm bằng `score` của testcase đầu và testcase
+  thứ ba không được thực thi.
+- **JDG-001-AC-012:** Cho biên dịch quá thời hạn, result là `TIME_LIMIT_EXCEEDED` và không có Test
+  Case nào được chạy.
 
 ## Ngoài phạm vi
 
@@ -230,36 +254,28 @@ JudgeResult có thể tương quan; xử lý poison message thuộc contract mes
 - `libs/contracts/src/judge.contracts.ts`, [Kiến trúc Judge](../../../architecture/judge-service.md),
   [Judge security](../../00-system/judge-security.md)
 
-## Câu hỏi mở
+## Quyết định khi duyệt
 
-1. Với một mismatch, dừng ở test sai đầu tiên (hành vi code hiện có) hay tiếp tục để lấy đầy
-   đủ thống kê? Điểm có tính riêng từng test đã qua trong cả hai trường hợp không?
-2. Điểm result là tổng raw score hay chuẩn hoá về thang cố định? Có cho phép accepted với score 0?
-   SUB-002 hiện cho phép accepted score 0 nhưng LRN-002 chỉ yêu cầu tổng score dương.
-3. Test Case thiếu `expectedOutput` có hợp lệ cho RUN không? RUN hiện dùng stdin tùy ý; output có
-   cần trả về cho Submission hay không và giới hạn lưu/hiển thị ở đâu?
-4. Có duyệt giữ comparator hiện tại không: chuẩn hóa CRLF thành LF và gọi `trimEnd()` (bỏ toàn bộ
-   whitespace cuối output, không chỉ newline)? Có cần Unicode normalization không?
-5. Runtime tính theo từng testcase hay tổng tất cả testcase; có tính khởi động container không?
-   Compile timeout là `COMPILE_ERROR` hay `TIME_LIMIT_EXCEEDED`?
-6. Judge phải cung cấp memory usage thực đo? Nếu Docker không cung cấp số đo khả tín thì bỏ field hay
-   dùng quy ước khác?
-7. Output limit bị phân loại `RUNTIME_ERROR` hay verdict riêng? Contract hiện không có verdict riêng.
-8. Delivery trùng cùng executionId có cần tính toán lại/publish result lần nữa không? Ai đảm bảo
-   chống kết quả stale; hiện Submission dùng kết quả đến trước.
-9. Request malformed có thể thiếu executionId; quy tắc publish lỗi và ACK/NACK/retry/DLQ cần được
-   thống nhất với contract messaging.
-10. Với `RUN`, SUB-001 hiện định nghĩa Run chỉ có thể kết thúc ở verdict phản ánh compile/execute
-    hoặc trạng thái chạy xong; contract JudgeStatus không có `COMPLETED`. Judge/SUB-001 có cần mở rộng
-    enum hay dùng `ACCEPTED` cho RUN mà không mang nghĩa được chấp nhận chính thức?
-11. Cần trả stdout/stderr cho Run để người học quan sát chương trình. Có thể bỏ chúng khỏi SUBMIT để
-    giảm khả năng rò rỉ; policy theo mode và giới hạn lưu trữ/hiển thị phải thống nhất với SUB-003.
-12. Compile diagnostics có thể chứa đoạn source hoặc đường dẫn harness. Quy tắc lọc cụ thể và mức
-    thông tin lỗi được phép gửi cho Submission/người học là gì?
+Phiên bản này được duyệt ngày 2026-10-07 theo phiếu [`.docs/specs/04-judge/REVIEW.md`](../REVIEW.md).
+Các câu hỏi mở của bản 0.2 đã được chốt như sau:
+
+| Quyết định | Nội dung chốt                                                                                                                                       |
+| ---------- | --------------------------------------------------------------------------------------------------------------------------------------------------- |
+| D-01       | Dừng ở testcase sai đầu tiên; điểm là tổng `score` các testcase đã qua, không chuẩn hoá thang.                                                      |
+| D-02       | RUN thành công báo `ACCEPTED` kèm `mode=RUN` (không mở rộng enum); Submission ánh xạ `EXECUTED`.                                                    |
+| D-03       | Giữ comparator CRLF→LF rồi `trimEnd()`; không thêm Unicode normalization.                                                                           |
+| D-04       | Judge gửi stdout/stderr cho cả RUN và SUBMIT; SUB-002-FR-019 lưu, SUB-003-FR-011 quyết định quyền xem.                                              |
+| D-05       | `runtimeMs` không gồm compile/setup; compile quá hạn → `TIME_LIMIT_EXCEEDED`; vượt output → `RUNTIME_ERROR`.                                        |
+| D-06       | Không đo bộ nhớ; result không gửi `memoryKb`.                                                                                                       |
+| D-07       | Retry ≤3 rồi DLQ cho lỗi hạ tầng; thiếu định danh → log + ACK + bỏ; trùng `executionId` không tính lại; cleanup fail → log + ACK, không mất result. |
+| D-08       | Nguồn tối đa 1 MiB; toolchain/limits chi tiết ở [JDG-002](../language-runners/spec.md).                                                             |
+| D-09/D-10  | Phân loại lỗi theo vùng code; semantics FUNCTION/OOP ở [JDG-003](../function-judge/spec.md)/[JDG-004](../oop-judge/spec.md).                        |
+| D-11       | Trần sandbox giữ theo hiện trạng; ở [JDG-005](../sandbox/spec.md).                                                                                  |
 
 ## Lịch sử sửa đổi
 
-| Ngày       | Phiên bản | Tác giả/Người review | Tóm tắt                                                     |
-| ---------- | --------- | -------------------- | ----------------------------------------------------------- |
-| 2026-09-30 | 0.1       | Codex / chờ review   | Bản SRS đề xuất dựa trên tài liệu và code hiện có           |
-| 2026-09-30 | 0.2       | Codex / chờ review   | Bổ sung pipeline, validation, result semantics và messaging |
+| Ngày       | Phiên bản | Tác giả/Người review    | Tóm tắt                                                                                          |
+| ---------- | --------- | ----------------------- | ------------------------------------------------------------------------------------------------ |
+| 2026-09-30 | 0.1       | Codex / chờ review      | Bản SRS đề xuất dựa trên tài liệu và code hiện có                                                |
+| 2026-09-30 | 0.2       | Codex / chờ review      | Bổ sung pipeline, validation, result semantics và messaging                                      |
+| 2026-10-07 | 1.0       | Codex / Chủ sở hữu repo | Duyệt: chốt dừng-sai-đầu, comparator, runtime, memory, output policy, poison message (D-01…D-08) |

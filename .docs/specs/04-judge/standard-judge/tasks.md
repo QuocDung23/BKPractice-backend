@@ -1,11 +1,11 @@
 # JDG-001 Tasks Chấm bài chuẩn
 
-**Trạng thái:** Draft for review; chưa thực hiện. Phụ thuộc [spec Proposed v0.2](./spec.md), [plan draft](./plan.md), runner JDG-002 và sandbox JDG-005.
+**Trạng thái:** Chưa thực hiện. Phụ thuộc [spec Approved v1.0](./spec.md), [plan reviewed](./plan.md), runner JDG-002 và sandbox JDG-005.
 
 ## Cổng trước triển khai
 
-- [ ] Chốt stop/continue, scoring, comparator, Run status, output theo mode, runtime/memory, compile timeout, output-limit verdict, poison message và retry/DLQ; cập nhật spec/plan.
-- [ ] Đồng bộ các quyết định với SUB-001/SUB-002/SUB-003 và contract `JudgeRequest`/`JudgeResult`.
+- [x] Chốt stop/continue, scoring, comparator, Run status, output theo mode, runtime/memory, compile timeout, output-limit verdict, poison message và retry/DLQ — xong 2026-10-07 theo [REVIEW.md](../REVIEW.md) D-01…D-07; ghi vào FR/Quy tắc nghiệp vụ của spec.
+- [x] Đồng bộ các quyết định với SUB-001/SUB-002/SUB-003 (đã Approved) và contract `JudgeRequest`/`JudgeResult` — D-02 lấy theo SUB-001 mục "Vòng đời Run", D-04 theo SUB-002-FR-019 và SUB-003-FR-011; không mở rộng `JudgeStatus`.
 - [ ] Xác nhận spec Approved, plan được review, kiến trúc Judge và trạng thái worktree.
 
 ## Core và transport

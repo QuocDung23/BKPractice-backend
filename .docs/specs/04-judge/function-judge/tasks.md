@@ -1,11 +1,11 @@
 # JDG-003 Tasks Function Judge
 
-**Trạng thái:** Draft for review; chưa thực hiện. Phụ thuộc [spec Proposed v0.2](./spec.md), [plan draft](./plan.md), JDG-001/002/005.
+**Trạng thái:** Chưa thực hiện. Phụ thuộc [spec Approved v1.0](./spec.md), [plan reviewed](./plan.md), JDG-001/002/005.
 
 ## Cổng trước triển khai
 
-- [ ] Chốt callable signature/entrypoint cho C/C++/Java/Python, source/harness layout, assertion mapping, process state và library policy; cập nhật spec/plan.
-- [ ] Nếu cần contract đa file, duyệt thay đổi `JudgeRequest` với Learning/Submission trước khi code.
+- [x] Chốt callable signature/entrypoint cho C/C++/Java/Python, source/harness layout, assertion mapping, process state và library policy — xong 2026-10-07 theo [REVIEW.md](../REVIEW.md) D-09; ghi vào FR-007/008/013 của spec.
+- [x] Multi-file ngoài phạm vi (FR-013); nếu sau này cần, duyệt thay đổi `JudgeRequest` với Learning/Submission trước khi code.
 - [ ] Xác nhận spec Approved, plan được review, kiến trúc Judge và trạng thái worktree.
 
 ## Chuẩn bị và đánh giá FUNCTION

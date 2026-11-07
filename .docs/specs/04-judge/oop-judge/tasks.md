@@ -1,11 +1,11 @@
 # JDG-004 Tasks OOP Judge
 
-**Trạng thái:** Draft for review; chưa thực hiện. Phụ thuộc [spec Proposed v0.2](./spec.md), [plan draft](./plan.md), JDG-001/002/005.
+**Trạng thái:** Chưa thực hiện. Phụ thuộc [spec Approved v1.0](./spec.md), [plan reviewed](./plan.md), JDG-001/002/005.
 
 ## Cổng trước triển khai
 
-- [ ] Chốt class/constructor/method contract cho từng language, stdin operation format, multi-file layout, process state và error mapping; cập nhật spec/plan.
-- [ ] Nếu cần mở `JudgeRequest`, duyệt contract/versioning với Learning/Submission.
+- [x] Chốt contract scope (thuộc Learning), stdin format, single-file layout, process state và error mapping — xong 2026-10-07 theo [REVIEW.md](../REVIEW.md) D-10; ghi vào FR-005/006 và Quy tắc nghiệp vụ của spec.
+- [x] Multi-file ngoài phạm vi; mở `JudgeRequest` chỉ khi có contract change duyệt với Learning/Submission.
 - [ ] Xác nhận spec Approved, plan được review, kiến trúc Judge và trạng thái worktree.
 
 ## Chuẩn bị và đánh giá OOP

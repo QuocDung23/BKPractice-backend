@@ -55,16 +55,17 @@ nghiệp vụ của Run/Submit hay trạng thái tiến độ.
    của Submission/Gateway; dữ liệu judge ẩn không được trả về client.
 
 Topology đang có durable direct exchanges/queues, manual ACK, publisher confirms, prefetch 1 và
-retry tối đa ba lần trước dead-letter. Đây là hiện trạng code nền; yêu cầu cuối cùng về retry, timeout
-giữa các lần thử, duplicate execution và poison message cần được chốt trong review JDG-001/JDG-005.
+retry tối đa ba lần trước dead-letter. Đây là hiện trạng code nền; chính sách retry/duplicate/poison
+đã được chốt tại [REVIEW.md](REVIEW.md) mục D-07.
 
 ## Phạm vi tài liệu
 
-Các đặc tả dưới đây đều ở trạng thái `Proposed`; README này là mục lục và bối cảnh, không thay thế
-chúng. Không có yêu cầu nào tại đây cho phép triển khai trước khi từng spec được review và Approved.
+Cả năm đặc tả dưới đây đã ở trạng thái `Approved` 1.0 (2026-10-07); README này là mục lục và bối cảnh,
+không thay thế chúng. Plan đã `Reviewed`, tasks là checklist triển khai; các mục quyết định trong cổng
+trước triển khai đã chốt.
 
-Để duyệt đồng thời spec, plan và tasks, xem [phiếu duyệt](REVIEW.md). Plan/tasks của từng phạm vi là
-bản nháp theo yêu cầu người dùng; mọi bước triển khai vẫn chờ spec Approved và plan được review.
+Kết quả duyệt và các quyết định D-01…D-11 nằm trong [phiếu duyệt](REVIEW.md). Việc triển khai vẫn phải
+tuân [`.docs/agent/working-agreement.md`](../../agent/working-agreement.md).
 
 | Mã      | Đặc tả                                       | Phạm vi                                                            |
 | ------- | -------------------------------------------- | ------------------------------------------------------------------ |
@@ -143,8 +144,8 @@ nào cần thêm/thay contract trước khi được Approved.
 
 ## Trạng thái và cách sử dụng
 
-Đây là bộ SRS đề xuất dựa trên hợp đồng và tài liệu hiện có. Các mục `Câu hỏi mở` ghi rõ chính sách
-cần chủ sở hữu sản phẩm chốt; chúng không được tự giải quyết bằng cách coi hành vi code hiện tại là
-yêu cầu. Plan/tasks draft đã được chuẩn bị để duyệt cùng spec theo yêu cầu; chúng phân rã cách làm và
-checklist nhưng không thay thế bước phê duyệt. Sau khi các câu hỏi được chốt, cập nhật spec trước,
-đối chiếu lại plan/tasks, rồi mới chuyển chúng sang trạng thái reviewed/triển khai theo quy trình SDD.
+Đây là bộ SRS đã Approved dựa trên hợp đồng và tài liệu hiện có. Các mục **Quyết định khi duyệt** trong
+từng spec ghi chính sách đã chủ sở hữu repo chốt ngày 2026-10-07; thay đổi chúng cần một phiên bản
+spec mới và quyết định mới, không được tự giải quyết bằng cách coi hành vi code hiện tại là yêu cầu.
+Plan/tasks đã được đối chiếu với spec v1.0; checklist triển khai nằm trong từng `tasks.md`. Deviation
+giữa code hiện tại và spec được liệt kê trong [REVIEW.md](REVIEW.md) và phải sửa khi triển khai.

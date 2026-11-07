@@ -2,7 +2,9 @@
 
 ## Trạng thái
 
-**Draft for review.** [Spec JDG-005](./spec.md) còn `Proposed` phiên bản 0.2. Tài liệu này được soạn để duyệt đồng thời theo yêu cầu của người dùng; không phải kế hoạch đã review và không cho phép triển khai cho tới khi spec được Approved, các câu hỏi mở được giải quyết, và plan được cập nhật tương ứng.
+**Reviewed.** [Spec JDG-005 v1.0](./spec.md) đã `Approved` ngày 2026-10-07 theo
+[`REVIEW.md`](../REVIEW.md); trần nền tảng và workspace/timeout/output policy (D-11, D-07) đã chốt,
+plan này là căn cứ triển khai.
 
 ## Service đích và kiến trúc bắt buộc
 
@@ -12,7 +14,7 @@
 
 ## Ảnh hưởng tới mã hiện có
 
-| Thành phần                   | Hiện trạng                                                                                                | Hướng thay đổi sau khi spec Approved                                                     |
+| Thành phần                   | Hiện trạng                                                                                                | Hướng triển khai theo spec Approved                                                      |
 | ---------------------------- | --------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------- |
 | `judge.engine.ts`            | Gọi trực tiếp `DockerSandboxExecutor`; tạo workspace và `chmod 0777`                                      | Dùng sandbox port có thật; chuẩn bị workspace/quyền file theo policy đã duyệt            |
 | `docker-sandbox.executor.ts` | Docker `--network none`, CPU 1, memory/swap, PID 64, non-root, drop caps, read-only root; workspace `:rw` | Giữ các control bắt buộc, thêm trần/cleanup/metric được chốt, xử lý timeout cả container |
@@ -55,7 +57,7 @@ N/A trong adapter. JDG-001 giữ publish/ACK/NACK/retry/DLQ. Nếu cleanup failu
 | SR-008/009/015..020, AC-003..005/009..012 | Thử đồng thời, disk/path/permission, lifecycle/identity và cleanup                      |
 | SR-004/010..013/021/022, AC-007/013..015  | Bounded output, daemon/image failure, timeout mapping, OOM evidence và adapter boundary |
 
-Chỉ chạy kiểm thử và các script `pnpm lint`, `pnpm typecheck`, `pnpm test`, `pnpm build` trong giai đoạn triển khai, theo definition of done; bản draft này không chạy code.
+Chỉ chạy kiểm thử và các script `pnpm lint`, `pnpm typecheck`, `pnpm test`, `pnpm build` trong giai đoạn triển khai, theo definition of done; bản plan này không chạy code.
 
 ## Thứ tự thực hiện và điều kiện chặn
 
@@ -67,7 +69,7 @@ Chỉ chạy kiểm thử và các script `pnpm lint`, `pnpm typecheck`, `pnpm t
 
 ## Rủi ro và tuân thủ kiến trúc
 
-Các điểm chưa được duyệt có thể thay đổi config/contract; không cố định số mới trong plan. Docker adapter vẫn là hạ tầng thay thế được; core không nhập Docker/Nest Config, không có persistence. Mọi thay đổi nới lỏng một control sandbox cần quyết định bảo mật/kiến trúc riêng theo `specs/00-system/judge-security.md`.
+Mọi giá trị config/contract lấy theo spec Approved, không cố định số mới ngoài plan. Docker adapter vẫn là hạ tầng thay thế được; core không nhập Docker/Nest Config, không có persistence. Mọi thay đổi nới lỏng một control sandbox cần quyết định bảo mật/kiến trúc riêng theo `.docs/specs/00-system/judge-security.md`.
 
 ## Lát cắt triển khai và điểm chạm dự kiến
 

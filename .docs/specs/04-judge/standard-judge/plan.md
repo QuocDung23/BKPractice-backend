@@ -2,7 +2,9 @@
 
 ## Trạng thái và đặc tả liên quan
 
-**Draft for review.** [JDG-001 spec v0.2](./spec.md) còn `Proposed`. Theo yêu cầu người dùng, plan này được chuẩn bị để duyệt cùng spec/tasks; nó chưa phải reviewed plan và không cho phép triển khai. Mọi nhánh phụ thuộc câu hỏi mở được ghi rõ bên dưới; không chọn mặc định từ code hiện tại.
+**Reviewed.** [JDG-001 spec v1.0](./spec.md) đã `Approved` ngày 2026-10-07 theo
+[`REVIEW.md`](../REVIEW.md); stop-on-first-failure, comparator, scoring, output và messaging policy
+(D-01…D-07) đã chốt, plan này là căn cứ triển khai.
 
 ## Service đích và kiến trúc bắt buộc
 
@@ -12,7 +14,7 @@
 
 ## Ảnh hưởng tới mã nguồn hiện có
 
-| Thành phần                 | Hiện trạng                                                                                           | Hướng điều chỉnh sau khi Approved                                                                                             |
+| Thành phần                 | Hiện trạng                                                                                           | Hướng triển khai theo spec Approved                                                                                           |
 | -------------------------- | ---------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------- |
 | `judge.consumer.ts`        | Nhận `JudgeRequest` qua queue và publish result trực tiếp                                            | Deserialize/validate ở transport boundary, gọi một operation core, quản lý delivery; publish sau confirmation                 |
 | `judge.engine.ts`          | Tạo workspace, chọn runner, compile, execute/evaluate, trả result; phụ thuộc Docker và ConfigService | Giữ orchestration gọn, tách policy đánh giá/validation khi có hành vi thật; dùng Sandbox port và dữ liệu cấu hình đã validate |
@@ -94,7 +96,7 @@ Khi triển khai, kiểm chứng unit cho policy core, integration cho RabbitMQ/
 
 ## Rủi ro và tuân thủ kiến trúc
 
-Rủi ro lớn nhất là JudgeResult chứa stdout Submit có thể làm lộ input ẩn, và Rabbit redelivery có thể chạy lại code hoặc tạo result khác nếu state bên ngoài thay đổi. Plan chưa chọn cách xử lý vì spec còn mở. Consumer mỏng; core không phụ thuộc Docker/RabbitMQ/ConfigService; adapters triển khai các port; không có truy cập DB service khác hoặc entity dùng chung.
+Rủi ro lớn nhất là JudgeResult chứa stdout Submit có thể làm lộ input ẩn, và Rabbit redelivery có thể chạy lại code hoặc tạo result khác nếu state bên ngoài thay đổi. Spec Approved chốt: Judge gửi stdout/stderr cho cả hai mode, quyền xem thuộc SUB-003; trùng executionId không tính lại. Consumer mỏng; core không phụ thuộc Docker/RabbitMQ/ConfigService; adapters triển khai các port; không có truy cập DB service khác hoặc entity dùng chung.
 
 ## Lát cắt triển khai và điểm chạm dự kiến
 
@@ -107,6 +109,6 @@ Thứ tự dưới đây là thứ tự phụ thuộc, không thay đổi yêu c
 | 3. Output/verdict policy  | `output-normalizer.ts`, `compiler-error.parser.ts`, policy/test tương ứng                                                 | Comparator, verdict precedence, score/metrics và result field allowlist  | Comparator/scoring/output policy Approved        |
 | 4. Execution boundary     | Sandbox port/adapter theo JDG-005; runner registry theo JDG-002                                                           | Core gọi boundary thay vì Docker trực tiếp                               | Sandbox/runner implementation reviewed           |
 | 5. Message delivery       | consumer/publisher boundary và contract tests; shared Rabbit adapter chỉ nếu scope được duyệt                             | Confirm trước ACK, poison/retry/duplicate behavior được chứng minh       | D-07 và Submission idempotency contract Approved |
-| 6. Verification/docs      | tests cạnh module, `tasks.md`, `docs/worked/judge/judge/`                                                                 | Traceability FR/AC, DoD và remaining risks                               | Tất cả lát cắt code hoàn tất                     |
+| 6. Verification/docs      | tests cạnh module, `tasks.md`, `.docs/worked/judge/`                                                                      | Traceability FR/AC, DoD và remaining risks                               | Tất cả lát cắt code hoàn tất                     |
 
 Không tạo repository/entity/database/API/realtime cho JDG-001. Contract enum/field change là dependency liên service và phải hoàn tất trước lát cắt 1; plan này không mặc định có migration hay field mới.

@@ -2,7 +2,7 @@
 
 ## Trạng thái
 
-Proposed — phiên bản 0.2, ngày 2026-09-30.
+Approved — phiên bản 1.0, ngày 2026-10-07.
 
 ## Mục tiêu
 
@@ -12,18 +12,18 @@ Proposed — phiên bản 0.2, ngày 2026-09-30.
 
 Submission gửi mã nguồn và mã ngôn ngữ trong JudgeRequest; Judge chọn một runner đã được nền tảng
 đăng ký. Runner dùng image/toolchain được quản trị tin cậy để biên dịch/thực thi trong sandbox.
-Danh mục hiện có là C, C++, Java và Python. Tài liệu chi tiết phiên bản compiler/runtime là chính
-sách sản phẩm/vận hành cần review, không suy ra chỉ từ image hiện tại.
+Danh mục hiện có là C, C++, Java và Python. Bảng dưới là contract toolchain đã duyệt kèm phiên bản
+image nền; thay đổi cờ, entrypoint hoặc image là thay đổi contract phải qua duyệt tương thích.
 
-| Key      | Nguồn hiện tại                                   | Compile                    | Execute              |
-| -------- | ------------------------------------------------ | -------------------------- | -------------------- |
-| `c`      | `docker/judge/c/Dockerfile`, `CRunner`           | `gcc -std=c17 -O2 -pipe`   | `./main`             |
-| `cpp`    | `docker/judge/cpp/Dockerfile`, `CppRunner`       | `g++ -std=c++20 -O2 -pipe` | `./main`             |
-| `java`   | `docker/judge/java/Dockerfile`, `JavaRunner`     | `javac -encoding UTF-8`    | `java -Xss16m Main`  |
-| `python` | `docker/judge/python/Dockerfile`, `PythonRunner` | `python3 -m py_compile`    | `python3 -I main.py` |
+| Key      | Nguồn                                            | Image nền (đã ghim)      | Compile                    | Execute              |
+| -------- | ------------------------------------------------ | ------------------------ | -------------------------- | -------------------- |
+| `c`      | `docker/judge/c/Dockerfile`, `CRunner`           | `alpine:3.22` (gcc)      | `gcc -std=c17 -O2 -pipe`   | `./main`             |
+| `cpp`    | `docker/judge/cpp/Dockerfile`, `CppRunner`       | `alpine:3.22` (g++)      | `g++ -std=c++20 -O2 -pipe` | `./main`             |
+| `java`   | `docker/judge/java/Dockerfile`, `JavaRunner`     | `eclipse-temurin:21-jdk` | `javac -encoding UTF-8`    | `java -Xss16m Main`  |
+| `python` | `docker/judge/python/Dockerfile`, `PythonRunner` | `python:3.13-alpine`     | `python3 -m py_compile`    | `python3 -I main.py` |
 
-Bảng trên ghi nhận cấu hình đang có để reviewer thấy tác động tương thích; phiên bản image/toolchain
-phải được pin/quản lý qua quy trình thay đổi được duyệt, không phải giá trị do request cung cấp.
+Image runtime mang tag `:latest` do pipeline build cục bộ; phiên bản nền là hai đại sayı bên trái và
+chỉ đổi qua quy trình thay đổi được duyệt. Request không cung cấp image, compiler version hay flags.
 
 ## Yêu cầu chức năng
 
@@ -35,8 +35,9 @@ chung; hiện contract liệt kê `c`, `cpp`, `java`, `python`.
 - **JDG-002-FR-003:** Không giá trị nào trong sourceCode/stdin được nối vào executable, filename,
   shell command, compiler flag hoặc image name.
 - **JDG-002-FR-004:** Language không được hỗ trợ MUST bị từ chối trước khi tạo/running container.
-- **JDG-002-FR-005:** Runner MUST xác định riêng compile-needed hay interpreted execution; Python vẫn
-  phải báo lỗi cú pháp trước khi thực thi nếu chính sách chốt yêu cầu compile check.
+- **JDG-002-FR-005:** Runner MUST xác định riêng compile-needed hay interpreted execution; Python
+  MUST chạy `py_compile` làm bước kiểm tra cú pháp trước khi thực thi và lỗi cú pháp MUST được phân
+  loại `COMPILE_ERROR`, không phải lỗi runtime.
 - **JDG-002-FR-006:** Compiler stdout/stderr MUST được thu thập có giới hạn; lỗi biên dịch được phân
   loại riêng với lỗi khi chạy chương trình.
 - **JDG-002-FR-007:** Image/toolchain MUST do môi trường tin cậy cung cấp; request MUST NOT chọn image,
@@ -49,20 +50,25 @@ chung; hiện contract liệt kê `c`, `cpp`, `java`, `python`.
   đầu vào được ghi UTF-8 trừ khi contract language quy định rõ khác.
 - **JDG-002-FR-011:** C/C++ compile diagnostics, Java diagnostics và Python syntax diagnostics MUST
   được thu nhận theo giới hạn output của JDG-005; dữ liệu đường dẫn host nội bộ phải được lọc.
-- **JDG-002-FR-012:** Java execution MUST dùng entrypoint được quy định. Request không thể chọn tên
-  class, package, JVM options, stack size hay classpath.
+- **JDG-002-FR-012:** Java execution MUST dùng entrypoint `Main` với file nguồn `Main.java`; các lớp
+  bổ sung chỉ được phép nằm trong chính `Main.java`. Request không thể chọn tên class, package, JVM
+  options, stack size hay classpath.
 - **JDG-002-FR-013:** Python execution MUST dùng chế độ isolated hiện được chọn (`-I`) hoặc policy
   bảo vệ tương đương; không nạp cấu hình người dùng từ host.
 - **JDG-002-FR-014:** Runner MUST không cài package/dependency từ mạng ở thời điểm compile/run.
 - **JDG-002-FR-015:** Thay đổi compiler flags, entrypoint hoặc image có thể làm thay đổi đáp án và
   MUST được kiểm soát như thay đổi tương thích runner.
+- **JDG-002-FR-016 — Trần thực thi:** `sourceCode` tối đa 1 MiB theo JDG-001. Thời hạn biên dịch là
+  `max(3 × timeLimitMs, 10.000)` ms; biên dịch quá hạn phân loại `TIME_LIMIT_EXCEEDED` theo
+  JDG-001. Diagnostics biên dịch bị giới hạn bởi trần output của JDG-005.
 
 ## Quy tắc nghiệp vụ và đầu vào/đầu ra
 
 Input là `language`, `sourceCode`, mode/problem type, stdin/test cases và execution limits. Output là
 compile diagnostics hoặc execution result để pipeline phân loại. Tên file và command là chi tiết
-đáng tin của runner, không phải dữ liệu request. Danh mục hiện có không cam kết ABI/version compiler
-cụ thể cho tới khi câu hỏi mở được chốt.
+đáng tin của runner, không phải dữ liệu request. Contract cam kết bốn ngôn ngữ và bảng toolchain đã
+ghim ở trên; thêm ngôn ngữ là thay đổi contract do Learning sở hữu danh mục, phải duyệt đồng bộ
+Learning/Submission/Judge.
 
 ## Lỗi và tình huống biên
 
@@ -98,17 +104,22 @@ IDE/editor, package manager hay thư viện tùy ý do người dùng cài.
 [JDG-001](../standard-judge/spec.md), [JDG-005](../sandbox/spec.md), LRN-001, transport contract
 `JudgeRequest`, [Judge security](../../00-system/judge-security.md).
 
-## Câu hỏi mở
+## Quyết định khi duyệt
 
-1. Phiên bản compiler/runtime và chính sách nâng cấp/ghim image nào là contract được hỗ trợ?
-2. Tên lớp Java có bắt buộc `Main` hay cần cho phép cấu trúc file đa lớp?
-3. Python compile check là yêu cầu sản phẩm hay chỉ runtime syntax error?
-4. Có cần hỗ trợ thêm ngôn ngữ; ai sở hữu danh mục chuẩn và quy trình versioning?
-5. Trần source code, compile timeout và output diagnostics tối đa là bao nhiêu?
+Phiên bản này được duyệt ngày 2026-10-07 theo phiếu [`.docs/specs/04-judge/REVIEW.md`](../REVIEW.md):
+
+| Quyết định | Nội dung chốt                                                                                                                                                            |
+| ---------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| D-08.1     | Ghim toolchain theo bảng trên: alpine 3.22 (C/C++), temurin 21 (Java), python 3.13 (Python); image `:latest` build cục bộ; nâng cấp image là contract change phải duyệt. |
+| D-08.2     | Java bắt buộc file `Main.java`, entrypoint `Main`; các lớp bổ sung nằm trong cùng file. Không hỗ trợ multi-file.                                                         |
+| D-08.3     | Python `py_compile` là yêu cầu sản phẩm: lỗi cú pháp → `COMPILE_ERROR`.                                                                                                  |
+| D-08.4     | Không thêm ngôn ngữ trong bản này; Learning sở hữu danh mục chuẩn; thêm/bỏ ngôn ngữ phải duyệt đồng bộ ba service.                                                       |
+| D-08.5     | `sourceCode` ≤ 1 MiB; compile timeout `max(3 × timeLimitMs, 10s)` → `TIME_LIMIT_EXCEEDED`; diagnostics theo trần output của JDG-005.                                     |
 
 ## Lịch sử sửa đổi
 
-| Ngày       | Phiên bản | Tác giả/Người review | Tóm tắt                                                     |
-| ---------- | --------- | -------------------- | ----------------------------------------------------------- |
-| 2026-09-30 | 0.1       | Codex / chờ review   | SRS đề xuất                                                 |
-| 2026-09-30 | 0.2       | Codex / chờ review   | Thêm baseline runner hiện tại và compatibility requirements |
+| Ngày       | Phiên bản | Tác giả/Người review    | Tóm tắt                                                                                     |
+| ---------- | --------- | ----------------------- | ------------------------------------------------------------------------------------------- |
+| 2026-09-30 | 0.1       | Codex / chờ review      | SRS đề xuất                                                                                 |
+| 2026-09-30 | 0.2       | Codex / chờ review      | Thêm baseline runner hiện tại và compatibility requirements                                 |
+| 2026-10-07 | 1.0       | Codex / Chủ sở hữu repo | Duyệt: ghim toolchain, Java Main, Python compile check, source/compile/output limits (D-08) |

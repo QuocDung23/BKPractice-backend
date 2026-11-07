@@ -1,10 +1,10 @@
 # JDG-005 Tasks Sandbox
 
-**Trạng thái:** Draft for review; mọi mục chưa được thực hiện. Phụ thuộc [spec Proposed v0.2](./spec.md) và [plan draft](./plan.md). Chỉ bắt đầu implementation sau khi spec Approved và plan được review.
+**Trạng thái:** Chưa thực hiện. Phụ thuộc [spec Approved v1.0](./spec.md) và [plan reviewed](./plan.md).
 
 ## Cổng trước triển khai
 
-- [ ] Chủ sở hữu chốt toàn bộ câu hỏi mở về trần tài nguyên, timeout, output-limit, quyền ghi, memory metric và cleanup; cập nhật spec/plan.
+- [x] Chốt câu hỏi mở về trần tài nguyên, timeout, output-limit, quyền ghi, memory metric và cleanup — xong 2026-10-07 theo [REVIEW.md](../REVIEW.md) D-11/D-07; ghi vào bảng trần nền tảng và các SR của spec.
 - [ ] Xác nhận spec `Approved`, plan khớp spec, kiến trúc Hexagonal + Pipeline và trạng thái worktree.
 - [ ] Xác nhận không có thay đổi nào nới control bắt buộc của `judge-security.md`.
 
@@ -32,7 +32,7 @@
 
 ## Checklist triển khai chi tiết
 
-Các bước dưới đây chia nhỏ SR/AC thành phần có thể triển khai và kiểm chứng. Giá trị giới hạn và policy chưa được chốt phải quay lại spec trước khi thay đổi code/config.
+Các bước dưới đây chia nhỏ SR/AC thành phần có thể triển khai và kiểm chứng. Giá trị giới hạn và policy lấy theo spec Approved; thay đổi phải quay lại spec trước khi đổi code/config.
 
 ### A. Chốt contract Sandbox
 
