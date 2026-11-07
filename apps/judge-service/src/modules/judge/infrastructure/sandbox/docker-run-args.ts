@@ -3,6 +3,8 @@ import { randomUUID } from 'node:crypto';
 /** Container user; the worker must run with the same UID so workspaces need no wider modes. */
 export const SANDBOX_UID = 1000;
 export const SANDBOX_GID = 1000;
+/** Marks sandbox containers so operators can remove leftovers after a worker crash. */
+export const SANDBOX_LABEL = 'bkpractice.judge.sandbox=1';
 
 export interface DockerCreateOptions {
   readonly containerName: string;
@@ -25,6 +27,8 @@ export function buildDockerCreateArgs(options: DockerCreateOptions): string[] {
     '--interactive',
     '--name',
     options.containerName,
+    '--label',
+    SANDBOX_LABEL,
     '--network',
     'none',
     '--cpus',

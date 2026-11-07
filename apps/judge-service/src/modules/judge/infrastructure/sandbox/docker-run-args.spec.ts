@@ -22,6 +22,7 @@ describe('buildDockerCreateArgs', () => {
     expect(args).toContain('--read-only');
     expect(joined).toContain('--tmpfs /tmp:rw,noexec,nosuid,size=64m');
     expect(joined).toContain('--volume /ws/x:/workspace:rw');
+    expect(joined).toContain('--label bkpractice.judge.sandbox=1');
   });
 
   it('keeps stdin open and never auto-removes so OOM state can be inspected', () => {

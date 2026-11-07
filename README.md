@@ -164,7 +164,9 @@ pnpm apps:up
 The judge worker requires access to a Docker daemon. Compose mounts the Docker socket and maps
 `.judge-workspaces` to the same host path used by nested sandbox containers. On Linux the worker
 must run as UID 1000 (the sandbox user) and refuses to start otherwise; create `.judge-workspaces`
-owned by UID 1000 and set `DOCKER_GID` to the group that owns the Docker socket. Treat Docker socket
+owned by UID 1000 and set `DOCKER_GID` to the group that owns the Docker socket. Sandbox containers
+carry the label `bkpractice.judge.sandbox=1`; after a worker crash, with no worker running, remove
+leftovers with `docker rm -f $(docker ps -aq --filter label=bkpractice.judge.sandbox=1)`. Treat Docker socket
 access as privileged operational infrastructure and never expose the Judge HTTP port publicly in
 production.
 
