@@ -494,7 +494,16 @@ describe('Learning route transport', () => {
   it.each([200, 302, 400, 401, 403, 404, 409, 500, 503])(
     'preserves status/body %s and filters response headers',
     async (status) => {
-      const data = { message: 'Learning response' };
+      // Lỗi đúng định dạng chuẩn thì giữ nguyên (ERR-001 FR-011); 200/302 không bị đụng tới.
+      const data =
+        status >= 400
+          ? {
+              statusCode: status,
+              code: 'LEARNING_ERROR',
+              message: 'Learning response',
+              requestId: 'r-1',
+            }
+          : { message: 'Learning response' };
       upstream.request.mockReturnValue(
         of({
           status,
@@ -609,7 +618,12 @@ describe('Submission HTTP boundary (GW-008–010)', () => {
   });
 
   it.each([400, 403, 404, 409, 422, 500])('preserves Submission error %s', async (status) => {
-    const data = { message: 'Submission error' };
+    const data = {
+      statusCode: status,
+      code: 'SUBMISSION_ERROR',
+      message: 'Submission error',
+      requestId: 'r-2',
+    };
     http.request.mockReturnValue(of({ status, data, headers: {} }));
     await proxy.forward(
       {
