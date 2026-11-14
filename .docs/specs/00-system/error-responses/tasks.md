@@ -26,30 +26,30 @@ Kế hoạch liên quan: `./plan.md`
 
 ## Gateway
 
-- [ ] Gán `code` + message tiếng Việt cho mọi lỗi tự sinh (token, CSRF, origin, path không an toàn, throttle, thiếu route, upstream).
-- [ ] Bọc body upstream không phải envelope thành `UPSTREAM_INVALID_RESPONSE`; giữ nguyên body hợp lệ.
-- [ ] Test AC-009 (service lỗi đi qua Gateway giữ nguyên `code`).
+- [x] Gán `code` + message tiếng Việt cho mọi lỗi tự sinh (token, CSRF, origin, path không an toàn, throttle, thiếu route, upstream).
+- [x] Bọc body upstream không phải envelope thành `UPSTREAM_INVALID_RESPONSE`; giữ nguyên body hợp lệ.
+- [x] Test AC-009 (service lỗi đi qua Gateway giữ nguyên `code`).
 
 ## Identity
 
 - [x] Mở rộng `AuthFailure.code`; port `findForLogin`; adapter TypeORM.
 - [x] Viết lại `LoginWithPassword` theo 4 bước của plan; test 6 nhánh (AC-002 đến AC-005).
 - [x] `AuthFailureFilter`: ánh xạ 6 mã login chi tiết + mã chung cho refresh/Microsoft.
-- [ ] Chuyển `password-reset`, `account-import`, `profile`, `rbac`, `user-management` filter sang envelope và `code` riêng; giữ `issues` của import trong `details`.
-- [ ] Hồi quy AC-008: Microsoft, refresh, quên mật khẩu vẫn không tiết lộ.
-- [ ] Danh mục `AUTH_*`, `RBAC_*`, `USER_*`, `PROFILE_*` (một file hằng mỗi module) + test không trùng `code`.
+- [x] Chuyển `password-reset`, `account-import`, `profile`, `rbac`, `user-management` filter sang envelope và `code` riêng; giữ `issues` của import trong `details`.
+- [x] Hồi quy AC-008: Microsoft, refresh, quên mật khẩu vẫn không tiết lộ.
+- [x] Danh mục `AUTH_*`, `RBAC_*`, `USER_*`, `PROFILE_*` (một file hằng mỗi module) + test không trùng `code`.
 
 ## Learning
 
-- [ ] Chuyển `course`, `quiz`, `problem`, `progress`, `student-course-report` filter sang envelope và `code` riêng.
-- [ ] Danh mục `COURSE_*`, `PROBLEM_*`, `QUIZ_*`, `PROGRESS_*`; giữ `issues` của `CourseNotReadyError` trong `details`.
-- [ ] Domain vẫn không import `@nestjs/*`.
+- [x] Chuyển `course`, `quiz`, `problem`, `progress`, `student-course-report` filter sang envelope và `code` riêng.
+- [x] Danh mục `COURSE_*`, `PROBLEM_*`, `QUIZ_*`, `PROGRESS_*`; giữ `issues` của `CourseNotReadyError` trong `details`.
+- [x] Domain vẫn không import `@nestjs/*`.
 
 ## Submission, Community
 
-- [ ] Submission: ánh xạ `ProblemNotSubmittableError`, `JudgePackageUnavailableError`, `RejectedJudgeResultError`, `InvalidSubmissionTransitionError`, 401 thiếu owner.
-- [ ] Community: thay `NotFoundException('Post not found')`... bằng lỗi có `code` (`POST_NOT_FOUND`, `COMMENT_PARENT_NOT_FOUND`, `COMMENT_REPLY_DEPTH_EXCEEDED`).
-- [ ] Danh mục `SUBMISSION_*`, `POST_*`, `COMMENT_*`.
+- [x] Submission: ánh xạ `ProblemNotSubmittableError`, `JudgePackageUnavailableError`, `RejectedJudgeResultError`, `InvalidSubmissionTransitionError`, 401 thiếu owner.
+- [x] Community: thay `NotFoundException('Post not found')`... bằng lỗi có `code` (`POST_NOT_FOUND`, `COMMENT_PARENT_NOT_FOUND`, `COMMENT_REPLY_DEPTH_EXCEEDED`).
+- [x] Danh mục `SUBMISSION_*`, `POST_*`, `COMMENT_*`.
 
 ## API / Tài liệu
 
@@ -70,18 +70,18 @@ Kế hoạch liên quan: `./plan.md`
 
 ## Kiểm thử
 
-- [ ] Ánh xạ test tới AC-001 đến AC-012 theo bảng ở plan.
-- [ ] Test body lỗi 5xx không chứa `SELECT`, stack, host, đường dẫn.
-- [ ] Test `requestId` khớp `x-request-id`.
-- [ ] Chạy `pnpm lint`.
-- [ ] Chạy `pnpm typecheck`.
-- [ ] Chạy `pnpm test`.
-- [ ] Chạy `pnpm build`.
+- [x] Ánh xạ test tới AC-001 đến AC-012 theo bảng ở plan.
+- [x] Test body lỗi 5xx không chứa `SELECT`, stack, host, đường dẫn.
+- [x] Test `requestId` khớp `x-request-id`.
+- [x] Chạy `pnpm lint`.
+- [x] Chạy `pnpm typecheck`.
+- [x] Chạy `pnpm test`.
+- [x] Chạy `pnpm build`.
 
 ## Tài liệu
 
-- [ ] Worked entry cho từng service: `.docs/worked/<service>/YYYY-MM-DD-error-responses.md`.
-- [ ] Chạy `codegraph sync .` trong repo backend.
+- [x] Worked entry cho từng service: `.docs/worked/<service>/YYYY-MM-DD-error-responses.md`.
+- [x] Chạy `codegraph sync .` trong repo backend.
 
 ## Xác minh
 
