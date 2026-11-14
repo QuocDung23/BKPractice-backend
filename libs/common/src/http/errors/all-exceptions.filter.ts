@@ -35,6 +35,24 @@ const STATUS_MESSAGES: Record<number, string> = {
   [HttpStatus.SERVICE_UNAVAILABLE]: 'Dịch vụ tạm thời không khả dụng. Vui lòng thử lại sau.',
 };
 
+/** Thông báo tiếng Anh mặc định của Nest/throttler: không nêu nguyên nhân, nên thay bằng thông báo tiếng Việt. */
+const NEST_DEFAULT_MESSAGES = new Set([
+  'Bad Request',
+  'Unauthorized',
+  'Forbidden',
+  'Forbidden resource',
+  'Not Found',
+  'Method Not Allowed',
+  'Conflict',
+  'Payload Too Large',
+  'Unprocessable Entity',
+  'Too Many Requests',
+  'ThrottlerException: Too Many Requests',
+  'Bad Gateway',
+  'Service Unavailable',
+  'Internal Server Error',
+]);
+
 /** Mã lỗi hệ điều hành/driver cho biết thành phần phụ thuộc (DB, Redis, AMQP) không kết nối được. */
 const DEPENDENCY_ERROR_CODES = new Set([
   'ECONNREFUSED',
@@ -70,10 +88,35 @@ function driverCodeOf(exception: unknown): string | undefined {
   return typeof code === 'string' ? code : undefined;
 }
 
+const PARAMETER_TYPES: Record<string, string> = {
+  uuid: 'một mã UUID hợp lệ',
+  'numeric string': 'một số',
+  'boolean string': 'giá trị true hoặc false',
+  'an integer': 'một số nguyên',
+};
+
+/** Lỗi của ParseUUIDPipe, ParseIntPipe...: "Validation failed (uuid is expected)". */
+function describeParameterError(text: string): Normalized | undefined {
+  const expected = /^Validation failed \((.+) is expected\)$/.exec(text)?.[1];
+  if (!expected) return undefined;
+  return {
+    status: HttpStatus.BAD_REQUEST,
+    code: COMMON_ERROR_CODES.invalidParameter,
+    message: `Tham số trên đường dẫn hoặc chuỗi truy vấn không đúng định dạng: cần ${PARAMETER_TYPES[expected] ?? expected}.`,
+  };
+}
+
+const INVALID_JSON_MESSAGE =
+  'Nội dung JSON gửi lên không hợp lệ. Hãy kiểm tra dấu ngoặc, dấu phẩy và dấu nháy.';
+
+/** Nest bọc lỗi body-parser thành BadRequestException mang nguyên thông báo của bộ phân tích JSON (V8). */
+const JSON_PARSE_MESSAGE = /JSON|^Unexpected (token|end|non-whitespace)/;
+
 function normalizeHttpException(exception: HttpException): Normalized {
   const status = exception.getStatus();
-  const body = asRecord(exception.getResponse());
-  const rawMessage = body?.message;
+  const response = exception.getResponse();
+  // `new HttpException('text', status)` có body là chuỗi, còn các lớp *Exception của Nest có body là object.
+  const rawMessage = typeof response === 'string' ? response : asRecord(response)?.message;
   const fallbackCode = STATUS_CODES[status] ?? COMMON_ERROR_CODES.httpError;
   const fallbackMessage = STATUS_MESSAGES[status] ?? 'Yêu cầu không thể hoàn tất.';
 
@@ -87,7 +130,27 @@ function normalizeHttpException(exception: HttpException): Normalized {
     };
   }
 
-  const text = typeof rawMessage === 'string' && rawMessage.trim() ? rawMessage : fallbackMessage;
+  if (
+    status === Number(HttpStatus.BAD_REQUEST) &&
+    typeof rawMessage === 'string' &&
+    JSON_PARSE_MESSAGE.test(rawMessage)
+  ) {
+    return {
+      status,
+      code: COMMON_ERROR_CODES.invalidJson,
+      message: INVALID_JSON_MESSAGE,
+    };
+  }
+  const parameterError =
+    typeof rawMessage === 'string' ? describeParameterError(rawMessage) : undefined;
+  if (parameterError) return parameterError;
+
+  const text =
+    typeof rawMessage === 'string' &&
+    rawMessage.trim() &&
+    !NEST_DEFAULT_MESSAGES.has(rawMessage.trim())
+      ? rawMessage
+      : fallbackMessage;
   const routeNotFound = status === 404 && /^Cannot [A-Z]+ /.test(text);
   return {
     status,
@@ -113,7 +176,7 @@ export function normalizeException(exception: unknown): Normalized {
     return {
       status: HttpStatus.BAD_REQUEST,
       code: COMMON_ERROR_CODES.invalidJson,
-      message: 'Nội dung JSON gửi lên không hợp lệ. Hãy kiểm tra dấu ngoặc, dấu phẩy và dấu nháy.',
+      message: INVALID_JSON_MESSAGE,
     };
   }
   if (error?.type === 'entity.too.large') {

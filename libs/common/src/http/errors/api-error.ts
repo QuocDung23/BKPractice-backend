@@ -4,7 +4,8 @@ import type { ApiErrorBody, ApiErrorDetail } from '@app/contracts';
 import { HttpException } from '@nestjs/common';
 import type { Request, Response } from 'express';
 
-const SAFE_REQUEST_ID = /^[A-Za-z0-9_-]{8,64}$/;
+// Chỉ phản chiếu lại UUID (định dạng Gateway cấp) để một token do client gửi không bị trả ra hay ghi log.
+const SAFE_REQUEST_ID = /^[0-9a-f]{8}(-[0-9a-f]{4}){3}-[0-9a-f]{12}$/i;
 
 /** Lỗi HTTP có `code` ổn định và message tiếng Việt (spec ERR-001 FR-002, FR-003). */
 export class AppHttpException extends HttpException {
@@ -18,7 +19,7 @@ export class AppHttpException extends HttpException {
   }
 }
 
-/** Lấy `x-request-id` do Gateway cấp; sinh mới nếu thiếu hoặc không an toàn để phản chiếu lại. */
+/** Lấy `x-request-id` (UUID) do Gateway cấp; sinh mới nếu thiếu hoặc không phải UUID. */
 export function resolveRequestId(request: Pick<Request, 'headers'> | undefined): string {
   const raw = request?.headers?.['x-request-id'];
   const value = (Array.isArray(raw) ? raw[0] : raw)?.trim();

@@ -1,5 +1,10 @@
 import type { ApiErrorBody } from '@app/contracts';
-import { BadRequestException, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  ForbiddenException,
+  HttpException,
+  NotFoundException,
+} from '@nestjs/common';
 import type { ArgumentsHost } from '@nestjs/common';
 
 import { AllExceptionsFilter } from './all-exceptions.filter';
@@ -33,7 +38,7 @@ describe('AllExceptionsFilter', () => {
       new AppHttpException(409, 'USER_EMAIL_ALREADY_EXISTS', 'Email đã được dùng.', [
         { field: 'email', code: 'ALREADY_EXISTS', message: 'Trùng email.' },
       ]),
-      { 'x-request-id': 'req-12345678' },
+      { 'x-request-id': '0b8f3a52-6c1d-4e7a-9b2f-3d5e8a1c4f70' },
     );
     expect(status).toBe(409);
     expect(body).toEqual({
@@ -41,7 +46,7 @@ describe('AllExceptionsFilter', () => {
       code: 'USER_EMAIL_ALREADY_EXISTS',
       message: 'Email đã được dùng.',
       details: [{ field: 'email', code: 'ALREADY_EXISTS', message: 'Trùng email.' }],
-      requestId: 'req-12345678',
+      requestId: '0b8f3a52-6c1d-4e7a-9b2f-3d5e8a1c4f70',
     });
   });
 
@@ -100,11 +105,37 @@ describe('AllExceptionsFilter', () => {
   it('lỗi không lường trước trả 500 không lộ nội bộ nhưng kèm requestId (AC-007)', () => {
     const { status, body } = run(
       new Error('SELECT * FROM users WHERE password_hash = x at /home/app/src/secret.ts:10'),
-      { 'x-request-id': 'req-abcdefgh' },
+      { 'x-request-id': '0b8f3a52-6c1d-4e7a-9b2f-3d5e8a1c4f70' },
     );
     expect(status).toBe(500);
     expect(body.code).toBe('INTERNAL_ERROR');
-    expect(body.message).toContain('req-abcdefgh');
+    expect(body.message).toContain('0b8f3a52-6c1d-4e7a-9b2f-3d5e8a1c4f70');
     expect(JSON.stringify(body)).not.toMatch(/SELECT|password_hash|\/home\/|secret\.ts/);
+  });
+
+  it('thay thông báo tiếng Anh mặc định của Nest bằng tiếng Việt cụ thể', () => {
+    const forbidden = run(new ForbiddenException());
+    expect(forbidden.body.message).toBe('Bạn không có quyền thực hiện thao tác này.');
+    const throttled = run(new HttpException('ThrottlerException: Too Many Requests', 429));
+    expect(throttled.status).toBe(429);
+    expect(throttled.body.code).toBe('TOO_MANY_REQUESTS');
+    expect(throttled.body.message).toBe('Bạn thao tác quá nhanh. Vui lòng thử lại sau ít phút.');
+  });
+
+  it('giữ thông báo cụ thể khi HttpException có body là chuỗi', () => {
+    const { status, body } = run(
+      new HttpException('Lớp học đã đầy, không thể thêm học viên.', 409),
+    );
+    expect(status).toBe(409);
+    expect(body.message).toBe('Lớp học đã đầy, không thể thêm học viên.');
+  });
+
+  it('dịch lỗi tham số của ParseUUIDPipe', () => {
+    const { status, body } = run(new BadRequestException('Validation failed (uuid is expected)'));
+    expect(status).toBe(400);
+    expect(body.code).toBe('INVALID_PARAMETER');
+    expect(body.message).toBe(
+      'Tham số trên đường dẫn hoặc chuỗi truy vấn không đúng định dạng: cần một mã UUID hợp lệ.',
+    );
   });
 });

@@ -18,6 +18,7 @@ export interface ApiErrorBody {
 export const COMMON_ERROR_CODES = {
   validationFailed: 'VALIDATION_FAILED',
   invalidJson: 'INVALID_JSON',
+  invalidParameter: 'INVALID_PARAMETER',
   internalError: 'INTERNAL_ERROR',
   httpError: 'HTTP_ERROR',
   badRequest: 'BAD_REQUEST',
