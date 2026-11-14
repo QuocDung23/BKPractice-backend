@@ -43,6 +43,15 @@ function isUniqueViolation(error: unknown): boolean {
   return 'driverError' in error && isUniqueViolation(error.driverError);
 }
 
+/** Cột bị trùng theo chi tiết của Postgres ("Key (email)=(...)"); không lấy giá trị người dùng nhập. */
+function uniqueViolationField(error: unknown): 'email' | 'student_id' | undefined {
+  if (typeof error !== 'object' || error === null) return undefined;
+  const detail = 'detail' in error && typeof error.detail === 'string' ? error.detail : undefined;
+  const column = detail?.match(/^Key \(([a-z_]+)\)=/)?.[1];
+  if (column === 'email' || column === 'student_id') return column;
+  return 'driverError' in error ? uniqueViolationField(error.driverError) : undefined;
+}
+
 function escapeLike(value: string): string {
   return value.replace(/[\\%_]/g, '\\$&');
 }
@@ -99,7 +108,7 @@ export class TypeormUserManagementRepository implements UserManagementRepository
     try {
       return await this.database.transaction(async (manager) => {
         const role = await manager.getRepository(Role).findOneBy({ name: input.role });
-        if (!role) throw new UserManagementFailure('conflict');
+        if (!role) throw new UserManagementFailure('conflict', 'role_unavailable');
         const id = randomUUID();
         await manager.insert(User, {
           id,
@@ -131,7 +140,8 @@ export class TypeormUserManagementRepository implements UserManagementRepository
         return toProjection(created);
       });
     } catch (error) {
-      if (isUniqueViolation(error)) throw new UserManagementFailure('conflict');
+      if (isUniqueViolation(error))
+        throw new UserManagementFailure('conflict', 'identity_exists', uniqueViolationField(error));
       throw error;
     }
   }
@@ -144,11 +154,12 @@ export class TypeormUserManagementRepository implements UserManagementRepository
   ): Promise<UserAdminProjection> {
     return this.database.transaction(async (manager) => {
       const user = await this.loadMutable(manager, userId);
-      if (user.isSystemAccount || user.id === actorId) throw new UserManagementFailure('forbidden');
-      if (user.deletedAt) throw new UserManagementFailure('not_found');
+      this.requireTargetAllowed(user, actorId);
+      if (user.deletedAt) throw new UserManagementFailure('not_found', 'user_deleted');
       if (user.status === (status === 'ACTIVE' ? AccountStatus.Active : AccountStatus.Locked))
         return toProjection(user);
-      if (user.status === AccountStatus.Pending) throw new UserManagementFailure('conflict');
+      if (user.status === AccountStatus.Pending)
+        throw new UserManagementFailure('conflict', 'account_pending');
       if (status === 'LOCKED') await this.protectLastAdmin(manager, user);
       const beforeState = auditState(user);
       const changedAt = new Date();
@@ -170,7 +181,7 @@ export class TypeormUserManagementRepository implements UserManagementRepository
   async softDelete(actorId: string, userId: string, reason: string): Promise<void> {
     await this.database.transaction(async (manager) => {
       const user = await this.loadMutable(manager, userId);
-      if (user.isSystemAccount || user.id === actorId) throw new UserManagementFailure('forbidden');
+      this.requireTargetAllowed(user, actorId);
       if (user.deletedAt) return;
       await this.protectLastAdmin(manager, user);
       const beforeState = auditState(user);
@@ -224,10 +235,15 @@ export class TypeormUserManagementRepository implements UserManagementRepository
       .setLock('pessimistic_write')
       .where('user.id = :userId', { userId })
       .getOne();
-    if (!locked) throw new UserManagementFailure('not_found');
+    if (!locked) throw new UserManagementFailure('not_found', 'user_not_found');
     const user = await manager.getRepository(User).findOne({ where: { id: userId } });
-    if (!user) throw new UserManagementFailure('not_found');
+    if (!user) throw new UserManagementFailure('not_found', 'user_not_found');
     return user;
+  }
+
+  private requireTargetAllowed(user: User, actorId: string): void {
+    if (user.isSystemAccount) throw new UserManagementFailure('forbidden', 'system_account');
+    if (user.id === actorId) throw new UserManagementFailure('forbidden', 'self_action');
   }
 
   private async protectLastAdmin(manager: EntityManager, user: User): Promise<void> {
@@ -241,7 +257,7 @@ export class TypeormUserManagementRepository implements UserManagementRepository
     >(`SELECT count(DISTINCT u.id)::int AS count
       FROM users u JOIN user_roles ur ON ur.user_id = u.id JOIN roles r ON r.id = ur.role_id
       WHERE r.name = 'ADMIN' AND u.status = 'ACTIVE' AND u.deleted_at IS NULL`);
-    if ((rows[0]?.count ?? 0) <= 1) throw new UserManagementFailure('conflict');
+    if ((rows[0]?.count ?? 0) <= 1) throw new UserManagementFailure('conflict', 'last_admin');
   }
 
   private async revokeSessions(manager: EntityManager, userId: string, at: Date): Promise<void> {

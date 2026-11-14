@@ -1,7 +1,9 @@
-import { UnauthorizedException, createParamDecorator } from '@nestjs/common';
+import { createParamDecorator } from '@nestjs/common';
 import type { ExecutionContext } from '@nestjs/common';
 import { isUUID } from 'class-validator';
 import type { Request } from 'express';
+
+import { SUBMISSION_ERRORS, createSubmissionError } from '../submission-errors';
 
 const USER_ID_HEADER = 'x-auth-user-id';
 
@@ -18,7 +20,7 @@ export function readTrustedOwner(request: Request): string {
 
   const [ownerId] = values;
   if (values.length !== 1 || ownerId === undefined || !isUUID(ownerId)) {
-    throw new UnauthorizedException('Missing authenticated user context');
+    throw createSubmissionError(SUBMISSION_ERRORS.userContextMissing);
   }
 
   return ownerId;

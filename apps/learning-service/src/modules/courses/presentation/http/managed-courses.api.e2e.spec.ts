@@ -623,7 +623,9 @@ describe('Courses API (18 routes of the LRN-003 plan)', () => {
           body: { slug: 'x', title: 'X', ...extra },
         });
         expect(res.status).toBe(400);
-        expect(Array.isArray(res.body.message)).toBe(true);
+        expect(res.body.code).toBe('VALIDATION_FAILED');
+        expect(typeof res.body.message).toBe('string');
+        expect(Array.isArray(res.body.details)).toBe(true);
       }
       expect(repository.saveCount).toBe(before);
     });
@@ -746,7 +748,10 @@ describe('Courses API (18 routes of the LRN-003 plan)', () => {
       const res = await call('POST', `/api/courses/${id}/publish`);
 
       expect(res.status).toBe(400);
-      expect(res.body.issues).toEqual(expect.arrayContaining(['CHAPTER_REQUIRED']));
+      expect(res.body.code).toBe('COURSE_NOT_READY');
+      expect(asList(res.body.details).map((issue) => issue.code)).toEqual(
+        expect.arrayContaining(['CHAPTER_REQUIRED']),
+      );
     });
 
     it('refuses to publish when the attached problem is not published', async () => {
@@ -756,7 +761,10 @@ describe('Courses API (18 routes of the LRN-003 plan)', () => {
       const res = await call('POST', `/api/courses/${id}/publish`);
 
       expect(res.status).toBe(400);
-      expect(res.body.issues).toEqual(['PUBLISHED_CONTENT_REQUIRED']);
+      expect(res.body.code).toBe('COURSE_NOT_READY');
+      expect(asList(res.body.details).map((issue) => issue.code)).toEqual([
+        'PUBLISHED_CONTENT_REQUIRED',
+      ]);
     });
 
     it("allows another ADMIN's draft but still rejects an unknown problem", async () => {
@@ -803,7 +811,8 @@ describe('Courses API (18 routes of the LRN-003 plan)', () => {
       const res = await call('PATCH', `/api/courses/${id}`, { body: { title: 'X' } });
 
       expect(res.status).toBe(500);
-      expect(res.body.message).toBe('Internal server error');
+      expect(res.body.code).toBe('INTERNAL_ERROR');
+      expect(JSON.stringify(res.body)).not.toContain('connection string secret');
     });
   });
 
@@ -818,7 +827,10 @@ describe('Courses API (18 routes of the LRN-003 plan)', () => {
       );
 
       expect(res.status).toBe(400);
-      expect(res.body.issues).toEqual(['PUBLISHED_CONTENT_REQUIRED']);
+      expect(res.body.code).toBe('COURSE_NOT_READY');
+      expect(asList(res.body.details).map((issue) => issue.code)).toEqual([
+        'PUBLISHED_CONTENT_REQUIRED',
+      ]);
       const stored = await call('GET', `/api/courses/managed/${id}`);
       expect(asList(asList(stored.body.chapters)[0]!.problems)).toHaveLength(1);
     });

@@ -1,5 +1,4 @@
 import type { IdentitySessionClient } from '@gateway/infrastructure/identity/identity-session.client';
-import { ServiceUnavailableException } from '@nestjs/common';
 
 import { GatewaySessionService } from './gateway-session.service';
 
@@ -13,6 +12,10 @@ describe('GatewaySessionService', () => {
     jest.mocked(sessions.checkSession).mockResolvedValueOnce('inactive');
     await expect(service.isActive('access')).resolves.toBe(false);
     jest.mocked(sessions.checkSession).mockResolvedValueOnce('unavailable');
-    await expect(service.isActive('access')).rejects.toThrow(ServiceUnavailableException);
+    await expect(service.isActive('access')).rejects.toMatchObject({
+      status: 503,
+      code: 'AUTH_SESSION_UNAVAILABLE',
+      message: expect.stringContaining('dịch vụ Identity') as string,
+    });
   });
 });

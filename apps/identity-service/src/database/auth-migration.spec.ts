@@ -156,6 +156,24 @@ describeDatabase('Identity auth migration and session repository', () => {
     await expect(repository.findById(firstUserId)).resolves.not.toHaveProperty('passwordHash');
   });
 
+  it('findForLogin tells missing, live and soft-deleted accounts apart (ERR-001 FR-007)', async () => {
+    await database.query(`UPDATE users SET student_id = '2210001' WHERE id = $1`, [firstUserId]);
+    const repository = new TypeormAuthAccountRepository(database.getRepository(User));
+    try {
+      await expect(repository.findForLogin('missing')).resolves.toEqual({ kind: 'none' });
+      await expect(repository.findForLogin('2210001')).resolves.toMatchObject({
+        kind: 'found',
+        deleted: false,
+      });
+      await database.query(`UPDATE users SET deleted_at = now() WHERE id = $1`, [firstUserId]);
+      const removed = await repository.findForLogin('2210001');
+      expect(removed).toMatchObject({ kind: 'found', deleted: true });
+      expect(removed.kind === 'found' ? removed.account.userId : undefined).toBe(firstUserId);
+    } finally {
+      await database.query(`UPDATE users SET deleted_at = NULL WHERE id = $1`, [firstUserId]);
+    }
+  });
+
   it('revokes only the current family on logout', async () => {
     const repository = new TypeormRefreshSessionRepository(database, new Argon2PasswordHasher());
     const familyId = randomUUID();

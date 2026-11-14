@@ -1,4 +1,4 @@
-import { NotFoundException, ServiceUnavailableException } from '@nestjs/common';
+import { AppHttpException } from '@app/common';
 import type { GetSubmissionDetailUseCase } from '@submission/modules/submissions/application/get-submission-detail.use-case';
 import type { ListSubmissionHistoryUseCase } from '@submission/modules/submissions/application/list-submission-history.use-case';
 import type { SubmitCodeUseCase } from '@submission/modules/submissions/application/submit-code.use-case';
@@ -66,9 +66,13 @@ describe('SubmissionsController detail', () => {
     const getSubmissionDetail = { execute: jest.fn().mockResolvedValue(null) };
     const controller = controllerWith({ getSubmissionDetail });
 
-    await expect(
-      controller.get(OWNER_ID, '93c160ad-dd5d-4c7f-a88a-c9c72d0ec4fd'),
-    ).rejects.toBeInstanceOf(NotFoundException);
+    const error: unknown = await controller
+      .get(OWNER_ID, '93c160ad-dd5d-4c7f-a88a-c9c72d0ec4fd')
+      .catch((caught: unknown) => caught);
+
+    expect(error).toBeInstanceOf(AppHttpException);
+    expect((error as AppHttpException).getStatus()).toBe(404);
+    expect((error as AppHttpException).code).toBe('SUBMISSION_NOT_FOUND');
   });
 });
 
@@ -94,13 +98,17 @@ describe('SubmissionsController Submit', () => {
   });
 
   it.each([
-    [new ProblemNotSubmittableError(), NotFoundException],
-    [new JudgePackageUnavailableError(), ServiceUnavailableException],
-  ])('maps %p to its HTTP error', async (error, expected) => {
-    const submitCode = { execute: jest.fn().mockRejectedValue(error) };
+    [new ProblemNotSubmittableError(), 404, 'SUBMISSION_PROBLEM_NOT_SUBMITTABLE'],
+    [new JudgePackageUnavailableError(), 503, 'SUBMISSION_JUDGE_PACKAGE_UNAVAILABLE'],
+  ])('maps %p to its HTTP error', async (cause, status, code) => {
+    const submitCode = { execute: jest.fn().mockRejectedValue(cause) };
 
-    await expect(
-      controllerWith({ submitCode }).submit(OWNER_ID, submitBody),
-    ).rejects.toBeInstanceOf(expected);
+    const error: unknown = await controllerWith({ submitCode })
+      .submit(OWNER_ID, submitBody)
+      .catch((caught: unknown) => caught);
+
+    expect(error).toBeInstanceOf(AppHttpException);
+    expect((error as AppHttpException).getStatus()).toBe(status);
+    expect((error as AppHttpException).code).toBe(code);
   });
 });

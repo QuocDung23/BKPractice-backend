@@ -7,8 +7,13 @@ export interface AuthorizationPrincipal {
   permissions: string[];
 }
 
+export type RbacFailureReason = 'not_admin' | 'self_admin' | 'role_unknown' | 'reason_invalid';
+
 export class RbacFailure extends Error {
-  constructor(readonly code: 'forbidden' | 'invalid_role' | 'user_not_found' | 'last_admin') {
+  constructor(
+    readonly code: 'forbidden' | 'invalid_role' | 'user_not_found' | 'last_admin',
+    readonly reason?: RbacFailureReason,
+  ) {
     super(code);
   }
 }
@@ -20,7 +25,7 @@ export function requireAdmin(principal: AuthorizationPrincipal): void {
     !principal.roles.every(isRoleName) ||
     !principal.roles.includes(RoleName.Admin)
   ) {
-    throw new RbacFailure('forbidden');
+    throw new RbacFailure('forbidden', 'not_admin');
   }
 }
 
@@ -29,8 +34,9 @@ export function requireAssignableRole(
   userId: string,
   role: RoleName,
 ): void {
-  if (!isRoleName(role)) throw new RbacFailure('invalid_role');
-  if (role === RoleName.Admin && principal.userId === userId) throw new RbacFailure('forbidden');
+  if (!isRoleName(role)) throw new RbacFailure('invalid_role', 'role_unknown');
+  if (role === RoleName.Admin && principal.userId === userId)
+    throw new RbacFailure('forbidden', 'self_admin');
 }
 
 export function requireRevocableRole(
@@ -38,16 +44,16 @@ export function requireRevocableRole(
   userId: string,
   role: RoleName,
 ): void {
-  if (!isRoleName(role)) throw new RbacFailure('invalid_role');
+  if (!isRoleName(role)) throw new RbacFailure('invalid_role', 'role_unknown');
   if (role === RoleName.Admin && principal.userId === userId) {
-    throw new RbacFailure('forbidden');
+    throw new RbacFailure('forbidden', 'self_admin');
   }
 }
 
 export function requireRoleChangeReason(value: string): string {
   const reason = typeof value === 'string' ? value.trim() : '';
   if (!reason || reason.length > 500 || /\p{Cc}/u.test(reason))
-    throw new RbacFailure('invalid_role');
+    throw new RbacFailure('invalid_role', 'reason_invalid');
   return reason;
 }
 

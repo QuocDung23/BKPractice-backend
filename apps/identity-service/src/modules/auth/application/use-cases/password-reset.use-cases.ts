@@ -51,7 +51,7 @@ export class ResetPasswordWithGrant {
 
   async execute(resetToken: string, newPassword: string): Promise<void> {
     if (newPassword.length < 8 || newPassword.length > 128)
-      throw new PasswordResetFailure('invalid_request');
+      throw new PasswordResetFailure('invalid_request', 'password_length');
     if (!(await this.accounts.resetPasswordWithGrant(resetToken, newPassword)))
       throw new PasswordResetFailure('invalid_request');
   }

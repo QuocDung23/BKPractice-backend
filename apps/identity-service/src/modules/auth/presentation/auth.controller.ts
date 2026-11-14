@@ -2,10 +2,8 @@ import { isAllowedBrowserOrigin, readCookie, verifyCsrfToken } from '@app/common
 import { BK_ACCESS_COOKIE_NAME, BK_CSRF_COOKIE_NAME, BK_REFRESH_COOKIE_NAME } from '@app/contracts';
 import type { BkAccessClaims } from '@app/contracts';
 import {
-  BadRequestException,
   Body,
   Controller,
-  ForbiddenException,
   Get,
   HttpCode,
   HttpStatus,
@@ -14,7 +12,6 @@ import {
   Query,
   Req,
   Res,
-  UnauthorizedException,
   UseFilters,
 } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
@@ -43,6 +40,7 @@ import type {
 import { AuthFailure } from '@/modules/auth/domain';
 import { clearAuthCookies, setAuthCookies } from '@/modules/auth/presentation/auth-cookie';
 import { AuthFailureFilter } from '@/modules/auth/presentation/auth-failure.filter';
+import { AUTH_HTTP_ERRORS } from '@/modules/auth/presentation/auth-http-errors';
 import {
   ChangePasswordDto,
   AuthenticatedResponseDto,
@@ -96,6 +94,20 @@ export class AuthController {
       'Web returns userId and secure HttpOnly cookies; mobile returns userId and both tokens in JSON.',
   })
   @ApiResponse({ status: 200, type: AuthenticatedResponseDto })
+  @ApiResponse({
+    status: 401,
+    description:
+      'AUTH_ACCOUNT_NOT_FOUND (không có tài khoản khớp MSSV/email) hoặc AUTH_WRONG_PASSWORD (sai mật khẩu).',
+  })
+  @ApiResponse({
+    status: 403,
+    description:
+      'AUTH_ACCOUNT_DELETED, AUTH_ACCOUNT_LOCKED hoặc AUTH_ACCOUNT_PENDING; chỉ được báo sau khi mật khẩu đúng. Hoặc ORIGIN_NOT_ALLOWED.',
+  })
+  @ApiResponse({
+    status: 409,
+    description: 'AUTH_IDENTIFIER_AMBIGUOUS: MSSV hoặc email khớp nhiều hơn một tài khoản.',
+  })
   async login(
     @Req() request: Request,
     @Body() dto: PasswordLoginDto,
@@ -248,7 +260,7 @@ export class AuthController {
   @ApiOperation({ summary: 'Read the signed CSRF value for a same-site web client' })
   async csrf(@Req() request: Request): Promise<{ csrfToken: string }> {
     const token = readCookie(request.header('cookie'), BK_CSRF_COOKIE_NAME);
-    if (!token) throw new UnauthorizedException();
+    if (!token) throw AUTH_HTTP_ERRORS.notLoggedIn();
     return { csrfToken: token };
   }
 
@@ -285,7 +297,7 @@ export class AuthController {
     const value = request.header('x-client-type');
     if (value === undefined || value === 'web') return 'web';
     if (value === 'mobile') return 'mobile';
-    throw new BadRequestException('Invalid X-Client-Type');
+    throw AUTH_HTTP_ERRORS.clientTypeInvalid();
   }
 
   private metadata(request: Request, clientType: ClientType): SessionMetadata {
@@ -338,7 +350,7 @@ export class AuthController {
       isAllowedBrowserOrigin(origin, referer, `${request.protocol}://${host}`)
     )
       return;
-    throw new ForbiddenException('Untrusted request origin');
+    throw AUTH_HTTP_ERRORS.originNotAllowed();
   }
 
   private requireCsrf(request: Request, sid: string): void {
@@ -350,7 +362,7 @@ export class AuthController {
         this.config.getOrThrow<string>('JWT_ACCESS_SECRET'),
       )
     )
-      throw new ForbiddenException('Invalid CSRF token');
+      throw AUTH_HTTP_ERRORS.csrfInvalid();
   }
 
   private async verifyRequestAccess(request: Request): Promise<BkAccessClaims> {

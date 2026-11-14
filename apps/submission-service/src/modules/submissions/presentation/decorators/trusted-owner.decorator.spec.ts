@@ -1,4 +1,4 @@
-import { UnauthorizedException } from '@nestjs/common';
+import { AppHttpException } from '@app/common';
 import type { Request } from 'express';
 
 import { readTrustedOwner } from './trusted-owner.decorator';
@@ -16,7 +16,13 @@ describe('readTrustedOwner', () => {
     ['a non-UUID value', ['x-auth-user-id', 'owner-id']],
     ['a duplicated header', ['x-auth-user-id', OWNER_ID, 'X-Auth-User-Id', OWNER_ID]],
   ])('rejects %s', (_case, rawHeaders) => {
-    expect(() => readTrustedOwner(requestWith(rawHeaders))).toThrow(UnauthorizedException);
+    expect(() => readTrustedOwner(requestWith(rawHeaders))).toThrow(AppHttpException);
+    try {
+      readTrustedOwner(requestWith(rawHeaders));
+    } catch (error) {
+      expect((error as AppHttpException).getStatus()).toBe(401);
+      expect((error as AppHttpException).code).toBe('AUTH_USER_CONTEXT_MISSING');
+    }
   });
 
   it('ignores owner values outside the trusted header', () => {
@@ -26,7 +32,7 @@ describe('readTrustedOwner', () => {
       query: { 'x-auth-user-id': OWNER_ID },
     });
 
-    expect(() => readTrustedOwner(request)).toThrow(UnauthorizedException);
+    expect(() => readTrustedOwner(request)).toThrow(AppHttpException);
   });
 });
 

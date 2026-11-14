@@ -1,28 +1,23 @@
+import {
+  describeFrameworkError,
+  respondWithError,
+  respondWithSanitizedFallback,
+} from '@learning/presentation/http/learning-error';
 import type { ExceptionFilter } from '@nestjs/common';
-import { ArgumentsHost, Catch, HttpException, Logger } from '@nestjs/common';
-import type { Response } from 'express';
+import { ArgumentsHost, Catch, Logger } from '@nestjs/common';
 
-import { UnauthorizedError } from '@/modules/problems/application/errors/unauthorized.error';
-import { QuizError } from '@/modules/quizzes/domain';
+import { describeQuizException } from '@/modules/quizzes/presentation/http/quiz-errors';
+
 @Catch()
 export class QuizExceptionFilter implements ExceptionFilter {
   private readonly logger = new Logger(QuizExceptionFilter.name);
+
   catch(error: unknown, host: ArgumentsHost): void {
-    const response = host.switchToHttp().getResponse<Response>();
-    let status = 500;
-    let message: unknown = 'Unable to process Quiz request';
-    if (error instanceof QuizError) {
-      status = { INVALID: 400, FORBIDDEN: 403, NOT_FOUND: 404, CONFLICT: 409, UNAVAILABLE: 503 }[
-        error.code
-      ];
-      message = error.message;
-    } else if (error instanceof UnauthorizedError) {
-      status = 401;
-      message = 'Authentication required';
-    } else if (error instanceof HttpException) {
-      status = error.getStatus();
-      message = error.getResponse();
-    } else this.logger.error('Quiz operation failed');
-    response.status(status).json({ statusCode: status, message });
+    const descriptor = describeQuizException(error) ?? describeFrameworkError(error);
+    // Lỗi không nhận diện (kể cả 5xx) đi qua bộ lọc toàn cục: không bị nuốt, không lộ chi tiết nội bộ.
+    if (!descriptor) {
+      return respondWithSanitizedFallback(error, host, this.logger, 'Quiz operation failed');
+    }
+    respondWithError(host, descriptor, this.logger);
   }
 }

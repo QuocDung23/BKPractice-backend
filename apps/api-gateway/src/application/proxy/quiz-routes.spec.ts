@@ -6,6 +6,14 @@ import { of } from 'rxjs';
 import { learningRoutes } from '@/application/proxy/gateway-proxy.constants';
 import { GatewayProxyService } from '@/application/proxy/gateway-proxy.service';
 
+// Lỗi đúng định dạng chuẩn nên Gateway chuyển tiếp nguyên vẹn (ERR-001 FR-011).
+const QUIZ_CONFLICT = {
+  statusCode: 409,
+  code: 'QUIZ_CONFLICT',
+  message: 'Bài quiz đã bị thay đổi bởi người khác.',
+  requestId: 'req-quiz-1',
+};
+
 describe('Quiz Gateway contract', () => {
   const config = new ConfigService({
     IDENTITY_SERVICE_URL: 'http://identity.test',
@@ -15,9 +23,7 @@ describe('Quiz Gateway contract', () => {
   });
   function fixture(method: string, path: string) {
     const upstream = {
-      request: jest
-        .fn()
-        .mockReturnValue(of({ status: 409, headers: {}, data: { code: 'CONFLICT' } })),
+      request: jest.fn().mockReturnValue(of({ status: 409, headers: {}, data: QUIZ_CONFLICT })),
     };
     const response = { setHeader: jest.fn(), status: jest.fn().mockReturnThis(), send: jest.fn() };
     const request = {
@@ -89,7 +95,7 @@ describe('Quiz Gateway contract', () => {
       }),
     );
     expect(f.response.status).toHaveBeenCalledWith(409);
-    expect(f.response.send).toHaveBeenCalledWith({ code: 'CONFLICT' });
+    expect(f.response.send).toHaveBeenCalledWith(QUIZ_CONFLICT);
   });
   it.each([
     ['PATCH', '/api/question-bank/questions/id'],

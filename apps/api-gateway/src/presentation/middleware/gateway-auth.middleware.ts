@@ -9,11 +9,13 @@ import {
 } from '@gateway/application/auth/auth-constants';
 import { GatewaySessionService } from '@gateway/application/auth/gateway-session.service';
 import {
-  ForbiddenException,
-  Injectable,
-  ServiceUnavailableException,
-  UnauthorizedException,
-} from '@nestjs/common';
+  createBearerMalformedError,
+  createCsrfTokenInvalidError,
+  createOriginNotAllowedError,
+  createTokenInvalidOrExpiredError,
+  createTokenMissingError,
+} from '@gateway/application/errors/gateway-errors';
+import { HttpException, Injectable } from '@nestjs/common';
 import type { NestMiddleware } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
@@ -83,9 +85,9 @@ export class GatewayAuthMiddleware implements NestMiddleware {
     }
     const fromCookie = authorization === undefined;
     if (authorization !== undefined && !/^Bearer [^\s]+$/.test(authorization))
-      throw new UnauthorizedException('A valid Bearer access token is required');
+      throw createBearerMalformedError();
     const token = fromCookie ? accessCookie : authorization?.slice(7);
-    if (!token) throw new UnauthorizedException('A valid access token is required');
+    if (!token) throw createTokenMissingError();
 
     try {
       const payload = await this.jwt.verifyAsync<AccessTokenPayload>(token, {
@@ -116,7 +118,7 @@ export class GatewayAuthMiddleware implements NestMiddleware {
             this.config.getOrThrow<string>('JWT_ACCESS_SECRET'),
           )
         )
-          throw new ForbiddenException('Invalid CSRF token');
+          throw createCsrfTokenInvalidError();
       }
       request.headers.authorization = `Bearer ${token}`;
       request.headers['x-auth-user-id'] = payload.sub;
@@ -128,13 +130,13 @@ export class GatewayAuthMiddleware implements NestMiddleware {
           : '';
       next();
     } catch (error) {
-      if (error instanceof ForbiddenException || error instanceof ServiceUnavailableException)
-        throw error;
+      // 403 (origin/CSRF) và 503 (không kiểm tra được phiên) phải giữ nguyên, không đổi thành 401.
+      if (error instanceof HttpException && [403, 503].includes(error.getStatus())) throw error;
       if (publicProfile && fromCookie) {
         next();
         return;
       }
-      throw new UnauthorizedException('Access token is invalid or expired');
+      throw createTokenInvalidOrExpiredError();
     }
   }
 
@@ -146,7 +148,7 @@ export class GatewayAuthMiddleware implements NestMiddleware {
         this.config.getOrThrow<string>('CORS_ORIGINS'),
       )
     ) {
-      throw new ForbiddenException('Untrusted request origin');
+      throw createOriginNotAllowedError();
     }
   }
 

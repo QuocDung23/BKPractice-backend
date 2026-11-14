@@ -1,5 +1,6 @@
+import { createSessionUnavailableError } from '@gateway/application/errors/gateway-errors';
 import { IdentitySessionClient } from '@gateway/infrastructure/identity/identity-session.client';
-import { Injectable, ServiceUnavailableException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 
 @Injectable()
 export class GatewaySessionService {
@@ -8,7 +9,7 @@ export class GatewaySessionService {
   async isActive(accessToken: string): Promise<boolean> {
     const state = await this.sessions.checkSession(accessToken);
     if (state === 'unavailable') {
-      throw new ServiceUnavailableException('Session verification is unavailable');
+      throw createSessionUnavailableError();
     }
     return state === 'active';
   }

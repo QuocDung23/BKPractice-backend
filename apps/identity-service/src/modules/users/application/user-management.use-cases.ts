@@ -40,7 +40,7 @@ export class UserManagementUseCases {
       limit > 50 ||
       !Number.isSafeInteger((page - 1) * limit)
     )
-      throw new UserManagementFailure('invalid');
+      throw new UserManagementFailure('invalid', 'pagination');
     const result = await this.users.list(page, limit, includeDeleted, filters);
     return { ...result, page, limit };
   }
@@ -48,7 +48,7 @@ export class UserManagementUseCases {
   async getUser(principal: AuthorizationPrincipal, userId: string): Promise<UserAdminProjection> {
     requireUserManagementPermission(principal, 'user:read');
     const user = await this.users.find(userId);
-    if (!user) throw new UserManagementFailure('not_found');
+    if (!user) throw new UserManagementFailure('not_found', 'user_not_found');
     return user;
   }
 
@@ -105,7 +105,7 @@ export class UserManagementUseCases {
       limit > 100 ||
       !Number.isSafeInteger((page - 1) * limit)
     )
-      throw new UserManagementFailure('invalid');
+      throw new UserManagementFailure('invalid', 'pagination');
     return { ...(await this.users.listStudents(page, limit)), page, limit };
   }
 }

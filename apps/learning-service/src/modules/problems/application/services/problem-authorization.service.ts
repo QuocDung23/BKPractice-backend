@@ -34,20 +34,19 @@ export class ProblemAuthorizationService {
     this.requireManager(principal);
     this.requirePermission(principal, ACTION_PERMISSIONS[action]);
     if (!principal.roles.includes(ADMIN_ROLE) && principal.userId !== createdBy) {
-      throw new ForbiddenError();
+      throw new ForbiddenError('Only the problem owner or an admin can do this');
     }
   }
 
   private requireManager(principal: Principal): void {
     if (!principal.roles.includes(ADMIN_ROLE) && !principal.roles.includes(LECTURER_ROLE)) {
-    
-      throw new ForbiddenError();
+      throw new ForbiddenError('Lecturer or admin role required');
     }
   }
 
   private requirePermission(principal: Principal, permission: string): void {
     if (!principal.permissions.includes(permission)) {
-      throw new ForbiddenError();
+      throw new ForbiddenError(`Missing permission ${permission}`);
     }
   }
 }
