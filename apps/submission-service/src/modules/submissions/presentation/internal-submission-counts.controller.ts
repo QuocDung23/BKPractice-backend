@@ -1,11 +1,13 @@
 import { timingSafeEqual } from 'node:crypto';
 
-import { Body, Controller, Headers, Post, UnauthorizedException } from '@nestjs/common';
+import { Body, Controller, Headers, Post } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { ApiExcludeController } from '@nestjs/swagger';
 import { ArrayMaxSize, ArrayUnique, IsArray, IsUUID } from 'class-validator';
 
 import { CountCourseSubmissionsUseCase } from '../application/count-course-submissions.use-case';
+
+import { SUBMISSION_ERRORS, createSubmissionError } from './submission-errors';
 
 class CountSubmissionRequestDto {
   @IsArray()
@@ -40,7 +42,7 @@ export class InternalSubmissionCountsController {
       Buffer.byteLength(provided) !== Buffer.byteLength(expected) ||
       !timingSafeEqual(Buffer.from(provided), Buffer.from(expected))
     )
-      throw new UnauthorizedException();
+      throw createSubmissionError(SUBMISSION_ERRORS.internalSecretInvalid);
     return { counts: await this.countSubmissions.execute(body.userIds, body.problemIds) };
   }
 }
