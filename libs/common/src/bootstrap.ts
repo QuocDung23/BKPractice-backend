@@ -4,6 +4,8 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import helmet from 'helmet';
 
 import { AllExceptionsFilter } from './http/errors/all-exceptions.filter';
+import { ApiErrorResponseDto } from './http/errors/api-error.dto';
+import { applyApiErrorSchema } from './http/errors/swagger-errors';
 import { createValidationPipe } from './http/errors/validation-errors';
 
 interface BootstrapOptions {
@@ -33,7 +35,9 @@ export async function configureHttpApp(
     .setVersion('0.1.0')
     .addBearerAuth()
     .build();
-  const document = SwaggerModule.createDocument(app, swaggerConfig);
+  const document = applyApiErrorSchema(
+    SwaggerModule.createDocument(app, swaggerConfig, { extraModels: [ApiErrorResponseDto] }),
+  );
   SwaggerModule.setup('docs', app, document);
 
   await app.listen(options.port, options.host ?? '0.0.0.0');

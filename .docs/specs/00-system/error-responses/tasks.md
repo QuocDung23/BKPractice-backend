@@ -53,7 +53,7 @@ Kế hoạch liên quan: `./plan.md`
 
 ## API / Tài liệu
 
-- [ ] `ApiErrorResponseDto` và `@ApiResponse` cho các route công khai quan trọng; kiểm tra Swagger (AC-012).
+- [x] `ApiErrorResponseDto` + gắn schema lỗi vào mọi thao tác của Swagger; `@ApiResponse` kèm danh sách `code` cho login (AC-012). Các route khác chỉ có schema chung, chưa liệt kê `code` riêng.
 - [ ] Cập nhật `.docs/guides/frontend-api.md`: định dạng lỗi, bảng `code`, thay đổi `message` mảng sang chuỗi.
 
 ## Phân quyền

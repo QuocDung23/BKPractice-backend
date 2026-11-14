@@ -94,6 +94,20 @@ export class AuthController {
       'Web returns userId and secure HttpOnly cookies; mobile returns userId and both tokens in JSON.',
   })
   @ApiResponse({ status: 200, type: AuthenticatedResponseDto })
+  @ApiResponse({
+    status: 401,
+    description:
+      'AUTH_ACCOUNT_NOT_FOUND (không có tài khoản khớp MSSV/email) hoặc AUTH_WRONG_PASSWORD (sai mật khẩu).',
+  })
+  @ApiResponse({
+    status: 403,
+    description:
+      'AUTH_ACCOUNT_DELETED, AUTH_ACCOUNT_LOCKED hoặc AUTH_ACCOUNT_PENDING; chỉ được báo sau khi mật khẩu đúng. Hoặc ORIGIN_NOT_ALLOWED.',
+  })
+  @ApiResponse({
+    status: 409,
+    description: 'AUTH_IDENTIFIER_AMBIGUOUS: MSSV hoặc email khớp nhiều hơn một tài khoản.',
+  })
   async login(
     @Req() request: Request,
     @Body() dto: PasswordLoginDto,

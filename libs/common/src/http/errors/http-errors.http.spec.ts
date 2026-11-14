@@ -9,10 +9,13 @@ import {
   Post,
 } from '@nestjs/common';
 import type { INestApplication } from '@nestjs/common';
+import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { Test } from '@nestjs/testing';
 import { IsEmail, MinLength } from 'class-validator';
 
 import { AllExceptionsFilter } from './all-exceptions.filter';
+import { ApiErrorResponseDto } from './api-error.dto';
+import { applyApiErrorSchema } from './swagger-errors';
 import { createValidationPipe } from './validation-errors';
 
 class SignupDto {
@@ -131,5 +134,39 @@ describe('Định dạng lỗi chung qua HTTP thật (ERR-001 AC-001, AC-006, AC
     const result = await call(`/item/${UUID}`);
     expect(result.status).toBe(200);
     expect(JSON.parse(result.text)).toEqual({ id: UUID });
+  });
+
+  it('Swagger thật mô tả schema lỗi chung ở mọi thao tác (FR-013)', () => {
+    const document = applyApiErrorSchema(
+      SwaggerModule.createDocument(app, new DocumentBuilder().setTitle('t').build(), {
+        extraModels: [ApiErrorResponseDto],
+      }),
+    );
+    const schema = document.components?.schemas?.ApiErrorResponseDto as {
+      properties: Record<string, unknown>;
+      required: string[];
+    };
+    expect(Object.keys(schema.properties).sort()).toEqual([
+      'code',
+      'details',
+      'message',
+      'requestId',
+      'statusCode',
+    ]);
+    expect(schema.required.sort()).toEqual(['code', 'message', 'requestId', 'statusCode']);
+    const operations = Object.values(document.paths).flatMap(
+      (item) => Object.values(item) as unknown[],
+    );
+    expect(operations.length).toBeGreaterThan(0);
+    for (const operation of operations as Array<{
+      responses: Record<string, { content?: unknown }>;
+    }>) {
+      const errors = Object.entries(operation.responses).filter(
+        ([status]) => status === 'default' || /^[45]/.test(status),
+      );
+      expect(errors.length).toBeGreaterThan(0);
+      for (const [, response] of errors)
+        expect(JSON.stringify(response.content)).toContain('ApiErrorResponseDto');
+    }
   });
 });
