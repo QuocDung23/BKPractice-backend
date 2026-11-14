@@ -12,10 +12,10 @@
 
 ## Questions clarified
 
-| Question                                                | Conclusion                                                                                             | Source                                                                                                       |
-| ------------------------------------------------------- | ------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------ |
-| Có đổi message CSRF sang tiếng Việt ngay không?         | Chưa. Giữ đúng chuỗi `Invalid CSRF token`, chỉ thêm `code: CSRF_TOKEN_INVALID`                         | Frontend đang nhận diện lỗi CSRF bằng chuỗi này (CLAUDE.md gốc; `bkpractice-frontend/src/lib/api/client.ts`) |
-| Body lỗi của service chưa theo định dạng chuẩn thì sao? | Gateway thay bằng `UPSTREAM_INVALID_RESPONSE`, giữ status; message cũ (nếu là chuỗi) đưa vào `details` | Chỉ đạo của yêu cầu giao việc, ERR-001 FR-011                                                                |
+| Question                                                | Conclusion                                                                                  | Source                                                                                                       |
+| ------------------------------------------------------- | ------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------ |
+| Có đổi message CSRF sang tiếng Việt ngay không?         | Chưa. Giữ đúng chuỗi `Invalid CSRF token`, chỉ thêm `code: CSRF_TOKEN_INVALID`              | Frontend đang nhận diện lỗi CSRF bằng chuỗi này (CLAUDE.md gốc; `bkpractice-frontend/src/lib/api/client.ts`) |
+| Body lỗi của service chưa theo định dạng chuẩn thì sao? | Gateway trả `502 UPSTREAM_INVALID_RESPONSE`, không chuyển tiếp bất kỳ phần nào của body gốc | ERR-001 FR-011 và bảng Tình huống lỗi (sửa sau review ngày 2026-11-15)                                       |
 
 ## What was done
 
@@ -39,7 +39,7 @@ Hành vi mới đáng chú ý:
 
 - Lỗi 502 khi service chết nêu tên service ("dịch vụ Learning") và, nếu hết thời gian chờ, nêu số giây. Không bao giờ nêu host, port.
 - Lỗi 429 nói rõ phải đợi bao lâu và đang bị giới hạn việc gì (đăng nhập, SSO/làm mới phiên, đặt lại mật khẩu, hay chung).
-- Khi service trả status >= 400 mà body không phải lỗi chuẩn (HTML của nginx, chuỗi thô, rỗng, định dạng cũ), Gateway trả lỗi chuẩn `UPSTREAM_INVALID_RESPONSE`, giữ status và có `requestId`. Body đúng chuẩn thì giữ nguyên từng byte. Status < 400, redirect, cookie không đổi.
+- Khi service trả status >= 400 mà body không phải lỗi chuẩn (HTML của nginx, chuỗi thô, rỗng, định dạng cũ), Gateway trả `502 UPSTREAM_INVALID_RESPONSE` kèm `requestId`, không giữ status của upstream và không chép message gốc vào đâu cả (body đó có thể chứa DSN, SQL, stack). Chỉ body đúng chuẩn đầy đủ (`statusCode` khớp status HTTP, `code`, `message`, `requestId` là chuỗi không rỗng; `details` nếu có phải đúng dạng) mới được giữ nguyên từng byte. Status < 400, redirect, cookie không đổi.
 
 File: `application/errors/gateway-errors.ts` (mới, toàn bộ mã và message), `presentation/guards/gateway-throttler.guard.ts` (mới), `gateway-proxy.service.ts`, `gateway-auth.middleware.ts`, `gateway-session.service.ts`, `api-gateway.module.ts`; test: 3 file mới và 6 file test cũ cập nhật kỳ vọng (không xóa test nào).
 
@@ -84,3 +84,9 @@ No configuration change.
   - Frontend đọc `message` khi có `code`, nên với backend lẫn lộn định dạng người dùng sẽ thấy câu chung "Dịch vụ X trả về lỗi ..." thay cho câu cũ.
   - `libs/common`: `AllExceptionsFilter.normalizeHttpException` bỏ message khi `HttpException` có body dạng chuỗi (ví dụ `new HttpException('text', 429)`); cần sửa ở libs, ngoài phạm vi.
   - `resolveRequestId` (libs, do fork khác sửa) chỉ nhận UUID, nhưng `RequestIdMiddleware` của Gateway còn chấp nhận mọi chuỗi từ client; khi client gửi chuỗi không phải UUID thì `requestId` trong body khác header `x-request-id`. Cần chỉnh `RequestIdMiddleware` ở libs.
+
+## Sửa sau review (2026-11-15)
+
+- Bản đầu giữ status của upstream, chép message cũ vào `details` và chỉ kiểm tra `code` + `message`. Cả ba đều sai so với spec ERR-001: thiếu 502, có đường rò nội dung nội bộ, và cho qua body thiếu `statusCode`/`requestId` hoặc lệch status. Nguyên nhân gốc là brief giao việc ghi sai "giữ nguyên status".
+- Đã sửa: `isApiErrorEnvelope(value, status)` kiểm tra đủ schema và khớp status; Gateway luôn trả 502 và chỉ ghi log `requestId`, tên service, status upstream (không ghi body). Đã bỏ `readLegacyUpstreamMessage`.
+- Test mới: HTML 404 thành 502; body hostile có DSN/đường dẫn không xuất hiện trong phản hồi; body thiếu `requestId`/`statusCode`/lệch status bị bọc; body do `buildApiError` của libs sinh ra vẫn được giữ nguyên (tương thích service thật).

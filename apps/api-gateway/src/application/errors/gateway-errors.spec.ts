@@ -1,3 +1,4 @@
+import { buildApiError } from '@app/common';
 import type { AppHttpException } from '@app/common';
 
 import {
@@ -13,7 +14,6 @@ import {
   createUpstreamNotConfiguredError,
   createUpstreamUnavailableError,
   isApiErrorEnvelope,
-  readLegacyUpstreamMessage,
 } from './gateway-errors';
 
 describe('gateway errors (ERR-001)', () => {
@@ -101,28 +101,59 @@ describe('gateway errors (ERR-001)', () => {
     expect(error.message.length).toBeLessThan(400);
   });
 
-  it('recognises only the shared error envelope', () => {
-    expect(isApiErrorEnvelope({ code: 'X', message: 'm', statusCode: 400 })).toBe(true);
-    for (const body of [
-      { message: 'm' },
-      { code: 'X' },
-      { code: '', message: 'm' },
-      { code: 'X', message: ['a'] },
-      '<html>502 Bad Gateway</html>',
-      '',
-      null,
-      undefined,
-      ['x'],
-    ]) {
-      expect(isApiErrorEnvelope(body)).toBe(false);
-    }
+  describe('isApiErrorEnvelope (ERR-001 FR-001: đủ schema và khớp status)', () => {
+    const valid = { statusCode: 403, code: 'X', message: 'm', requestId: 'req-1' };
+
+    it('chấp nhận body đủ trường, có hoặc không có details', () => {
+      expect(isApiErrorEnvelope(valid, 403)).toBe(true);
+      expect(
+        isApiErrorEnvelope(
+          {
+            ...valid,
+            details: [
+              { field: 'email', code: 'INVALID', message: 'sai' },
+              { code: 'A', message: 'b' },
+            ],
+          },
+          403,
+        ),
+      ).toBe(true);
+    });
+
+    it.each([
+      ['thiếu statusCode', { code: 'X', message: 'm', requestId: 'r' }],
+      ['thiếu requestId', { statusCode: 403, code: 'X', message: 'm' }],
+      ['thiếu code', { statusCode: 403, message: 'm', requestId: 'r' }],
+      ['thiếu message', { statusCode: 403, code: 'X', requestId: 'r' }],
+      ['code rỗng', { ...valid, code: '' }],
+      ['message là mảng', { ...valid, message: ['a'] }],
+      ['statusCode không phải số', { ...valid, statusCode: '403' }],
+      ['statusCode lệch status HTTP', { ...valid, statusCode: 404 }],
+      ['details không phải mảng', { ...valid, details: 'x' }],
+      ['details thiếu message', { ...valid, details: [{ code: 'A' }] }],
+      ['details.field sai kiểu', { ...valid, details: [{ field: 1, code: 'A', message: 'b' }] }],
+      ['định dạng cũ', { statusCode: 403, message: 'Forbidden' }],
+      ['HTML', '<html>502 Bad Gateway</html>'],
+      ['chuỗi rỗng', ''],
+      ['null', null],
+      ['undefined', undefined],
+      ['mảng', ['x']],
+    ])('từ chối body %s', (_name, body) => {
+      expect(isApiErrorEnvelope(body, 403)).toBe(false);
+    });
   });
 
-  it('reads a legacy upstream message only from a plain object', () => {
-    expect(readLegacyUpstreamMessage({ message: 'Authentication failed' })).toBe(
-      'Authentication failed',
-    );
-    expect(readLegacyUpstreamMessage({ message: ['a'] })).toBeUndefined();
-    expect(readLegacyUpstreamMessage('<html>')).toBeUndefined();
+  it('chấp nhận đúng body mà sendApiError/buildApiError của libs sinh ra (tương thích service thật)', () => {
+    const requestId = '0b8f3a52-6c1d-4e7a-9b2f-3d5e8a1c4f70';
+    const plain = buildApiError({ status: 409, code: 'USER_LAST_ADMIN', message: 'm', requestId });
+    const withDetails = buildApiError({
+      status: 400,
+      code: 'VALIDATION_FAILED',
+      message: 'm',
+      details: [{ field: 'email', code: 'INVALID_FORMAT', message: 'sai' }],
+      requestId,
+    });
+    expect(isApiErrorEnvelope(plain, 409)).toBe(true);
+    expect(isApiErrorEnvelope(withDetails, 400)).toBe(true);
   });
 });

@@ -149,18 +149,38 @@ export function createTooManyRequestsError(
   );
 }
 
-/** Body lỗi chuẩn (spec ERR-001 FR-001): có `code` và `message` là chuỗi không rỗng. */
-export function isApiErrorEnvelope(value: unknown): boolean {
-  if (typeof value !== 'object' || value === null || Array.isArray(value)) return false;
-  const { code, message } = value as Record<string, unknown>;
-  return typeof code === 'string' && code !== '' && typeof message === 'string' && message !== '';
+function isNonEmptyString(value: unknown): value is string {
+  return typeof value === 'string' && value !== '';
 }
 
-/** Message gốc của service chưa dùng định dạng chuẩn, rút gọn để đưa vào `details` khi cần dò lỗi. */
-export function readLegacyUpstreamMessage(value: unknown): string | undefined {
-  if (typeof value !== 'object' || value === null || Array.isArray(value)) return undefined;
-  const { message } = value as Record<string, unknown>;
-  return typeof message === 'string' && message !== '' ? reflect(message) : undefined;
+/**
+ * Body lỗi chuẩn đầy đủ (spec ERR-001 FR-001): `statusCode` khớp status HTTP của response, `code`, `message`,
+ * `requestId` là chuỗi không rỗng; `details` (nếu có) là mảng các mục `{ field?, code, message }`.
+ * Body thiếu trường hoặc lệch status không được coi là hợp lệ nên không bao giờ được chuyển tiếp nguyên văn.
+ */
+export function isApiErrorEnvelope(value: unknown, httpStatus: number): boolean {
+  if (typeof value !== 'object' || value === null || Array.isArray(value)) return false;
+  const body = value as Record<string, unknown>;
+  if (
+    body.statusCode !== httpStatus ||
+    !isNonEmptyString(body.code) ||
+    !isNonEmptyString(body.message) ||
+    !isNonEmptyString(body.requestId)
+  )
+    return false;
+  if (body.details === undefined) return true;
+  return (
+    Array.isArray(body.details) &&
+    body.details.every((item: unknown) => {
+      if (typeof item !== 'object' || item === null) return false;
+      const detail = item as Record<string, unknown>;
+      return (
+        isNonEmptyString(detail.code) &&
+        isNonEmptyString(detail.message) &&
+        (detail.field === undefined || typeof detail.field === 'string')
+      );
+    })
+  );
 }
 
 export function describeUpstreamErrorStatus(

@@ -59,42 +59,62 @@ describe('Gateway upstream error bodies (ERR-001 FR-011)', () => {
     ['nginx HTML', 502, '<html><body>502 Bad Gateway nginx/1.24</body></html>'],
     ['empty body', 500, ''],
     ['plain text', 503, 'upstream timed out'],
-  ])(
-    'replaces a %s error with the shared format and keeps the status',
-    async (_name, status, data) => {
-      const { proxy } = createProxy(of({ status, headers: { 'content-type': 'text/html' }, data }));
-      const { headers, response, asResponse } = createResponse();
-      await proxy.forward(createRequest('GET', '/api/problems'), asResponse);
-      expect(response.status).toHaveBeenCalledWith(status);
-      const [sent] = response.send.mock.calls[0] as [Record<string, unknown>];
-      expect(sent).toMatchObject({
-        statusCode: status,
-        code: 'UPSTREAM_INVALID_RESPONSE',
-        requestId: '5f2b1c3e-1a2b-4c3d-8e4f-5a6b7c8d9e0f',
-      });
-      expect(sent.message).toMatch(/dịch vụ Learning/i);
-      expect(sent.message).toContain(String(status));
-      expect(sent).not.toHaveProperty('details');
-      expect(JSON.stringify(sent)).not.toMatch(/nginx|<html>|timed out|internal:/);
-      expect(headers['content-type']).toBe('application/json; charset=utf-8');
-      expect(headers['x-request-id']).toBe('5f2b1c3e-1a2b-4c3d-8e4f-5a6b7c8d9e0f');
-    },
-  );
+  ])('replaces a %s error with 502 UPSTREAM_INVALID_RESPONSE', async (_name, status, data) => {
+    const { proxy } = createProxy(of({ status, headers: { 'content-type': 'text/html' }, data }));
+    const { headers, response, asResponse } = createResponse();
+    await proxy.forward(createRequest('GET', '/api/problems'), asResponse);
+    expect(response.status).toHaveBeenCalledWith(502);
+    const [sent] = response.send.mock.calls[0] as [Record<string, unknown>];
+    expect(sent).toMatchObject({
+      statusCode: 502,
+      code: 'UPSTREAM_INVALID_RESPONSE',
+      requestId: '5f2b1c3e-1a2b-4c3d-8e4f-5a6b7c8d9e0f',
+    });
+    expect(sent.message).toMatch(/dịch vụ Learning/i);
+    expect(sent.message).toContain(String(status));
+    expect(sent).not.toHaveProperty('details');
+    expect(JSON.stringify(sent)).not.toMatch(/nginx|<html>|timed out|internal:/);
+    expect(headers['content-type']).toBe('application/json; charset=utf-8');
+    expect(headers['x-request-id']).toBe('5f2b1c3e-1a2b-4c3d-8e4f-5a6b7c8d9e0f');
+  });
 
-  it('replaces a legacy {statusCode,message} body but keeps the old text in details', async () => {
+  it('turns an upstream 404 HTML page into 502, not 404 (spec: sai định dạng thì 502)', async () => {
+    const { proxy } = createProxy(of({ status: 404, headers: {}, data: '<html>Not Found</html>' }));
+    const { response, asResponse } = createResponse();
+    await proxy.forward(createRequest('GET', '/api/problems'), asResponse);
+    expect(response.status).toHaveBeenCalledWith(502);
+  });
+
+  it('never copies upstream text, even from a legacy {statusCode,message} body', async () => {
+    const hostile =
+      'connect ECONNREFUSED postgres://admin:S3cret@db.internal:5432/identity at /srv/app/dist/main.js:1';
     const { proxy } = createProxy(
-      of({ status: 401, headers: {}, data: { statusCode: 401, message: 'Authentication failed' } }),
+      of({ status: 500, headers: {}, data: { statusCode: 500, message: hostile } }),
     );
     const { response, asResponse } = createResponse();
     await proxy.forward(createRequest('POST', '/api/auth/login'), asResponse);
-    expect(response.status).toHaveBeenCalledWith(401);
-    expect(response.send).toHaveBeenCalledWith(
-      expect.objectContaining({
-        statusCode: 401,
-        code: 'UPSTREAM_INVALID_RESPONSE',
-        details: [{ code: 'UPSTREAM_MESSAGE', message: 'Authentication failed' }],
-      }),
+    expect(response.status).toHaveBeenCalledWith(502);
+    const [sent] = response.send.mock.calls[0] as [Record<string, unknown>];
+    expect(sent).toMatchObject({ statusCode: 502, code: 'UPSTREAM_INVALID_RESPONSE' });
+    expect(sent).not.toHaveProperty('details');
+    expect(JSON.stringify(sent)).not.toMatch(
+      /postgres|S3cret|db\.internal|\/srv\/app|ECONNREFUSED/,
     );
+  });
+
+  it.each([
+    ['thiếu requestId', { statusCode: 403, code: 'USER_FORBIDDEN', message: 'Bạn cần quyền.' }],
+    ['thiếu statusCode', { code: 'USER_FORBIDDEN', message: 'Bạn cần quyền.', requestId: 'svc-1' }],
+    [
+      'statusCode lệch status HTTP',
+      { statusCode: 200, code: 'USER_FORBIDDEN', message: 'Bạn cần quyền.', requestId: 'svc-1' },
+    ],
+  ])('wraps an incomplete envelope (%s) instead of forwarding it', async (_name, data) => {
+    const { proxy } = createProxy(of({ status: 403, headers: {}, data }));
+    const { response, asResponse } = createResponse();
+    await proxy.forward(createRequest('GET', '/api/users'), asResponse);
+    expect(response.status).toHaveBeenCalledWith(502);
+    expect(response.send).not.toHaveBeenCalledWith(data);
   });
 
   it.each([200, 201, 204, 302, 304])('does not touch a %s response', async (status) => {

@@ -12,11 +12,10 @@ import {
   describeUpstreamErrorStatus,
   GATEWAY_ERROR_CODES,
   isApiErrorEnvelope,
-  readLegacyUpstreamMessage,
 } from '@gateway/application/errors/gateway-errors';
 import type { UpstreamService } from '@gateway/application/errors/gateway-errors';
 import { HttpService } from '@nestjs/axios';
-import { Injectable, Logger } from '@nestjs/common';
+import { HttpStatus, Injectable, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { isAxiosError } from 'axios';
 import type { AxiosRequestConfig } from 'axios';
@@ -148,20 +147,20 @@ export class GatewayProxyService {
         }
         if (!mobile) response.setHeader('set-cookie', cookies as string[]);
       }
-      // FR-011: lỗi của service đã đúng định dạng chuẩn thì giữ nguyên; ngược lại (HTML của nginx, chuỗi thô,
-      // body rỗng, định dạng cũ) Gateway thay bằng lỗi chuẩn và giữ nguyên status 4xx/5xx.
-      if (upstream.status >= 400 && !isApiErrorEnvelope(upstream.data)) {
+      // FR-011: lỗi của service đúng định dạng chuẩn đầy đủ thì giữ nguyên. Mọi lỗi khác (HTML của nginx, chuỗi
+      // thô, body rỗng, định dạng cũ, thiếu trường, statusCode lệch) thành 502 UPSTREAM_INVALID_RESPONSE và
+      // KHÔNG chuyển tiếp bất kỳ phần nào của body gốc, vì body đó có thể chứa nội dung nội bộ.
+      if (upstream.status >= 400 && !isApiErrorEnvelope(upstream.data, upstream.status)) {
         const requestId = resolveRequestId(request);
-        const legacy = readLegacyUpstreamMessage(upstream.data);
         response.setHeader('content-type', 'application/json; charset=utf-8');
         response.setHeader('x-request-id', requestId);
-        if (learning || submission) this.logger.log({ requestId, status: upstream.status });
-        response.status(upstream.status).send(
+        // Chỉ ghi status và tên service; nội dung body gốc không được ghi log hay trả về.
+        this.logger.warn({ requestId, service: target.service, upstreamStatus: upstream.status });
+        response.status(HttpStatus.BAD_GATEWAY).send(
           buildApiError({
-            status: upstream.status,
+            status: HttpStatus.BAD_GATEWAY,
             code: GATEWAY_ERROR_CODES.upstreamInvalidResponse,
             message: describeUpstreamErrorStatus(target.service, upstream.status, requestId),
-            details: legacy ? [{ code: 'UPSTREAM_MESSAGE', message: legacy }] : undefined,
             requestId,
           }),
         );
