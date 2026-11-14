@@ -1,7 +1,10 @@
-import { Logger, ValidationPipe } from '@nestjs/common';
+import { Logger } from '@nestjs/common';
 import type { INestApplication } from '@nestjs/common';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import helmet from 'helmet';
+
+import { AllExceptionsFilter } from './http/errors/all-exceptions.filter';
+import { createValidationPipe } from './http/errors/validation-errors';
 
 interface BootstrapOptions {
   serviceName: string;
@@ -17,13 +20,8 @@ export async function configureHttpApp(
 ): Promise<void> {
   app.use(helmet());
   app.enableShutdownHooks();
-  app.useGlobalPipes(
-    new ValidationPipe({
-      transform: true,
-      whitelist: true,
-      forbidNonWhitelisted: true,
-    }),
-  );
+  app.useGlobalPipes(createValidationPipe());
+  app.useGlobalFilters(new AllExceptionsFilter());
 
   if (options.globalPrefix) {
     app.setGlobalPrefix(options.globalPrefix);
