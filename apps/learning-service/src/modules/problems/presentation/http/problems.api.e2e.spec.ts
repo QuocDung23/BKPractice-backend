@@ -155,7 +155,9 @@ describe('Problems API end-to-end contract', () => {
     const published = await post(`/api/problems/${id}/publish`, {});
     expect(published.status).toBe(400);
 
-    const issues = asArray(published.body.issues).map((issue) => asObject(issue).code);
+    expect(published.body.code).toBe('PROBLEM_NOT_READY_TO_PUBLISH');
+    expect(typeof published.body.requestId).toBe('string');
+    const issues = asArray(published.body.details).map((issue) => asObject(issue).code);
     expect(issues).toContain('ENABLED_LANGUAGE_REQUIRED');
 
     const managed = await send(`/api/problems/managed/${id}`, { headers: adminHeaders() });

@@ -211,7 +211,13 @@ describe('Problems API security contract', () => {
 
     expect(response.status).toBe(400);
     expect(JSON.stringify(response.body)).not.toContain(HIDDEN_EXPECTED_OUTPUT);
-    expect(Object.keys(response.body).sort()).toEqual(['issues', 'message', 'statusCode']);
+    expect(Object.keys(response.body).sort()).toEqual([
+      'code',
+      'details',
+      'message',
+      'requestId',
+      'statusCode',
+    ]);
   });
 });
 

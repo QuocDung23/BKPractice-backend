@@ -555,7 +555,9 @@ describeIntegration('Personal progress API (PostgreSQL, pool=1)', () => {
       .mockRejectedValueOnce(new Error('postgres://private-secret'));
     const response = await call('/api/progress/me/problems');
     expect(response.status).toBe(500);
-    expect(await response.json()).toEqual({ statusCode: 500, message: 'Internal server error' });
+    const body = (await response.json()) as Record<string, unknown>;
+    expect(body).toMatchObject({ statusCode: 500, code: 'INTERNAL_ERROR' });
+    expect(JSON.stringify(body)).not.toContain('private-secret');
     expect(errorLog).toHaveBeenCalledWith('Unexpected error while reading personal progress');
     expect(JSON.stringify(errorLog.mock.calls)).not.toContain('private-secret');
   });
