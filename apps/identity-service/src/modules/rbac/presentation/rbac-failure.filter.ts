@@ -1,30 +1,24 @@
+import { sendApiError } from '@app/common';
 import { ArgumentsHost, Catch, ExceptionFilter, Logger } from '@nestjs/common';
 import type { Request, Response } from 'express';
 
 import { RbacFailure } from '@/modules/rbac/domain';
+import { describeRbacFailure } from '@/modules/rbac/presentation/rbac-errors';
 
 @Catch(RbacFailure)
 export class RbacFailureFilter implements ExceptionFilter {
   private readonly logger = new Logger(RbacFailureFilter.name);
 
   catch(error: RbacFailure, host: ArgumentsHost): void {
-    const request = host.switchToHttp().getRequest<Request>();
+    const http = host.switchToHttp();
+    const request = http.getRequest<Request>();
+    const described = describeRbacFailure(error);
+    const body = sendApiError({ request, response: http.getResponse<Response>() }, described);
     this.logger.warn({
       operation: request.method,
       outcome: error.code,
-      requestId: request.header('x-request-id'),
+      code: described.code,
+      requestId: body.requestId,
     });
-    const failures = {
-      forbidden: [403, 'Forbidden'],
-      invalid_role: [400, 'Invalid role'],
-      user_not_found: [404, 'User not found'],
-      last_admin: [409, 'The last administrator cannot be removed'],
-    } as const;
-    const [status, message] = failures[error.code];
-    host
-      .switchToHttp()
-      .getResponse<Response>()
-      .status(status)
-      .json({ statusCode: status, message });
   }
 }

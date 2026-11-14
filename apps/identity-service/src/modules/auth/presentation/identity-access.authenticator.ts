@@ -1,7 +1,7 @@
 import { isAllowedBrowserOrigin, readCookie, verifyCsrfToken } from '@app/common';
 import { BK_ACCESS_COOKIE_NAME, BK_CSRF_COOKIE_NAME } from '@app/contracts';
 import type { BkAccessClaims } from '@app/contracts';
-import { ForbiddenException, Inject, Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import type { Request } from 'express';
 
@@ -12,6 +12,7 @@ import {
   type RefreshSessionRepository,
 } from '@/modules/auth/application';
 import { AuthFailure } from '@/modules/auth/domain';
+import { AUTH_HTTP_ERRORS } from '@/modules/auth/presentation/auth-http-errors';
 import { isRoleName, type RoleName } from '@/modules/rbac/domain';
 
 const unsafeMethods = new Set(['POST', 'PUT', 'PATCH', 'DELETE']);
@@ -49,7 +50,7 @@ export class IdentityAccessAuthenticator {
           this.config.getOrThrow<string>('CORS_ORIGINS'),
         )
       )
-        throw new ForbiddenException('Untrusted request origin');
+        throw AUTH_HTTP_ERRORS.originNotAllowed();
       if (
         !verifyCsrfToken(
           claims.sid,
@@ -58,7 +59,7 @@ export class IdentityAccessAuthenticator {
           this.config.getOrThrow<string>('JWT_ACCESS_SECRET'),
         )
       )
-        throw new ForbiddenException('Invalid CSRF token');
+        throw AUTH_HTTP_ERRORS.csrfInvalid();
     }
     return { ...claims, roles };
   }

@@ -21,7 +21,10 @@ function run(code: AuthFailureCode) {
   };
   const host = {
     switchToHttp: () => ({
-      getRequest: () => ({ method: 'POST', headers: { 'x-request-id': 'req-12345678' } }),
+      getRequest: () => ({
+        method: 'POST',
+        headers: { 'x-request-id': '0b8f3a52-6c1d-4e7a-9b2f-3d5e8a1c4f70' },
+      }),
       getResponse: () => response,
     }),
   } as unknown as ArgumentsHost;
@@ -52,7 +55,7 @@ describe('AuthFailureFilter', () => {
         statusCode: status,
         code,
         message: expect.any(String) as string,
-        requestId: 'req-12345678',
+        requestId: '0b8f3a52-6c1d-4e7a-9b2f-3d5e8a1c4f70',
       });
     },
   );

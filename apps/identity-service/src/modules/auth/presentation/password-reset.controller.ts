@@ -2,7 +2,6 @@ import { isAllowedBrowserOrigin } from '@app/common';
 import {
   Body,
   Controller,
-  ForbiddenException,
   HttpCode,
   HttpStatus,
   Post,
@@ -20,6 +19,7 @@ import {
   SendPasswordResetOtp,
   VerifyPasswordResetOtp,
 } from '@/modules/auth/application';
+import { AUTH_HTTP_ERRORS } from '@/modules/auth/presentation/auth-http-errors';
 import { PasswordResetFailureFilter } from '@/modules/auth/presentation/password-reset-failure.filter';
 import {
   PasswordResetTokenResponseDto,
@@ -89,6 +89,6 @@ export class PasswordResetController {
       isAllowedBrowserOrigin(origin, referer, `${request.protocol}://${host}`)
     )
       return;
-    throw new ForbiddenException('Untrusted request origin');
+    throw AUTH_HTTP_ERRORS.originNotAllowed();
   }
 }
