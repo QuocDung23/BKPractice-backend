@@ -7,13 +7,17 @@ import { GET_PUBLIC_PROBLEM_PORT_IN } from '@learning/modules/problems/applicati
 import { HOLD_PROBLEM_PORT_IN } from '@learning/modules/problems/application/ports/in/hold-problem.port.in';
 import { LIST_MANAGED_PROBLEMS_PORT_IN } from '@learning/modules/problems/application/ports/in/list-managed-problems.port.in';
 import { LIST_PUBLIC_PROBLEMS_PORT_IN } from '@learning/modules/problems/application/ports/in/list-public-problems.port.in';
+import { LIST_TOPICS_PORT_IN } from '@learning/modules/problems/application/ports/in/list-topics.port.in';
 import { PREVIEW_PROBLEM_PORT_IN } from '@learning/modules/problems/application/ports/in/preview-problem.port.in';
 import { PUBLISH_PROBLEM_PORT_IN } from '@learning/modules/problems/application/ports/in/publish-problem.port.in';
 import { REPUBLISH_PROBLEM_PORT_IN } from '@learning/modules/problems/application/ports/in/republish-problem.port.in';
 import { RESTORE_PROBLEM_PORT_IN } from '@learning/modules/problems/application/ports/in/restore-problem.port.in';
 import { SOFT_DELETE_PROBLEM_PORT_IN } from '@learning/modules/problems/application/ports/in/soft-delete-problem.port.in';
 import { UPDATE_PROBLEM_PORT_IN } from '@learning/modules/problems/application/ports/in/update-problem.port.in';
-import type { TopicTagReader } from '@learning/modules/problems/application/ports/out/topic-tag-reader.port.out';
+import type {
+  TopicCatalogEntry,
+  TopicTagReader,
+} from '@learning/modules/problems/application/ports/out/topic-tag-reader.port.out';
 import type { TransactionRunner } from '@learning/modules/problems/application/ports/out/transaction-runner.port.out';
 import { ProblemResultMapper } from '@learning/modules/problems/application/results/problem-result.mapper';
 import { ProblemAuthorizationService } from '@learning/modules/problems/application/services/problem-authorization.service';
@@ -23,6 +27,7 @@ import { GetPublicProblemUseCase } from '@learning/modules/problems/application/
 import { HoldProblemUseCase } from '@learning/modules/problems/application/use-cases/hold-problem.use-case';
 import { ListManagedProblemsUseCase } from '@learning/modules/problems/application/use-cases/list-managed-problems.use-case';
 import { ListPublicProblemsUseCase } from '@learning/modules/problems/application/use-cases/list-public-problems.use-case';
+import { ListTopicsUseCase } from '@learning/modules/problems/application/use-cases/list-topics.use-case';
 import { PreviewProblemUseCase } from '@learning/modules/problems/application/use-cases/preview-problem.use-case';
 import { PublishProblemUseCase } from '@learning/modules/problems/application/use-cases/publish-problem.use-case';
 import { RepublishProblemUseCase } from '@learning/modules/problems/application/use-cases/republish-problem.use-case';
@@ -50,6 +55,7 @@ import { ManagedProblemsController } from '@learning/modules/problems/presentati
 import { ProblemRequestMapper } from '@learning/modules/problems/presentation/http/mappers/problem-request.mapper';
 import { ProblemResponseMapper } from '@learning/modules/problems/presentation/http/mappers/problem-response.mapper';
 import { PublicProblemsController } from '@learning/modules/problems/presentation/http/public-problems.controller';
+import { PublicTopicsController } from '@learning/modules/problems/presentation/http/public-topics.controller';
 import {
   PROBLEM_REPOSITORY,
   TEST_CASE_REPOSITORY,
@@ -311,6 +317,11 @@ export class InMemoryTestCaseRepository implements TestCaseRepository {
 }
 
 export class InMemoryTopicTagReader implements TopicTagReader {
+  private catalog: TopicCatalogEntry[] = [
+    { id: 'topic-arrays', name: 'Mảng' },
+    { id: 'topic-sorting', name: 'Sắp xếp' },
+  ];
+
   async findMissingTopicIds(): Promise<readonly string[]> {
     return [];
   }
@@ -326,6 +337,14 @@ export class InMemoryTopicTagReader implements TopicTagReader {
   async findTagNames(ids: readonly string[]): Promise<ReadonlyMap<string, string>> {
     return new Map(ids.map((id) => [id, `tag-${id}`]));
   }
+
+  async listTopics(): Promise<readonly TopicCatalogEntry[]> {
+    return this.catalog;
+  }
+
+  setCatalog(catalog: readonly TopicCatalogEntry[]): void {
+    this.catalog = [...catalog];
+  }
 }
 
 export class InlineTransactionRunner implements TransactionRunner {
@@ -339,6 +358,7 @@ export interface ProblemsTestApp {
   readonly baseUrl: string;
   readonly problems: InMemoryProblemRepository;
   readonly testCases: InMemoryTestCaseRepository;
+  readonly topics: InMemoryTopicTagReader;
   readonly close: () => Promise<void>;
 }
 
@@ -349,7 +369,7 @@ export async function createProblemsTestApp(): Promise<ProblemsTestApp> {
   const transactions = new InlineTransactionRunner();
 
   const moduleRef = await Test.createTestingModule({
-    controllers: [ManagedProblemsController, PublicProblemsController],
+    controllers: [ManagedProblemsController, PublicProblemsController, PublicTopicsController],
     providers: [
       ProblemAuthorizationService,
       ProblemResultMapper,
@@ -374,6 +394,7 @@ export async function createProblemsTestApp(): Promise<ProblemsTestApp> {
       ListManagedProblemsUseCase,
       GetPublicProblemUseCase,
       ListPublicProblemsUseCase,
+      ListTopicsUseCase,
       PreviewProblemUseCase,
       { provide: PROBLEM_REPOSITORY, useValue: problems },
       { provide: TEST_CASE_REPOSITORY, useValue: testCases },
@@ -390,6 +411,7 @@ export async function createProblemsTestApp(): Promise<ProblemsTestApp> {
       { provide: LIST_MANAGED_PROBLEMS_PORT_IN, useExisting: ListManagedProblemsUseCase },
       { provide: GET_PUBLIC_PROBLEM_PORT_IN, useExisting: GetPublicProblemUseCase },
       { provide: LIST_PUBLIC_PROBLEMS_PORT_IN, useExisting: ListPublicProblemsUseCase },
+      { provide: LIST_TOPICS_PORT_IN, useExisting: ListTopicsUseCase },
       { provide: PREVIEW_PROBLEM_PORT_IN, useExisting: PreviewProblemUseCase },
     ],
   }).compile();
@@ -411,6 +433,7 @@ export async function createProblemsTestApp(): Promise<ProblemsTestApp> {
     baseUrl: `http://127.0.0.1:${address.port}`,
     problems,
     testCases,
+    topics: topicTags,
     close: () => app.close(),
   };
 }

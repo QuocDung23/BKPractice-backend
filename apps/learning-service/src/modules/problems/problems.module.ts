@@ -12,6 +12,7 @@ import { HOLD_PROBLEM_PORT_IN } from './application/ports/in/hold-problem.port.i
 import { LIST_MANAGED_PROBLEMS_PORT_IN } from './application/ports/in/list-managed-problems.port.in';
 import { LIST_PUBLIC_PROBLEMS_PORT_IN } from './application/ports/in/list-public-problems.port.in';
 import { LIST_TEST_CASES_PORT_IN } from './application/ports/in/list-test-cases.port.in';
+import { LIST_TOPICS_PORT_IN } from './application/ports/in/list-topics.port.in';
 import { PREVIEW_PROBLEM_PORT_IN } from './application/ports/in/preview-problem.port.in';
 import { PUBLISH_PROBLEM_PORT_IN } from './application/ports/in/publish-problem.port.in';
 import { REMOVE_HARNESS_PORT_IN } from './application/ports/in/remove-harness.port.in';
@@ -37,6 +38,7 @@ import { HoldProblemUseCase } from './application/use-cases/hold-problem.use-cas
 import { ListManagedProblemsUseCase } from './application/use-cases/list-managed-problems.use-case';
 import { ListPublicProblemsUseCase } from './application/use-cases/list-public-problems.use-case';
 import { ListTestCasesUseCase } from './application/use-cases/list-test-cases.use-case';
+import { ListTopicsUseCase } from './application/use-cases/list-topics.use-case';
 import { PreviewProblemUseCase } from './application/use-cases/preview-problem.use-case';
 import { PublishProblemUseCase } from './application/use-cases/publish-problem.use-case';
 import { RemoveHarnessUseCase } from './application/use-cases/remove-harness.use-case';
@@ -76,6 +78,7 @@ import { ManagedTestCasesController } from './presentation/http/managed-test-cas
 import { ProblemRequestMapper } from './presentation/http/mappers/problem-request.mapper';
 import { ProblemResponseMapper } from './presentation/http/mappers/problem-response.mapper';
 import { PublicProblemsController } from './presentation/http/public-problems.controller';
+import { PublicTopicsController } from './presentation/http/public-topics.controller';
 import {
   HARNESS_REPOSITORY,
   PROBLEM_REPOSITORY,
@@ -102,6 +105,7 @@ import { ProblemsController } from './problems.controller';
     ManagedProblemsController,
     ManagedTestCasesController,
     PublicProblemsController,
+    PublicTopicsController,
     ProblemsController,
   ],
   providers: [
@@ -129,6 +133,7 @@ import { ProblemsController } from './problems.controller';
     ListManagedProblemsUseCase,
     ListPublicProblemsUseCase,
     ListTestCasesUseCase,
+    ListTopicsUseCase,
     PreviewProblemUseCase,
     PublishProblemUseCase,
     RemoveHarnessUseCase,
@@ -166,6 +171,7 @@ import { ProblemsController } from './problems.controller';
     { provide: LIST_MANAGED_PROBLEMS_PORT_IN, useExisting: ListManagedProblemsUseCase },
     { provide: LIST_PUBLIC_PROBLEMS_PORT_IN, useExisting: ListPublicProblemsUseCase },
     { provide: LIST_TEST_CASES_PORT_IN, useExisting: ListTestCasesUseCase },
+    { provide: LIST_TOPICS_PORT_IN, useExisting: ListTopicsUseCase },
     { provide: PREVIEW_PROBLEM_PORT_IN, useExisting: PreviewProblemUseCase },
     { provide: PUBLISH_PROBLEM_PORT_IN, useExisting: PublishProblemUseCase },
     { provide: REMOVE_HARNESS_PORT_IN, useExisting: RemoveHarnessUseCase },

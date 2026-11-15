@@ -1,4 +1,7 @@
-import type { TopicTagReader } from '@learning/modules/problems/application/ports/out/topic-tag-reader.port.out';
+import type {
+  TopicCatalogEntry,
+  TopicTagReader,
+} from '@learning/modules/problems/application/ports/out/topic-tag-reader.port.out';
 import { Injectable } from '@nestjs/common';
 
 import { TypeOrmTransactionContext } from './typeorm-transaction-context';
@@ -29,6 +32,14 @@ export class TopicTagTypeOrmReader implements TopicTagReader {
 
   async findTagNames(ids: readonly string[]): Promise<ReadonlyMap<string, string>> {
     return this.findNames('tags', ids);
+  }
+
+  async listTopics(): Promise<readonly TopicCatalogEntry[]> {
+    const rows: NameRow[] = await this.transactionContext
+      .getManager()
+      .query('SELECT "id", "name" FROM "topics" ORDER BY "name" ASC');
+
+    return rows.map((row) => ({ id: row.id, name: row.name }));
   }
 
   private async findMissing(
