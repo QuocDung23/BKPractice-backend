@@ -62,3 +62,47 @@ jobs:
           labels: |
             org.opencontainers.image.source=https://github.com/${{ github.repository }}
             org.opencontainers.image.revision=${{ github.sha }}
+
+  deploy:
+    needs: publish
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-24.04
+    environment: production
+    concurrency:
+      group: bkpractice-production
+      cancel-in-progress: false
+    permissions:
+      contents: read
+    steps:
+      - name: Configure pinned production SSH access
+        env:
+          PROD_SSH_HOST: ${{ secrets.PROD_SSH_HOST }}
+          PROD_SSH_KNOWN_HOSTS: ${{ secrets.PROD_SSH_KNOWN_HOSTS }}
+          PROD_SSH_PORT: ${{ secrets.PROD_SSH_PORT }}
+          PROD_SSH_PRIVATE_KEY: ${{ secrets.PROD_SSH_PRIVATE_KEY }}
+          PROD_SSH_USER: ${{ secrets.PROD_SSH_USER }}
+        run: |
+          set -Eeuo pipefail
+          for name in PROD_SSH_HOST PROD_SSH_KNOWN_HOSTS PROD_SSH_PORT PROD_SSH_PRIVATE_KEY PROD_SSH_USER; do
+            [[ -n "${!name}" ]] || { echo "Missing production environment secret: $name" >&2; exit 1; }
+          done
+          install -d -m 700 "$HOME/.ssh"
+          printf '%s\n' "$PROD_SSH_PRIVATE_KEY" > "$HOME/.ssh/id_ed25519"
+          printf '%s\n' "$PROD_SSH_KNOWN_HOSTS" > "$HOME/.ssh/known_hosts"
+          chmod 600 "$HOME/.ssh/id_ed25519"
+
+      - name: Deploy published commit SHA
+        env:
+          PROD_SSH_HOST: ${{ secrets.PROD_SSH_HOST }}
+          PROD_SSH_PORT: ${{ secrets.PROD_SSH_PORT }}
+          PROD_SSH_USER: ${{ secrets.PROD_SSH_USER }}
+        run: |
+          ssh \
+            -i "$HOME/.ssh/id_ed25519" \
+            -p "$PROD_SSH_PORT" \
+            -o BatchMode=yes \
+            -o IdentitiesOnly=yes \
+            -o StrictHostKeyChecking=yes \
+            -o UserKnownHostsFile="$HOME/.ssh/known_hosts" \
+            "$PROD_SSH_USER@$PROD_SSH_HOST" \
+            "sudo /usr/local/sbin/bkpractice-deploy '${{ github.sha }}'"
