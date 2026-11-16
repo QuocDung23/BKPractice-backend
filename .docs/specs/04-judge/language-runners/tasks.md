@@ -33,27 +33,41 @@ Các task dưới đây là phân rã thực thi của FR/AC trong spec. Chỉ �
 
 ### A. Contract, registry và cấu hình tin cậy
 
-- [ ] **JDG002-T01 — Chốt toolchain:** quyết định phiên bản compiler/runtime, image tags, flags, Java entrypoint và Python syntax-check; ghi nguồn quyết định vào spec/vận hành.
-- [ ] **JDG002-T02 — Chốt giới hạn đầu vào/diagnostic:** thống nhất source size và diagnostic byte limit với JDG-001/SUB-002; không đặt số tùy ý.
-- [ ] **JDG002-T03 — Đối chiếu catalog:** xác nhận `c`, `cpp`, `java`, `python` đồng nhất giữa contract, Submission/Learning, registry và Docker images.
-- [ ] **JDG002-T04 — Registry whitelist:** bảo đảm mỗi language map đúng adapter; unknown/unsupported language trả lỗi đã chốt trước khi gọi Sandbox.
-- [ ] **JDG002-T05 — Trusted execution plan:** adapter tự cấp filename, image, compile/execute argv, working directory và artifact path; không ghép dữ liệu người dùng vào shell command/flags/path.
+- [x] **JDG002-T01 — Chốt toolchain:** quyết định phiên bản compiler/runtime, image tags, flags, Java entrypoint và Python syntax-check; ghi nguồn quyết định vào spec/vận hành.
+      Đã chốt tại spec v1.0, D-08.1…D-08.3.
+- [x] **JDG002-T02 — Chốt giới hạn đầu vào/diagnostic:** thống nhất source size và diagnostic byte limit với JDG-001/SUB-002; không đặt số tùy ý.
+      Đã chốt tại D-08.5 (1 MiB; trần output của JDG-005).
+- [x] **JDG002-T03 — Đối chiếu catalog:** xác nhận `c`, `cpp`, `java`, `python` đồng nhất giữa contract, Submission/Learning, registry và Docker images.
+      `SUPPORTED_LANGUAGES` trong `libs/contracts` là nguồn chung; `runner.registry.spec.ts` duyệt đúng danh mục này; `docker/judge/` có đủ bốn thư mục (2026-11-16).
+- [x] **JDG002-T04 — Registry whitelist:** bảo đảm mỗi language map đúng adapter; unknown/unsupported language trả lỗi đã chốt trước khi gọi Sandbox.
+      `runner.registry.spec.ts`; `UnsupportedLanguageError` (2026-11-16).
+- [x] **JDG002-T05 — Trusted execution plan:** adapter tự cấp filename, image, compile/execute argv, working directory và artifact path; không ghép dữ liệu người dùng vào shell command/flags/path.
+      `judge.engine.spec.ts` › runner trust boundary (2026-11-16).
 
 ### B. Adapter theo ngôn ngữ
 
-- [ ] **JDG002-T06 — C adapter:** triển khai/đối chiếu source filename, compile flags, artifact và execute argv theo contract đã duyệt; compile một lần cho request khi có thể.
-- [ ] **JDG002-T07 — C++ adapter:** tương tự C, với compiler standard và flags đã duyệt; kiểm tra filename/entrypoint cố định.
-- [ ] **JDG002-T08 — Java adapter:** chốt public class/file naming, `javac` invocation, classpath và `java` entrypoint; không nhận JVM args/classpath từ payload.
-- [ ] **JDG002-T09 — Python adapter:** chạy syntax check nếu được chốt, sau đó isolated interpreter mode; không tự cài package hoặc truy cập mạng.
+- [x] **JDG002-T06 — C adapter:** triển khai/đối chiếu source filename, compile flags, artifact và execute argv theo contract đã duyệt; compile một lần cho request khi có thể.
+      `runner.registry.spec.ts` đối chiếu bảng contract.
+- [x] **JDG002-T07 — C++ adapter:** tương tự C, với compiler standard và flags đã duyệt; kiểm tra filename/entrypoint cố định.
+      `runner.registry.spec.ts` đối chiếu bảng contract.
+- [x] **JDG002-T08 — Java adapter:** chốt public class/file naming, `javac` invocation, classpath và `java` entrypoint; không nhận JVM args/classpath từ payload.
+      `runner.registry.spec.ts` đối chiếu bảng contract.
+- [x] **JDG002-T09 — Python adapter:** chạy syntax check nếu được chốt, sau đó isolated interpreter mode; không tự cài package hoặc truy cập mạng.
+      `runner.registry.spec.ts` + kiểm thử `py_compile` trước execute.
 - [ ] **JDG002-T10 — Image parity:** đồng bộ Dockerfiles với adapter commands/toolchain; pin versions theo policy; build images offline-compatible và không cài dependency trong lúc chấm.
+      CHƯA XONG: `docker/judge/java/Dockerfile` dùng `eclipse-temurin:21-jdk-alpine`, spec ghi `eclipse-temurin:21-jdk`; chờ chủ repo quyết định sửa bên nào.
 - [ ] **JDG002-T11 — Diagnostics:** cắt theo byte limit, loại bỏ host path/source fragment/harness nội bộ, giữ classification đủ dùng; không log raw compiler output.
 - [ ] **JDG002-T12 — Error provenance:** phân biệt compile lỗi source với compiler/image/configuration failure; cung cấp outcome kỹ thuật cho core thay vì tự publish verdict.
+      Một phần: lỗi hạ tầng/language lạ có lỗi định kiểu, thông điệp lạ không lọt vào result; ca image thiếu chờ kiểm thử Docker (T16).
 
 ### C. Kiểm chứng và hoàn tất
 
-- [ ] **JDG002-T13 — Adapter unit tests:** mỗi runner kiểm chứng command plan, filename, artifact, stdin/stdout wiring và diagnostic filtering.
+- [x] **JDG002-T13 — Adapter unit tests:** mỗi runner kiểm chứng command plan, filename, artifact, stdin/stdout wiring và diagnostic filtering.
+      `runner.registry.spec.ts`, `judge.engine.spec.ts` (2026-11-16).
 - [ ] **JDG002-T14 — Language integration tests:** cho từng ngôn ngữ kiểm tra chương trình hợp lệ, syntax/compile error, runtime error và input/output; chạy trong sandbox đã tích hợp.
-- [ ] **JDG002-T15 — Injection tests:** language lạ, source chứa shell metacharacters, filename/path payload và stdin độc hại không làm đổi command/image/host path.
+      Đã viết `language-runners.integration.spec.ts` (opt-in `JUDGE_DOCKER_IT=1`); chưa chạy vì Docker daemon không sẵn sàng ngày 2026-11-16.
+- [x] **JDG002-T15 — Injection tests:** language lạ, source chứa shell metacharacters, filename/path payload và stdin độc hại không làm đổi command/image/host path.
+      `judge.engine.spec.ts`: language lạ, source/stdin chứa metacharacter (2026-11-16).
 - [ ] **JDG002-T16 — Image/toolchain tests:** xác nhận image có đúng binary/version, không phụ thuộc network/package manager runtime; kiểm tra lỗi image thiếu được phân loại là hạ tầng.
 - [ ] **JDG002-T17 — Traceability:** lập bảng FR-001..015 và AC-001..010 → adapter/test/evidence; kiểm tra tương thích FUNCTION/OOP strategies.
 - [ ] **JDG002-T18 — Hoàn tất:** chạy `pnpm lint`, `pnpm typecheck`, `pnpm test`, `pnpm build` theo DoD khi có code; cập nhật plan/tasks/worked entry.
