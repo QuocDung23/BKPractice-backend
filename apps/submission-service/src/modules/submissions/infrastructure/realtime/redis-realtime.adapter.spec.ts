@@ -11,6 +11,7 @@ import { RedisRealtimeAdapter } from './redis-realtime.adapter';
 function client(): jest.Mocked<RedisRealtimeClient> {
   return {
     status: 'ready',
+    on: jest.fn(),
     connect: jest.fn().mockResolvedValue(undefined),
     publish: jest.fn().mockResolvedValue(1),
     quit: jest.fn().mockResolvedValue('OK'),
@@ -59,5 +60,19 @@ describe('RedisRealtimeAdapter', () => {
     expect(logger.warn).toHaveBeenCalledTimes(1);
     expect(logger.warn.mock.calls[0]?.[0]).not.toContain('owner');
     expect(logger.warn.mock.calls[0]?.[0]).not.toContain('secret payload marker');
+  });
+
+  it('handles Redis client error events with one payload-free warning', () => {
+    const redis = client();
+    const logger: jest.Mocked<WarningLogger> = { warn: jest.fn() };
+    new RedisRealtimeAdapter(redis, logger);
+
+    const handleError = redis.on.mock.calls.find(([event]) => event === 'error')?.[1];
+    handleError?.(new Error('connect ECONNREFUSED redis://user:secret@host'));
+    handleError?.(new Error('again'));
+
+    expect(handleError).toBeDefined();
+    expect(logger.warn).toHaveBeenCalledTimes(1);
+    expect(logger.warn).toHaveBeenCalledWith('Redis realtime publisher unavailable');
   });
 });
