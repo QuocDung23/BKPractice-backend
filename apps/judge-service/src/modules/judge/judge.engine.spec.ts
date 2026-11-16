@@ -164,3 +164,94 @@ describe('JudgeEngine runner trust boundary (JDG-002)', () => {
     });
   });
 });
+
+describe('JudgeEngine standard evaluation (JDG-001)', () => {
+  const three: JudgeRequest = {
+    ...request,
+    testCases: [
+      { stdin: 'a', expectedOutput: '1', score: 30 },
+      { stdin: 'b', expectedOutput: '2', score: 30 },
+      { stdin: 'c', expectedOutput: '3', score: 40 },
+    ],
+  };
+
+  it('stops at the first wrong test and reports partial counts and score (AC-011)', async () => {
+    const { sandbox, result } = judgeWith(() => Promise.resolve(outcome()), three);
+    await expect(result).resolves.toMatchObject({
+      status: 'WRONG_ANSWER',
+      passedTests: 1,
+      totalTests: 3,
+      score: 30,
+    });
+    expect(sandbox.executions.map((execution) => execution.stage)).toEqual([
+      'compile',
+      'test-0',
+      'test-1',
+    ]);
+  });
+
+  it('reports ACCEPTED with the measured score and never a default (FR-010)', async () => {
+    const { result } = judgeWith(() => Promise.resolve(outcome()), {
+      ...request,
+      testCases: [{ stdin: '1', expectedOutput: '1', score: 0 }],
+    });
+    await expect(result).resolves.toMatchObject({ status: 'ACCEPTED', score: 0 });
+  });
+
+  it('never turns an empty test set into an accepted result (AC-008)', async () => {
+    const { sandbox, result } = judgeWith(() => Promise.resolve(outcome()), {
+      ...request,
+      testCases: [],
+    });
+    await expect(result).resolves.toMatchObject({ status: 'INTERNAL_ERROR' });
+    expect(sandbox.executions).toHaveLength(0);
+  });
+
+  it('sums execution time only and sends no memory figure (FR-011, FR-012)', async () => {
+    const { result } = judgeWith(
+      (stage) => Promise.resolve(outcome({ runtimeMs: stage === 'compile' ? 900 : 7 })),
+      { ...three, testCases: three.testCases.map((test) => ({ ...test, expectedOutput: '1' })) },
+    );
+    const resolved = await result;
+    expect(resolved.runtimeMs).toBe(21);
+    expect(resolved).not.toHaveProperty('memoryKb');
+  });
+
+  it('accepts a Run without expected output and returns its output (D-02, D-04)', async () => {
+    const { result } = judgeWith(() => Promise.resolve(outcome({ stdout: 'hi\n', stderr: 'w' })), {
+      ...request,
+      mode: 'RUN',
+      testCases: [{ stdin: 'x' }],
+    });
+    await expect(result).resolves.toMatchObject({
+      mode: 'RUN',
+      status: 'ACCEPTED',
+      stdout: 'hi\n',
+      stderr: 'w',
+    });
+  });
+
+  it('never echoes hidden test data or source in the result (AC-006)', async () => {
+    const { result } = judgeWith(() => Promise.resolve(outcome({ stdout: 'nope' })), {
+      ...request,
+      sourceCode: 'SOURCE-MARKER',
+      testCases: [{ stdin: 'STDIN-MARKER', expectedOutput: 'EXPECTED-MARKER', score: 1 }],
+    });
+    const serialized = JSON.stringify(await result);
+    for (const marker of ['SOURCE-MARKER', 'STDIN-MARKER', 'EXPECTED-MARKER'])
+      expect(serialized).not.toContain(marker);
+  });
+
+  it('removes the sandbox workspace path from compile diagnostics (FR-015)', async () => {
+    const { result } = judgeWith(() =>
+      Promise.resolve(
+        outcome({ exitCode: 1, stdout: '', stderr: '/workspace/main.py:3:5: error: bad token\n' }),
+      ),
+    );
+    await expect(result).resolves.toMatchObject({
+      status: 'COMPILE_ERROR',
+      compileOutput: 'main.py:3:5: error: bad token\n',
+      error: { line: 3, column: 5, message: 'bad token' },
+    });
+  });
+});

@@ -24,6 +24,8 @@ export class JudgeEngine {
     let workspace: SandboxWorkspace | undefined;
     try {
       const runner = this.runners.get(request.language);
+      // JDG-001-AC-008: an empty test set is never evidence of a correct solution.
+      if (request.testCases.length === 0) throw new Error('Empty test set');
       const source = request.hiddenHarness
         ? `${request.sourceCode}\n\n${request.hiddenHarness}`
         : request.sourceCode;
@@ -41,7 +43,8 @@ export class JudgeEngine {
           memoryLimitMb: request.memoryLimitMb,
         });
         if (compilation.exitCode !== 0 || compilation.timedOut) {
-          const output = `${compilation.stdout}${compilation.stderr}`;
+          // JDG-001-FR-015: diagnostics must not carry the sandbox workspace path.
+          const output = `${compilation.stdout}${compilation.stderr}`.replaceAll('/workspace/', '');
           return {
             executionId: request.executionId,
             submissionId: request.submissionId,
@@ -103,7 +106,7 @@ export class JudgeEngine {
         request,
         'ACCEPTED',
         passedTests,
-        score || 100,
+        score,
         totalRuntimeMs,
         lastStdout,
         lastStderr,
