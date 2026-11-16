@@ -69,14 +69,14 @@ No configuration change.
   - `pnpm exec jest apps/judge-service --runInBand`: 6 suites passed, 44 tests passed; Docker suites skipped.
   - `pnpm exec eslint "apps/judge-service/**/*.ts"`: clean.
   - `pnpm typecheck`: clean.
+  - `JUDGE_DOCKER_IT=1 pnpm exec jest apps/judge-service --runInBand` (Docker 29.8.2): 8 suites, 67 tests
+    passed, including 12 language-runner cases; no sandbox container left behind.
 - Not verified:
-  - `language-runners.integration.spec.ts` has never been executed: the Docker daemon returned an
-    API error on 2026-11-16. AC-001, AC-004, AC-006 to AC-010 therefore have unit evidence only.
   - Image contents and versions (T16) and the missing-image path (T12).
 
 ## Remaining
 
 - Not done (to do later): T10 image parity (Java base image decision), T11 diagnostics review with
-  real compiler output, T12 missing-image provenance, T14/T16 Docker runs, T17 traceability table,
+  real compiler output, T12 missing-image provenance, T16 image/toolchain checks, T17 traceability table,
   T18 full `pnpm lint/test/build`.
-- Risks: until the Docker suites run, a toolchain or image regression would not be caught.
+- Risks: the Docker suites are opt-in, so a toolchain regression is caught only when someone runs them.

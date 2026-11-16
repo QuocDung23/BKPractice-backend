@@ -23,12 +23,12 @@ const describeDocker = process.env.JUDGE_DOCKER_IT === '1' ? describe : describe
 
 const programs: Record<SupportedLanguage, { echo: string; broken: string; crash: string }> = {
   c: {
-    echo: '#include <stdio.h>\nint main(void){int n; if(scanf("%d",&n)!=1) return 1; printf("%d\n",n); return 0;}',
+    echo: '#include <stdio.h>\nint main(void){int n; if(scanf("%d",&n)!=1) return 1; printf("%d\\n",n); return 0;}',
     broken: 'int main(void){ return 0 }',
     crash: 'int main(void){ return 3; }',
   },
   cpp: {
-    echo: '#include <iostream>\nint main(){int n; std::cin>>n; std::cout<<n<<"\n";}',
+    echo: '#include <iostream>\nint main(){int n; std::cin>>n; std::cout<<n<<"\\n";}',
     broken: 'int main(){ return 0 }',
     crash: '#include <stdexcept>\nint main(){ throw std::runtime_error("boom"); }',
   },

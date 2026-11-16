@@ -64,8 +64,9 @@ Các task dưới đây là phân rã thực thi của FR/AC trong spec. Chỉ �
 
 - [x] **JDG002-T13 — Adapter unit tests:** mỗi runner kiểm chứng command plan, filename, artifact, stdin/stdout wiring và diagnostic filtering.
       `runner.registry.spec.ts`, `judge.engine.spec.ts` (2026-11-16).
-- [ ] **JDG002-T14 — Language integration tests:** cho từng ngôn ngữ kiểm tra chương trình hợp lệ, syntax/compile error, runtime error và input/output; chạy trong sandbox đã tích hợp.
-      Đã viết `language-runners.integration.spec.ts` (opt-in `JUDGE_DOCKER_IT=1`); chưa chạy vì Docker daemon không sẵn sàng ngày 2026-11-16.
+- [x] **JDG002-T14 — Language integration tests:** cho từng ngôn ngữ kiểm tra chương trình hợp lệ, syntax/compile error, runtime error và input/output; chạy trong sandbox đã tích hợp.
+      `language-runners.integration.spec.ts`: 12/12 pass với Docker 29.8.2 và `JUDGE_DOCKER_IT=1`
+      (2026-11-16); mỗi ngôn ngữ: chương trình đúng, lỗi cú pháp, lỗi runtime.
 - [x] **JDG002-T15 — Injection tests:** language lạ, source chứa shell metacharacters, filename/path payload và stdin độc hại không làm đổi command/image/host path.
       `judge.engine.spec.ts`: language lạ, source/stdin chứa metacharacter (2026-11-16).
 - [ ] **JDG002-T16 — Image/toolchain tests:** xác nhận image có đúng binary/version, không phụ thuộc network/package manager runtime; kiểm tra lỗi image thiếu được phân loại là hạ tầng.
