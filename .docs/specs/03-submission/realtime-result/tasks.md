@@ -104,10 +104,11 @@ thực tế; tích một mục nghĩa là mục đó đã hoàn thành và đã 
       nào ngoài danh sách cho phép.
 - [x] Giữ xác thực token khi kết nối và `join` phòng theo `sub`.
 - [x] Từ chối handshake có tham số chủ sở hữu/vai trò/quyền do client gửi; danh tính chỉ lấy từ token.
-- [ ] Áp dụng Redis lease nguyên tử giới hạn 5 kết nối toàn cụm mỗi danh tính; từ chối kết nối
+- [x] Áp dụng Redis lease nguyên tử giới hạn 5 kết nối toàn cụm mỗi danh tính; từ chối kết nối
       thứ sáu, giải phóng lease khi disconnect, từ chối kết nối mới khi Redis không sẵn sàng.
-- [ ] Đóng socket đúng lúc access token hết hạn theo `exp` và giải phóng lease.
-      Đã đóng socket theo `exp` (2026-10-28); phần giải phóng lease chờ đợt Redis lease.
+      `SubmissionSocketLeases` + kiểm thử năm/sáu kết nối trên main (2026-11-16).
+- [x] Đóng socket đúng lúc access token hết hạn theo `exp` và giải phóng lease.
+      Đã đóng socket theo `exp` (2026-10-28); lease được giải phóng trong `handleDisconnect` (main, 2026-11-16).
 - [x] Xác minh Gateway không lưu trữ kết quả nghiệp vụ ở bất kỳ đâu.
 
 ## Messaging
@@ -120,9 +121,12 @@ thực tế; tích một mục nghĩa là mục đó đã hoàn thành và đã 
 - [x] Xác minh nội dung thông báo chỉ gồm public `submissionId`, `kind`, `status`, `ready: true`.
 - [x] Xác minh thông báo không chứa `stdout`, `stderr`, `compileOutput`, `error`, điểm số, Test Case,
       kết quả mong đợi, harness, lệnh biên dịch hay tham số sandbox.
-- [ ] Xác minh Gateway log `warn` một dòng khi Redis không sẵn sàng và tự thử lại khi kết nối trở lại.
-- [ ] Xác minh `subscribe` không bị bỏ sót khi kết nối thất bại lúc khởi động rồi hồi phục.
-- [ ] Xác minh khi Redis hồi phục không có loạt thông báo gộp cho các kết quả phát sinh lúc hỏng.
+- [x] Xác minh Gateway log `warn` một dòng khi Redis không sẵn sàng và tự thử lại khi kết nối trở lại.
+      `SubmissionResultSubscriber.logRedisUnavailable` log một lần cho tới khi `ready`.
+- [x] Xác minh `subscribe` không bị bỏ sót khi kết nối thất bại lúc khởi động rồi hồi phục.
+      Subscriber đăng ký lại ở sự kiện `ready`.
+- [x] Xác minh khi Redis hồi phục không có loạt thông báo gộp cho các kết quả phát sinh lúc hỏng.
+      Pub/sub không lưu; subscriber chỉ chuyển message đang tới.
 - [x] Xác minh không có cơ chế lưu thông báo chưa gửi, để best-effort không biến thành giao có bảo đảm.
       Adapter bỏ thông báo khi lỗi; Gateway chỉ chuyển tiếp message đang tới.
 - [x] Xác minh cả Run và Submit của cùng một người học đều phát thông báo, phân biệt được bằng `kind`.
@@ -130,7 +134,8 @@ thực tế; tích một mục nghĩa là mục đó đã hoàn thành và đã 
 ## Phân quyền
 
 - [x] Xác minh mở kênh thiếu hoặc sai token thì không thiết lập được kênh nào.
-- [ ] Xác minh kênh chỉ nhận thông báo của chủ sở hữu token, không của người khác.
+- [x] Xác minh kênh chỉ nhận thông báo của chủ sở hữu token, không của người khác.
+      Cùng bằng chứng với kiểm thử hai người học.
 - [x] Xác minh không có đường để khách chọn danh tính khác qua tham số chung.
 - [x] Xác minh kênh đóng khi token hết hạn; logout/khóa tài khoản không thu hồi token còn hạn theo ID-001.
 - [x] N/A — không tách quyền theo vai trò cho kênh realtime.
@@ -142,10 +147,13 @@ thực tế; tích một mục nghĩa là mục đó đã hoàn thành và đã 
 - [x] Kiểm thử thông báo KHÔNG chứa `stdout`, `stderr`, `compileOutput`, `error`, điểm số, Test Case,
       harness, lệnh biên dịch hay tham số sandbox.
 - [ ] Kiểm thử Redis dừng hoàn toàn → bản ghi vẫn hoàn tất, vẫn đọc được kết quả qua polling.
-- [ ] Kiểm thử Redis hỏng rồi phục hồi → không có loạt thông báo gộp cho các kết quả phát sinh lúc
+- [x] Kiểm thử Redis hỏng rồi phục hồi → không có loạt thông báo gộp cho các kết quả phát sinh lúc
       hỏng.
-- [ ] Kiểm thử `subscribe` được gọi lại khi kết nối thất bại lúc khởi động rồi hồi phục.
-- [ ] Kiểm thử hai người học, một người nộp bài → kênh của người kia không nhận thông báo.
+      `submission-result.subscriber.spec.ts`: chỉ chuyển message mới sau khi hồi phục (2026-11-16).
+- [x] Kiểm thử `subscribe` được gọi lại khi kết nối thất bại lúc khởi động rồi hồi phục.
+      `submission-result.subscriber.spec.ts` (2026-11-16).
+- [x] Kiểm thử hai người học, một người nộp bài → kênh của người kia không nhận thông báo.
+      `submission-realtime.gateway.spec.ts`: chỉ socket của chủ envelope nhận (2026-11-16).
 - [x] Kiểm thử mở kênh kèm tham số chủ sở hữu/vai trò/quyền → handshake bị từ chối.
 - [x] Kiểm thử mở kênh thiếu hoặc sai token → không có kênh nào được thiết lập.
 - [x] Kiểm thử giao lại cùng một kết quả → không có thông báo thứ hai.
@@ -156,7 +164,8 @@ thực tế; tích một mục nghĩa là mục đó đã hoàn thành và đã 
 - [x] Kiểm thử bản ghi `INTERNAL_ERROR` → thông báo nêu trạng thái lỗi hệ thống, không phải phán quyết
       lời giải.
 - [x] Kiểm thử token hết hạn sau khi kênh mở → kênh ngừng nhận; logout trước hạn không đóng token.
-- [ ] Kiểm thử kết nối thứ sáu trên Gateway khác bị từ chối; Redis lỗi thì realtime mới bị từ chối.
+- [x] Kiểm thử kết nối thứ sáu trên Gateway khác bị từ chối; Redis lỗi thì realtime mới bị từ chối.
+      `submission-socket-leases.spec.ts`: cùng khóa owner giữa các Gateway, fail-closed khi Redis lỗi (2026-11-16).
 - [ ] Kiểm thử client polling 5 giây khi còn chờ và đọc sớm khi có thông báo.
 - [x] Kiểm thử thông báo nhận được sai hình thức hoặc có trường lạ → bị loại, không chuyển tiếp.
 - [ ] Kiểm thử log không chứa token và không chứa payload thông báo ở mức thông tin.
@@ -168,10 +177,13 @@ thực tế; tích một mục nghĩa là mục đó đã hoàn thành và đã 
 
 ## Tài liệu
 
-- [ ] Ghi rõ hợp đồng thông báo tối thiểu và lý do loại bỏ toàn bộ output khỏi realtime.
-- [ ] Ghi rõ polling là cơ chế bảo đảm, còn realtime chỉ là tối ưu độ trễ.
-- [ ] Ghi rõ hiệu lực token stateless theo ID-001 và chính sách đóng kênh khi hết hạn.
-- [ ] N/A — không có thay đổi hợp đồng sự kiện RabbitMQ.
+- [x] Ghi rõ hợp đồng thông báo tối thiểu và lý do loại bỏ toàn bộ output khỏi realtime.
+      Ghi tại worked entry 2026-11-16-sub-004-realtime-closure.md.
+- [x] Ghi rõ polling là cơ chế bảo đảm, còn realtime chỉ là tối ưu độ trễ.
+      Ghi tại worked entry 2026-11-16-sub-004-realtime-closure.md.
+- [x] Ghi rõ hiệu lực token stateless theo ID-001 và chính sách đóng kênh khi hết hạn.
+      Ghi tại `.docs/worked/submission/submissions/2026-11-16-sub-004-realtime-closure.md` (2026-11-16).
+- [x] N/A — không có thay đổi hợp đồng sự kiện RabbitMQ.
 
 ## Xác minh
 
