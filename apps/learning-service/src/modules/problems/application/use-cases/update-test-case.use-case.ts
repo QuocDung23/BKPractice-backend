@@ -46,7 +46,7 @@ export class UpdateTestCaseUseCase implements IUpdateTestCasePortIn {
         throw new ProblemNotFoundError(problemId);
       }
 
-      this.authorization.requireManaged(principal, 'update');
+      this.authorization.requireManaged(principal, 'update', problem.createdBy.value);
       problem.assertCanManageTestCases();
 
       const existing = await this.testCaseRepository.findById(problemId, testCaseId);

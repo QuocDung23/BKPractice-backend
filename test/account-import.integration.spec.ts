@@ -44,6 +44,8 @@ databaseTests('Account import — real Gateway, Auth and PostgreSQL', () => {
   const schema = `account_import_${randomUUID().replaceAll('-', '')}`;
   const config = {
     AUTH_FLOW_STORE: 'memory',
+    ACCOUNT_IMPORT_PASSWORD: '123456',
+    INTERNAL_SERVICE_SECRET: 'test-only-internal-service-secret-32',
     CORS_ORIGINS: 'http://localhost:3006',
     JWT_ACCESS_SECRET: 'a'.repeat(32),
     JWT_REFRESH_SECRET: 'r'.repeat(32),
@@ -140,15 +142,13 @@ databaseTests('Account import — real Gateway, Auth and PostgreSQL', () => {
       adminId,
     ]);
     access = (
-      await identity
-        .get(AuthTokenIssuer)
-        .issueNewFamily({
-          userId: adminId,
-          studentId: null,
-          email: 'admin@test.invalid',
-          status: 'ACTIVE',
-          roles: ['ADMIN'],
-        })
+      await identity.get(AuthTokenIssuer).issueNewFamily({
+        userId: adminId,
+        studentId: null,
+        email: 'admin@test.invalid',
+        status: 'ACTIVE',
+        roles: ['ADMIN'],
+      })
     ).accessToken;
   });
 
@@ -192,8 +192,8 @@ databaseTests('Account import — real Gateway, Auth and PostgreSQL', () => {
     const csrf = issueCsrfToken(claims.sid, config.JWT_ACCESS_SECRET);
     const response = await upload(
       await file([
-        ['001234', ' Nguyễn An ', ' STUDENT@school.edu ', 'STUDENT'],
-        ['', 'Lecturer', 'lecturer@school.edu', 'LECTURER'],
+        ['001234', ' Nguyễn An ', ' STUDENT@sv1.dut.udn.vn ', 'STUDENT'],
+        ['', 'Lecturer', 'lecturer@dut.udn.vn', 'LECTURER'],
       ]),
       {
         cookie: `__Host-bk_access=${access}; __Host-bk_csrf=${csrf}`,
@@ -215,30 +215,41 @@ databaseTests('Account import — real Gateway, Auth and PostgreSQL', () => {
       .orderBy('user.email')
       .getMany();
     expect(users).toHaveLength(2);
-    expect(users[0]).toMatchObject({ studentId: null, officialName: 'Lecturer', status: 'ACTIVE' });
+    expect(
+      await database.query(
+        'SELECT actor_id, action, reason FROM admin_audit_events WHERE target_id = ANY($1::uuid[]) ORDER BY target_id',
+        [users.map((user) => user.id)],
+      ),
+    ).toEqual([
+      { actor_id: adminId, action: 'IMPORT', reason: 'Excel account import' },
+      { actor_id: adminId, action: 'IMPORT', reason: 'Excel account import' },
+    ]);
+    expect(users[0]).toMatchObject({ studentId: null, displayName: 'Lecturer', status: 'ACTIVE' });
     expect(users[0]?.passwordHash).not.toBe(users[1]?.passwordHash);
     for (const user of users) expect(await hasher.verify(user.passwordHash, '123456')).toBe(true);
-    expect((await login({ studentId: '001234', password: '123456' })).status).toBe(200);
-    const lecturerLogin = await login({ email: 'LECTURER@school.edu', password: '123456' });
+    expect((await login({ identifier: '001234', password: '123456' })).status).toBe(200);
+    const lecturerLogin = await login({ identifier: 'LECTURER@dut.udn.vn', password: '123456' });
     expect(lecturerLogin.status).toBe(200);
     const pair = (await lecturerLogin.json()) as { accessToken: string };
     expect((await tokens.verifyAccessClaims(pair.accessToken)).permissions).toContain(
       'problem:create',
     );
-    expect((await tokens.verifyAccessClaims(access)).permissions).not.toContain('problem:create');
-    expect((await login({ email: 'student@school.edu', password: '123456' })).status).toBe(401);
+    expect((await tokens.verifyAccessClaims(access)).permissions).toContain('problem:create');
+    expect((await login({ identifier: 'student@sv1.dut.udn.vn', password: '123456' })).status).toBe(
+      200,
+    );
     expect(
-      (await login({ studentId: '001234', email: 'lecturer@school.edu', password: '123456' }))
+      (await login({ studentId: '001234', email: 'lecturer@dut.udn.vn', password: '123456' }))
         .status,
     ).toBe(400);
     const student = users.find((user) => user.studentId === '001234')!;
     const context = await new TypeormProfileAccountContext(database).findAccount(student.id);
-    expect(context?.officialName).toBe('Nguyễn An');
+    expect(context?.displayName).toBe('Nguyễn An');
     const profiles = new TypeormProfileRepository(database);
-    await profiles.loadOrCreate(student.id, context!.officialName);
+    await profiles.loadOrCreate(student.id, context!.displayName);
     await profiles.update(
       student.id,
-      context!.officialName,
+      context!.displayName,
       { displayName: 'My chosen name' },
       false,
     );
@@ -246,19 +257,21 @@ databaseTests('Account import — real Gateway, Auth and PostgreSQL', () => {
       'My chosen name',
     );
     await database.query("UPDATE users SET status = 'LOCKED' WHERE id = $1", [users[0]!.id]);
-    expect((await login({ email: 'lecturer@school.edu', password: '123456' })).status).toBe(401);
+    expect((await login({ identifier: 'lecturer@dut.udn.vn', password: '123456' })).status).toBe(
+      401,
+    );
   });
 
   it('rejects the whole file for invalid/existing rows and preserves prior data', async () => {
-    const content = await file([['42', 'Name', 'one@school.edu', 'STUDENT']]);
+    const content = await file([['42', 'Name', 'one@sv1.dut.udn.vn', 'STUDENT']]);
     expect((await upload(content)).status).toBe(201);
     const before = await database.query<unknown[]>(
-      'SELECT id, password_hash, official_name FROM users ORDER BY id',
+      'SELECT id, password_hash, display_name FROM users ORDER BY id',
     );
     const duplicate = await upload(
       await file([
-        ['43', 'New', 'new@school.edu', 'STUDENT'],
-        ['42', 'Changed', 'ONE@school.edu', 'STUDENT'],
+        ['43', 'New', 'new@sv1.dut.udn.vn', 'STUDENT'],
+        ['42', 'Changed', 'ONE@sv1.dut.udn.vn', 'STUDENT'],
       ]),
     );
     expect(duplicate.status).toBe(409);
@@ -266,19 +279,19 @@ databaseTests('Account import — real Gateway, Auth and PostgreSQL', () => {
     expect(conflicts.created).toBe(0);
     expect(conflicts.issues).toContainEqual({ row: 3, field: 'email', code: 'already_exists' });
     expect(
-      await database.query('SELECT id, password_hash, official_name FROM users ORDER BY id'),
+      await database.query('SELECT id, password_hash, display_name FROM users ORDER BY id'),
     ).toEqual(before);
     const invalid = await upload(
       await file([
-        ['44', 'Name', 'new@school.edu', 'STUDENT'],
-        ['', 'Name', 'bad@school.edu', 'ADMIN'],
+        ['44', 'Name', 'new@sv1.dut.udn.vn', 'STUDENT'],
+        ['', 'Name', 'bad@sv1.dut.udn.vn', 'ADMIN'],
       ]),
     );
     expect(invalid.status).toBe(400);
     const report: unknown = await invalid.json();
-    expect(JSON.stringify(report)).not.toContain('@school.edu');
+    expect(JSON.stringify(report)).not.toContain('@sv1.dut.udn.vn');
     expect(
-      await database.query('SELECT id, password_hash, official_name FROM users ORDER BY id'),
+      await database.query('SELECT id, password_hash, display_name FROM users ORDER BY id'),
     ).toEqual(before);
   });
 
@@ -323,8 +336,8 @@ databaseTests('Account import — real Gateway, Auth and PostgreSQL', () => {
     await database.query("DELETE FROM roles WHERE name = 'LECTURER'");
     const response = await upload(
       await file([
-        ['50', 'Student', 's@school.edu', 'STUDENT'],
-        ['', 'Lecturer', 'l@school.edu', 'LECTURER'],
+        ['50', 'Student', 's@sv1.dut.udn.vn', 'STUDENT'],
+        ['', 'Lecturer', 'l@dut.udn.vn', 'LECTURER'],
       ]),
     );
     expect(response.status).toBe(503);
@@ -345,20 +358,20 @@ databaseTests('Account import — real Gateway, Auth and PostgreSQL', () => {
     const shared: PreparedImportAccount = {
       row: 2,
       studentId: 'shared',
-      officialName: 'Shared',
-      email: 'shared@school.edu',
+      displayName: 'Shared',
+      email: 'shared@sv1.dut.udn.vn',
       role: RoleName.Student,
       passwordHash,
     };
     const results = await Promise.allSettled([
-      repository.createAll([
-        shared,
-        { ...shared, row: 3, studentId: 'first', email: 'first@school.edu' },
-      ]),
-      repository.createAll([
-        shared,
-        { ...shared, row: 3, studentId: 'second', email: 'second@school.edu' },
-      ]),
+      repository.createAll(
+        [shared, { ...shared, row: 3, studentId: 'first', email: 'first@sv1.dut.udn.vn' }],
+        adminId,
+      ),
+      repository.createAll(
+        [shared, { ...shared, row: 3, studentId: 'second', email: 'second@sv1.dut.udn.vn' }],
+        adminId,
+      ),
     ]);
     expect(results.filter((result) => result.status === 'fulfilled')).toHaveLength(1);
     expect(results.find((result) => result.status === 'rejected')).toMatchObject({
@@ -376,16 +389,19 @@ databaseTests('Account import — real Gateway, Auth and PostgreSQL', () => {
     );
     try {
       await expect(
-        new TypeormAccountImportRepository(database).createAll([
-          {
-            row: 2,
-            studentId: 'rollback',
-            officialName: 'Rollback',
-            email: 'rollback@school.edu',
-            role: RoleName.Student,
-            passwordHash,
-          },
-        ]),
+        new TypeormAccountImportRepository(database).createAll(
+          [
+            {
+              row: 2,
+              studentId: 'rollback',
+              displayName: 'Rollback',
+              email: 'rollback@sv1.dut.udn.vn',
+              role: RoleName.Student,
+              passwordHash,
+            },
+          ],
+          adminId,
+        ),
       ).rejects.toMatchObject({ code: 'dependency_unavailable' });
       expect(await database.getRepository(User).count()).toBe(1);
     } finally {
@@ -409,14 +425,14 @@ databaseTests('Account import — real Gateway, Auth and PostgreSQL', () => {
       await database.query('SELECT * FROM role_permissions ORDER BY role_id, permission_id'),
     ).toEqual(mappings);
     await database.query(
-      `INSERT INTO role_permissions SELECT r.id, p.id FROM roles r CROSS JOIN permissions p WHERE r.name = 'ADMIN' AND p.code = 'problem:create'`,
+      `INSERT INTO role_permissions SELECT r.id, p.id FROM roles r CROSS JOIN permissions p WHERE r.name = 'STUDENT' AND p.code = 'problem:create'`,
     );
     try {
       await expect(database.transaction(seedRbac)).rejects.toThrow('remediation');
       expect(await database.query('SELECT * FROM permissions ORDER BY code')).toEqual(before);
     } finally {
       await database.query(
-        `DELETE FROM role_permissions WHERE role_id IN (SELECT id FROM roles WHERE name = 'ADMIN') AND permission_id IN (SELECT id FROM permissions WHERE code = 'problem:create')`,
+        `DELETE FROM role_permissions WHERE role_id IN (SELECT id FROM roles WHERE name = 'STUDENT') AND permission_id IN (SELECT id FROM permissions WHERE code = 'problem:create')`,
       );
     }
   });

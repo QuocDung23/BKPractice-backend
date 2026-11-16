@@ -27,6 +27,7 @@ export class ListManagedCoursesUseCase implements IListManagedCoursesPortIn {
   ): Promise<CoursePage<ManagedCourseSummaryResult>> {
     this.authorization.requirePermission(principal, 'course:read-managed');
     const result = await this.repository.listManaged({
+      createdBy: principal.roles.includes('ADMIN') ? undefined : principal.userId,
       includeDeleted,
       page,
       limit,

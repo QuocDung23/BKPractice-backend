@@ -6,6 +6,10 @@ import Redis from 'ioredis';
 
 import { ApplyRunJudgeResultUseCase } from './application/apply-run-judge-result.use-case';
 import { ApplySubmitJudgeResultUseCase } from './application/apply-submit-judge-result.use-case';
+import {
+  CountCourseSubmissionsUseCase,
+  SUBMISSION_COUNT_READER,
+} from './application/count-course-submissions.use-case';
 import { ExpireStaleSubmissionsUseCase } from './application/expire-stale-submissions.use-case';
 import { GetSubmissionDetailUseCase } from './application/get-submission-detail.use-case';
 import { ListSubmissionHistoryUseCase } from './application/list-submission-history.use-case';
@@ -28,10 +32,12 @@ import { RabbitAcceptedEventAdapter } from './infrastructure/messaging/rabbit-ac
 import { RabbitJudgeJobAdapter } from './infrastructure/messaging/rabbit-judge-job.adapter';
 import { SubmissionAcceptedOutbox } from './infrastructure/persistence/submission-accepted-outbox.entity';
 import { Submission, SubmissionResult } from './infrastructure/persistence/submission.entity';
+import { TypeormSubmissionCountReader } from './infrastructure/persistence/typeorm-submission-count.reader';
 import { TypeormSubmissionRepository } from './infrastructure/persistence/typeorm-submission.repository';
 import { RedisRealtimeAdapter } from './infrastructure/realtime/redis-realtime.adapter';
 import { AcceptedEventRelay } from './infrastructure/scheduling/accepted-event-relay';
 import { SubmissionWatchdog } from './infrastructure/scheduling/submission-watchdog';
+import { InternalSubmissionCountsController } from './presentation/internal-submission-counts.controller';
 import { JudgeResultConsumer } from './presentation/judge-result.consumer';
 import { SubmissionsController } from './presentation/submissions.controller';
 
@@ -40,10 +46,13 @@ import { SubmissionsController } from './presentation/submissions.controller';
     HttpModule,
     TypeOrmModule.forFeature([Submission, SubmissionResult, SubmissionAcceptedOutbox]),
   ],
-  controllers: [SubmissionsController],
+  controllers: [SubmissionsController, InternalSubmissionCountsController],
   providers: [
     JudgeResultConsumer,
     TypeormSubmissionRepository,
+    TypeormSubmissionCountReader,
+    CountCourseSubmissionsUseCase,
+    { provide: SUBMISSION_COUNT_READER, useExisting: TypeormSubmissionCountReader },
     { provide: SUBMISSION_REPOSITORY_PORT, useExisting: TypeormSubmissionRepository },
     { provide: ACCEPTED_EVENT_OUTBOX_PORT, useExisting: TypeormSubmissionRepository },
     { provide: LEARNING_JUDGE_PACKAGE_PORT, useClass: HttpLearningJudgePackageAdapter },

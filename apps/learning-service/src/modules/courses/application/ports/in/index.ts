@@ -16,3 +16,9 @@ export * from './republish-course.port.in';
 export * from './restore-course.port.in';
 export * from './update-chapter.port.in';
 export * from './update-course.port.in';
+
+export * from './reorder-chapter-quizzes.port.in';
+
+export * from './attach-quiz.port.in';
+
+export * from './detach-quiz.port.in';

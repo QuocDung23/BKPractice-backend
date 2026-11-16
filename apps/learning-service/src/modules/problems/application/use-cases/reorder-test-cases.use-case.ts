@@ -42,7 +42,7 @@ export class ReorderTestCasesUseCase implements IReorderTestCasesPortIn {
         throw new ProblemNotFoundError(problemId);
       }
 
-      this.authorization.requireManaged(principal, 'update');
+      this.authorization.requireManaged(principal, 'update', problem.createdBy.value);
       problem.assertCanManageTestCases();
 
       const current = await this.testCaseRepository.listByProblem(problemId);

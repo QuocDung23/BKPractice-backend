@@ -81,26 +81,46 @@ describe('Profile HTTP contract', () => {
     );
     expect(useCases.searchProfiles).not.toHaveBeenCalled();
     expect(await controller.searchProfiles(request('GET', 'Bearer student'), { q: 'An' })).toEqual({
-      items: [], page: 1, limit: 20, hasMore: false,
+      items: [],
+      page: 1,
+      limit: 20,
+      hasMore: false,
     });
     expect(useCases.searchProfiles).toHaveBeenCalledWith('An', 1, 20);
     await controller.searchProfiles(request('GET', 'Bearer lecturer'), { q: 'An' });
     await controller.searchProfiles(request('GET', 'Bearer admin'), { q: 'An' });
     expect(useCases.searchProfiles).toHaveBeenCalledTimes(3);
-    await expect(controller.searchProfiles(request('GET', 'Bearer no-role'), { q: 'An' })).rejects.toThrow('invalid_token');
+    await expect(
+      controller.searchProfiles(request('GET', 'Bearer no-role'), { q: 'An' }),
+    ).rejects.toThrow('invalid_token');
     await controller.searchProfiles(request('GET', undefined, '__Host-bk_access=student'), {
-      q: 'Bình', page: '2', limit: '5',
+      q: 'Bình',
+      page: '2',
+      limit: '5',
     });
     expect(useCases.searchProfiles).toHaveBeenCalledWith('Bình', 2, 5);
     jest.mocked(sessions.isActive).mockResolvedValueOnce(false);
-    await expect(controller.searchProfiles(request('GET', 'Bearer student'), { q: 'An' })).rejects.toThrow('invalid_token');
+    await expect(
+      controller.searchProfiles(request('GET', 'Bearer student'), { q: 'An' }),
+    ).rejects.toThrow('invalid_token');
   });
 
   it('validates search query shape at the HTTP boundary', async () => {
-    const pipe = new ValidationPipe({ transform: true, whitelist: true, forbidNonWhitelisted: true });
+    const pipe = new ValidationPipe({
+      transform: true,
+      whitelist: true,
+      forbidNonWhitelisted: true,
+    });
     const metadata = { type: 'query' as const, metatype: SearchProfilesQueryDto };
-    await expect(pipe.transform({ q: 'An', page: '2', limit: '50' }, metadata)).resolves.toMatchObject({ q: 'An', page: '2', limit: '50' });
-    for (const query of [{}, { q: 'An', page: '0' }, { q: 'An', limit: '51x' }, { q: 'An', email: 'x' }]) {
+    await expect(
+      pipe.transform({ q: 'An', page: '2', limit: '50' }, metadata),
+    ).resolves.toMatchObject({ q: 'An', page: '2', limit: '50' });
+    for (const query of [
+      {},
+      { q: 'An', page: '0' },
+      { q: 'An', limit: '51x' },
+      { q: 'An', email: 'x' },
+    ]) {
       await expect(pipe.transform(query, metadata)).rejects.toThrow();
     }
   });
@@ -109,7 +129,12 @@ describe('Profile HTTP contract', () => {
     const log = jest.spyOn(Logger.prototype, 'log').mockImplementation();
     const incoming = {
       method: 'GET',
-      header: (name: string) => name === 'authorization' ? 'Bearer student' : name === 'x-request-id' ? 'unsafe-id' : undefined,
+      header: (name: string) =>
+        name === 'authorization'
+          ? 'Bearer student'
+          : name === 'x-request-id'
+            ? 'unsafe-id'
+            : undefined,
     } as Request;
     try {
       await controller.searchProfiles(incoming, { q: 'Private Name' });
@@ -199,8 +224,15 @@ describe('Profile HTTP contract', () => {
   it('does not log or return a token supplied as a request ID', () => {
     const warn = jest.spyOn(Logger.prototype, 'warn').mockImplementation();
     const json = jest.fn();
-    const response = { status: jest.fn().mockReturnValue({ json }) } as unknown as Response;
-    const request = { method: 'PATCH', header: () => 'sensitive-token' } as unknown as Request;
+    const response = {
+      setHeader: jest.fn(),
+      status: jest.fn().mockReturnValue({ json }),
+    } as unknown as Response;
+    const request = {
+      method: 'PATCH',
+      headers: { 'x-request-id': 'sensitive-token' },
+      header: () => 'sensitive-token',
+    } as unknown as Request;
     const host = {
       switchToHttp: () => ({ getRequest: () => request, getResponse: () => response }),
     } as unknown as ArgumentsHost;

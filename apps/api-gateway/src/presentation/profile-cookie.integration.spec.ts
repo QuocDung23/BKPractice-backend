@@ -100,9 +100,10 @@ describe('Profile access through the browser cookie', () => {
       { secret: 'a'.repeat(32), expiresIn: '15m' },
     );
     const denied = request('PATCH', '/api/profile/me', `__Host-bk_access=${token}`);
-    await expect(middleware.use(denied, response, next)).rejects.toThrow(
-      'Untrusted request origin',
-    );
+    await expect(middleware.use(denied, response, next)).rejects.toMatchObject({
+      status: 403,
+      code: 'ORIGIN_NOT_ALLOWED',
+    });
   });
 });
 
@@ -326,9 +327,18 @@ describe('Learning authenticated transport', () => {
     http.request.mockReturnValue(throwError(() => new Error(reason + ' private internal host')));
     const request = createRequest('GET', '/api/problems');
     request.headers.authorization = `Bearer ${await issueAccess()}`;
-    await expect(forward(request)).rejects.toMatchObject({
+    const error: unknown = await forward(request).then(
+      () => undefined,
+      (reason: unknown) => reason,
+    );
+    expect(error).toMatchObject({
       status: 502,
-      message: 'Upstream service is unavailable',
+      code: 'UPSTREAM_UNAVAILABLE',
+      message: 'Không kết nối được tới dịch vụ Learning. Vui lòng thử lại sau ít phút.',
     });
+    // Không lộ host hay chi tiết nội bộ của lỗi gốc.
+    expect(JSON.stringify((error as { getResponse(): unknown }).getResponse())).not.toMatch(
+      /private internal host|ECONN|ETIMEDOUT/,
+    );
   });
 });

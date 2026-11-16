@@ -8,8 +8,8 @@ import type { IUpdateCoursePortIn } from '@/modules/courses/application/ports/in
 import type { ManagedCourseResult } from '@/modules/courses/application/results';
 import {
   CourseAuthorizationService,
-  CourseViewAssembler,
   CoursePublishReadinessService,
+  CourseViewAssembler,
 } from '@/modules/courses/application/services';
 import { COURSE_REPOSITORY, COURSE_TRANSACTION_RUNNER } from '@/modules/courses/course.tokens';
 import type { CourseRepository } from '@/modules/courses/domain/repositories';
@@ -33,6 +33,7 @@ export class UpdateCourseUseCase implements IUpdateCoursePortIn {
     return this.transactionRunner.run(async () => {
       const course = await this.repository.loadForUpdate(courseId);
       if (!course) throw new CourseNotFoundError('Course not found');
+      this.authorization.requireOwnership(principal, course.createdBy.value);
       course.update(command, now);
       if (course.isPublished) await this.readiness.assertReady(course);
       await this.repository.save(course);

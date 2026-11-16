@@ -61,7 +61,7 @@ export class R2AvatarStorage implements AvatarStorage {
       size < 1 ||
       size > this.maximumBytes
     ) {
-      throw new ProfileFailure('invalid');
+      throw new ProfileFailure('invalid', 'avatar_upload');
     }
     const nonce = randomUUID();
     const avatar = `avatars/${userId}/${nonce}-${this.sign(userId, nonce)}`;
@@ -98,7 +98,7 @@ export class R2AvatarStorage implements AvatarStorage {
         !object.ContentLength ||
         object.ContentLength > this.maximumBytes
       ) {
-        throw new ProfileFailure('invalid');
+        throw new ProfileFailure('invalid', 'avatar_upload');
       }
     } catch (error) {
       if (error instanceof ProfileFailure) throw error;
@@ -111,7 +111,7 @@ export class R2AvatarStorage implements AvatarStorage {
             'httpStatusCode' in error.$metadata &&
             error.$metadata.httpStatusCode === 404))
       ) {
-        throw new ProfileFailure('invalid');
+        throw new ProfileFailure('invalid', 'avatar_not_uploaded');
       }
       throw new ProfileFailure('dependency');
     }
@@ -153,10 +153,10 @@ export class R2AvatarStorage implements AvatarStorage {
   private assertReference(userId: string, reference: string): void {
     const match = referencePattern.exec(reference);
     if (!match || match[1] !== userId || !match[2] || !match[3])
-      throw new ProfileFailure('invalid');
+      throw new ProfileFailure('invalid', 'avatar');
     const expected = Buffer.from(this.sign(userId, match[2]), 'hex');
     const actual = Buffer.from(match[3], 'hex');
-    if (!timingSafeEqual(expected, actual)) throw new ProfileFailure('invalid');
+    if (!timingSafeEqual(expected, actual)) throw new ProfileFailure('invalid', 'avatar');
   }
 
   private sign(userId: string, nonce: string): string {

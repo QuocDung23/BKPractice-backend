@@ -1,5 +1,8 @@
 # LRN-006 Kế hoạch triển khai Tiến độ học tập
 
+> Amendment `1.1` Approved 2026-11-12: Course progress dùng Learning Item chung cho Problem và Quiz.
+> Quiz completion được đọc từ attempt `FINISHED` có `passed=true`; không thêm bảng hoặc migration.
+
 > Cập nhật 2026-11-07: [LRN-008](../self-study/spec.md) thay thế mọi quy định về LECTURER, sở hữu riêng của người tạo, Class, Enrollment, Assignment và tiến độ theo lớp trong tài liệu này. Các yêu cầu còn lại vẫn áp dụng.
 
 > Cập nhật triển khai 2026-11-07: Luồng ghi `submission.accepted` và ba API đọc tiến độ cá nhân đã triển khai theo domain/use case/port/adapter, dưới phạm vi LRN-008. Phần đọc được kiểm thử trên PostgreSQL cách ly; phần retry/DLQ được kiểm thử với RabbitMQ thật.
@@ -151,16 +154,16 @@ khử trùng.
 
 ## Tầng application / Use case
 
-| Use case                        | Tác nhân / quyền                        | Luồng chính                                                                                                                                                                                                                                                             | Truy vết                       |
-| ------------------------------- | --------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------ |
-| `ApplyAcceptedSubmission`       | Consumer (service tin cậy qua queue)    | `AcceptedSubmission.parse`; trong `TransactionRunner`: `recordReceipt` (trùng thì trả `DUPLICATE`, commit); `insertIfAbsent(firstSolve)`; nếu đã có dòng thì `loadForUpdate`, `applyAccepted`, `save`; trả `APPLIED`                                                    | FR-002–FR-010; AC-001–AC-009   |
-| `ListMySolvedProblems`          | Đã xác thực, chính mình                 | Liệt kê tiến độ của principal, chỉ Problem đang `PUBLISHED` chưa xoá mềm, sắp `solved_at DESC, problem_id`, phân trang                                                                                                                                                  | FR-011; AC-010                 |
-| `GetMySolvedStatus`             | Đã xác thực, chính mình                 | Với ≤ 100 định danh: đã giải và thời điểm giải; Problem không hiển thị trả chưa giải                                                                                                                                                                                    | FR-011; SR-004                 |
-| `GetMyCourseProgress`           | Đã xác thực, chính mình                 | `CourseStructureReader.loadVisibleStructure` (null → `NotFound`); đọc tiến độ của principal trên các Problem đó; `CourseCompletionCalculator`                                                                                                                           | FR-012; AC-011, AC-012, AC-013 |
-| `GetMyAssignmentScore`          | Sinh viên đang đăng ký                  | `AssignmentReader.load`; `ClassMembershipReader.isEnrolled(classId, principal)`; Assignment phải hiển thị với sinh viên theo LRN-005 tại `Clock.now()`; thiếu điều nào thì `NotFound`; đọc tiến độ; `AssignmentScoreCalculator`; chỉ trả Problem hiển thị với sinh viên | FR-013; AC-014–AC-017          |
-| `GetClassCourseProgress`        | `class:read-managed` + chủ sở hữu Class | Kiểm quyền; nạp Class (`NotFound`); `lecturerId` = principal (khác thì `Forbidden`); cấu trúc hiển thị của Course của Class (null → `NotFound`); trang sinh viên đang đăng ký; đếm đã giải theo từng sinh viên bằng một truy vấn gộp                                    | FR-014; AC-018, AC-019         |
-| `GetClassStudentCourseProgress` | `class:read-managed` + chủ sở hữu Class | Như trên; sinh viên phải đang đăng ký (khác thì `NotFound`); `CourseCompletionCalculator` cho sinh viên đó                                                                                                                                                              | FR-015; AC-019, AC-022         |
-| `GetClassAssignmentScores`      | `class:read-managed` + chủ sở hữu Class | Kiểm quyền và sở hữu; Assignment phải thuộc Class và chủ sở hữu thấy được theo LRN-005 (khác thì `NotFound`); trang sinh viên đang đăng ký; đọc tiến độ gộp; `AssignmentScoreCalculator` từng sinh viên                                                                 | FR-016; AC-018, AC-019, AC-023 |
+| Use case                        | Tác nhân / quyền                        | Luồng chính                                                                                                                                                                                                                                                             | Truy vết                           |
+| ------------------------------- | --------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------- |
+| `ApplyAcceptedSubmission`       | Consumer (service tin cậy qua queue)    | `AcceptedSubmission.parse`; trong `TransactionRunner`: `recordReceipt` (trùng thì trả `DUPLICATE`, commit); `insertIfAbsent(firstSolve)`; nếu đã có dòng thì `loadForUpdate`, `applyAccepted`, `save`; trả `APPLIED`                                                    | FR-002–FR-010; AC-001–AC-009       |
+| `ListMySolvedProblems`          | Đã xác thực, chính mình                 | Liệt kê tiến độ của principal, chỉ Problem đang `PUBLISHED` chưa xoá mềm, sắp `solved_at DESC, problem_id`, phân trang                                                                                                                                                  | FR-011; AC-010                     |
+| `GetMySolvedStatus`             | Đã xác thực, chính mình                 | Với ≤ 100 định danh: đã giải và thời điểm giải; Problem không hiển thị trả chưa giải                                                                                                                                                                                    | FR-011; SR-004                     |
+| `GetMyCourseProgress`           | Đã xác thực, chính mình                 | `CourseStructureReader.loadVisibleStructure` (null → `NotFound`); đọc Problem đã giải và Quiz đã pass của principal; `CourseCompletionCalculator` tính Learning Item                                                                                                    | FR-012/019/020; AC-011–013/025–027 |
+| `GetMyAssignmentScore`          | Sinh viên đang đăng ký                  | `AssignmentReader.load`; `ClassMembershipReader.isEnrolled(classId, principal)`; Assignment phải hiển thị với sinh viên theo LRN-005 tại `Clock.now()`; thiếu điều nào thì `NotFound`; đọc tiến độ; `AssignmentScoreCalculator`; chỉ trả Problem hiển thị với sinh viên | FR-013; AC-014–AC-017              |
+| `GetClassCourseProgress`        | `class:read-managed` + chủ sở hữu Class | Kiểm quyền; nạp Class (`NotFound`); `lecturerId` = principal (khác thì `Forbidden`); cấu trúc hiển thị của Course của Class (null → `NotFound`); trang sinh viên đang đăng ký; đếm đã giải theo từng sinh viên bằng một truy vấn gộp                                    | FR-014; AC-018, AC-019             |
+| `GetClassStudentCourseProgress` | `class:read-managed` + chủ sở hữu Class | Như trên; sinh viên phải đang đăng ký (khác thì `NotFound`); `CourseCompletionCalculator` cho sinh viên đó                                                                                                                                                              | FR-015; AC-019, AC-022             |
+| `GetClassAssignmentScores`      | `class:read-managed` + chủ sở hữu Class | Kiểm quyền và sở hữu; Assignment phải thuộc Class và chủ sở hữu thấy được theo LRN-005 (khác thì `NotFound`); trang sinh viên đang đăng ký; đọc tiến độ gộp; `AssignmentScoreCalculator` từng sinh viên                                                                 | FR-016; AC-018, AC-019, AC-023     |
 
 Mọi use case đọc chỉ chạy SELECT, không mở transaction ghi (FR-017, FR-018). Thứ tự kiểm tra ở use
 case của lớp: quyền `class:read-managed` → tồn tại Class → sở hữu, để người thiếu quyền không dò được
@@ -171,7 +174,8 @@ Class nào tồn tại.
 | Port                     | Trách nhiệm                                                                                                                                                                                                             | Adapter                                         |
 | ------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------- |
 | `ProgressRepository`     | Ghi: `recordReceipt`, `insertIfAbsent`, `loadForUpdate`, `save`. Đọc: `findSolved(userId, problemIds)`, `listSolved(userId, page)`, `countSolvedByUsers(userIds, problemIds)`, `findSolvedByUsers(userIds, problemIds)` | TypeORM (`progress`, `progress_event_receipts`) |
-| `CourseStructureReader`  | Cấu trúc hiển thị của một Course `PUBLISHED` chưa xoá mềm: Chapter có thứ tự, Problem hiển thị có thứ tự; `null` nếu Course không hiển thị                                                                              | TypeORM chỉ đọc                                 |
+| `CourseStructureReader`  | Cấu trúc Course `PUBLISHED` chưa xoá: Chapter và Learning Item Problem/Quiz đang hiển thị; `null` nếu Course không hiển thị                                                                                             | TypeORM chỉ đọc                                 |
+| `QuizCompletionReader`   | Thời điểm pass đầu tiên theo user + Quiz từ attempt `FINISHED`, không phụ thuộc revision hiện tại                                                                                                                       | TypeORM chỉ đọc `quiz_attempts`                 |
 | `ClassMembershipReader`  | Nạp Class (`id`, `courseId`, `lecturerId`, `status`); `isEnrolled`; trang sinh viên đang đăng ký (`studentId`, `enrolledAt`) và tổng số                                                                                 | TypeORM chỉ đọc                                 |
 | `AssignmentReader`       | Nạp Assignment theo `(classId?, assignmentId)` với `deadlineAt`, các trường quyết định hiển thị của LRN-005, danh sách `(problemId, maxScore, order, visibleToStudent)`                                                 | TypeORM chỉ đọc                                 |
 | `PublishedProblemFilter` | Lọc một tập `problemId` còn `PUBLISHED` chưa xoá mềm (cho `ListMySolvedProblems`, `GetMySolvedStatus`)                                                                                                                  | TypeORM chỉ đọc                                 |
@@ -207,10 +211,10 @@ lại điều kiện.
   `findSolvedByUsers` trả `(user_id, problem_id, solved_at)` rồi tính trong domain. Một trang tối đa
   100 sinh viên; Course tối đa 2.500 Problem (50 × 50 theo LRN-003-FR-015). Chỉ mục duy nhất
   `(user_id, problem_id)` hiện có phục vụ các truy vấn này.
-- **Reader chéo module:** `CourseStructureReader` join `courses` → `chapters` → `chapter_problems` →
-  `problems` với `courses.status = 'PUBLISHED' AND courses.deleted_at IS NULL` và
-  `problems.publish_status = 'PUBLISHED' AND problems.deleted_at IS NULL`, sắp theo thứ tự Chapter rồi
-  thứ tự Problem, đúng như phép chiếu người học của LRN-003. `ClassMembershipReader` đọc `classes`,
+- **Reader chéo module:** `CourseStructureReader` union projection `chapter_problems` → `problems`
+  và `chapter_quizzes` → `quizzes`, chỉ giữ root `PUBLISHED` chưa xoá mềm, sắp theo Chapter và thứ tự
+  riêng của từng loại. `QuizCompletionReader` lấy `MIN(finished_at)` của attempt `FINISHED` có
+  `passed=true` theo user + Quiz. `ClassMembershipReader` đọc `classes`,
   `enrollments`. `AssignmentReader` đọc `assignments`, `assignment_problems`. Tên cột trạng thái/xoá
   mềm theo migration của LRN-003/004/005.
 
@@ -273,8 +277,11 @@ cần Bearer token.
 - `ValidationPipe` toàn cục (`whitelist`, `forbidNonWhitelisted`) làm query có `userId` hay trường lạ
   bị `400` (SR-002, AC-021).
 - Response DTO ánh xạ tường minh, không trả entity:
-  - `CourseProgressDto`: `courseId`, `solved`, `total`, `chapters: [{ chapterId, solved, total }]`,
-    `solvedProblems: [{ problemId, solvedAt }]`.
+  - `CourseProgressDto`: `courseId`, `completed`, `total`,
+    `chapters: [{ chapterId, completed, total }]`,
+    `completedItems: [{ type: 'PROBLEM' | 'QUIZ', itemId, completedAt }]`.
+    Trong giai đoạn tương thích, giữ alias deprecated `solved = completed`, Chapter `solved = completed`
+    và projection Problem-only `solvedProblems`; client mới MUST dùng contract Learning Item.
   - `AssignmentScoreDto`: `assignmentId`, `deadlineAt`, `score`, `maxScore`, `isFinal`,
     `problems: [{ problemId, passed, score, maxScore, solvedAt }]` (chỉ Problem hiển thị với sinh viên).
 - Không có trường tên, email, mã nguồn, Test Case hay kết quả chấm (SR-005, AC-024).

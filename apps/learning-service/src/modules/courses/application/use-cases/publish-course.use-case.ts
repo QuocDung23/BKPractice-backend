@@ -7,8 +7,8 @@ import type { IPublishCoursePortIn } from '@/modules/courses/application/ports/i
 import type { ManagedCourseResult } from '@/modules/courses/application/results';
 import {
   CourseAuthorizationService,
-  CourseViewAssembler,
   CoursePublishReadinessService,
+  CourseViewAssembler,
 } from '@/modules/courses/application/services';
 import { COURSE_REPOSITORY, COURSE_TRANSACTION_RUNNER } from '@/modules/courses/course.tokens';
 import { InvalidCourseState } from '@/modules/courses/domain/errors';
@@ -32,6 +32,7 @@ export class PublishCourseUseCase implements IPublishCoursePortIn {
     return this.transactionRunner.run(async () => {
       const course = await this.repository.loadForUpdate(courseId);
       if (!course) throw new CourseNotFoundError('Course not found');
+      this.authorization.requireOwnership(principal, course.createdBy.value);
       if (!course.isDraft)
         throw new InvalidCourseState(
           'status',

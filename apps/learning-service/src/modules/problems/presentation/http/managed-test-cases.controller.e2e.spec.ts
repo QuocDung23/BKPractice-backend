@@ -146,8 +146,15 @@ describe('ManagedTestCasesController HTTP contract', () => {
     expect(response.status).toBe(400);
     await expect(response.json()).resolves.toMatchObject({
       statusCode: 400,
-      message: 'Problem is not ready to publish',
-      issues: [{ code: 'TEST_CASE_HIDDEN_REQUIRED' }],
+      code: 'PROBLEM_NOT_READY_TO_PUBLISH',
+      message: 'Bài tập chưa đủ điều kiện xuất bản: còn 1 mục cần hoàn thiện.',
+      details: [
+        {
+          code: 'TEST_CASE_HIDDEN_REQUIRED',
+          field: 'testCases',
+          message: 'Cần có ít nhất một test case ẩn. (trường "testCases")',
+        },
+      ],
     });
   });
 });

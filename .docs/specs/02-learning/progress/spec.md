@@ -4,10 +4,14 @@
 
 Approved
 
+> Amendment `1.1`, được chủ sở hữu phê duyệt ngày `2026-11-12`: tiến độ Course tính mỗi Problem
+> hiển thị và mỗi Quiz hiển thị là một Learning Item có trọng số bằng nhau. Problem hoàn thành khi
+> đã giải; Quiz hoàn thành khi có ít nhất một lượt `passed` theo ngưỡng 90% của LRN-009. Completion
+> Quiz thuộc user + Quiz và giữ qua revision. Amendment này thay quyết định Problem-only của bản 1.0.
+
 > Cập nhật 2026-11-07: [LRN-008](../self-study/spec.md) thay thế mọi quy định về LECTURER, sở hữu riêng của người tạo, Class, Enrollment, Assignment và tiến độ theo lớp trong tài liệu này. Các yêu cầu còn lại vẫn áp dụng.
 
-Phiên bản `1.0`, được chủ sở hữu sản phẩm phê duyệt ngày `2026-09-30` (phê duyệt gộp: chủ sở hữu
-duyệt trước các phương án đề xuất).
+Phiên bản `1.1`; phiên bản `1.0` được chủ sở hữu phê duyệt ngày `2026-09-30`.
 
 Giá trị hợp lệ: `Proposed` | `Approved` | `Implemented` | `Verified`
 
@@ -15,8 +19,9 @@ Giá trị hợp lệ: `Proposed` | `Approved` | `Implemented` | `Verified`
 
 Ghi nhận đúng và bền vững việc một người học đã giải được một Problem, từ sự kiện
 `submission.accepted` do Submission phát, rồi dùng dữ liệu đó để cho người học xem tiến độ của chính
-mình (theo Problem, theo Course, theo Assignment) và cho chủ sở hữu Class xem tiến độ của sinh viên
-trong lớp mình. Kết quả phải giống nhau dù sự kiện bị gửi lại hay tới không theo thứ tự.
+mình. Tiến độ Course tổng hợp Problem đã giải và Quiz đã đạt từ dữ liệu Learning hiện có, theo Course
+và Chapter. Kết quả Problem phải giống nhau dù sự kiện bị gửi lại hay tới không theo thứ tự.
+Các luồng Assignment/Class lịch sử chịu amendment LRN-008 và không được khôi phục bởi thay đổi này.
 
 ## Tác nhân
 
@@ -96,8 +101,15 @@ Các tính năng liên quan: Problem (LRN-001), Course và Chapter (LRN-003), Cl
   mình đã giải (kèm thời điểm giải), và tra trạng thái đã giải/chưa giải của một danh sách Problem cho
   trước.
 - **LRN-006-FR-012 — Tiến độ theo Course:** Người dùng đã xác thực MUST có thể xem tiến độ của mình
-  trên một Course `PUBLISHED`: số Problem hiển thị đã giải trên tổng số Problem hiển thị, cho toàn
-  Course và cho từng Chapter, cùng việc từng Problem hiển thị đã giải hay chưa.
+  trên một Course `PUBLISHED`: số Learning Item đã hoàn thành trên tổng Learning Item hiển thị, cho
+  toàn Course và cho từng Chapter. Mỗi Problem/Quiz hiển thị có trọng số một. Đầu ra MUST cho biết
+  loại, định danh và thời điểm hoàn thành của từng item đã hoàn thành.
+- **LRN-006-FR-019 — Hoàn thành Quiz:** Quiz được tính hoàn thành khi người dùng có ít nhất một
+  `quiz_attempt` đã `FINISHED` và `passed=true`. Lượt fail sau đó MUST NOT thu hồi completion. Việc
+  publish revision mới MUST NOT thu hồi completion theo user + Quiz đã có.
+- **LRN-006-FR-020 — Hiển thị Quiz:** Chỉ Quiz `PUBLISHED`, chưa xoá mềm và đang được gắn trong
+  Chapter của Course mới thuộc tử số/mẫu số. Quiz `ON_HOLD`, đã xoá hoặc đã gỡ khỏi Course không
+  xuất hiện; khi hiển thị lại, completion cũ MUST được tính lại mà không cần làm lại.
 - **LRN-006-FR-013 — Tiến độ theo Assignment:** Sinh viên đang đăng ký một Class MUST có thể xem điểm
   của mình trên một Assignment của Class đó khi Assignment hiển thị với sinh viên theo LRN-005, tính
   theo quy tắc chấm của LRN-005.
@@ -116,8 +128,8 @@ Các tính năng liên quan: Problem (LRN-001), Course và Chapter (LRN-003), Cl
 ### Chung
 
 - **LRN-006-FR-017 — Tính từ dữ liệu hiện tại:** Mọi phép tổng hợp MUST được tính lúc đọc từ tiến độ
-  đã lưu và cấu trúc hiện tại của Course, Class, Assignment. LRN-006 MUST NOT lưu sẵn điểm hay tỉ lệ
-  hoàn thành.
+  Problem đã lưu, Quiz attempt đã lưu và cấu trúc hiện tại của Course. LRN-006 MUST NOT lưu sẵn điểm,
+  completion Course hay tỉ lệ hoàn thành.
 - **LRN-006-FR-018 — Chỉ đọc:** Thao tác đọc tiến độ MUST NOT làm thay đổi state. LRN-006 MUST NOT
   tạo, sửa hay xoá Problem, Course, Class, Enrollment hay Assignment.
 
@@ -140,16 +152,18 @@ thứ tự (LRN-006-FR-006). Learning coi `occurredAt` do Submission cung cấp 
 Learning không kiểm tra Problem có tồn tại hay đang `PUBLISHED` khi ghi tiến độ: Submission chỉ nộp
 được Problem đủ điều kiện (LRN-002-FR-015), và tiến độ của Problem không hiển thị sẽ bị lọc lúc đọc.
 
-### Problem hiển thị
+### Learning Item hiển thị và hoàn thành
 
-"Problem hiển thị" của một Course là Problem đang `PUBLISHED` và chưa xoá mềm, được xếp trong một
-Chapter của Course đó, đúng như biểu diễn hướng người học của LRN-003 (LRN-003-FR-010).
+Learning Item hiển thị của một Course là Problem hoặc Quiz đang `PUBLISHED`, chưa xoá mềm và được
+xếp trong một Chapter của Course đó, đúng như biểu diễn hướng người học của LRN-003.
 
-- Tử số: số Problem hiển thị mà người dùng đã giải, bất kể giải lúc nào (kể cả trước khi vào lớp).
-- Mẫu số: số Problem hiển thị.
-- Problem bị tạm giữ, xoá mềm hay gỡ khỏi Course không xuất hiện ở cả tử số lẫn mẫu số. Khi nó hiển
-  thị lại, tiến độ cũ của nó được tính lại ngay (LRN-006-FR-008).
-- Course không có Problem hiển thị nào cho kết quả 0/0; biểu diễn không coi đó là lỗi.
+- Tử số: số Problem hiển thị đã giải cộng số Quiz hiển thị đã có lượt pass.
+- Mẫu số: tổng số Problem và Quiz hiển thị; mỗi item có trọng số một.
+- Nội dung bị tạm giữ, xoá mềm hay gỡ khỏi Course không xuất hiện ở cả tử số lẫn mẫu số. Khi hiển thị
+  lại, completion cũ được tính lại ngay.
+- Quiz pass ở revision bất kỳ hoàn thành Quiz root đó ở mọi Chapter/Course; publish revision mới
+  không reset completion.
+- Course không có Learning Item hiển thị nào cho kết quả 0/0; biểu diễn không coi đó là lỗi.
 
 Danh sách Problem đã giải của chính người dùng (LRN-006-FR-011) chỉ trả Problem đang `PUBLISHED` chưa
 xoá mềm; tiến độ của Problem khác vẫn được giữ và xuất hiện lại khi Problem hiển thị lại.
@@ -216,9 +230,8 @@ Không đầu vào nào nhận định danh người dùng cho thao tác "của 
 - **Theo Problem:** danh sách (định danh Problem, thời điểm giải) của Problem đã giải đang hiển thị;
   khi tra theo danh sách, mỗi định danh trả đã giải/chưa giải và thời điểm giải nếu có. Problem không
   hiển thị trả như chưa giải, không lộ sự tồn tại.
-- **Theo Course:** định danh Course, số đã giải, tổng số Problem hiển thị, danh sách Chapter theo thứ
-  tự với số đã giải/tổng của từng Chapter, và định danh các Problem hiển thị đã giải cùng thời điểm
-  giải.
+- **Theo Course:** định danh Course, `completed`, `total`, danh sách Chapter theo thứ tự với
+  `completed/total`, và `completedItems` gồm `type` (`PROBLEM`/`QUIZ`), `itemId`, `completedAt`.
 - **Theo Assignment (của mình):** định danh Assignment, `deadlineAt`, điểm, điểm tối đa, cờ điểm đã
   cuối cùng hay còn tạm tính, và cho mỗi Problem hiển thị với sinh viên: đạt/không đạt, điểm, thời
   điểm giải nếu có.
@@ -258,8 +271,8 @@ LRN-006 không đưa vào cấu trúc lỗi mới.
 - `occurredAt` đúng bằng `deadlineAt`: được tính đạt.
 - Người học giải Problem trước khi Assignment được tạo: được tính đạt nếu thời điểm giải ≤
   `deadlineAt`.
-- Problem bị tạm giữ sau khi người học giải: không còn trong tử số và mẫu số của Course; xuất bản lại
-  thì được tính lại.
+- Problem/Quiz bị tạm giữ sau khi hoàn thành: không còn trong tử số và mẫu số của Course; xuất bản
+  lại thì được tính lại. Quiz đổi revision không làm mất completion.
 - Class không có sinh viên: danh sách rỗng.
 - Dữ liệu tiến độ ghi trước LRN-006 có thể có thời điểm giải không phải lần đạt sớm nhất; nó được sửa
   dần khi sự kiện sớm hơn tới lại, và không được sửa ngược vì Learning không đọc Submission.
@@ -311,9 +324,9 @@ LRN-006 không đưa vào cấu trúc lỗi mới.
 - **LRN-006-AC-010:** Cho trước người dùng đã giải một số Problem, trong đó có Problem đang `ON_HOLD`,
   khi họ liệt kê Problem đã giải, thì chỉ Problem đang `PUBLISHED` chưa xoá mềm xuất hiện, kèm thời
   điểm giải.
-- **LRN-006-AC-011:** Cho trước một Course `PUBLISHED` có Problem `PUBLISHED`, `ON_HOLD` và đã xoá mềm,
-  khi người học xem tiến độ theo Course, thì tử số và mẫu số chỉ tính Problem `PUBLISHED` chưa xoá, cho
-  toàn Course và từng Chapter.
+- **LRN-006-AC-011:** Cho trước một Course `PUBLISHED` có Problem và Quiz ở trạng thái `PUBLISHED`,
+  `ON_HOLD` và đã xoá mềm, khi người học xem tiến độ theo Course, thì tử số và mẫu số chỉ tính
+  Learning Item `PUBLISHED` chưa xoá, cho toàn Course và từng Chapter.
 - **LRN-006-AC-012:** Cho trước một Course `DRAFT`, `ON_HOLD` hoặc đã xoá mềm, khi người học xem tiến
   độ theo Course, thì nhận `404`.
 - **LRN-006-AC-013:** Cho trước một Problem đã giải bị tạm giữ rồi xuất bản lại, khi người học xem tiến
@@ -343,6 +356,12 @@ LRN-006 không đưa vào cấu trúc lỗi mới.
   đó không xuất hiện; khi sinh viên đó xem tiến độ theo Problem của mình, thì tiến độ vẫn còn.
 - **LRN-006-AC-024:** Cho trước mọi biểu diễn tiến độ, khi kiểm tra, thì không chứa mã nguồn, Test Case,
   harness, tên hay email của sinh viên.
+- **LRN-006-AC-025:** Cho trước Course chỉ có Quiz hiển thị, khi chưa pass thì tiến độ là 0/1; sau
+  lượt đạt ít nhất 90% thì là 1/1 và item hoàn thành có type `QUIZ`.
+- **LRN-006-AC-026:** Cho trước Course hỗn hợp có một Problem đã giải và một Quiz đã pass, khi đọc
+  tiến độ thì kết quả là 2/2; lượt Quiz fail sau đó và publish revision mới không làm giảm kết quả.
+- **LRN-006-AC-027:** Cho trước Quiz đã pass bị hold/xoá/gỡ rồi xuất hiện lại, khi đọc tiến độ thì
+  item bị loại khỏi mẫu số trong thời gian ẩn và completion cũ xuất hiện lại sau khi khả dụng.
 
 ## Ngoài phạm vi
 
@@ -371,6 +390,7 @@ LRN-006 không đưa vào cấu trúc lỗi mới.
 - [LRN-001 Quản lý Problem](../problems/spec.md): trạng thái và xoá mềm của Problem.
 - [LRN-003 Quản lý Course](../courses/spec.md): Chapter, thứ tự Problem, Problem hiển thị với người
   học.
+- [LRN-009 Quiz](../quizzes/spec.md): ngưỡng pass 90%, completion user + Quiz và lifecycle Quiz.
 - LRN-004 Class & Enrollment (`../enrollments/spec.md`, đang viết): chủ sở hữu Class, đăng ký, trạng
   thái `ARCHIVED`, quyền `class:read-managed`.
 - LRN-005 Assignment (`../assignments/spec.md`, đang viết): Problem và `maxScore` của Assignment,
@@ -388,8 +408,8 @@ Không còn. Các quyết định dưới đây là phương án đề xuất, �
 3. **Thời điểm giải:** `occurredAt` nhỏ nhất trong các sự kiện đã áp dụng, không phụ thuộc thứ tự tới
    (FR-005, FR-006).
 4. **`ATTEMPTED`:** Không có ở v1 vì không có sự kiện cho bài không đạt (FR-007).
-5. **Tổng hợp theo Course:** Số Problem hiển thị đã giải / tổng Problem hiển thị, cho toàn Course và
-   từng Chapter; Problem hiển thị theo LRN-003 (FR-012).
+5. **Tổng hợp theo Course:** Amendment 1.1 thay quyết định cũ: mỗi Problem đã giải hoặc Quiz đã pass
+   là một Learning Item hoàn thành; tử số/mẫu số chỉ tính item đang hiển thị (FR-012, FR-019/020).
 6. **Tổng hợp theo Assignment:** Theo quy tắc chấm của LRN-005: đạt khi thời điểm giải ≤
    `deadlineAt`, điểm `maxScore` hoặc 0, tổng là điểm Assignment; có cờ tạm tính/cuối cùng (FR-013).
 7. **Ai xem:** Người học xem của chính mình; chủ sở hữu Class xem sinh viên đang đăng ký trong lớp

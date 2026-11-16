@@ -168,7 +168,7 @@ describeIntegration('CoursesModule wiring (real PostgreSQL)', () => {
       `/api/courses/${id}/chapters/${chapterId}/problems/${PUBLISHED_PROBLEM}`,
     );
     expect(detach.status).toBe(400);
-    expect(detach.body.issues).toEqual(['PUBLISHED_PROBLEM_REQUIRED']);
+    expect(detach.body.issues).toEqual(['PUBLISHED_CONTENT_REQUIRED']);
 
     // Xoá mềm và khôi phục Course đã xuất bản.
     expect((await call('DELETE', `/api/courses/${id}`)).status).toBe(204);

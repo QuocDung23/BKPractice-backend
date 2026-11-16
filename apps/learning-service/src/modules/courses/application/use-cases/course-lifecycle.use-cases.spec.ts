@@ -5,6 +5,7 @@ import {
 } from '@/modules/courses/application/errors';
 import {
   DeleteCourseUseCase,
+  DetachQuizUseCase,
   HoldCourseUseCase,
   PublishCourseUseCase,
   RepublishCourseUseCase,
@@ -13,11 +14,13 @@ import {
 import { InvalidCourseState } from '@/modules/courses/domain/errors';
 import {
   courseWithProblem,
+  courseWithQuiz,
   createCourseTestKit,
   draftCourse,
   admin,
   OTHER_ID,
   PROBLEM_ID,
+  QUIZ_ID,
   student,
 } from '@/modules/courses/testing';
 
@@ -62,6 +65,28 @@ describe('Course lifecycle use cases', () => {
       expect(kit.repository.saveCount).toBe(1);
     });
 
+    it('publishes a course that has only a published Quiz', async () => {
+      kit.quizCatalog.setQuiz(QUIZ_ID);
+      const course = kit.seed(courseWithQuiz());
+
+      await expect(publish().execute(admin(), course.id.value)).resolves.toMatchObject({
+        status: 'PUBLISHED',
+        readiness: { ready: true, issues: [] },
+      });
+    });
+
+    it('publishes a mixed course when either linked content type remains available', async () => {
+      kit.catalog.setProblem(PROBLEM_ID, { publishStatus: 'ON_HOLD' });
+      kit.quizCatalog.setQuiz(QUIZ_ID);
+      const course = courseWithProblem();
+      course.attachQuiz(course.chapters[0]!.id, QUIZ_ID);
+      kit.seed(course);
+
+      await expect(publish().execute(admin(), course.id.value)).resolves.toMatchObject({
+        status: 'PUBLISHED',
+      });
+    });
+
     it.each([
       ['DRAFT', false],
       ['ON_HOLD', false],
@@ -73,7 +98,7 @@ describe('Course lifecycle use cases', () => {
         const course = kit.seed();
 
         await expect(publish().execute(admin(), course.id.value)).rejects.toMatchObject({
-          issues: ['PUBLISHED_PROBLEM_REQUIRED'],
+          issues: ['PUBLISHED_CONTENT_REQUIRED'],
         });
         expect(course.status).toBe('DRAFT');
         expect(kit.repository.saveCount).toBe(0);
@@ -155,6 +180,44 @@ describe('Course lifecycle use cases', () => {
       await expect(hold().execute(admin(), course.id.value)).rejects.toBeInstanceOf(
         InvalidCourseState,
       );
+    });
+  });
+
+  describe('DetachQuizUseCase', () => {
+    const detachQuiz = () =>
+      new DetachQuizUseCase(
+        kit.authorization,
+        kit.views,
+        kit.repository,
+        kit.transactions,
+        kit.readiness,
+      );
+
+    it('does not detach the last published content from a published Course', async () => {
+      kit.quizCatalog.setQuiz(QUIZ_ID);
+      const course = courseWithQuiz();
+      course.publish();
+      kit.seed(course);
+
+      await expect(
+        detachQuiz().execute(admin(), course.id.value, course.chapters[0]!.id.value, QUIZ_ID),
+      ).rejects.toMatchObject({ issues: ['PUBLISHED_CONTENT_REQUIRED'] });
+      expect(kit.repository.saveCount).toBe(0);
+      expect(kit.stored(course).chapters[0]!.quizRefs).toContain(QUIZ_ID);
+    });
+
+    it('detaches a Quiz when a published Problem remains', async () => {
+      kit.catalog.setProblem(PROBLEM_ID);
+      kit.quizCatalog.setQuiz(QUIZ_ID);
+      const course = courseWithProblem();
+      course.attachQuiz(course.chapters[0]!.id, QUIZ_ID);
+      course.publish();
+      kit.seed(course);
+
+      await expect(
+        detachQuiz().execute(admin(), course.id.value, course.chapters[0]!.id.value, QUIZ_ID),
+      ).resolves.toMatchObject({ status: 'PUBLISHED' });
+      expect(kit.stored(course).chapters[0]!.quizRefs).not.toContain(QUIZ_ID);
     });
   });
 

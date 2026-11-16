@@ -1,49 +1,27 @@
 import {
-  ArgumentsHost,
-  Catch,
-  ExceptionFilter,
-  HttpException,
-  HttpStatus,
-  Logger,
-} from '@nestjs/common';
-import type { Response } from 'express';
+  describeFrameworkError,
+  respondWithError,
+  respondWithSanitizedFallback,
+} from '@learning/presentation/http/learning-error';
+import { ArgumentsHost, Catch, ExceptionFilter, Logger } from '@nestjs/common';
 
-import { UnauthorizedError } from '@/modules/problems/application/errors/unauthorized.error';
-import { CourseProgressNotFoundError } from '@/modules/progress/application/errors';
+import { describeProgressError } from '@/modules/progress/presentation/http/progress-errors';
 
 @Catch()
 export class ProgressExceptionFilter implements ExceptionFilter {
   private readonly logger = new Logger(ProgressExceptionFilter.name);
+
   catch(exception: unknown, host: ArgumentsHost): void {
-    const status: HttpStatus =
-      exception instanceof HttpException
-        ? exception.getStatus()
-        : exception instanceof UnauthorizedError
-          ? HttpStatus.UNAUTHORIZED
-          : exception instanceof CourseProgressNotFoundError
-            ? HttpStatus.NOT_FOUND
-            : HttpStatus.INTERNAL_SERVER_ERROR;
-    let message: string | string[] = 'Internal server error';
-    if (status >= HttpStatus.INTERNAL_SERVER_ERROR) {
-      this.logger.error('Unexpected error while reading personal progress');
-    } else if (exception instanceof HttpException) {
-      const body = exception.getResponse();
-      const detail: unknown =
-        typeof body === 'object' && body !== null && 'message' in body ? body.message : body;
-      message =
-        typeof detail === 'string'
-          ? detail
-          : Array.isArray(detail) &&
-              detail.every((value): value is string => typeof value === 'string')
-            ? detail
-            : exception.message;
-    } else if (exception instanceof Error) {
-      message = exception.message;
+    const descriptor = describeProgressError(exception) ?? describeFrameworkError(exception);
+    // Lỗi không nhận diện (kể cả 5xx) đi qua bộ lọc toàn cục: không bị nuốt, không lộ chi tiết nội bộ.
+    if (!descriptor) {
+      return respondWithSanitizedFallback(
+        exception,
+        host,
+        this.logger,
+        'Unexpected error while reading personal progress',
+      );
     }
-    host
-      .switchToHttp()
-      .getResponse<Response>()
-      .status(status)
-      .json({ statusCode: status, message });
+    respondWithError(host, descriptor, this.logger);
   }
 }

@@ -13,6 +13,7 @@ import {
   requireAnotherAdmin,
   requireAssignableRole,
   requireRevocableRole,
+  requireRoleChangeReason,
 } from '@/modules/rbac/domain';
 
 async function loadUserRoles(context: IdentityAccountContext, userId: string): Promise<UserRoles> {
@@ -33,13 +34,31 @@ export class GetUserRoles {
 export class AssignRoleToUser {
   constructor(private readonly transactions: TransactionRunner) {}
 
-  execute(principal: AuthorizationPrincipal, userId: string, role: RoleName): Promise<UserRoles> {
+  execute(
+    principal: AuthorizationPrincipal,
+    userId: string,
+    role: RoleName,
+    reason: string,
+  ): Promise<UserRoles> {
     requireAdmin(principal);
-    requireAssignableRole(role);
+    requireAssignableRole(principal, userId, role);
+    const validatedReason = requireRoleChangeReason(reason);
     return this.transactions.run(async (repository) => {
-      await loadUserRoles(repository, userId);
+      if (role === RoleName.Admin) await repository.lockAdminRole();
+      await repository.lockUser(userId);
+      const current = await loadUserRoles(repository, userId);
+      if (current.roles.includes(role)) return current;
       await repository.assignRole(userId, role);
-      return loadUserRoles(repository, userId);
+      const result = await loadUserRoles(repository, userId);
+      await repository.recordRoleAudit({
+        actorId: principal.userId,
+        targetId: userId,
+        action: 'ASSIGN_ROLE',
+        reason: validatedReason,
+        before: current.roles,
+        after: result.roles,
+      });
+      return result;
     });
   }
 }
@@ -47,18 +66,34 @@ export class AssignRoleToUser {
 export class RevokeRoleFromUser {
   constructor(private readonly transactions: TransactionRunner) {}
 
-  execute(principal: AuthorizationPrincipal, userId: string, role: RoleName): Promise<UserRoles> {
+  execute(
+    principal: AuthorizationPrincipal,
+    userId: string,
+    role: RoleName,
+    reason: string,
+  ): Promise<UserRoles> {
     requireAdmin(principal);
     requireRevocableRole(principal, userId, role);
+    const validatedReason = requireRoleChangeReason(reason);
     return this.transactions.run(async (repository) => {
-      // Lock the same static row before counting so concurrent self-revocations serialize.
       if (role === RoleName.Admin) await repository.lockAdminRole();
+      await repository.lockUser(userId);
       const current = await loadUserRoles(repository, userId);
+      if (!current.roles.includes(role)) return current;
       if (role === RoleName.Admin && current.roles.includes(RoleName.Admin)) {
         requireAnotherAdmin(await repository.countAdmins());
       }
       await repository.revokeRole(userId, role);
-      return loadUserRoles(repository, userId);
+      const result = await loadUserRoles(repository, userId);
+      await repository.recordRoleAudit({
+        actorId: principal.userId,
+        targetId: userId,
+        action: 'REVOKE_ROLE',
+        reason: validatedReason,
+        before: current.roles,
+        after: result.roles,
+      });
+      return result;
     });
   }
 }

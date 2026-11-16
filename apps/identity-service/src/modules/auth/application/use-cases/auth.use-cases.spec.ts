@@ -24,7 +24,7 @@ import {
   StartMicrosoftLogin,
 } from '@/modules/auth/application/use-cases';
 import { AuthFailure } from '@/modules/auth/domain';
-import type { AuthAccount } from '@/modules/auth/domain';
+import type { AuthAccount, LoginLookup } from '@/modules/auth/domain';
 import { MemoryAuthFlowStore } from '@/modules/auth/infrastructure/memory';
 
 const account: AuthAccount = {
@@ -44,10 +44,16 @@ const refreshClaims: BkRefreshClaims = {
 };
 
 function createAccounts(): AuthAccountRepository {
-  return {
+  const accounts: AuthAccountRepository = {
     findByIdentifier: jest.fn().mockResolvedValue({ ...account, passwordHash: 'hash' }),
+    // Dẫn xuất từ findByIdentifier để các test cũ vẫn điều khiển được kết quả tra cứu.
+    findForLogin: jest.fn(async (identifier: string): Promise<LoginLookup> => {
+      const found = await accounts.findByIdentifier(identifier);
+      return found ? { kind: 'found', account: found, deleted: false } : { kind: 'none' };
+    }),
     findById: jest.fn().mockResolvedValue(account),
   };
+  return accounts;
 }
 
 function createHasher(): PasswordHasher {
@@ -167,7 +173,7 @@ describe('Authentication use cases', () => {
     const login = new LoginWithPassword(accounts, hasher, createIssuer());
 
     await expect(login.execute('2210001', 'old-password')).rejects.toEqual(
-      new AuthFailure('invalid_credentials'),
+      new AuthFailure('wrong_password'),
     );
     await expect(login.execute('2210001', 'new-password')).resolves.toEqual({
       userId: 'user-1',
@@ -240,11 +246,75 @@ describe('Authentication use cases', () => {
     const login = new LoginWithPassword(accounts, hasher, issuer);
 
     await expect(login.execute('admin', 'wrong')).rejects.toEqual(
-      new AuthFailure('invalid_credentials'),
+      new AuthFailure('wrong_password'),
     );
     jest.mocked(accounts.findByIdentifier).mockResolvedValueOnce({ ...admin, status: 'LOCKED' });
-    await expect(login.execute('admin', 'admin')).rejects.toBeInstanceOf(AuthFailure);
+    await expect(login.execute('admin', 'admin')).rejects.toEqual(
+      new AuthFailure('account_locked'),
+    );
     expect(issue).not.toHaveBeenCalled();
+  });
+
+  describe('LoginWithPassword reports a specific reason (ERR-001 FR-007)', () => {
+    const local = { ...account, passwordHash: 'hash' };
+
+    function setup(lookup: LoginLookup, passwordOk = true) {
+      const accounts = createAccounts();
+      jest.mocked(accounts.findForLogin).mockResolvedValue(lookup);
+      const hasher = createHasher();
+      jest.mocked(hasher.verify).mockResolvedValue(passwordOk);
+      const issuer = createIssuer();
+      const issue = jest.spyOn(issuer, 'issueNewFamily');
+      return { login: new LoginWithPassword(accounts, hasher, issuer), hasher, issue };
+    }
+
+    it('reports account_not_found and still spends the dummy hash time', async () => {
+      const { login, hasher, issue } = setup({ kind: 'none' });
+      await expect(login.execute('nobody', 'secret1')).rejects.toEqual(
+        new AuthFailure('account_not_found'),
+      );
+      expect(hasher.verifyDummy).toHaveBeenCalledWith('secret1');
+      expect(issue).not.toHaveBeenCalled();
+    });
+
+    it('reports identifier_ambiguous when several accounts match', async () => {
+      const { login, issue } = setup({ kind: 'ambiguous' });
+      await expect(login.execute('2210001', 'secret1')).rejects.toEqual(
+        new AuthFailure('identifier_ambiguous'),
+      );
+      expect(issue).not.toHaveBeenCalled();
+    });
+
+    it('reports wrong_password for an active account', async () => {
+      const { login, issue } = setup({ kind: 'found', account: local, deleted: false }, false);
+      await expect(login.execute('2210001', 'bad')).rejects.toEqual(
+        new AuthFailure('wrong_password'),
+      );
+      expect(issue).not.toHaveBeenCalled();
+    });
+
+    it.each([
+      ['deleted', { deleted: true, status: 'ACTIVE' as const }, 'account_deleted'],
+      ['locked', { deleted: false, status: 'LOCKED' as const }, 'account_locked'],
+      ['pending', { deleted: false, status: 'PENDING' as const }, 'account_pending'],
+    ])('reports the %s state only when the password is correct', async (_name, state, reason) => {
+      const lookup: LoginLookup = {
+        kind: 'found',
+        deleted: state.deleted,
+        account: { ...local, status: state.status },
+      };
+      const right = setup(lookup, true);
+      await expect(right.login.execute('2210001', 'secret1')).rejects.toEqual(
+        new AuthFailure(reason as 'account_deleted' | 'account_locked' | 'account_pending'),
+      );
+      expect(right.issue).not.toHaveBeenCalled();
+
+      // Mật khẩu sai thì không lộ trạng thái (AC-003).
+      const wrong = setup(lookup, false);
+      await expect(wrong.login.execute('2210001', 'bad')).rejects.toEqual(
+        new AuthFailure('wrong_password'),
+      );
+    });
   });
 
   it('returns the bootstrap Admin in its own /auth/me response', async () => {
@@ -284,7 +354,7 @@ describe('Authentication use cases', () => {
     expect(accounts.findByIdentifier).toHaveBeenCalledWith('STUDENT@school.edu');
   });
 
-  it('uses the same public failure for missing student IDs and wrong passwords', async () => {
+  it('distinguishes missing student IDs from wrong passwords (ERR-001 FR-007 supersedes ID-001-AC-003 for login)', async () => {
     const accounts = createAccounts();
     const hasher = createHasher();
     const issuer = createIssuer();
@@ -292,12 +362,12 @@ describe('Authentication use cases', () => {
     jest.mocked(accounts.findByIdentifier).mockResolvedValueOnce(null);
     const login = new LoginWithPassword(accounts, hasher, issuer);
     await expect(login.execute('missing', 'wrong')).rejects.toEqual(
-      new AuthFailure('invalid_credentials'),
+      new AuthFailure('account_not_found'),
     );
     expect(hasher.verifyDummy).toHaveBeenCalledWith('wrong');
     jest.mocked(hasher.verify).mockResolvedValueOnce(false);
     await expect(login.execute('2210001', 'wrong')).rejects.toEqual(
-      new AuthFailure('invalid_credentials'),
+      new AuthFailure('wrong_password'),
     );
     expect(issue).not.toHaveBeenCalled();
   });

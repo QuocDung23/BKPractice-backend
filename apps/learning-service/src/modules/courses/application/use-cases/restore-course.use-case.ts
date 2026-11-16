@@ -29,6 +29,7 @@ export class RestoreCourseUseCase implements IRestoreCoursePortIn {
     return this.transactionRunner.run(async () => {
       const course = await this.repository.loadForUpdate(courseId, true);
       if (!course) throw new CourseNotFoundError('Course not found');
+      this.authorization.requireOwnership(principal, course.createdBy.value);
       course.restore(now);
       await this.repository.save(course);
       return this.views.toManaged(course);

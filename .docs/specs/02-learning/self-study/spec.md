@@ -1,4 +1,8 @@
+> **Bản sửa đổi LRN-009 1.3, Approved 2026-11-11:** LECTURER có quyền quản lý nội dung Learning mình tạo; ADMIN có quyền tương ứng quản lý mọi nội dung. Quy tắc này thay các câu ADMIN-only hoặc bỏ kiểm created_by trước đó. Course hỗ trợ liên kết nhiều Quiz/Chapter theo LRN-009; tiến độ Problem hiện có không đổi. Không khôi phục Class/Enrollment/Assignment.
+
 # LRN-008 — Learning tự học, không có vai trò giảng viên
+
+> **SRS v3 (2026-11-08):** [LRN-009](../srs-v3-lecturer/spec.md) thay thế chính sách chỉ ADMIN quản lý nội dung và chỉ có tiến độ cá nhân; Giảng viên quản lý nội dung mình tạo và xem báo cáo mọi Sinh viên theo Course. Quy tắc tự học không Class/Enrollment/Assignment vẫn áp dụng. Quiz tạm giữ.
 
 ## Trạng thái
 

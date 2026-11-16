@@ -118,7 +118,7 @@ describe('CourseViewAssembler', () => {
         publishStatus: null,
         isDeleted: null,
       });
-      expect(view.readiness).toEqual({ ready: false, issues: ['PUBLISHED_PROBLEM_REQUIRED'] });
+      expect(view.readiness).toEqual({ ready: false, issues: ['PUBLISHED_CONTENT_REQUIRED'] });
     });
   });
 

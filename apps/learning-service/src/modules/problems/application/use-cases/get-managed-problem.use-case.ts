@@ -36,7 +36,7 @@ export class GetManagedProblemUseCase implements IGetManagedProblemPortIn {
       throw new ProblemNotFoundError(id);
     }
 
-    this.authorization.requireManaged(principal, 'read-managed');
+    this.authorization.requireManaged(principal, 'read-managed', problem.createdBy.value);
 
     if (problem.isDeleted && !includeDeleted) {
       throw new ProblemNotFoundError(id);

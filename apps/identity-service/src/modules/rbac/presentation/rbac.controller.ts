@@ -19,7 +19,11 @@ import { AuthFailureFilter } from '@/modules/auth/presentation';
 import { AssignRoleToUser, GetUserRoles, RevokeRoleFromUser } from '@/modules/rbac/application';
 import { RoleName } from '@/modules/rbac/domain';
 import { RbacFailureFilter } from '@/modules/rbac/presentation/rbac-failure.filter';
-import { AssignRoleRequestDto, UserRolesResponseDto } from '@/modules/rbac/presentation/rbac.dto';
+import {
+  AssignRoleRequestDto,
+  RevokeRoleRequestDto,
+  UserRolesResponseDto,
+} from '@/modules/rbac/presentation/rbac.dto';
 import { RbacGuard, type RbacRequest } from '@/modules/rbac/presentation/rbac.guard';
 import { RbacInterceptor } from '@/modules/rbac/presentation/rbac.interceptor';
 
@@ -53,24 +57,25 @@ export class RbacController {
 
   @Post(':userId')
   @HttpCode(200)
-  @ApiOperation({ summary: 'Assign STUDENT or LECTURER (ADMIN only)' })
+  @ApiOperation({ summary: 'Assign STUDENT, LECTURER or ADMIN with a reason (ADMIN only)' })
   assign(
     @Req() request: RbacRequest,
     @Param('userId', ParseUUIDPipe) userId: string,
     @Body() dto: AssignRoleRequestDto,
   ): Promise<UserRolesResponseDto> {
-    return this.assignRole.execute(request.principal, userId, dto.role);
+    return this.assignRole.execute(request.principal, userId, dto.role, dto.reason);
   }
 
   @Delete(':userId/:role')
   @ApiOperation({
-    summary: 'Revoke a role; ADMIN may only revoke their own ADMIN role when another remains',
+    summary: 'Revoke a role with a reason; preserve the last active ADMIN',
   })
   revoke(
     @Req() request: RbacRequest,
     @Param('userId', ParseUUIDPipe) userId: string,
     @Param('role', new ParseEnumPipe(RoleName)) role: RoleName,
+    @Body() dto: RevokeRoleRequestDto,
   ): Promise<UserRolesResponseDto> {
-    return this.revokeRole.execute(request.principal, userId, role);
+    return this.revokeRole.execute(request.principal, userId, role, dto.reason);
   }
 }

@@ -22,6 +22,10 @@ import {
   UPDATE_CHAPTER_PORT_IN,
   UPDATE_COURSE_PORT_IN,
 } from '@/modules/courses/application/ports/in';
+import { ATTACH_QUIZ_PORT_IN } from '@/modules/courses/application/ports/in/attach-quiz.port.in';
+import { DETACH_QUIZ_PORT_IN } from '@/modules/courses/application/ports/in/detach-quiz.port.in';
+import { REORDER_CHAPTER_QUIZZES_PORT_IN } from '@/modules/courses/application/ports/in/reorder-chapter-quizzes.port.in';
+import { COURSE_QUIZ_CATALOG } from '@/modules/courses/application/ports/out';
 import {
   CourseAuthorizationService,
   CoursePublishReadinessService,
@@ -29,24 +33,27 @@ import {
 } from '@/modules/courses/application/services';
 import {
   AddChapterUseCase,
-  RemoveChapterUseCase,
-  ReorderChaptersUseCase,
-  UpdateChapterUseCase,
-  DeleteCourseUseCase,
-  HoldCourseUseCase,
-  PublishCourseUseCase,
-  RepublishCourseUseCase,
-  RestoreCourseUseCase,
-  CreateCourseUseCase,
   AttachProblemUseCase,
+  CreateCourseUseCase,
+  DeleteCourseUseCase,
   DetachProblemUseCase,
-  ReorderChapterProblemsUseCase,
   GetManagedCourseUseCase,
   GetPublishedCourseUseCase,
+  HoldCourseUseCase,
   ListManagedCoursesUseCase,
   ListPublishedCoursesUseCase,
+  PublishCourseUseCase,
+  RemoveChapterUseCase,
+  ReorderChapterProblemsUseCase,
+  ReorderChaptersUseCase,
+  RepublishCourseUseCase,
+  RestoreCourseUseCase,
+  UpdateChapterUseCase,
   UpdateCourseUseCase,
 } from '@/modules/courses/application/use-cases';
+import { AttachQuizUseCase } from '@/modules/courses/application/use-cases/attach-quiz.use-case';
+import { DetachQuizUseCase } from '@/modules/courses/application/use-cases/detach-quiz.use-case';
+import { ReorderChapterQuizzesUseCase } from '@/modules/courses/application/use-cases/reorder-chapter-quizzes.use-case';
 import {
   COURSE_PROBLEM_CATALOG,
   COURSE_REPOSITORY,
@@ -56,6 +63,7 @@ import { CourseReadiness } from '@/modules/courses/domain/services';
 import {
   ChapterEntity as Chapter,
   ChapterProblemEntity as ChapterProblem,
+  ChapterQuizEntity,
   CourseEntity as Course,
 } from '@/modules/courses/entities';
 import {
@@ -64,18 +72,38 @@ import {
   CourseTypeOrmTransactionRunner,
 } from '@/modules/courses/infrastructure/persistence';
 import { ProblemReferenceCatalogAdapter } from '@/modules/courses/infrastructure/problems';
+import { QuizCatalogAdapter } from '@/modules/courses/infrastructure/quiz-catalog.adapter';
 import {
-  ManagedCoursesController,
   ManagedChaptersController,
+  ManagedCoursesController,
   PublicCoursesController,
 } from '@/modules/courses/presentation/http';
+import { ChapterQuizzesController } from '@/modules/courses/presentation/http/chapter-quizzes.controller';
 import { CourseExceptionFilter } from '@/modules/courses/presentation/http/filters';
+import { QuizzesModule } from '@/modules/quizzes/quizzes.module';
 
 @Module({
   // ProblemsModule chỉ để lấy PROBLEM_REFERENCE_READER (API đọc duy nhất courses dùng).
-  imports: [TypeOrmModule.forFeature([Course, Chapter, ChapterProblem]), ProblemsModule],
-  controllers: [ManagedCoursesController, ManagedChaptersController, PublicCoursesController],
+  imports: [
+    TypeOrmModule.forFeature([Course, Chapter, ChapterProblem, ChapterQuizEntity]),
+    QuizzesModule,
+    ProblemsModule,
+  ],
+  controllers: [
+    ChapterQuizzesController,
+    ManagedCoursesController,
+    ManagedChaptersController,
+    PublicCoursesController,
+  ],
   providers: [
+    QuizCatalogAdapter,
+    { provide: COURSE_QUIZ_CATALOG, useExisting: QuizCatalogAdapter },
+    AttachQuizUseCase,
+    { provide: ATTACH_QUIZ_PORT_IN, useExisting: AttachQuizUseCase },
+    DetachQuizUseCase,
+    { provide: DETACH_QUIZ_PORT_IN, useExisting: DetachQuizUseCase },
+    ReorderChapterQuizzesUseCase,
+    { provide: REORDER_CHAPTER_QUIZZES_PORT_IN, useExisting: ReorderChapterQuizzesUseCase },
     CourseExceptionFilter,
     CourseAuthorizationService,
     CourseReadiness,

@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException, UnprocessableEntityException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
@@ -7,6 +7,7 @@ import type { CreatePostDto } from './dto/create-post.dto';
 import { Comment } from './entities/comment.entity';
 import { Post, PostScope } from './entities/post.entity';
 import { Reaction, ReactionType } from './entities/reaction.entity';
+import { POST_ERRORS, createPostError } from './post-errors';
 
 @Injectable()
 export class PostsService {
@@ -38,7 +39,7 @@ export class PostsService {
 
   async comment(authorId: string, postId: string, dto: CreateCommentDto): Promise<Comment> {
     const post = await this.posts.findOneBy({ id: postId, isHidden: false });
-    if (!post) throw new NotFoundException('Post not found');
+    if (!post) throw createPostError(POST_ERRORS.postNotFound);
     let parent: Comment | null = null;
     if (dto.parentCommentId) {
       parent = await this.comments.findOne({
@@ -46,9 +47,8 @@ export class PostsService {
         relations: { post: true, parentComment: true },
       });
       if (!parent || parent.post.id !== postId)
-        throw new NotFoundException('Parent comment not found');
-      if (parent.parentComment)
-        throw new UnprocessableEntityException('Replies are limited to one level');
+        throw createPostError(POST_ERRORS.commentParentNotFound);
+      if (parent.parentComment) throw createPostError(POST_ERRORS.commentReplyDepthExceeded);
     }
     return this.comments.save(
       this.comments.create({ post, authorId, parentComment: parent, content: dto.content.trim() }),
@@ -62,7 +62,7 @@ export class PostsService {
       return { liked: false };
     }
     const post = await this.posts.findOneBy({ id: postId });
-    if (!post) throw new NotFoundException('Post not found');
+    if (!post) throw createPostError(POST_ERRORS.postNotFound);
     await this.reactions.save(this.reactions.create({ post, userId, type: ReactionType.Like }));
     return { liked: true };
   }

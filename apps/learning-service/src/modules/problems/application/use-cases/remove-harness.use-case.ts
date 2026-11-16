@@ -40,7 +40,7 @@ export class RemoveHarnessUseCase implements IRemoveHarnessPortIn {
         throw new ProblemNotFoundError(problemId);
       }
 
-      this.authorization.requireManaged(principal, 'update');
+      this.authorization.requireManaged(principal, 'update', problem.createdBy.value);
       problem.assertCanManageHarnesses();
 
       const existing = await this.harnessRepository.find(problemId, language);

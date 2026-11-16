@@ -37,7 +37,7 @@ export class RestoreProblemUseCase implements IRestoreProblemPortIn {
       throw new ProblemNotFoundError(id);
     }
 
-    this.authorization.requireManaged(principal, 'restore');
+    this.authorization.requireManaged(principal, 'restore', problem.createdBy.value);
     const now = new Date();
     problem.restore(now);
 

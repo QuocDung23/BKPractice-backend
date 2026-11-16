@@ -1,24 +1,24 @@
 import {
-  DomainValidationError,
   ChapterNotFound,
+  DomainValidationError,
   InvalidCourseState,
   ProblemAlreadyInCourse,
 } from '@/modules/courses/domain/errors';
 import type {
+  Chapter,
+  ChapterTitle,
   CourseSlug,
   CourseStatus,
   CourseTitle,
   CreatedBy,
-  Chapter,
-  ChapterTitle,
   ProblemReference,
 } from '@/modules/courses/domain/value-objects';
 import {
+  ChapterDescription,
+  ChapterId,
   CourseDescription,
   CourseId,
   DeletedMarker,
-  ChapterDescription,
-  ChapterId,
   assertValidDate,
 } from '@/modules/courses/domain/value-objects';
 
@@ -92,6 +92,7 @@ export class Course {
       id: chapter.id,
       title: chapter.title,
       description: chapter.description,
+      quizRefs: [...(chapter.quizRefs ?? [])],
       problemRefs: [...chapter.problemRefs],
     }));
     this._createdBy = snapshot.createdBy;
@@ -362,6 +363,47 @@ export class Course {
     this._updatedAt = updatedAt;
   }
 
+  attachQuiz(chapterId: ChapterId, quizId: string, position?: number): void {
+    this.assertQuizEditable();
+    const index = this._chapters.findIndex((c) => c.id.value === chapterId.value);
+    if (index < 0) throw new ChapterNotFound(chapterId.value);
+    const chapter = this._chapters[index]!;
+    const ids = [...(chapter.quizRefs ?? [])];
+    if (ids.includes(quizId) || ids.length >= 50)
+      throw new DomainValidationError('quizId', 'Duplicate Quiz or Chapter limit reached');
+    ids.splice(resolvePosition(position, ids.length, 'position'), 0, quizId);
+    this._chapters[index] = { ...chapter, quizRefs: ids };
+    this._updatedAt = new Date();
+  }
+  detachQuiz(chapterId: ChapterId, quizId: string): void {
+    this.assertQuizEditable();
+    const index = this._chapters.findIndex((c) => c.id.value === chapterId.value);
+    if (index < 0) throw new ChapterNotFound(chapterId.value);
+    const chapter = this._chapters[index]!;
+    this._chapters[index] = {
+      ...chapter,
+      quizRefs: (chapter.quizRefs ?? []).filter((id) => id !== quizId),
+    };
+    this._updatedAt = new Date();
+  }
+  reorderQuizzes(chapterId: ChapterId, ids: string[]): void {
+    this.assertQuizEditable();
+    const index = this._chapters.findIndex((c) => c.id.value === chapterId.value);
+    if (index < 0) throw new ChapterNotFound(chapterId.value);
+    const chapter = this._chapters[index]!;
+    const old = chapter.quizRefs ?? [];
+    if (
+      ids.length !== old.length ||
+      new Set(ids).size !== old.length ||
+      ids.some((id) => !old.includes(id))
+    )
+      throw new DomainValidationError('ids', 'Order must contain exactly the current Quiz ids');
+    this._chapters[index] = { ...chapter, quizRefs: [...ids] };
+    this._updatedAt = new Date();
+  }
+  private assertQuizEditable(): void {
+    if (!this.isEditable) throw new InvalidCourseState('status', 'Course is not editable');
+  }
   toSnapshot(): CourseSnapshot {
     return {
       id: this._id,
@@ -374,6 +416,7 @@ export class Course {
         id: chapter.id,
         title: chapter.title,
         description: chapter.description,
+        quizRefs: [...(chapter.quizRefs ?? [])],
         problemRefs: [...chapter.problemRefs],
       })),
       createdBy: this._createdBy,

@@ -181,6 +181,10 @@ production.
 | Judge       | 3004 | <http://localhost:3004/health> | <http://localhost:3004/docs> |
 | Community   | 3005 | <http://localhost:3005/health> | <http://localhost:3005/docs> |
 
+For the current production API origin, browser authentication flow, and public
+Swagger page, see the [frontend integration guide](.docs/guides/frontend-api.md).
+The VPS Swagger configuration is in [docker/swagger](docker/swagger/README.md).
+
 The gateway is the only intended public entry point. It routes `/api/auth|users|profile|roles` to
 Identity, `/api/problems|courses|assignments|classes` to Learning, `/api/submissions|run` to
 Submission, and `/api/community` to Community. It removes caller-supplied identity headers and

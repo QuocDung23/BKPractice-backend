@@ -11,7 +11,30 @@ import {
 import { ProgressEventReceipt } from './progress/entities/progress-event-receipt.entity';
 import { Progress } from './progress/entities/progress.entity';
 
+import { ChapterQuizEntity } from '@/modules/courses/entities';
+import {
+  BankQuestionEntity,
+  BankQuestionRevisionEntity,
+  QuestionGrantEntity,
+  QuizAnswerEntity,
+  QuizAttemptEntity,
+  QuizEntity,
+  QuizGrantEntity,
+  QuizItemEntity,
+  QuizRevisionEntity,
+} from '@/modules/quizzes/infrastructure/persistence/quiz.entities';
+
 export const learningEntities = [
+  ChapterQuizEntity,
+  BankQuestionEntity,
+  BankQuestionRevisionEntity,
+  QuizEntity,
+  QuizRevisionEntity,
+  QuizItemEntity,
+  QuestionGrantEntity,
+  QuizGrantEntity,
+  QuizAttemptEntity,
+  QuizAnswerEntity,
   Problem,
   ProblemHarness,
   TestCase,

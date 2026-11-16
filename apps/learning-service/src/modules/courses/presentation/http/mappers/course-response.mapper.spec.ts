@@ -35,7 +35,7 @@ const managed: ManagedCourseResult = {
       ],
     },
   ],
-  readiness: { ready: false, issues: ['PUBLISHED_PROBLEM_REQUIRED'] },
+  readiness: { ready: false, issues: ['PUBLISHED_CONTENT_REQUIRED'] },
 };
 
 describe('course response mappers', () => {
@@ -47,7 +47,7 @@ describe('course response mappers', () => {
       createdAt: CREATED.toISOString(),
       updatedAt: UPDATED.toISOString(),
       deletedAt: null,
-      readiness: { ready: false, issues: ['PUBLISHED_PROBLEM_REQUIRED'] },
+      readiness: { ready: false, issues: ['PUBLISHED_CONTENT_REQUIRED'] },
     });
     expect(JSON.parse(JSON.stringify(response))).toEqual(response);
   });

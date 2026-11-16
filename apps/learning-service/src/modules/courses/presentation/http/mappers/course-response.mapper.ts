@@ -25,6 +25,7 @@ export function toCourseDetailResponse(course: LearnerCourseResult): CourseDetai
       id: chapter.id,
       title: chapter.title,
       description: chapter.description,
+      quizzes: chapter.quizzes?.map((q) => ({ id: q.id, title: q.title })),
       problems: chapter.problems.map((p) => ({
         id: p.id,
         slug: p.slug,
@@ -67,6 +68,7 @@ export function toManagedCourseResponse(course: ManagedCourseResult): ManagedCou
       id: chapter.id,
       title: chapter.title,
       description: chapter.description,
+      quizzes: chapter.quizzes?.map((q) => ({ id: q.id, title: q.title })),
       problems: chapter.problems.map((p) => ({ ...p })),
     })),
     readiness: { ready: course.readiness.ready, issues: [...course.readiness.issues] },

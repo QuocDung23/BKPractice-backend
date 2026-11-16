@@ -6,45 +6,54 @@ describe('Course completion', () => {
   const calculator = new CourseCompletionCalculator();
   const solvedAt = new Date('2026-11-07T00:00:00Z');
 
-  it('counts only Problems in the visible structure, preserving chapter and problem order', () => {
+  it('counts visible Problems and Quizzes as equally weighted Learning Items', () => {
     const result = calculator.calculate(
       {
         courseId: 'course',
         chapters: [
-          { chapterId: 'second', problemIds: ['b', 'c', 'a'] },
-          { chapterId: 'empty', problemIds: [] },
-          { chapterId: 'first', problemIds: ['d'] },
+          {
+            chapterId: 'second',
+            items: [
+              { type: 'PROBLEM', itemId: 'b' },
+              { type: 'QUIZ', itemId: 'q' },
+              { type: 'PROBLEM', itemId: 'a' },
+            ],
+          },
+          { chapterId: 'empty', items: [] },
+          { chapterId: 'first', items: [{ type: 'QUIZ', itemId: 'unfinished' }] },
         ],
       },
       new Map([
-        ['a', solvedAt],
-        ['b', solvedAt],
-        ['outside-course', solvedAt],
+        ['PROBLEM:a', solvedAt],
+        ['PROBLEM:b', solvedAt],
+        ['QUIZ:q', solvedAt],
+        ['PROBLEM:outside-course', solvedAt],
       ]),
     );
     expect(result).toEqual({
       courseId: 'course',
-      solved: 2,
+      completed: 3,
       total: 4,
       chapters: [
-        { chapterId: 'second', solved: 2, total: 3 },
-        { chapterId: 'empty', solved: 0, total: 0 },
-        { chapterId: 'first', solved: 0, total: 1 },
+        { chapterId: 'second', completed: 3, total: 3 },
+        { chapterId: 'empty', completed: 0, total: 0 },
+        { chapterId: 'first', completed: 0, total: 1 },
       ],
-      solvedProblems: [
-        { problemId: 'b', solvedAt },
-        { problemId: 'a', solvedAt },
+      completedItems: [
+        { type: 'PROBLEM', itemId: 'b', completedAt: solvedAt },
+        { type: 'QUIZ', itemId: 'q', completedAt: solvedAt },
+        { type: 'PROBLEM', itemId: 'a', completedAt: solvedAt },
       ],
     });
   });
 
-  it('accepts a visible Course without any visible Problems', () => {
+  it('accepts a visible Course without any visible Learning Items', () => {
     expect(calculator.calculate({ courseId: 'course', chapters: [] }, new Map())).toEqual({
       courseId: 'course',
-      solved: 0,
+      completed: 0,
       total: 0,
       chapters: [],
-      solvedProblems: [],
+      completedItems: [],
     });
     expect(new CompletionCount(0, 0)).toEqual({ solved: 0, total: 0 });
   });

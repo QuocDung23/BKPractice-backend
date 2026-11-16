@@ -5,6 +5,7 @@ import { GatewayProxyService } from '@gateway/application/proxy/gateway-proxy.se
 import { SubmissionResultsService } from '@gateway/application/realtime/submission-results.service';
 import { IdentitySessionClient } from '@gateway/infrastructure/identity/identity-session.client';
 import { GatewayProxyController } from '@gateway/presentation/controllers/gateway-proxy.controller';
+import { GatewayThrottlerGuard } from '@gateway/presentation/guards/gateway-throttler.guard';
 import { createGatewayThrottlers } from '@gateway/presentation/guards/gateway-throttling';
 import { GatewayAuthMiddleware } from '@gateway/presentation/middleware/gateway-auth.middleware';
 import { SubmissionRealtimeGateway } from '@gateway/presentation/realtime/submission-realtime.gateway';
@@ -13,7 +14,7 @@ import { MiddlewareConsumer, Module, NestModule, RequestMethod } from '@nestjs/c
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { APP_GUARD } from '@nestjs/core';
 import { JwtModule } from '@nestjs/jwt';
-import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
+import { ThrottlerModule } from '@nestjs/throttler';
 
 import { SubmissionResultSubscriber, SubmissionSocketLeases } from '@/infrastructure/redis';
 
@@ -38,7 +39,7 @@ import { SubmissionResultSubscriber, SubmissionSocketLeases } from '@/infrastruc
     SubmissionSocketLeases,
     GatewayAuthMiddleware,
     SubmissionRealtimeGateway,
-    { provide: APP_GUARD, useClass: ThrottlerGuard },
+    { provide: APP_GUARD, useClass: GatewayThrottlerGuard },
   ],
 })
 export class ApiGatewayModule implements NestModule {

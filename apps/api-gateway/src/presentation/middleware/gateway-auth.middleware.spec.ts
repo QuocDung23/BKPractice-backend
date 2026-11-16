@@ -12,7 +12,9 @@ describe('GatewayAuthMiddleware', () => {
     JWT_ACCESS_SECRET: 'a'.repeat(32),
     CORS_ORIGINS: 'http://localhost:3006,https://app.example',
   });
-  const sessions = { isActive: jest.fn().mockResolvedValue(true) } as unknown as GatewaySessionService;
+  const sessions = {
+    isActive: jest.fn().mockResolvedValue(true),
+  } as unknown as GatewaySessionService;
   const middleware = new GatewayAuthMiddleware(jwt, config, sessions);
   const response = {} as Response;
   const next = jest.fn();
@@ -32,8 +34,15 @@ describe('GatewayAuthMiddleware', () => {
     if (cookie) headers.cookie = cookie;
     if (
       method === 'POST' &&
-      ['/api/auth/login', '/api/auth/microsoft/exchange', '/api/auth/refresh', '/api/auth/logout',
-        '/api/auth/password/send-otp', '/api/auth/password/verify-otp', '/api/auth/password/reset'].includes(path)
+      [
+        '/api/auth/login',
+        '/api/auth/microsoft/exchange',
+        '/api/auth/refresh',
+        '/api/auth/logout',
+        '/api/auth/password/send-otp',
+        '/api/auth/password/verify-otp',
+        '/api/auth/password/reset',
+      ].includes(path)
     )
       headers.origin = 'http://localhost:3006';
     return { method, path, headers, header: (key: string) => headers[key] } as unknown as Request;
@@ -42,12 +51,16 @@ describe('GatewayAuthMiddleware', () => {
   beforeEach(() => next.mockClear());
 
   it.each([
-    ['POST', '/api/run'], ['POST', '/api/submissions'],
-    ['GET', '/api/submissions'], ['GET', '/api/submissions/id'],
+    ['POST', '/api/run'],
+    ['POST', '/api/submissions'],
+    ['GET', '/api/submissions'],
+    ['GET', '/api/submissions/id'],
   ])('protects Submission %s %s and replaces spoofed identity', async (method, path) => {
     for (const token of [undefined, 'Bearer invalid']) {
       next.mockClear();
-      await expect(middleware.use(createRequest(method, path, token), response, next)).rejects.toThrow();
+      await expect(
+        middleware.use(createRequest(method, path, token), response, next),
+      ).rejects.toThrow();
       expect(next).not.toHaveBeenCalled();
     }
     const token = await jwt.signAsync(
@@ -66,9 +79,10 @@ describe('GatewayAuthMiddleware', () => {
     async (method) => {
       const path = `/api/roles/users/user-1${method === 'DELETE' ? '/LECTURER' : ''}`;
       const request = createRequest(method, path);
-      await expect(middleware.use(request, response, next)).rejects.toThrow(
-        'A valid access token is required',
-      );
+      await expect(middleware.use(request, response, next)).rejects.toMatchObject({
+        status: 401,
+        code: 'AUTH_TOKEN_MISSING',
+      });
       expect(request.headers['x-auth-user-id']).toBeUndefined();
       expect(request.headers['x-auth-roles']).toBeUndefined();
       expect(request.headers['x-auth-permissions']).toBeUndefined();
@@ -107,7 +121,14 @@ describe('GatewayAuthMiddleware', () => {
 
   it('uses only verified access claims and treats old tokens as having no permissions', async () => {
     const access = await jwt.signAsync(
-      { sub: 'user-1', sid: 'session-1', jti: 'access-1', roles: ['STUDENT'], permissions: ['problem:read-managed'], type: 'access' },
+      {
+        sub: 'user-1',
+        sid: 'session-1',
+        jti: 'access-1',
+        roles: ['STUDENT'],
+        permissions: ['problem:read-managed'],
+        type: 'access',
+      },
       { secret: 'a'.repeat(32), expiresIn: '15m' },
     );
     const request = createRequest('GET', '/api/auth/me', `Bearer ${access}`);
@@ -171,7 +192,10 @@ describe('GatewayAuthMiddleware', () => {
     expect(search.headers.cookie).toBeUndefined();
 
     const write = createRequest('PATCH', '/api/profile/me', undefined, cookie);
-    await expect(middleware.use(write, response, next)).rejects.toThrow('Untrusted request origin');
+    await expect(middleware.use(write, response, next)).rejects.toMatchObject({
+      status: 403,
+      code: 'ORIGIN_NOT_ALLOWED',
+    });
     const trustedWrite = createRequest('PATCH', '/api/profile/me', undefined, cookie);
     trustedWrite.headers.origin = 'http://localhost:3006';
     trustedWrite.headers['x-csrf-token'] = csrf;
@@ -180,7 +204,12 @@ describe('GatewayAuthMiddleware', () => {
 
     const missingCsrf = createRequest('PATCH', '/api/profile/me', undefined, cookie);
     missingCsrf.headers.origin = 'http://localhost:3006';
-    await expect(middleware.use(missingCsrf, response, next)).rejects.toThrow('Invalid CSRF token');
+    // Frontend còn nhận diện CSRF bằng đúng chuỗi này (ERR-001: đổi sau khi frontend dùng `code`).
+    await expect(middleware.use(missingCsrf, response, next)).rejects.toMatchObject({
+      status: 403,
+      code: 'CSRF_TOKEN_INVALID',
+      message: 'Invalid CSRF token',
+    });
 
     const explicitInvalid = createRequest('GET', '/api/auth/me', 'Bearer invalid', cookie);
     await expect(middleware.use(explicitInvalid, response, next)).rejects.toThrow();
@@ -209,9 +238,10 @@ describe('GatewayAuthMiddleware', () => {
   it('requires a trusted origin before issuing an access cookie', async () => {
     const request = createRequest('POST', '/api/auth/login');
     delete request.headers.origin;
-    await expect(middleware.use(request, response, next)).rejects.toThrow(
-      'Untrusted request origin',
-    );
+    await expect(middleware.use(request, response, next)).rejects.toMatchObject({
+      status: 403,
+      code: 'ORIGIN_NOT_ALLOWED',
+    });
     const refererRequest = createRequest('POST', '/api/auth/refresh');
     delete refererRequest.headers.origin;
     refererRequest.headers.referer = 'https://app.example/account';
@@ -219,15 +249,28 @@ describe('GatewayAuthMiddleware', () => {
   });
 
   it('forwards only refresh and CSRF cookies to the Identity refresh endpoint', async () => {
-    const request = createRequest('POST', '/api/auth/refresh', undefined,
-      '__Secure-bk_refresh=refresh.jwt; __Host-bk_csrf=nonce.mac; other=private');
+    const request = createRequest(
+      'POST',
+      '/api/auth/refresh',
+      undefined,
+      '__Secure-bk_refresh=refresh.jwt; __Host-bk_csrf=nonce.mac; other=private',
+    );
     await middleware.use(request, response, next);
-    expect(request.headers.cookie).toBe('__Secure-bk_refresh=refresh.jwt; __Host-bk_csrf=nonce.mac');
+    expect(request.headers.cookie).toBe(
+      '__Secure-bk_refresh=refresh.jwt; __Host-bk_csrf=nonce.mac',
+    );
   });
 
   it('rejects expired, wrong-type and duplicate access cookies', async () => {
     const expired = await jwt.signAsync(
-      { sub: 'user-1', sid: 'session-1', jti: 'access-1', roles: ['STUDENT'], type: 'access', exp: 1 },
+      {
+        sub: 'user-1',
+        sid: 'session-1',
+        jti: 'access-1',
+        roles: ['STUDENT'],
+        type: 'access',
+        exp: 1,
+      },
       { secret: 'a'.repeat(32) },
     );
     const refresh = await jwt.signAsync(
@@ -251,8 +294,9 @@ describe('GatewayAuthMiddleware', () => {
       { secret: 'a'.repeat(32), expiresIn: '15m' },
     );
     jest.mocked(sessions.isActive).mockResolvedValueOnce(false);
-    await expect(middleware.use(createRequest('GET', '/api/auth/me', `Bearer ${token}`), response, next))
-      .rejects.toThrow('Access token is invalid or expired');
+    await expect(
+      middleware.use(createRequest('GET', '/api/auth/me', `Bearer ${token}`), response, next),
+    ).rejects.toMatchObject({ status: 401, code: 'AUTH_TOKEN_INVALID_OR_EXPIRED' });
     expect(next).not.toHaveBeenCalled();
   });
 });

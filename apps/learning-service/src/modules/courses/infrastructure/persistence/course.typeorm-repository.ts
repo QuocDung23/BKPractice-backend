@@ -1,6 +1,8 @@
+import { randomUUID } from 'node:crypto';
+
 import { Injectable } from '@nestjs/common';
 import { isUUID } from 'class-validator';
-import { QueryFailedError, Repository } from 'typeorm';
+import { In, QueryFailedError, Repository } from 'typeorm';
 
 import {
   DuplicateCourseSlugError,
@@ -9,12 +11,17 @@ import {
 import { Course as CourseAggregate } from '@/modules/courses/domain';
 import { ProblemAlreadyInCourse } from '@/modules/courses/domain/errors';
 import type {
-  CourseRepository,
   CourseListFilter,
-  ManagedCourseListFilter,
   CoursePage,
+  CourseRepository,
+  ManagedCourseListFilter,
 } from '@/modules/courses/domain/repositories';
-import { CourseEntity, ChapterEntity, ChapterProblemEntity } from '@/modules/courses/entities';
+import {
+  ChapterEntity,
+  ChapterProblemEntity,
+  ChapterQuizEntity,
+  CourseEntity,
+} from '@/modules/courses/entities';
 import { CoursePersistenceMapper } from '@/modules/courses/infrastructure/persistence/course.persistence-mapper';
 import { CourseTypeOrmTransactionContext } from '@/modules/courses/infrastructure/persistence/course.typeorm-transaction-context';
 
@@ -43,7 +50,13 @@ export class CourseTypeOrmRepository implements CourseRepository {
           .where('cp.chapter_id IN (:...ids)', { ids: chapterIds })
           .getMany()
       : [];
-    return CoursePersistenceMapper.toDomain(entity, chapters, chapterProblems);
+    const quizzes = chapterIds.length
+      ? await this.context
+          .getManager()
+          .getRepository(ChapterQuizEntity)
+          .findBy({ chapterId: In(chapterIds) })
+      : [];
+    return CoursePersistenceMapper.toDomain(entity, chapters, chapterProblems, quizzes);
   }
 
   async findById(id: string): Promise<CourseAggregate | null> {
@@ -114,6 +127,7 @@ export class CourseTypeOrmRepository implements CourseRepository {
 
   async listManaged(filter: ManagedCourseListFilter): Promise<CoursePage<CourseAggregate>> {
     const qb = this.courseRepo.createQueryBuilder('c');
+    if (filter.createdBy) qb.andWhere('c.created_by = :owner', { owner: filter.createdBy });
     if (!filter.includeDeleted) qb.andWhere('c.deleted_at IS NULL');
     if (filter.search) qb.andWhere('c.title ILIKE :q', { q: `%${escapeLike(filter.search)}%` });
     const total = await qb.getCount();
@@ -175,6 +189,16 @@ export class CourseTypeOrmRepository implements CourseRepository {
         chapterEntity.displayOrder = chapterIndex;
         await chapterRepo.save(chapterEntity);
 
+        await manager.getRepository(ChapterQuizEntity).delete({ chapterId: chapter.id.value });
+        if (chapter.quizRefs?.length)
+          await manager.getRepository(ChapterQuizEntity).insert(
+            chapter.quizRefs.map((quizId, displayOrder) => ({
+              id: randomUUID(),
+              chapterId: chapter.id.value,
+              quizId,
+              displayOrder,
+            })),
+          );
         for (const [problemIndex, ref] of chapter.problemRefs.entries()) {
           const row =
             existingProblems.find(
@@ -187,6 +211,12 @@ export class CourseTypeOrmRepository implements CourseRepository {
           await chapterProblemRepo.save(row);
         }
       }
+      await manager.query(
+        `INSERT INTO course_problem_history (course_id, problem_id)
+        SELECT DISTINCT course_id, problem_id FROM chapter_problems WHERE course_id = $1
+        ON CONFLICT DO NOTHING`,
+        [courseId],
+      );
     } catch (error) {
       throw translatePersistenceError(error);
     }

@@ -27,14 +27,19 @@ export class LoginWithPassword {
     password: string,
     metadata: SessionMetadata = { clientType: 'web' },
   ): Promise<{ userId: string } & TokenPair> {
-    const account = await this.accounts.findByIdentifier(identifier.trim());
-    if (!account) {
+    const lookup = await this.accounts.findForLogin(identifier.trim());
+    if (lookup.kind !== 'found') {
       await this.hasher.verifyDummy(password);
-      throw new AuthFailure('invalid_credentials');
+      throw new AuthFailure(lookup.kind === 'none' ? 'account_not_found' : 'identifier_ambiguous');
     }
+    const { account, deleted } = lookup;
     if (!(await this.hasher.verify(account.passwordHash, password))) {
-      throw new AuthFailure('invalid_credentials');
+      throw new AuthFailure('wrong_password');
     }
+    // Trạng thái tài khoản chỉ được báo sau khi mật khẩu đúng (ERR-001 FR-007).
+    if (deleted) throw new AuthFailure('account_deleted');
+    if (account.status === 'LOCKED') throw new AuthFailure('account_locked');
+    if (account.status === 'PENDING') throw new AuthFailure('account_pending');
     requireActiveAccount(account);
     return {
       userId: account.userId,

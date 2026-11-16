@@ -46,7 +46,7 @@ export class AddTestCaseUseCase implements IAddTestCasePortIn {
         throw new ProblemNotFoundError(problemId);
       }
 
-      this.authorization.requireManaged(principal, 'update');
+      this.authorization.requireManaged(principal, 'update', problem.createdBy.value);
       problem.assertCanManageTestCases();
 
       const [summary, current] = await Promise.all([

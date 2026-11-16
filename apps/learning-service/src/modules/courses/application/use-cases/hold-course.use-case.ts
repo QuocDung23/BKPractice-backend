@@ -29,6 +29,7 @@ export class HoldCourseUseCase implements IHoldCoursePortIn {
     return this.transactionRunner.run(async () => {
       const course = await this.repository.loadForUpdate(courseId);
       if (!course) throw new CourseNotFoundError('Course not found');
+      this.authorization.requireOwnership(principal, course.createdBy.value);
       course.hold(now);
       await this.repository.save(course);
       return this.views.toManaged(course);

@@ -9,6 +9,8 @@ import { learningEntities } from './modules/learning.entities';
 import { ProblemsModule } from './modules/problems/problems.module';
 import { ProgressModule } from './modules/progress/progress.module';
 
+import { QuizzesModule } from '@/modules/quizzes/quizzes.module';
+
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true, validate: validateEnvironment('learning-service') }),
@@ -19,6 +21,7 @@ import { ProgressModule } from './modules/progress/progress.module';
     }),
     RabbitMqModule,
     ProblemsModule,
+    QuizzesModule,
     CoursesModule,
     ProgressModule,
     HealthModule.forService('learning-service'),

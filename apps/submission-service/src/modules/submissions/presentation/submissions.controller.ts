@@ -4,12 +4,10 @@ import {
   Get,
   HttpCode,
   HttpStatus,
-  NotFoundException,
   Param,
   ParseUUIDPipe,
   Post,
   Query,
-  ServiceUnavailableException,
 } from '@nestjs/common';
 import { ApiAcceptedResponse, ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { GetSubmissionDetailUseCase } from '@submission/modules/submissions/application/get-submission-detail.use-case';
@@ -26,6 +24,11 @@ import { SubmissionDetailDto } from './dto/submission-detail.dto';
 import { SubmissionHistoryPageDto } from './dto/submission-history-page.dto';
 import { SubmitCodeRequestDto } from './dto/submit-code-request.dto';
 import { SubmitCodeResponseDto } from './dto/submit-code-response.dto';
+import {
+  SUBMISSION_ERRORS,
+  createSubmissionError,
+  createSubmissionIdInvalidError,
+} from './submission-errors';
 
 @ApiTags('submissions')
 @Controller('api')
@@ -47,9 +50,11 @@ export class SubmissionsController {
       const result = await this.submitCode.execute({ userId: ownerId, ...dto });
       return { ...result, createdAt: result.createdAt.toISOString() };
     } catch (error: unknown) {
-      if (error instanceof ProblemNotSubmittableError) throw new NotFoundException(error.message);
+      if (error instanceof ProblemNotSubmittableError) {
+        throw createSubmissionError(SUBMISSION_ERRORS.problemNotSubmittable);
+      }
       if (error instanceof JudgePackageUnavailableError) {
-        throw new ServiceUnavailableException(error.message);
+        throw createSubmissionError(SUBMISSION_ERRORS.judgePackageUnavailable);
       }
       throw error;
     }
@@ -77,13 +82,17 @@ export class SubmissionsController {
   @ApiOkResponse({ type: SubmissionDetailDto })
   async get(
     @TrustedOwner() ownerId: string,
-    @Param('publicId', new ParseUUIDPipe({ version: '4' })) publicId: string,
+    @Param(
+      'publicId',
+      new ParseUUIDPipe({ version: '4', exceptionFactory: createSubmissionIdInvalidError }),
+    )
+    publicId: string,
   ): Promise<SubmissionDetailDto> {
     const detail = await this.getSubmissionDetail.execute({
       ownerId,
       publicIdOrLegacyId: publicId,
     });
-    if (!detail) throw new NotFoundException('Submission not found');
+    if (!detail) throw createSubmissionError(SUBMISSION_ERRORS.submissionNotFound);
     return detail;
   }
 }

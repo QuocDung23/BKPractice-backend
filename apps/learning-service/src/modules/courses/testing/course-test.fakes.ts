@@ -1,7 +1,12 @@
 import type { TransactionRunner } from '@learning/modules/problems/application/ports/out/transaction-runner.port.out';
 
 import type { Principal } from '@/modules/courses/application/models';
-import type { CourseProblemCatalog, ProblemSummary } from '@/modules/courses/application/ports/out';
+import type {
+  CourseProblemCatalog,
+  CourseQuizCatalog,
+  CourseQuizSummary,
+  ProblemSummary,
+} from '@/modules/courses/application/ports/out';
 import {
   CourseAuthorizationService,
   CoursePublishReadinessService,
@@ -30,6 +35,8 @@ export const OWNER_ID = '00000000-0000-4000-8000-0000000000a1';
 export const OTHER_ID = '00000000-0000-4000-8000-0000000000b2';
 
 export const PROBLEM_ID = '00000000-0000-4000-8000-0000000000c3';
+
+export const QUIZ_ID = '00000000-0000-4000-8000-0000000000d4';
 
 export const ALL_COURSE_PERMISSIONS = [
   'course:create',
@@ -69,6 +76,16 @@ export function courseWithProblem(problemId = PROBLEM_ID, slug = 'intro-c'): Cou
   return course;
 }
 
+export function courseWithQuiz(quizId = QUIZ_ID, slug = 'intro-c'): Course {
+  const course = draftCourse(slug);
+  const chapterId = course.addChapter({
+    title: new ChapterTitle('Chapter 1'),
+    description: new ChapterDescription(null),
+  });
+  course.attachQuiz(chapterId, quizId);
+  return course;
+}
+
 export class InMemoryCourseRepository implements CourseRepository {
   readonly store = new Map<string, Course>();
   saveCount = 0;
@@ -105,6 +122,7 @@ export class InMemoryCourseRepository implements CourseRepository {
     const all = [...this.store.values()].filter(
       (c) =>
         (filter.includeDeleted || !c.isDeleted) &&
+        (!filter.createdBy || c.createdBy.value === filter.createdBy) &&
         (!filter.search || c.title.value.toLowerCase().includes(filter.search.toLowerCase())),
     );
     return Promise.resolve(this.paginate(all, filter.page, filter.limit));
@@ -170,6 +188,33 @@ export class FakeProblemCatalog implements CourseProblemCatalog {
   }
 }
 
+export class FakeQuizCatalog implements CourseQuizCatalog {
+  readonly quizzes = new Map<string, CourseQuizSummary>();
+
+  setQuiz(quizId: string, overrides: Partial<CourseQuizSummary> = {}): CourseQuizSummary {
+    const quiz: CourseQuizSummary = {
+      id: quizId,
+      title: `Quiz ${quizId.slice(-4)}`,
+      status: 'PUBLISHED',
+      deletedAt: null,
+      createdBy: OWNER_ID,
+      sharedWith: [],
+      ...overrides,
+    };
+    this.quizzes.set(quizId, quiz);
+    return quiz;
+  }
+
+  findByIds(ids: readonly string[]): Promise<Map<string, CourseQuizSummary>> {
+    const found = new Map<string, CourseQuizSummary>();
+    for (const id of ids) {
+      const quiz = this.quizzes.get(id);
+      if (quiz) found.set(id, quiz);
+    }
+    return Promise.resolve(found);
+  }
+}
+
 export class InlineTransactionRunner implements TransactionRunner {
   run<T>(work: () => Promise<T>): Promise<T> {
     return work();
@@ -180,13 +225,15 @@ export class InlineTransactionRunner implements TransactionRunner {
 export function createCourseTestKit() {
   const repository = new InMemoryCourseRepository();
   const catalog = new FakeProblemCatalog();
+  const quizCatalog = new FakeQuizCatalog();
   const transactions = new InlineTransactionRunner();
   const authorization = new CourseAuthorizationService();
-  const readiness = new CoursePublishReadinessService(new CourseReadiness(), catalog);
-  const views = new CourseViewAssembler(catalog, readiness);
+  const readiness = new CoursePublishReadinessService(new CourseReadiness(), catalog, quizCatalog);
+  const views = new CourseViewAssembler(catalog, readiness, quizCatalog);
   return {
     repository,
     catalog,
+    quizCatalog,
     transactions,
     authorization,
     readiness,

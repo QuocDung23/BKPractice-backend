@@ -4,10 +4,6 @@ import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import { DataSource } from 'typeorm';
 
-import { InitialIdentitySchema1700000000000 } from '@/database/migrations/1700000000000-InitialIdentitySchema';
-import { AddStudentMicrosoftAuthentication1700000000001 } from '@/database/migrations/1700000000001-AddStudentMicrosoftAuthentication';
-import { AddAuthSessions1700000000003 } from '@/database/migrations/1700000000003-AddAuthSessions';
-import { AddOfficialAccountName1700000000004 } from '@/database/migrations/1700000000004-AddOfficialAccountName';
 import { AuthTokenIssuer } from '@/modules/auth/application';
 import {
   TypeormAuthAccountRepository,
@@ -56,12 +52,7 @@ describeDatabase('RBAC PostgreSQL transactions (ID-003 AC-006, AC-008b–d, AC-0
       schema,
       entities: identityEntities,
       extra: { options: `-c search_path=${schema},public` },
-      migrations: [
-        InitialIdentitySchema1700000000000,
-        AddStudentMicrosoftAuthentication1700000000001,
-        AddAuthSessions1700000000003,
-        AddOfficialAccountName1700000000004,
-      ],
+      migrations: ['apps/identity-service/src/database/migrations/*{.ts,.js}'],
       synchronize: false,
     });
     await database.initialize();
@@ -99,25 +90,32 @@ describeDatabase('RBAC PostgreSQL transactions (ID-003 AC-006, AC-008b–d, AC-0
   });
 
   it('preserves static roles and makes repeated assignment/revocation idempotent', async () => {
-    const roles = await database.query<{ name: string }[]>('SELECT name FROM roles ORDER BY name::text');
+    const roles = await database.query<{ name: string }[]>(
+      'SELECT name FROM roles ORDER BY name::text',
+    );
     expect(roles.map((role) => role.name)).toEqual(['ADMIN', 'LECTURER', 'STUDENT']);
     const assign = new AssignRoleToUser(transactions);
     await Promise.all([
-      assign.execute(admin, targetId, RoleName.Lecturer),
-      assign.execute(admin, targetId, RoleName.Lecturer),
+      assign.execute(admin, targetId, RoleName.Lecturer, 'Test role change'),
+      assign.execute(admin, targetId, RoleName.Lecturer, 'Test role change'),
     ]);
     expect((await repository.findUserRoles(targetId))?.roles).toEqual(['LECTURER', 'STUDENT']);
     const revoke = new RevokeRoleFromUser(transactions);
-    await revoke.execute(admin, targetId, RoleName.Lecturer);
-    await revoke.execute(admin, targetId, RoleName.Lecturer);
+    await revoke.execute(admin, targetId, RoleName.Lecturer, 'Test role change');
+    await revoke.execute(admin, targetId, RoleName.Lecturer, 'Test role change');
     expect((await repository.findUserRoles(targetId))?.roles).toEqual(['STUDENT']);
   });
 
-  it('serializes concurrent self-revocations and retains exactly one administrator', async () => {
+  it('serializes concurrent cross-revocations and retains exactly one administrator', async () => {
     const revoke = new RevokeRoleFromUser(transactions);
     const results = await Promise.allSettled([
-      revoke.execute(admin, adminId, RoleName.Admin),
-      revoke.execute({ ...admin, userId: otherAdminId }, otherAdminId, RoleName.Admin),
+      revoke.execute(admin, otherAdminId, RoleName.Admin, 'Test role change'),
+      revoke.execute(
+        { ...admin, userId: otherAdminId },
+        adminId,
+        RoleName.Admin,
+        'Test role change',
+      ),
     ]);
     expect(results.filter((result) => result.status === 'fulfilled')).toHaveLength(1);
     const failure = results.find((result) => result.status === 'rejected');
@@ -129,7 +127,12 @@ describeDatabase('RBAC PostgreSQL transactions (ID-003 AC-006, AC-008b–d, AC-0
 
   it('rolls back when the target is absent', async () => {
     await expect(
-      new AssignRoleToUser(transactions).execute(admin, randomUUID(), RoleName.Lecturer),
+      new AssignRoleToUser(transactions).execute(
+        admin,
+        randomUUID(),
+        RoleName.Lecturer,
+        'Test role change',
+      ),
     ).rejects.toThrow('user_not_found');
     expect((await repository.findUserRoles(targetId))?.roles).toEqual(['STUDENT']);
   });
@@ -172,7 +175,12 @@ describeDatabase('RBAC PostgreSQL transactions (ID-003 AC-006, AC-008b–d, AC-0
     const account = await accounts.findById(targetId);
     if (!account) throw new Error('Missing test account');
     const oldPair = await issuer.issueNewFamily(account);
-    await new AssignRoleToUser(transactions).execute(admin, targetId, RoleName.Lecturer);
+    await new AssignRoleToUser(transactions).execute(
+      admin,
+      targetId,
+      RoleName.Lecturer,
+      'Test role change',
+    );
     const updated = await accounts.findById(targetId);
     if (!updated) throw new Error('Missing test account');
     const newPair = await issuer.issueNewFamily(updated);

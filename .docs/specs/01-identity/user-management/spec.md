@@ -1,5 +1,7 @@
 # ID-006 Xem và xoá mềm User cho Admin
 
+> **SRS v3 (2026-11-08):** [ID-009](../account-administration/spec.md) thay thế các quy định trái ngược về tìm kiếm, tạo tài khoản, khóa/mở khóa, audit và bảo vệ Admin khi xóa. Các quy tắc đọc và xóa mềm không trái ID-009 vẫn áp dụng.
+
 ## Trạng thái
 
 Approved — phiên bản 1.0, được chủ sở hữu phê duyệt ngày 2026-10-28. ID-004 giữ nguyên phần import đã Approved; ID-006 chốt phần đọc/xoá mềm User từng được ghi ở phần CRUD Proposed của ID-004. Tạo/cập nhật User thủ công vẫn thuộc đợt khác.
@@ -74,7 +76,7 @@ Không còn câu hỏi hành vi. Bản sao ID-004 `student-provisioning` đang t
 
 ## Lịch sử sửa đổi
 
-| Ngày | Phiên bản | Tác giả/Người review | Tóm tắt |
-| --- | --- | --- | --- |
-| 2026-10-28 | 0.1 | Codex / chờ review | Tách quản trị User khỏi tìm kiếm Profile, dùng route `users`. |
-| 2026-10-28 | 1.0 | Chủ sở hữu sản phẩm | Chốt quyền, projection/phân trang, `deletedAt`, phiên và bảo vệ Admin/system; Approved. |
+| Ngày       | Phiên bản | Tác giả/Người review | Tóm tắt                                                                                 |
+| ---------- | --------- | -------------------- | --------------------------------------------------------------------------------------- |
+| 2026-10-28 | 0.1       | Codex / chờ review   | Tách quản trị User khỏi tìm kiếm Profile, dùng route `users`.                           |
+| 2026-10-28 | 1.0       | Chủ sở hữu sản phẩm  | Chốt quyền, projection/phân trang, `deletedAt`, phiên và bảo vệ Admin/system; Approved. |

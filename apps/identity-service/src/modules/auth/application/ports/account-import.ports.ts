@@ -13,5 +13,5 @@ export interface PreparedImportAccount extends AccountImportRow {
 
 export interface AccountImportRepository {
   findConflicts(rows: AccountImportRow[]): Promise<ImportIssue[]>;
-  createAll(rows: PreparedImportAccount[]): Promise<void>;
+  createAll(rows: PreparedImportAccount[], actorId: string): Promise<void>;
 }

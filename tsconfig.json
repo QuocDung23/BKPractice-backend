@@ -40,7 +40,8 @@
       "@/modules/courses/*": ["apps/learning-service/src/modules/courses/*"],
       "@/infrastructure/persistence": ["apps/learning-service/src/infrastructure/persistence"],
       "@/modules/problems/*": ["apps/learning-service/src/modules/problems/*"],
-      "@/modules/progress/*": ["apps/learning-service/src/modules/progress/*"]
+      "@/modules/progress/*": ["apps/learning-service/src/modules/progress/*"],
+      "@/modules/quizzes/*": ["apps/learning-service/src/modules/quizzes/*"]
     }
   },
   "include": ["apps/**/*.ts", "libs/**/*.ts", "test/**/*.ts", "jest.config.ts"],

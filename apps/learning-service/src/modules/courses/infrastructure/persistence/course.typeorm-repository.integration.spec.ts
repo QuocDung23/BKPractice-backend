@@ -1,3 +1,4 @@
+import { Lrn008SelfStudy1700000010000 } from '@learning/database/migrations/1700000010000-Lrn008SelfStudy';
 import { DataSource } from 'typeorm';
 
 import {
@@ -23,6 +24,8 @@ import {
   courseWithProblem,
   draftCourse,
   PROBLEM_ID,
+  OWNER_ID,
+  OTHER_ID,
 } from '@/modules/courses/testing';
 
 assertTestDatabase();
@@ -80,6 +83,25 @@ describeIntegration('CourseTypeOrmRepository (real PostgreSQL)', () => {
       ]);
       expect(loaded?.slug.value).toBe(course.slug.value);
       expect(loaded?.status).toBe('DRAFT');
+    });
+
+    it('retains historical Course membership after detaching a Problem', async () => {
+      const course = courseWithProblem(PROBLEM_ID, nextSlug());
+      await save(course);
+      await runner.run(async () => {
+        const loaded = (await repository.loadForUpdate(course.id.value))!;
+        loaded.removeProblemFromChapter(loaded.chapters[0]!.id, new ProblemReference(PROBLEM_ID));
+        await repository.save(loaded);
+      });
+      expect((await repository.findById(course.id.value))?.chapters[0]?.problemRefs).toHaveLength(
+        0,
+      );
+      expect(
+        await dataSource.query(
+          'SELECT problem_id FROM course_problem_history WHERE course_id = $1',
+          [course.id.value],
+        ),
+      ).toEqual([{ problem_id: PROBLEM_ID }]);
     });
 
     it('keeps chapter and problem order across saves', async () => {
@@ -189,6 +211,21 @@ describeIntegration('CourseTypeOrmRepository (real PostgreSQL)', () => {
       expect(hit.items.map((c) => c.slug.value)).toContain(slug);
       expect(wildcard.items).toHaveLength(0);
       expect(managed.items.map((c) => c.slug.value)).toContain(slug);
+    });
+
+    it('filters the managed Course list by Lecturer ownership', async () => {
+      const owned = draftCourse(nextSlug(), OWNER_ID);
+      const other = draftCourse(nextSlug(), OTHER_ID);
+      await save(owned);
+      await save(other);
+      const result = await repository.listManaged({
+        includeDeleted: false,
+        createdBy: OWNER_ID,
+        page: 1,
+        limit: 100,
+      });
+      expect(result.items.map((course) => course.id.value)).toContain(owned.id.value);
+      expect(result.items.map((course) => course.id.value)).not.toContain(other.id.value);
     });
   });
 
@@ -361,13 +398,21 @@ describeIntegration('CourseTypeOrmRepository (real PostgreSQL)', () => {
         expect(row?.exists).toBeNull();
       }
 
-      await dataSource.undoLastMigration();
-      const [restored] = await dataSource.query<Array<{ exists: string | null }>>(
-        'SELECT to_regclass($1) AS "exists"',
-        ['classes'],
-      );
-      expect(restored?.exists).toBe('classes');
-      await dataSource.runMigrations();
+      const queryRunner = dataSource.createQueryRunner();
+      await queryRunner.connect();
+      await queryRunner.startTransaction();
+      try {
+        const migration = new Lrn008SelfStudy1700000010000();
+        await migration.down(queryRunner);
+        const restored = (await queryRunner.query('SELECT to_regclass($1) AS "exists"', [
+          'classes',
+        ])) as Array<{ exists: string | null }>;
+        expect(restored[0]?.exists).toBe('classes');
+        await migration.up(queryRunner);
+      } finally {
+        await queryRunner.rollbackTransaction();
+        await queryRunner.release();
+      }
 
       expect((await repository.findById(course.id.value))?.status).toBe('PUBLISHED');
       expect((await repository.findById(course.id.value))?.chapters[0]!.problemRefs).toHaveLength(

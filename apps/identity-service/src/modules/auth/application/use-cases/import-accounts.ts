@@ -34,7 +34,7 @@ export class ImportAccounts {
         throw new AccountImportFailure('dependency_unavailable');
       }
     }
-    await this.accounts.createAll(prepared);
+    await this.accounts.createAll(prepared, principal.userId);
     return { totalRows: rows.length, created: rows.length };
   }
 }

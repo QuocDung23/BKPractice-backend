@@ -1,4 +1,4 @@
-import { UnauthorizedException } from '@nestjs/common';
+import { AppHttpException } from '@app/common';
 import type { ExecutionContext } from '@nestjs/common';
 import type { ConfigService } from '@nestjs/config';
 import type { Request } from 'express';
@@ -15,12 +15,17 @@ describe('InternalServiceGuard', () => {
   it('rejects a request with a missing or different secret', () => {
     const guard = createGuard('expected-secret');
 
-    expect(() => guard.canActivate(contextWith(requestWith('other-secret')))).toThrow(
-      UnauthorizedException,
-    );
-    expect(() => guard.canActivate(contextWith(requestWith(undefined)))).toThrow(
-      UnauthorizedException,
-    );
+    for (const secret of ['other-secret', undefined]) {
+      let thrown: unknown;
+      try {
+        guard.canActivate(contextWith(requestWith(secret)));
+      } catch (error) {
+        thrown = error;
+      }
+      expect(thrown).toBeInstanceOf(AppHttpException);
+      expect((thrown as AppHttpException).getStatus()).toBe(401);
+      expect((thrown as AppHttpException).code).toBe('AUTH_INTERNAL_CREDENTIAL_INVALID');
+    }
   });
 
   it('reads the secret from x-internal-service-secret exactly once', () => {

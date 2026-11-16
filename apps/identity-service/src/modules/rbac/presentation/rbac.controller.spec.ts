@@ -17,7 +17,6 @@ import { RbacModule } from '@/modules/rbac/rbac.module';
 
 const adminId = '00000000-0000-4000-8000-000000000001';
 const targetId = '00000000-0000-4000-8000-000000000002';
-const otherAdminId = '00000000-0000-4000-8000-000000000003';
 const missingId = '00000000-0000-4000-8000-000000000004';
 const secret = 'a'.repeat(32);
 
@@ -34,6 +33,8 @@ describe('RBAC HTTP and module contract (ID-003 AC-002–AC-015)', () => {
       const roles = assignments.get(userId);
       return roles ? { userId, roles: [...roles].sort() } : null;
     },
+    lockUser: async () => undefined,
+    recordRoleAudit: async () => undefined,
     assignRole: async (userId, role) => {
       assignments.get(userId)?.add(role);
     },
@@ -48,8 +49,14 @@ describe('RBAC HTTP and module contract (ID-003 AC-002–AC-015)', () => {
 
   function sign(roles: string[], extra: Record<string, unknown> = {}): Promise<string> {
     return jwt.signAsync(
-      { sub: adminId, sid: '00000000-0000-4000-8000-000000000010',
-        jti: '00000000-0000-4000-8000-000000000011', roles, type: 'access', ...extra },
+      {
+        sub: adminId,
+        sid: '00000000-0000-4000-8000-000000000010',
+        jti: '00000000-0000-4000-8000-000000000011',
+        roles,
+        type: 'access',
+        ...extra,
+      },
       { secret, expiresIn: '15m' },
     );
   }
@@ -120,15 +127,21 @@ describe('RBAC HTTP and module contract (ID-003 AC-002–AC-015)', () => {
     const headers = { 'x-request-id': 'rbac-test-request' };
     const response = await request('GET', `/users/${targetId}`, adminToken, undefined, headers);
     expect(response.headers.get('x-request-id')).toBe('rbac-test-request');
-    await request('POST', `/users/${targetId}`, adminToken, { role: 'ADMIN' }, headers);
+    await request(
+      'POST',
+      `/users/${targetId}`,
+      adminToken,
+      { role: 'ADMIN', reason: 'Test role change' },
+      headers,
+    );
     expect(logs).toHaveBeenCalledWith({
       operation: 'GET',
       outcome: 'success',
       requestId: 'rbac-test-request',
     });
-    expect(warnings).toHaveBeenCalledWith({
+    expect(logs).toHaveBeenCalledWith({
       operation: 'POST',
-      outcome: 'forbidden',
+      outcome: 'success',
       requestId: 'rbac-test-request',
     });
   });
@@ -163,7 +176,7 @@ describe('RBAC HTTP and module contract (ID-003 AC-002–AC-015)', () => {
             'POST',
             `/users/${adminId}`,
             token,
-            { role: 'LECTURER' },
+            { role: 'LECTURER', reason: 'Test role change' },
             { 'x-auth-roles': 'ADMIN' },
           )
         ).status,
@@ -176,12 +189,15 @@ describe('RBAC HTTP and module contract (ID-003 AC-002–AC-015)', () => {
     for (let attempt = 0; attempt < 2; attempt++) {
       const response = await request('POST', `/users/${targetId}`, adminToken, {
         role: 'LECTURER',
+        reason: 'Test role change',
       });
       expect(response.status).toBe(200);
       expect(await response.json()).toEqual({ userId: targetId, roles: ['LECTURER', 'STUDENT'] });
     }
     for (let attempt = 0; attempt < 2; attempt++) {
-      const response = await request('DELETE', `/users/${targetId}/LECTURER`, adminToken);
+      const response = await request('DELETE', `/users/${targetId}/LECTURER`, adminToken, {
+        reason: 'Test role change',
+      });
       expect(response.status).toBe(200);
       expect(await response.json()).toEqual({ userId: targetId, roles: ['STUDENT'] });
     }
@@ -193,6 +209,7 @@ describe('RBAC HTTP and module contract (ID-003 AC-002–AC-015)', () => {
       (
         await request('POST', `/users/${targetId}`, adminToken, {
           role: 'LECTURER',
+          reason: 'Test role change',
           actorId: adminId,
         })
       ).status,
@@ -203,29 +220,27 @@ describe('RBAC HTTP and module contract (ID-003 AC-002–AC-015)', () => {
     expect((await request('DELETE', `/users/${targetId}/MODERATOR`, adminToken)).status).toBe(400);
     expect((await request('GET', '/users/not-a-uuid', adminToken)).status).toBe(400);
     expect(
-      (await request('POST', `/users/${missingId}`, adminToken, { role: 'STUDENT' })).status,
+      (
+        await request('POST', `/users/${missingId}`, adminToken, {
+          role: 'STUDENT',
+          reason: 'Test role change',
+        })
+      ).status,
     ).toBe(404);
     expect([...assignments.get(targetId)!]).toEqual([RoleName.Student]);
   });
 
-  it('forbids ADMIN grants/cross-user removal and protects the final administrator', async () => {
-    expect(
-      (await request('POST', `/users/${targetId}`, adminToken, { role: 'ADMIN' })).status,
-    ).toBe(403);
-    expect((await request('DELETE', `/users/${targetId}/ADMIN`, adminToken)).status).toBe(403);
-    const denied = await request('DELETE', `/users/${adminId}/ADMIN`, adminToken);
-    expect(denied.status).toBe(409);
-    expect(await denied.json()).toEqual({
-      statusCode: 409,
-      message: 'The last administrator cannot be removed',
+  it('grants ADMIN to another user and forbids self-revocation', async () => {
+    const granted = await request('POST', `/users/${targetId}`, adminToken, {
+      role: 'ADMIN',
+      reason: 'Promotion',
     });
-    assignments.set(otherAdminId, new Set([RoleName.Admin]));
-    const response = await request('DELETE', `/users/${adminId}/ADMIN`, adminToken);
-    expect(response.status).toBe(200);
-    expect(await response.json()).toEqual({ userId: adminId, roles: [] });
-    expect(assignments.get(otherAdminId)?.has(RoleName.Admin)).toBe(true);
-    // Existing access tokens keep their role snapshot until expiry (FR-014).
-    expect((await request('GET', `/users/${targetId}`, adminToken)).status).toBe(200);
+    expect(granted.status).toBe(200);
+    expect(assignments.get(targetId)?.has(RoleName.Admin)).toBe(true);
+    const denied = await request('DELETE', `/users/${adminId}/ADMIN`, adminToken, {
+      reason: 'Self removal',
+    });
+    expect(denied.status).toBe(403);
   });
 
   it('documents exactly the three approved operations with Bearer security', () => {

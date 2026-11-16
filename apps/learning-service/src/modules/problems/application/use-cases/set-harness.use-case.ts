@@ -46,7 +46,7 @@ export class SetHarnessUseCase implements ISetHarnessPortIn {
         throw new ProblemNotFoundError(problemId);
       }
 
-      this.authorization.requireManaged(principal, 'update');
+      this.authorization.requireManaged(principal, 'update', problem.createdBy.value);
       problem.assertCanManageHarnesses();
 
       const language = assertEnumValue(command.language, SUPPORTED_LANGUAGES, 'language');

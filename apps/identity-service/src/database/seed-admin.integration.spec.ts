@@ -104,7 +104,10 @@ databaseTests('bootstrap administrator — isolated PostgreSQL', () => {
     };
     expect(await importRepository.findConflicts([importRow])).toEqual([]);
     await expect(
-      importRepository.createAll([{ ...importRow, passwordHash: 'unused-test-hash' }]),
+      importRepository.createAll(
+        [{ ...importRow, passwordHash: 'unused-test-hash' }],
+        first[0]!.id,
+      ),
     ).rejects.toMatchObject({
       code: 'conflict',
       issues: [{ row: 0, field: 'row', code: 'concurrent_conflict' }],
@@ -155,10 +158,20 @@ databaseTests('bootstrap administrator — isolated PostgreSQL', () => {
       new RbacFailure('user_not_found'),
     );
     await expect(
-      new AssignRoleToUser(transactions).execute(actor, first[0]!.id, RoleName.Lecturer),
+      new AssignRoleToUser(transactions).execute(
+        actor,
+        first[0]!.id,
+        RoleName.Lecturer,
+        'Test role change',
+      ),
     ).rejects.toEqual(new RbacFailure('user_not_found'));
     await expect(
-      new RevokeRoleFromUser(transactions).execute(actor, first[0]!.id, RoleName.Student),
+      new RevokeRoleFromUser(transactions).execute(
+        actor,
+        first[0]!.id,
+        RoleName.Student,
+        'Test role change',
+      ),
     ).rejects.toEqual(new RbacFailure('user_not_found'));
     expect(
       await new TypeormExternalIdentityRepository(database).resolveOrLink({

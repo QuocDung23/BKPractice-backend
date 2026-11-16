@@ -1,4 +1,5 @@
 FROM node:22-alpine AS dependencies
+
 WORKDIR /workspace
 RUN corepack enable
 COPY package.json pnpm-lock.yaml ./
@@ -8,6 +9,9 @@ FROM dependencies AS builder
 COPY . .
 RUN pnpm build
 
+FROM dependencies AS migration
+COPY . .
+USER node
 FROM node:22-alpine AS runtime
 WORKDIR /workspace
 ENV NODE_ENV=production

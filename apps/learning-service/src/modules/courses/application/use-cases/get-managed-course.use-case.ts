@@ -27,6 +27,7 @@ export class GetManagedCourseUseCase implements IGetManagedCoursePortIn {
     this.authorization.requirePermission(principal, 'course:read-managed');
     const course = await this.repository.findManagedById(courseId, includeDeleted);
     if (!course) throw new CourseNotFoundError('Course not found');
+    this.authorization.requireOwnership(principal, course.createdBy.value);
     return this.views.toManaged(course);
   }
 }

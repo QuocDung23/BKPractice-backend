@@ -19,7 +19,10 @@ export function canResetPassword(account: ResetAccount | null): account is Reset
 }
 
 export class PasswordResetFailure extends Error {
-  constructor(readonly code: 'invalid_request' | 'dependency_unavailable') {
+  constructor(
+    readonly code: 'invalid_request' | 'dependency_unavailable',
+    readonly reason?: 'password_length',
+  ) {
     super(code);
   }
 }

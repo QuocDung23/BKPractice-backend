@@ -1,3 +1,10 @@
+> **Bản sửa đổi Course content 1.1, Approved 2026-11-12:** Course có thể xuất bản khi có ít nhất
+> một Problem hoặc Quiz đang `PUBLISHED` và chưa xoá. Mỗi Problem/Quiz hiển thị là một đơn vị tiến
+> độ theo LRN-006 1.1. Quyết định này thay điều kiện Problem-only của bản 1.0 và amendment LRN-009
+> trước đó; không thêm bảng hay gộp thứ tự Problem/Quiz.
+>
+> **Bản sửa đổi LRN-009 1.3, Approved 2026-11-11:** LECTURER có quyền quản lý nội dung Learning mình tạo; ADMIN có quyền tương ứng quản lý mọi nội dung. Quy tắc này thay các câu ADMIN-only hoặc bỏ kiểm created_by trước đó. Course hỗ trợ liên kết nhiều Quiz/Chapter theo LRN-009. Không khôi phục Class/Enrollment/Assignment.
+
 # LRN-003 Quản lý Course
 
 ## Trạng thái
@@ -6,14 +13,15 @@ Approved
 
 > Cập nhật 2026-11-07: [LRN-008](../self-study/spec.md) thay thế mọi quy định về LECTURER, sở hữu riêng của người tạo, Class, Enrollment, Assignment và tiến độ theo lớp trong tài liệu này. Các yêu cầu còn lại vẫn áp dụng.
 
-Phiên bản `1.0`, được chủ sở hữu sản phẩm phê duyệt ngày `2026-09-30`.
+Phiên bản `1.1`, amendment Course content được chủ sở hữu phê duyệt ngày `2026-11-12`; phiên bản
+`1.0` được phê duyệt ngày `2026-09-30`.
 
 Giá trị hợp lệ: `Proposed` | `Approved` | `Implemented` | `Verified`
 
 ## Mục tiêu
 
 Cho phép Giảng viên xây dựng khung nội dung của một môn học — Course gồm các Chapter có thứ tự, mỗi
-Chapter là một danh sách Problem có thứ tự — và cho phép người học đã xác thực xem cấu trúc của các
+Chapter có danh sách Problem và Quiz — và cho phép người học đã xác thực xem cấu trúc của các
 Course đã xuất bản, trong khi Learning vẫn sở hữu toàn bộ dữ liệu và chính sách, và không để lộ
 Problem chưa công khai.
 
@@ -52,7 +60,7 @@ Mã nguồn hiện tại là hành vi nền tảng, không phải bản triển 
 ## Yêu cầu chức năng
 
 - **LRN-003-FR-001 — Quyền sở hữu của Learning:** Learning MUST sở hữu Course, Chapter và việc xếp
-  Problem vào Chapter. Không service nào khác lưu hay sửa các dữ liệu này.
+  Problem/Quiz vào Chapter. Không service nào khác lưu hay sửa các dữ liệu này.
 - **LRN-003-FR-002 — Định danh ổn định:** Mọi Course và Chapter MUST có định danh ổn định. Course
   MUST có một slug duy nhất do Giảng viên cung cấp khi tạo và bất biến sau khi tạo, tối đa 220 ký tự; tiêu đề tối đa 200
   ký tự và không phải định danh.
@@ -73,15 +81,18 @@ Mã nguồn hiện tại là hành vi nền tảng, không phải bản triển 
   (chưa từng xuất bản) khi không có Class hay Assignment nào tham chiếu nó. Có tham chiếu thì bị từ
   chối. Course đã từng xuất bản chỉ xoá mềm được.
 - **LRN-003-FR-008 — Điều kiện xuất bản:** Course MUST chỉ được xuất bản hoặc xuất bản lại khi tiêu
-  đề không rỗng, có ít nhất một Chapter, và có ít nhất một Problem `PUBLISHED` chưa xoá mềm trong
-  toàn Course. Chapter rỗng được phép. Việc xuất bản MUST nguyên tử và kiểm tra trên state đã lưu.
+  đề không rỗng, có ít nhất một Chapter, và có ít nhất một Learning Item khả dụng trong toàn Course.
+  Learning Item khả dụng là Problem hoặc Quiz `PUBLISHED` chưa xoá mềm. Chapter rỗng được phép.
+  Việc xuất bản MUST nguyên tử và kiểm tra trạng thái hiện tại trên state đã lưu.
 - **LRN-003-FR-009 — Xem Course đã xuất bản:** Mọi người dùng đã xác thực MUST có thể liệt
-  kê Course đã xuất bản và xem cấu trúc của một Course (Chapter theo thứ tự, Problem theo thứ tự).
-- **LRN-003-FR-010 — Không lộ Problem chưa công khai:** Biểu diễn hướng người học của Course MUST chỉ
-  hiển thị Problem đang `PUBLISHED` và chưa xoá mềm. Problem khác MUST bị bỏ qua mà không lộ sự tồn
-  tại, tiêu đề hay số lượng.
+  kê Course đã xuất bản và xem cấu trúc của một Course (Chapter, Problem và Quiz theo thứ tự riêng
+  đã lưu của từng loại).
+- **LRN-003-FR-010 — Không lộ nội dung chưa công khai:** Biểu diễn hướng người học của Course MUST
+  chỉ hiển thị Problem/Quiz đang `PUBLISHED` và chưa xoá mềm. Nội dung khác MUST bị bỏ qua mà không
+  lộ sự tồn tại, tiêu đề hay số lượng.
 - **LRN-003-FR-011 — Đọc ở phía quản lý:** Chủ sở hữu có thẩm quyền MUST có thể xem mọi Course của
-  mình ở mọi trạng thái, kèm trạng thái của từng Problem đã xếp và thông tin mức độ sẵn sàng xuất bản.
+  mình ở mọi trạng thái, kèm trạng thái của từng Problem/Quiz đã xếp và thông tin mức độ sẵn sàng
+  xuất bản.
 - **LRN-003-FR-012 — Tham chiếu Problem:** Chapter MUST tham chiếu Problem bằng định danh ổn định của
   LRN-001. LRN-003 MUST NOT sao chép hay sửa nội dung Problem.
 - **LRN-003-FR-013 — Toàn vẹn khi Problem đổi trạng thái:** Khi một Problem đã xếp chuyển sang
@@ -93,8 +104,12 @@ Mã nguồn hiện tại là hành vi nền tảng, không phải bản triển 
   Problem. Mô tả Course tối đa 20.000 ký tự; tiêu đề Chapter tối đa 200 ký tự; mô tả Chapter tối đa
   5.000 ký tự.
 - **LRN-003-FR-019 — Sửa khi đã xuất bản:** Course `PUBLISHED` MUST sửa được tại chỗ (thông tin,
-  Chapter, Problem), miễn thay đổi không làm Course mất điều kiện xuất bản ở LRN-003-FR-008. Course
-  `ON_HOLD` và đã xoá mềm không sửa được.
+  Chapter, Problem, Quiz), miễn thay đổi không làm Course mất điều kiện xuất bản ở LRN-003-FR-008.
+  Gỡ Learning Item khả dụng cuối cùng MUST bị từ chối và rollback. Course `ON_HOLD` và đã xoá mềm
+  không sửa được.
+- **LRN-003-FR-020 — Learning Item:** Course MUST coi mỗi Problem và mỗi Quiz hiển thị là một
+  Learning Item độc lập. Trạng thái được đọc qua port hẹp của module sở hữu; Course MUST NOT sao
+  chép nội dung, đáp án, tiến độ hoặc dùng chung entity/repository nội bộ của Problem/Quiz.
 - **LRN-003-FR-016 — Retry xác định:** Thao tác thất bại MUST để nguyên state; thao tác đọc lặp lại
   MUST NOT làm thay đổi state.
 - **LRN-003-FR-017 — Không sở hữu lớp, bài tập hay tiến độ:** LRN-003 MUST NOT tạo Class, Enrollment,
@@ -109,7 +124,8 @@ Course (môn học)
  ├── tiêu đề, slug, mô tả (Markdown hạn chế), trạng thái, người tạo, mốc thời gian
  └── Chapter 1..n (có thứ tự)
       ├── tiêu đề, mô tả (Markdown hạn chế)
-      └── Problem 1..m (có thứ tự, tham chiếu theo ID của LRN-001)
+      ├── Problem 0..m (có thứ tự riêng, tham chiếu theo ID của LRN-001)
+      └── Quiz 0..n (có thứ tự riêng, tham chiếu theo ID của LRN-009)
 ```
 
 - Chapter chỉ thuộc một Course. Chapter không có vòng đời riêng; nó hiển thị theo trạng thái của
@@ -130,7 +146,8 @@ Course (môn học)
   lại khi không `ON_HOLD`, xoá mềm `DRAFT`, khôi phục Course chưa bị xoá) trả lỗi trạng thái không hợp
   lệ và không đổi state.
 - Xuất bản lại kiểm tra lại điều kiện xuất bản; khôi phục thì không kiểm tra lại nội dung.
-- Chapter chỉ có tiêu đề, mô tả và danh sách Problem; không có bài giảng hay tài liệu ở v1.
+- Chapter chỉ có tiêu đề, mô tả, danh sách Problem và danh sách Quiz; không có bài giảng hay tài
+  liệu ở v1. Hai danh sách giữ thứ tự riêng vì amendment này không đổi schema.
 
 ### Quan hệ với tính năng khác
 
@@ -166,8 +183,8 @@ Course (môn học)
 - **Cập nhật Course:** tiêu đề, mô tả.
 - **Chapter:** tiêu đề, mô tả tuỳ chọn, vị trí; sắp xếp lại nhận thứ tự mới của đúng tập Chapter hiện
   có.
-- **Problem trong Chapter:** định danh Problem, vị trí; sắp xếp lại nhận thứ tự mới của đúng tập
-  Problem hiện có trong Chapter.
+- **Problem/Quiz trong Chapter:** định danh nội dung, vị trí; sắp xếp lại nhận thứ tự mới của đúng
+  tập cùng loại hiện có trong Chapter.
 - **Chuyển trạng thái:** định danh Course và ngữ cảnh tác nhân tin cậy.
 - **Liệt kê/xem:** phân trang, tìm theo tiêu đề, tra theo định danh hoặc slug.
 
@@ -177,10 +194,10 @@ Route và DTO cụ thể thuộc `plan.md`.
 
 - Tạo/cập nhật/chuyển trạng thái: biểu diễn quản lý của Course.
 - Biểu diễn hướng người học: định danh, slug, tiêu đề, mô tả, danh sách Chapter theo thứ tự, mỗi
-  Chapter kèm danh sách tóm tắt Problem hiển thị được (định danh, slug, tiêu đề, loại, độ khó) theo
-  thứ tự. Không có trạng thái, người tạo nội bộ hay Problem bị ẩn.
-- Biểu diễn quản lý: thêm trạng thái Course, mốc thời gian, trạng thái của từng Problem đã xếp, và lỗi
-  mức độ sẵn sàng xuất bản.
+  Chapter kèm danh sách tóm tắt Problem và Quiz hiển thị được theo thứ tự riêng. Không có trạng thái,
+  người tạo nội bộ hay nội dung bị ẩn.
+- Biểu diễn quản lý: thêm trạng thái Course, mốc thời gian, trạng thái của từng Problem/Quiz đã xếp,
+  và lỗi mức độ sẵn sàng xuất bản.
 - Liệt kê người học: tóm tắt phân trang của Course đã xuất bản (định danh, slug, tiêu đề, số Chapter).
 - LRN-003 không phát domain event nào.
 
@@ -196,7 +213,7 @@ Route và DTO cụ thể thuộc `plan.md`.
 | Problem không tồn tại hoặc không thoả chính sách thêm vào Chapter | Lỗi kiểm tra dữ liệu; không lộ Problem chưa công khai |
 | Problem đã có trong Course                                        | Lỗi xung đột; không thay đổi state                    |
 | Xoá hẳn Course nháp đang bị Class/Assignment tham chiếu           | Lỗi xung đột; không thay đổi state                    |
-| Thay đổi làm Course `PUBLISHED` mất điều kiện xuất bản            | Lỗi mức độ sẵn sàng; không thay đổi state             |
+| Thay đổi làm Course `PUBLISHED` không còn Learning Item khả dụng  | Lỗi mức độ sẵn sàng; không thay đổi state             |
 | Vượt giới hạn Chapter/Problem                                     | Lỗi kiểm tra dữ liệu; không thay đổi state            |
 | Thứ tự mới không khớp tập hiện có                                 | Lỗi kiểm tra dữ liệu; thứ tự cũ giữ nguyên            |
 | Xuất bản khi chưa đủ điều kiện                                    | Lỗi mức độ sẵn sàng; giữ trạng thái cũ                |
@@ -208,8 +225,8 @@ LRN-003 không đưa vào cấu trúc lỗi mới.
 
 - Chapter không có Problem hiển thị được vẫn xuất hiện trong biểu diễn người học (với danh sách
   rỗng).
-- Mọi Problem trong một Course đã xuất bản bị tạm giữ sau đó: Course vẫn xuất bản, chỉ các Chapter
-  hiển thị rỗng; không tự đổi trạng thái Course.
+- Mọi Problem/Quiz trong một Course đã xuất bản bị tạm giữ sau đó: Course vẫn xuất bản, các nội
+  dung đó bị ẩn và tiến độ được tính lại từ nội dung còn hiển thị; không tự đổi trạng thái Course.
 - Hai lần sắp xếp đồng thời để lại một thứ tự nhất quán.
 - Gỡ một Chapter gỡ luôn các tham chiếu Problem của nó, không đụng tới Problem.
 - Tiêu đề tiếng Việt có dấu được hỗ trợ; slug vẫn là định danh.
@@ -218,7 +235,7 @@ LRN-003 không đưa vào cấu trúc lỗi mới.
 
 - **LRN-003-SR-001 — Phân quyền phía server:** Quyền, sở hữu và trạng thái kiểm tra tại backend.
 - **LRN-003-SR-002 — Ngữ cảnh tin cậy:** Định danh và quyền chỉ từ header Gateway đã xác minh.
-- **LRN-003-SR-003 — Không lộ nội dung chưa công khai:** Course nháp/tạm giữ/đã xoá và Problem chưa
+- **LRN-003-SR-003 — Không lộ nội dung chưa công khai:** Course nháp/tạm giữ/đã xoá và Problem/Quiz chưa
   công khai MUST NOT lộ qua liệt kê, tìm kiếm, chi tiết, lỗi hay số đếm của người học.
 - **LRN-003-SR-004 — Không lộ dữ liệu judge:** Biểu diễn Course MUST NOT chứa Test Case, harness hay
   dữ liệu judge của Problem.
@@ -269,12 +286,18 @@ LRN-003 không đưa vào cấu trúc lỗi mới.
 - **LRN-003-AC-020:** Cho trước Giảng viên thêm Problem `DRAFT` của chính mình vào Chapter, khi người
   học xem Course, thì Problem đó không xuất hiện; Problem `DRAFT` của giảng viên khác thì không thêm
   được.
+- **LRN-003-AC-021:** Cho trước Course chỉ có một Quiz `PUBLISHED` chưa xoá trong một Chapter, khi
+  chủ sở hữu publish, thì Course thành `PUBLISHED` và người học thấy Quiz đó.
+- **LRN-003-AC-022:** Cho trước Course có cả Problem và Quiz khả dụng, khi gỡ một loại nhưng vẫn còn
+  loại kia, thì Course giữ readiness; khi gỡ Learning Item khả dụng cuối cùng thì bị từ chối nguyên tử.
+- **LRN-003-AC-023:** Cho trước Course `ON_HOLD` có Quiz đã bị hold/xoá hoặc đổi revision, khi
+  republish, thì readiness dùng trạng thái Quiz hiện tại; revision mới vẫn là cùng một Quiz reference.
 
 ## Ngoài phạm vi
 
 - Class, mã tham gia, Enrollment, danh sách sinh viên (LRN-004)
 - Assignment, hạn chót, chấm điểm (LRN-005)
-- Tiến độ học theo Course/Chapter (LRN-006)
+- Cách ghi nhận và tổng hợp tiến độ học theo Course/Chapter (LRN-006); LRN-003 chỉ cung cấp cấu trúc
 - Gợi ý bài (Recommendation)
 - Bài giảng dạng văn bản/video, tài liệu đính kèm, file upload
 - Đồng sở hữu, chia sẻ quyền quản lý Course giữa nhiều giảng viên
@@ -293,6 +316,9 @@ LRN-003 không đưa vào cấu trúc lỗi mới.
 - [Định nghĩa Hoàn thành](../../00-system/definition-of-done.md)
 - [LRN-001 Quản lý Problem](../problems/spec.md): định danh, trạng thái và phép chiếu công khai của
   Problem.
+- [LRN-009 Quiz](../quizzes/spec.md): định danh, trạng thái, completion và phép chiếu công khai của
+  Quiz.
+- [LRN-006 Progress](../progress/spec.md): tổng hợp Problem và Quiz thành tiến độ Course.
 - [ID-003 RBAC](../../01-identity/rbac/spec.md) bản 0.4: claim `permissions`, seed quyền của tính
   năng (FR-017).
 - LRN-004 Class & Enrollment (tương lai).
@@ -304,11 +330,11 @@ Không còn. Các quyết định sản phẩm đã được chủ sở hữu s�
 1. **Mã quyền:** Tám quyền `course:*`, seed cho `LECTURER` theo ID-003-FR-017.
 2. **Vòng đời:** Như LRN-001, cộng thêm xoá hẳn Course `DRAFT` không bị tham chiếu (FR-007, FR-018).
 3. **Ai xem Course đã xuất bản:** Mọi người dùng đã xác thực; giới hạn theo Class thuộc LRN-004.
-4. **Nội dung Chapter:** Chỉ tiêu đề, mô tả Markdown và danh sách Problem.
+4. **Nội dung Chapter:** Chỉ tiêu đề, mô tả Markdown, danh sách Problem và danh sách Quiz.
 5. **Problem nào được thêm:** Mọi Problem `PUBLISHED` chưa xoá, cộng Problem `DRAFT`/`ON_HOLD` của
    chính mình; người học chỉ thấy Problem `PUBLISHED` (FR-006, FR-010).
-6. **Điều kiện xuất bản:** Tiêu đề không rỗng, ≥ 1 Chapter, ≥ 1 Problem `PUBLISHED` trong toàn
-   Course (FR-008).
+6. **Điều kiện xuất bản:** Tiêu đề không rỗng, ≥ 1 Chapter, ≥ 1 Problem hoặc Quiz `PUBLISHED` chưa
+   xoá trong toàn Course (FR-008, amendment 1.1).
 7. **Trùng Problem:** Tối đa một lần mỗi Course.
 8. **Giới hạn:** 50 Chapter mỗi Course, 50 Problem mỗi Chapter, mô tả Course 20.000 ký tự, mô tả
    Chapter 5.000 ký tự (FR-015).
@@ -321,6 +347,7 @@ Không còn. Các quyết định sản phẩm đã được chủ sở hữu s�
 | ---------- | --------- | -------------------- | -------------------------------------------------------------------------------------------- |
 | 2026-09-30 | 0.1       | DuongPham-Barca      | Đặc tả Quản lý Course ban đầu, Proposed                                                      |
 | 2026-09-30 | 1.0       | Chủ sở hữu sản phẩm  | Chốt 10 câu hỏi mở theo đề xuất, thêm FR-018, FR-019, AC-017 tới AC-020 và phê duyệt LRN-003 |
+| 2026-11-12 | 1.1       | Chủ sở hữu sản phẩm  | Cho Course quiz-only/mixed, readiness theo Learning Item và đồng bộ Progress Problem + Quiz  |
 
 > `spec.md` mô tả CÁI GÌ. Chi tiết thư mục, class, cách hiện thực repository và thứ tự thực thi
 > thuộc về `plan.md`, trừ khi một ràng buộc kiến trúc bắt buộc phải nêu ở đây.

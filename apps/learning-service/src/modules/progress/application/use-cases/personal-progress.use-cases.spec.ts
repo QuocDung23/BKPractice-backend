@@ -6,6 +6,7 @@ import { CourseProgressNotFoundError } from '@/modules/progress/application/erro
 import type {
   CourseStructureReader,
   PublishedProblemFilter,
+  QuizCompletionReader,
 } from '@/modules/progress/application/ports/out';
 import type { ProgressRepository } from '@/modules/progress/domain/repositories';
 import { CourseCompletionCalculator } from '@/modules/progress/domain/services';
@@ -21,6 +22,9 @@ function createRepository(): jest.Mocked<ProgressRepository> {
     findSolved: jest.fn().mockResolvedValue(new Map()),
     listSolved: jest.fn().mockResolvedValue({ items: [], page: 1, limit: 20, total: 0 }),
   };
+}
+function createQuizReader(): jest.Mocked<QuizCompletionReader> {
+  return { findCompleted: jest.fn().mockResolvedValue(new Map()) };
 }
 
 describe('Personal progress use cases', () => {
@@ -63,6 +67,7 @@ describe('Personal progress use cases', () => {
     const useCase = new GetMyCourseProgressUseCase(
       repository,
       reader,
+      createQuizReader(),
       new CourseCompletionCalculator(),
     );
     await expect(useCase.execute(principal, 'hidden')).rejects.toBeInstanceOf(
@@ -71,22 +76,35 @@ describe('Personal progress use cases', () => {
     expect(repository.findSolved).not.toHaveBeenCalled();
   });
 
-  it('loads progress only for visible Problems and the trusted caller', async () => {
+  it('loads completion for visible Problems and Quizzes for the trusted caller', async () => {
     const repository = createRepository();
     repository.findSolved.mockResolvedValue(new Map([['visible', solvedAt]]));
     const reader: CourseStructureReader = {
       loadVisibleStructure: jest.fn().mockResolvedValue({
         courseId: 'course',
-        chapters: [{ chapterId: 'chapter', problemIds: ['visible', 'unsolved'] }],
+        chapters: [
+          {
+            chapterId: 'chapter',
+            items: [
+              { type: 'PROBLEM', itemId: 'visible' },
+              { type: 'PROBLEM', itemId: 'unsolved' },
+              { type: 'QUIZ', itemId: 'quiz' },
+            ],
+          },
+        ],
       }),
     };
+    const quizzes = createQuizReader();
+    quizzes.findCompleted.mockResolvedValue(new Map([['quiz', solvedAt]]));
     const useCase = new GetMyCourseProgressUseCase(
       repository,
       reader,
+      quizzes,
       new CourseCompletionCalculator(),
     );
-    expect(await useCase.execute(principal, 'course')).toMatchObject({ solved: 1, total: 2 });
+    expect(await useCase.execute(principal, 'course')).toMatchObject({ completed: 2, total: 3 });
     expect(repository.findSolved).toHaveBeenCalledWith('me', ['visible', 'unsolved']);
+    expect(quizzes.findCompleted).toHaveBeenCalledWith('me', ['quiz']);
     expect(repository.save).not.toHaveBeenCalled();
   });
 
@@ -98,6 +116,7 @@ describe('Personal progress use cases', () => {
     const useCase = new GetMyCourseProgressUseCase(
       repository,
       reader,
+      createQuizReader(),
       new CourseCompletionCalculator(),
     );
     await expect(useCase.execute(principal, 'course')).rejects.toThrow('unavailable');

@@ -6,7 +6,9 @@ import {
   type ManagedProblemAction,
 } from './problem-authorization.service';
 
-const ACTION_PERMISSIONS: Record<ManagedProblemAction, string> = {
+const owner = '00000000-0000-4000-8000-000000000040';
+const other = '00000000-0000-4000-8000-000000000041';
+const permissions: Record<ManagedProblemAction, string> = {
   'read-managed': 'problem:read-managed',
   update: 'problem:update',
   publish: 'problem:publish',
@@ -15,55 +17,47 @@ const ACTION_PERMISSIONS: Record<ManagedProblemAction, string> = {
   delete: 'problem:delete',
   restore: 'problem:restore',
 };
+const principal = (role: string, userId: string, permission: string): Principal => ({
+  userId,
+  roles: [role],
+  permissions: [permission],
+});
 
 describe('ProblemAuthorizationService', () => {
   const service = new ProblemAuthorizationService();
 
-  it('allows an ADMIN with the exact permission', () => {
-    for (const action of Object.keys(ACTION_PERMISSIONS) as ManagedProblemAction[]) {
+  it.each(Object.entries(permissions) as [ManagedProblemAction, string][])(
+    'allows owner lecturer and any admin to %s, but rejects another lecturer',
+    (action, permission) => {
       expect(() =>
-        service.requireManaged(admin([ACTION_PERMISSIONS[action]]), action),
+        service.requireManaged(principal('LECTURER', owner, permission), action, owner),
       ).not.toThrow();
-    }
-  });
+      expect(() =>
+        service.requireManaged(principal('ADMIN', other, permission), action, owner),
+      ).not.toThrow();
+      expect(() =>
+        service.requireManaged(principal('LECTURER', other, permission), action, owner),
+      ).toThrow(ForbiddenError);
+    },
+  );
 
-  it('allows different ADMIN accounts to manage the same resource', () => {
+  it('requires a content role and exact permission for create and managed list', () => {
+    for (const permission of ['problem:create', 'problem:read-managed']) {
+      const student = principal('STUDENT', owner, permission);
+      expect(() =>
+        permission === 'problem:create'
+          ? service.requireCreate(student)
+          : service.requireManagedList(student),
+      ).toThrow(ForbiddenError);
+    }
     expect(() =>
-      service.requireManaged(
-        admin(['problem:update'], '00000000-0000-4000-8000-000000000041'),
-        'update',
-      ),
+      service.requireCreate(principal('LECTURER', owner, 'problem:create')),
     ).not.toThrow();
-  });
-
-  it('rejects a missing ADMIN role even if the permission is present', () => {
-    for (const role of ['STUDENT', 'LECTURER']) {
-      const principal: Principal = {
-        userId: '00000000-0000-4000-8000-000000000040',
-        roles: [role],
-        permissions: Object.values(ACTION_PERMISSIONS),
-      };
-      expect(() => service.requireManaged(principal, 'update')).toThrow(ForbiddenError);
-      expect(() => service.requireCreate(principal)).toThrow(ForbiddenError);
-      expect(() => service.requireManagedList(principal)).toThrow(ForbiddenError);
-    }
-  });
-
-  it('rejects missing or case-mismatched permissions', () => {
-    expect(() => service.requireManaged(admin([]), 'update')).toThrow(ForbiddenError);
-    expect(() => service.requireManaged(admin(['PROBLEM:UPDATE']), 'update')).toThrow(
-      ForbiddenError,
-    );
-  });
-
-  it('requires problem:create and problem:read-managed for list/create gates', () => {
-    expect(() => service.requireCreate(admin(['problem:create']))).not.toThrow();
-    expect(() => service.requireManagedList(admin(['problem:read-managed']))).not.toThrow();
-    expect(() => service.requireCreate(admin([]))).toThrow(ForbiddenError);
-    expect(() => service.requireManagedList(admin([]))).toThrow(ForbiddenError);
+    expect(() =>
+      service.requireManagedList(principal('LECTURER', owner, 'problem:read-managed')),
+    ).not.toThrow();
+    expect(() =>
+      service.requireManaged(principal('ADMIN', owner, 'PROBLEM:UPDATE'), 'update', owner),
+    ).toThrow(ForbiddenError);
   });
 });
-
-function admin(permissions: string[], userId = '00000000-0000-4000-8000-000000000040'): Principal {
-  return { userId, roles: ['ADMIN'], permissions };
-}

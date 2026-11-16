@@ -163,10 +163,13 @@ describe('Account Excel import boundaries', () => {
       expect(passwords.hash).toHaveBeenCalledTimes(2);
       expect(passwords.hash).toHaveBeenNthCalledWith(1, importPassword);
       expect(passwords.hash).toHaveBeenNthCalledWith(2, importPassword);
-      expect(repository.createAll).toHaveBeenCalledWith([
-        expect.objectContaining({ passwordHash: 'student-hash' }),
-        expect.objectContaining({ passwordHash: 'lecturer-hash' }),
-      ]);
+      expect(repository.createAll).toHaveBeenCalledWith(
+        [
+          expect.objectContaining({ passwordHash: 'student-hash' }),
+          expect.objectContaining({ passwordHash: 'lecturer-hash' }),
+        ],
+        admin.userId,
+      );
     },
   );
 

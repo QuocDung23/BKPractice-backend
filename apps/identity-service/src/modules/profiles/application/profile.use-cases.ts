@@ -66,7 +66,7 @@ export class ProfileUseCases {
       limit > 50 ||
       !Number.isSafeInteger(offset)
     )
-      throw new ProfileFailure('invalid');
+      throw new ProfileFailure('invalid', 'search');
     const result = await this.profiles.searchByDisplayName(name, page, limit);
     return {
       items: await Promise.all(
@@ -88,7 +88,7 @@ export class ProfileUseCases {
     requireAdmin(principal);
     await this.requireAccount(userId);
     const profile = await this.profiles.find(userId);
-    if (!profile) throw new ProfileFailure('not_found');
+    if (!profile) throw new ProfileFailure('not_found', 'profile');
     return this.toPrivate(profile);
   }
 
@@ -133,7 +133,7 @@ export class ProfileUseCases {
 
   private async requireAccount(userId: string) {
     const account = await this.accounts.findAccount(userId);
-    if (!account) throw new ProfileFailure('not_found');
+    if (!account) throw new ProfileFailure('not_found', 'account');
     return account;
   }
 

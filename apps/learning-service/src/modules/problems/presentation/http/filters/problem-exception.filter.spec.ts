@@ -10,46 +10,18 @@ import { UnknownReferenceError } from '@learning/modules/problems/application/er
 import { DomainValidationError } from '@learning/modules/problems/domain/errors/domain-validation.error';
 import { DuplicateSlugError } from '@learning/modules/problems/domain/errors/duplicate-slug.error';
 import { InvalidProblemState } from '@learning/modules/problems/domain/errors/invalid-problem-state.error';
-import { HttpStatus } from '@nestjs/common';
-import type { ArgumentsHost } from '@nestjs/common';
+import { createFakeHttpHost } from '@learning/presentation/http/testing/fake-http-host';
+import { HttpStatus, Logger } from '@nestjs/common';
 import { Test } from '@nestjs/testing';
 
 import { ProblemExceptionFilter } from './problem-exception.filter';
-
-interface MockResponse {
-  statusCode: number;
-  body: unknown;
-  status(code: number): MockResponse;
-  json(data: unknown): MockResponse;
-}
-
-function createMockHost(): { host: ArgumentsHost; response: MockResponse } {
-  const response: MockResponse = {
-    statusCode: 0,
-    body: null,
-    status(code: number) {
-      this.statusCode = code;
-      return this;
-    },
-    json(data: unknown) {
-      this.body = data;
-      return this;
-    },
-  };
-
-  const host = {
-    switchToHttp: () => ({
-      getResponse: () => response,
-    }),
-  } as unknown as ArgumentsHost;
-
-  return { host, response };
-}
 
 describe('ProblemExceptionFilter', () => {
   let filter: ProblemExceptionFilter;
 
   beforeEach(async () => {
+    jest.spyOn(Logger.prototype, 'warn').mockImplementation(() => undefined);
+    jest.spyOn(Logger.prototype, 'error').mockImplementation(() => undefined);
     const moduleRef = await Test.createTestingModule({
       providers: [ProblemExceptionFilter],
     }).compile();
@@ -57,52 +29,79 @@ describe('ProblemExceptionFilter', () => {
     filter = moduleRef.get(ProblemExceptionFilter);
   });
 
+  afterEach(() => jest.restoreAllMocks());
+
   it.each([
-    [new DomainValidationError('field', 'message'), HttpStatus.BAD_REQUEST],
-    [new UnknownReferenceError([{ kind: 'topic', id: '1' }]), HttpStatus.BAD_REQUEST],
-    [new PublishNotReadyError([]), HttpStatus.BAD_REQUEST],
-    [new UnauthorizedError(), HttpStatus.UNAUTHORIZED],
-    [new ForbiddenError(), HttpStatus.FORBIDDEN],
-    [new ProblemNotFoundError('id'), HttpStatus.NOT_FOUND],
-    [new TestCaseNotFoundError('case-1'), HttpStatus.NOT_FOUND],
-    [new HarnessNotFoundError('problem-1', 'python'), HttpStatus.NOT_FOUND],
-    [new DuplicateSlugError('slug'), HttpStatus.CONFLICT],
-    [new InvalidProblemState('field', 'message'), HttpStatus.CONFLICT],
-    [new ConcurrentModificationError(), HttpStatus.CONFLICT],
-  ])('maps %s to HTTP %d', (exception, expectedStatus) => {
-    const { host, response } = createMockHost();
-    filter.catch(exception, host);
-    expect(response.statusCode).toBe(expectedStatus);
+    [
+      new DomainValidationError('title', 'title must not be empty'),
+      HttpStatus.BAD_REQUEST,
+      'PROBLEM_FIELD_INVALID',
+    ],
+    [
+      new UnknownReferenceError([{ kind: 'topic', id: '1' }]),
+      HttpStatus.BAD_REQUEST,
+      'PROBLEM_REFERENCE_UNKNOWN',
+    ],
+    [new PublishNotReadyError([]), HttpStatus.BAD_REQUEST, 'PROBLEM_NOT_READY_TO_PUBLISH'],
+    [new UnauthorizedError(), HttpStatus.UNAUTHORIZED, 'AUTH_PRINCIPAL_INVALID'],
+    [new ForbiddenError(), HttpStatus.FORBIDDEN, 'PROBLEM_FORBIDDEN'],
+    [new ProblemNotFoundError('id'), HttpStatus.NOT_FOUND, 'PROBLEM_NOT_FOUND'],
+    [new TestCaseNotFoundError('case-1'), HttpStatus.NOT_FOUND, 'TEST_CASE_NOT_FOUND'],
+    [new HarnessNotFoundError('problem-1', 'python'), HttpStatus.NOT_FOUND, 'HARNESS_NOT_FOUND'],
+    [new DuplicateSlugError('slug'), HttpStatus.CONFLICT, 'PROBLEM_SLUG_ALREADY_EXISTS'],
+    [new InvalidProblemState('field', 'message'), HttpStatus.CONFLICT, 'PROBLEM_STATE_INVALID'],
+    [new ConcurrentModificationError(), HttpStatus.CONFLICT, 'PROBLEM_CONCURRENT_MODIFICATION'],
+  ])('maps %s to HTTP %d with code %s and the shared body', (exception, status, code) => {
+    const fake = createFakeHttpHost({ 'x-request-id': '123e4567-e89b-42d3-a456-426614174000' });
+
+    filter.catch(exception, fake.host);
+
+    expect(fake.status()).toBe(status);
+    expect(fake.body()).toMatchObject({
+      statusCode: status,
+      code,
+      requestId: '123e4567-e89b-42d3-a456-426614174000',
+    });
+    expect(typeof fake.body().message).toBe('string');
+    expect(fake.body().message).not.toMatch(/\b(not found|forbidden|required|invalid)\b/i);
   });
 
-  it('includes issues array for PublishNotReadyError', () => {
-    const issues = [
-      { code: 'MISSING_CONTRACT', field: 'functionContracts', message: 'missing' },
-      { code: 'NO_LANGUAGE', message: 'no language' },
-    ];
-    const exception = new PublishNotReadyError(issues);
-    const { host, response } = createMockHost();
+  it('turns PublishNotReadyError issues into Vietnamese details', () => {
+    const exception = new PublishNotReadyError([
+      { code: 'TITLE_REQUIRED', field: 'title', message: 'A problem title is required' },
+      { code: 'ENABLED_LANGUAGE_REQUIRED', message: 'At least one language must be enabled' },
+    ]);
+    const fake = createFakeHttpHost();
 
-    filter.catch(exception, host);
+    filter.catch(exception, fake.host);
 
-    expect(response.statusCode).toBe(HttpStatus.BAD_REQUEST);
-    expect(response.body).toMatchObject({
-      statusCode: HttpStatus.BAD_REQUEST,
-      message: 'Problem is not ready to publish',
-      issues,
+    expect(fake.status()).toBe(HttpStatus.BAD_REQUEST);
+    expect(fake.body()).toMatchObject({
+      message: 'Bài tập chưa đủ điều kiện xuất bản: còn 2 mục cần hoàn thiện.',
+      details: [
+        {
+          field: 'title',
+          code: 'TITLE_REQUIRED',
+          message: 'Bài tập cần có tiêu đề. (trường "title")',
+        },
+        { code: 'ENABLED_LANGUAGE_REQUIRED', message: 'Cần bật ít nhất một ngôn ngữ lập trình.' },
+      ],
     });
   });
 
-  it('unknown ApplicationError subclass maps to 500', () => {
+  it('unknown ApplicationError subclass maps to 500 without leaking its message', () => {
     class UnknownError extends ApplicationError {
       readonly code = 'UNKNOWN';
       constructor() {
-        super('unknown');
+        super('postgres://private-secret');
       }
     }
 
-    const { host, response } = createMockHost();
-    filter.catch(new UnknownError(), host);
-    expect(response.statusCode).toBe(HttpStatus.INTERNAL_SERVER_ERROR);
+    const fake = createFakeHttpHost({ 'x-request-id': '9b2c7d1e-5f3a-4c8b-8d6e-0a1b2c3d4e5f' });
+    filter.catch(new UnknownError(), fake.host);
+
+    expect(fake.status()).toBe(HttpStatus.INTERNAL_SERVER_ERROR);
+    expect(fake.body().code).toBe('INTERNAL_ERROR');
+    expect(JSON.stringify(fake.body())).not.toContain('private-secret');
   });
 });

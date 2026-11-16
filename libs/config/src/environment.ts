@@ -51,6 +51,7 @@ const serviceSchemas: Record<ServiceName, z.ZodObject> = {
   }),
   'identity-service': commonSchema.extend({
     IDENTITY_SERVICE_PORT: port.default(3001),
+    INTERNAL_SERVICE_SECRET: secret.optional(),
     IDENTITY_DATABASE_URL: url,
     ACCOUNT_IMPORT_PASSWORD: z.string().min(1),
     JWT_ACCESS_SECRET: secret,
@@ -87,6 +88,7 @@ const serviceSchemas: Record<ServiceName, z.ZodObject> = {
   }),
   'learning-service': commonSchema.extend({
     LEARNING_SERVICE_PORT: port.default(3002),
+    IDENTITY_SERVICE_URL: url.optional(),
     LEARNING_DATABASE_URL: url,
     RABBITMQ_URL: url,
     INTERNAL_SERVICE_SECRET: secret,

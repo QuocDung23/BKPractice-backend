@@ -33,6 +33,7 @@ export class AddChapterUseCase implements IAddChapterPortIn {
     return this.transactionRunner.run(async () => {
       const course = await this.repository.loadForUpdate(courseId);
       if (!course) throw new CourseNotFoundError('Course not found');
+      this.authorization.requireOwnership(principal, course.createdBy.value);
       course.addChapter({ title, description, position }, now);
       await this.repository.save(course);
       return this.views.toManaged(course);

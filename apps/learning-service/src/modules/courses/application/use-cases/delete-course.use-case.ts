@@ -21,6 +21,7 @@ export class DeleteCourseUseCase implements IDeleteCoursePortIn {
     await this.transactionRunner.run(async () => {
       const course = await this.repository.loadForUpdate(courseId);
       if (!course) throw new CourseNotFoundError('Course not found');
+      this.authorization.requireOwnership(principal, course.createdBy.value);
       if (course.isDraft) {
         const removed = await this.repository.hardDelete(courseId);
         if (!removed) throw new CourseNotFoundError('Course not found');

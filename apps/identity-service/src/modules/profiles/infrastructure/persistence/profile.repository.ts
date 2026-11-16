@@ -98,7 +98,7 @@ export class TypeormProfileRepository implements ProfileRepository {
       const entity = createIfMissing
         ? await this.findOrCreate(manager, userId, displayName)
         : await this.findEntity(manager, userId);
-      if (!entity) throw new ProfileFailure('not_found');
+      if (!entity) throw new ProfileFailure('not_found', 'profile');
       const oldAvatar = entity.avatarReference;
       if (patch.displayName !== undefined) entity.displayName = patch.displayName;
       if (patch.avatar !== undefined) entity.avatarReference = patch.avatar;

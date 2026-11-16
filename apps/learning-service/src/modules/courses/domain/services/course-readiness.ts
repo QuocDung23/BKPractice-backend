@@ -7,24 +7,43 @@ export interface ProblemStateForReadiness {
   readonly isDeleted: boolean;
 }
 
+export type LearningItemType = 'PROBLEM' | 'QUIZ';
+
+export interface LearningItemState {
+  readonly id: string;
+  readonly type: LearningItemType;
+  readonly status: 'DRAFT' | 'PUBLISHED' | 'ON_HOLD';
+  readonly isDeleted: boolean;
+}
+
 export class CourseReadiness {
-  check(course: Course, problemStates: readonly ProblemStateForReadiness[]): string[] {
+  check(course: Course, itemStates: readonly LearningItemState[]): string[] {
     const issues: string[] = [];
     if (course.title.value.trim().length === 0) issues.push('TITLE_REQUIRED');
     if (course.chapters.length === 0) issues.push('CHAPTER_REQUIRED');
-    const publishedProblems = course.chapters
-      .flatMap((chapter) => chapter.problemRefs)
-      .map((ref) => problemStates.find((state) => state.problemId === ref.value))
-      .filter(
-        (state) => state !== undefined && state.publishStatus === 'PUBLISHED' && !state.isDeleted,
-      );
-    if (publishedProblems.length === 0) issues.push('PUBLISHED_PROBLEM_REQUIRED');
+    const linkedItemKeys = new Set(
+      course.chapters.flatMap((chapter) => [
+        ...chapter.problemRefs.map((ref) => itemKey('PROBLEM', ref.value)),
+        ...(chapter.quizRefs ?? []).map((id) => itemKey('QUIZ', id)),
+      ]),
+    );
+    const hasPublishedContent = itemStates.some(
+      (state) =>
+        linkedItemKeys.has(itemKey(state.type, state.id)) &&
+        state.status === 'PUBLISHED' &&
+        !state.isDeleted,
+    );
+    if (!hasPublishedContent) issues.push('PUBLISHED_CONTENT_REQUIRED');
     return issues;
   }
 
-  isReady(course: Course, problemStates: readonly ProblemStateForReadiness[]): boolean {
-    return this.check(course, problemStates).length === 0;
+  isReady(course: Course, itemStates: readonly LearningItemState[]): boolean {
+    return this.check(course, itemStates).length === 0;
   }
+}
+
+function itemKey(type: LearningItemType, id: string): string {
+  return `${type}:${id}`;
 }
 
 export class ProblemAttachPolicy {

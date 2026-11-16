@@ -12,8 +12,8 @@ import type {
 } from '@learning/modules/problems/domain/repositories/problem.repository.port.out';
 import { TestSuiteSummary } from '@learning/modules/problems/domain/value-objects';
 import {
-  Problem as ProblemEntity,
   PublishStatus as EntityPublishStatus,
+  Problem as ProblemEntity,
 } from '@learning/modules/problems/entities/problem.entity';
 import { Injectable } from '@nestjs/common';
 import type { EntityManager, QueryDeepPartialEntity, SelectQueryBuilder } from 'typeorm';
@@ -479,8 +479,11 @@ function applyManagedFilters(
   query: SelectQueryBuilder<ProblemEntity>,
   filter: ManagedProblemListFilter,
 ): SelectQueryBuilder<ProblemEntity> {
+  if (filter.createdBy) {
+    query.andWhere('p.createdBy = :createdBy', { createdBy: filter.createdBy });
+  }
   if (!filter.includeDeleted) {
-    query.where('p.deletedAt IS NULL');
+    query.andWhere('p.deletedAt IS NULL');
   }
 
   return query;

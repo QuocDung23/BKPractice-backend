@@ -269,6 +269,17 @@ describeIntegration('ProblemTypeOrmRepository', () => {
           otherOwned.id.value,
         ]),
       );
+      const lecturerOwned = await repository.listManaged({
+        includeDeleted: false,
+        createdBy: OWNER_ID,
+        page: 1,
+        limit: 20,
+      });
+      expect(lecturerOwned.total).toBe(2);
+      expect(lecturerOwned.items.map((problem) => problem.id.value)).toEqual([
+        ownedLater.id.value,
+        ownedEarlier.id.value,
+      ]);
     });
   });
 

@@ -26,7 +26,7 @@ export class SoftDeleteProblemUseCase implements ISoftDeleteProblemPortIn {
       throw new ProblemNotFoundError(id);
     }
 
-    this.authorization.requireManaged(principal, 'delete');
+    this.authorization.requireManaged(principal, 'delete', problem.createdBy.value);
     const now = new Date();
     problem.softDelete(now);
 

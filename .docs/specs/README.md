@@ -116,6 +116,11 @@ Mỗi tính năng nằm trong thư mục service/domain đã định sẵn và c
 | `JDG-*` | Judge          | `JDG-001 Standard Judge`, `JDG-002 Language Runners`, `JDG-003 Function Judge`, `JDG-004 OOP Judge`, `JDG-005 Sandbox`                                                                                                                                            |
 | `COM-*` | Community      | `COM-001 Posts`, `COM-002 Comments`, `COM-003 Reactions`, `COM-004 Bookmarks`, `COM-005 Moderation`                                                                                                                                                               |
 
+Đặc tả Learning mới: [LRN-009 — Quiz và ngân hàng câu hỏi](02-learning/quizzes/spec.md)
+(`Proposed`, 2026-11-11). Tài liệu ghi nhận hướng Quiz cho mobile, ngân hàng dùng lại,
+phản hồi từng câu và ngưỡng hoàn thành 90%. Đã có [plan draft](02-learning/quizzes/plan.md)
+và [checklist chi tiết](02-learning/quizzes/tasks.md) để review; chưa có implementation.
+
 Mã định danh là cố định sau khi được phê duyệt và không được tái sử dụng. Các ví dụ trên chỉ giữ chỗ
 cho quy ước đặt tên; chúng không phải là các đặc tả tính năng đã được triển khai hay đã Approved.
 

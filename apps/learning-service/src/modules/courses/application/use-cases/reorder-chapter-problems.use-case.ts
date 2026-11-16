@@ -32,6 +32,7 @@ export class ReorderChapterProblemsUseCase implements IReorderChapterProblemsPor
     return this.transactionRunner.run(async () => {
       const course = await this.repository.loadForUpdate(courseId);
       if (!course) throw new CourseNotFoundError('Course not found');
+      this.authorization.requireOwnership(principal, course.createdBy.value);
       course.reorderProblemsInChapter(chapterId, orderedIds, now);
       await this.repository.save(course);
       return this.views.toManaged(course);

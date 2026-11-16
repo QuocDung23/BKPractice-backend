@@ -531,13 +531,14 @@ Chủ sở hữu chốt file Excel của [ID-004](../student-provisioning/spec.m
 
 ## Lịch sử sửa đổi
 
-| Ngày       | Phiên bản | Tác giả/Người review | Tóm tắt                                                                         |
-| ---------- | --------- | -------------------- | ------------------------------------------------------------------------------- |
-| 2026-09-01 | 0.1       | Codex / TBD          | Đặc tả Proposed ban đầu cho việc đăng ký bằng email/mật khẩu                    |
-| 2026-09-01 | 0.2       | Codex / TBD          | Thay đăng ký bằng mã số sinh viên đã được cấp và đăng nhập Microsoft của trường |
-| 2026-09-01 | 1.0       | Chủ sở hữu sản phẩm  | Giải quyết các quyết định về xác thực và phê duyệt ID-001                       |
-| 2026-09-29 | 1.1       | Chủ sở hữu sản phẩm  | Thêm claim `permissions` vào access token, đi kèm ID-003 0.4. Đã phê duyệt.     |
-| 2026-10-24 | 1.2       | Chủ sở hữu sản phẩm  | Access token chỉ ở HttpOnly Secure SameSite=Lax cookie cho FE/Gateway cùng site. Đã phê duyệt. |
+| Ngày       | Phiên bản | Tác giả/Người review | Tóm tắt                                                                                                                                                                                                                                                           |
+| ---------- | --------- | -------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 2026-09-01 | 0.1       | Codex / TBD          | Đặc tả Proposed ban đầu cho việc đăng ký bằng email/mật khẩu                                                                                                                                                                                                      |
+| 2026-09-01 | 0.2       | Codex / TBD          | Thay đăng ký bằng mã số sinh viên đã được cấp và đăng nhập Microsoft của trường                                                                                                                                                                                   |
+| 2026-09-01 | 1.0       | Chủ sở hữu sản phẩm  | Giải quyết các quyết định về xác thực và phê duyệt ID-001                                                                                                                                                                                                         |
+| 2026-09-29 | 1.1       | Chủ sở hữu sản phẩm  | Thêm claim `permissions` vào access token, đi kèm ID-003 0.4. Đã phê duyệt.                                                                                                                                                                                       |
+| 2026-10-24 | 1.2       | Chủ sở hữu sản phẩm  | Access token chỉ ở HttpOnly Secure SameSite=Lax cookie cho FE/Gateway cùng site. Đã phê duyệt.                                                                                                                                                                    |
+| 2026-11-14 | 1.3       | Chủ sở hữu sản phẩm  | `POST /api/auth/login` được báo chi tiết lý do theo `00-system/error-responses` ERR-001 FR-007 (ngoại lệ với dòng "MSSV không tồn tại hoặc mật khẩu sai", `ID-001-AC-003` và ghi chú nhánh Lecturer). Microsoft, refresh, quên mật khẩu giữ nguyên. Đã phê duyệt. |
 
 > `spec.md` mô tả CÁI GÌ. Chi tiết thư mục, class, cách hiện thực repository, thư viện Microsoft,
 > ánh xạ TypeORM, transaction và thứ tự thực thi thuộc về một `plan.md` sau này, sau khi có phê

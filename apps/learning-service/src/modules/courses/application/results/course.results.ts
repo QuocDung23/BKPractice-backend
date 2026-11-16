@@ -12,6 +12,7 @@ export interface LearnerChapterResult {
   readonly id: string;
   readonly title: string;
   readonly description: string | null;
+  readonly quizzes?: readonly { id: string; title: string; status?: string }[];
   readonly problems: readonly ProblemSummaryResult[];
 }
 
@@ -44,6 +45,7 @@ export interface ManagedChapterResult {
   readonly id: string;
   readonly title: string;
   readonly description: string | null;
+  readonly quizzes?: readonly { id: string; title: string; status?: string }[];
   readonly problems: readonly ManagedProblemResult[];
 }
 

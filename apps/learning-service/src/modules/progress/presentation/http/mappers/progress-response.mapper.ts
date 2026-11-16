@@ -34,16 +34,24 @@ export function toSolvedStatusResponse(
 export function toCourseProgressResponse(result: CourseProgressResult): CourseProgressResponseDto {
   return {
     courseId: result.courseId,
-    solved: result.solved,
+    completed: result.completed,
+    solved: result.completed,
     total: result.total,
     chapters: result.chapters.map((c) => ({
       chapterId: c.chapterId,
-      solved: c.solved,
+      completed: c.completed,
+      solved: c.completed,
       total: c.total,
     })),
-    solvedProblems: result.solvedProblems.map((p) => ({
-      problemId: p.problemId,
-      solvedAt: p.solvedAt.toISOString(),
+    completedItems: result.completedItems.map((item) => ({
+      type: item.type,
+      itemId: item.itemId,
+      completedAt: item.completedAt.toISOString(),
     })),
+    solvedProblems: result.completedItems.flatMap((item) =>
+      item.type === 'PROBLEM'
+        ? [{ problemId: item.itemId, solvedAt: item.completedAt.toISOString() }]
+        : [],
+    ),
   };
 }

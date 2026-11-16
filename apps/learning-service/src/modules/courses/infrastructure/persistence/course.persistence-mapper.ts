@@ -11,17 +11,19 @@ import {
   DeletedMarker,
   ProblemReference,
 } from '@/modules/courses/domain/value-objects';
-import { CourseEntity as Course } from '@/modules/courses/entities';
 import type {
   ChapterEntity as Chapter,
   ChapterProblemEntity as ChapterProblem,
+  ChapterQuizEntity,
 } from '@/modules/courses/entities';
+import { CourseEntity as Course } from '@/modules/courses/entities';
 
 export class CoursePersistenceMapper {
   static toDomain(
     entity: Course,
     chapters: Chapter[],
     chapterProblems: ChapterProblem[],
+    chapterQuizzes: ChapterQuizEntity[] = [],
   ): CourseAggregate {
     const chapterList = chapters
       .sort((a, b) => a.displayOrder - b.displayOrder)
@@ -34,6 +36,10 @@ export class CoursePersistenceMapper {
           id: ChapterId.from(chapter.id),
           title: new ChapterTitle(chapter.title),
           description: new ChapterDescription(chapter.description),
+          quizRefs: chapterQuizzes
+            .filter((q) => q.chapterId === chapter.id)
+            .sort((a, b) => a.displayOrder - b.displayOrder)
+            .map((q) => q.quizId),
           problemRefs: refs,
         };
       });

@@ -1,4 +1,4 @@
-import { Inject, Injectable, UnauthorizedException } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import type { CanActivate, ExecutionContext } from '@nestjs/common';
 import type { Request } from 'express';
 
@@ -7,6 +7,7 @@ import {
   type AuthorizationPrincipalProvider,
 } from '@/modules/rbac/application';
 import { requireAdmin, type AuthorizationPrincipal } from '@/modules/rbac/domain';
+import { RBAC_HTTP_ERRORS } from '@/modules/rbac/presentation/rbac-errors';
 
 export interface RbacRequest extends Request {
   principal: AuthorizationPrincipal;
@@ -23,7 +24,7 @@ export class RbacGuard implements CanActivate {
     const request = context.switchToHttp().getRequest<RbacRequest>();
     const authorization = request.header('authorization');
     if (!authorization || !/^Bearer [^\s]+$/.test(authorization)) {
-      throw new UnauthorizedException('Authentication failed');
+      throw RBAC_HTTP_ERRORS.bearerMissing();
     }
     request.principal = await this.principals.verifyAccess(authorization.slice(7));
     requireAdmin(request.principal);

@@ -197,6 +197,7 @@ export class InMemoryProblemRepository implements ProblemRepository {
   async listManaged(filter: ManagedProblemListFilter): Promise<ProblemPage<Problem>> {
     const items = [...this.stored.values()]
       .filter((item) => filter.includeDeleted || !item.deletedMarker.isDeleted)
+      .filter((item) => !filter.createdBy || item.createdBy.value === filter.createdBy)
       .sort((left, right) => right.createdAt.getTime() - left.createdAt.getTime());
 
     return paginate(items, filter.page, filter.limit);

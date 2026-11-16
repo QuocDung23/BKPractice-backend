@@ -267,6 +267,11 @@ import { User } from '@/modules/users/infrastructure/persistence';
       useFactory: (sessions: RefreshSessionRepository) => new LogoutAllSessions(sessions),
     },
   ],
-  exports: [BK_TOKEN_SERVICE, REFRESH_SESSION_REPOSITORY, IdentityAccessAuthenticator],
+  exports: [
+    BK_TOKEN_SERVICE,
+    PASSWORD_HASHER,
+    REFRESH_SESSION_REPOSITORY,
+    IdentityAccessAuthenticator,
+  ],
 })
 export class AuthModule {}

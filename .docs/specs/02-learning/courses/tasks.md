@@ -4,6 +4,9 @@
 
 > Cập nhật pattern 2026-11-07: `CourseRepository` đã ở `domain/repositories`; controller Course inject inbound port của từng use case qua token. Các task chưa đánh dấu bên dưới còn phụ thuộc các phần kiểm chứng khác của LRN-003.
 
+> Amendment 1.1 được chủ sở hữu Approved ngày 2026-11-12: Course readiness tính Problem hoặc Quiz
+> khả dụng. Các task T031–T035 dưới đây thay phần Problem-only của T007/T011/T012/T028; không migration.
+
 ## Trạng thái
 
 Approved — Sẵn sàng triển khai sau LRN-001
@@ -231,3 +234,16 @@ phần kiểm chứng đã xong. Các mục N/A là những mục duy nhất đ�
 - [x] Chia sẻ transaction storage theo DataSource giữa Course/Problem; reader dùng manager hiện tại.
 - [x] Chặn slug `managed` khi tạo mới, giữ rehydrate dữ liệu cũ và cập nhật Swagger.
 - [x] Kiểm thử regression với pool một connection, cô lập request/DataSource, API slug và chạy kiểm tra chất lượng.
+
+## Amendment Course content — 2026-11-12
+
+- [x] **LRN-003-T031 — Đồng bộ spec/plan/contract.** Course 1.1 và Progress 1.1 Approved; readiness
+      dùng `PUBLISHED_CONTENT_REQUIRED`, output quản lý/Swagger không còn mã Problem-only.
+- [x] **LRN-003-T032 — Learning Item readiness.** Thêm projection domain `LearningItemState`; application
+      hợp nhất `CourseProblemCatalog` + `CourseQuizCatalog`; không thêm entity/bảng/migration.
+- [x] **LRN-003-T033 — Giữ readiness khi mutation.** Publish/republish/remove Chapter/detach Problem/
+      detach Quiz dùng cùng readiness; mutation thất bại rollback state.
+- [x] **LRN-003-T034 — Test Course content.** Unit/integration cho Problem-only, Quiz-only, mixed;
+      hold/delete/republish và đổi Quiz revision dùng trạng thái root hiện tại.
+- [x] **LRN-003-T035 — Verify/bàn giao.** Chạy test liên quan, lint/typecheck/build, cập nhật task và
+      worked entry; ghi rõ baseline hoặc test PostgreSQL chưa chạy.

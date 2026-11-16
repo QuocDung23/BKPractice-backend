@@ -31,6 +31,7 @@ export class RemoveChapterUseCase implements IRemoveChapterPortIn {
     await this.transactionRunner.run(async () => {
       const course = await this.repository.loadForUpdate(courseId);
       if (!course) throw new CourseNotFoundError('Course not found');
+      this.authorization.requireOwnership(principal, course.createdBy.value);
       course.removeChapter(chapterId, now);
       if (course.isPublished) await this.readiness.assertReady(course);
       await this.repository.save(course);

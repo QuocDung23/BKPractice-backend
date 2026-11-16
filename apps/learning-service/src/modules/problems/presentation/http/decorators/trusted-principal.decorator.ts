@@ -1,7 +1,7 @@
 import { UnauthorizedError } from '@learning/modules/problems/application/errors/unauthorized.error';
 import type { Principal } from '@learning/modules/problems/application/models/principal';
-import { createParamDecorator } from '@nestjs/common';
 import type { ExecutionContext } from '@nestjs/common';
+import { createParamDecorator } from '@nestjs/common';
 import { isUUID } from 'class-validator';
 import type { Request } from 'express';
 
@@ -28,7 +28,7 @@ export function readTrustedPrincipal(request: Request): Principal {
     PERMISSION_PATTERN,
   );
 
-  return { userId, roles, permissions };
+  return { userId: userId.toLowerCase(), roles, permissions };
 }
 
 export const TrustedPrincipal = createParamDecorator(

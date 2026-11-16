@@ -180,4 +180,38 @@ describe('Course aggregate', () => {
       expect(() => course.reorderProblemsInChapter(ghost, [problem])).toThrow(ChapterNotFound);
     });
   });
+  it('keeps Quiz order separate, permits reuse across chapters and enforces 50 per chapter', () => {
+    const course = Course.create({
+      slug: new CourseSlug('quiz-course'),
+      title: new CourseTitle('Quiz course'),
+      description: new CourseDescription(null),
+      createdBy,
+    });
+    const first = course.addChapter({
+      title: new ChapterTitle('First'),
+      description: new ChapterDescription(null),
+    });
+    const second = course.addChapter({
+      title: new ChapterTitle('Second'),
+      description: new ChapterDescription(null),
+    });
+    const ids = Array.from(
+      { length: 50 },
+      (_, i) => `00000000-0000-4000-8000-${String(i).padStart(12, '0')}`,
+    );
+    ids.forEach((id) => course.attachQuiz(first, id));
+    expect(() => course.attachQuiz(first, ids[0]!)).toThrow(DomainValidationError);
+    expect(() => course.attachQuiz(first, '00000000-0000-4000-8000-000000009999')).toThrow(
+      DomainValidationError,
+    );
+    expect(() => course.attachQuiz(second, ids[0]!)).not.toThrow();
+    expect(() => course.reorderQuizzes(first, ids.slice(1))).toThrow(DomainValidationError);
+    course.reorderQuizzes(first, [...ids].reverse());
+    const snapshot = course.toSnapshot();
+    expect(Course.rehydrate(snapshot).chapters[0]!.quizRefs).toEqual([...ids].reverse());
+    expect(course.chapters[0]!.problemRefs).toEqual([]);
+    course.detachQuiz(first, ids[0]!);
+    expect(course.chapters[0]!.quizRefs).toHaveLength(49);
+    expect(course.chapters[1]!.quizRefs).toEqual([ids[0]]);
+  });
 });

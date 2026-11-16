@@ -38,7 +38,7 @@ export class PublishProblemUseCase implements IPublishProblemPortIn {
         throw new ProblemNotFoundError(id);
       }
 
-      this.authorization.requireManaged(principal, 'publish');
+      this.authorization.requireManaged(principal, 'publish', problem.createdBy.value);
       problem.attachTestSuiteSummary(await this.repository.loadTestSuiteSummary(id));
 
       const expectedUpdatedAt = problem.updatedAt;

@@ -16,3 +16,9 @@ export * from './republish-course.use-case';
 export * from './restore-course.use-case';
 export * from './update-chapter.use-case';
 export * from './update-course.use-case';
+
+export * from './attach-quiz.use-case';
+
+export * from './detach-quiz.use-case';
+
+export * from './reorder-chapter-quizzes.use-case';

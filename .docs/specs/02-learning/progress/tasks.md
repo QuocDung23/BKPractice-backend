@@ -74,3 +74,20 @@ các mục N/A dưới đây không phải việc còn chờ triển khai.
 ## Kết quả gate 2026-11-07
 
 9 suite/69 test Progress qua với PostgreSQL và RabbitMQ thật. Build cả sáu service qua; ESLint/Prettier riêng phần thay đổi qua. Test toàn repo: 135 suite/1.056 test qua, 16 suite/118 test skip; một suite Identity lỗi vì `officialName` không còn trong kiểu hiện hành. `pnpm lint` và `pnpm typecheck` toàn repo cũng còn đúng lỗi baseline Identity này. Các mục gate ở trên xác nhận đã chạy và ghi nhận kết quả, không có nghĩa toàn repo đã xanh; spec giữ trạng thái Approved.
+
+## Amendment Learning Item — 2026-11-12
+
+- [x] **LRN-006-T036 — Contract Progress 1.1.** Định nghĩa Problem/Quiz là Learning Item ngang trọng
+      số; response Course dùng `completed`, `completedItems` và loại item.
+- [x] **LRN-006-T037 — Projection Course content.** `CourseStructureReader` đọc Problem và Quiz
+      PUBLISHED chưa xoá; giữ Chapter rỗng; không import write repository module khác.
+- [x] **LRN-006-T038 — Quiz completion reader.** Đọc pass đầu tiên từ `quiz_attempts` theo user + Quiz;
+      fail sau và đổi revision không thu hồi completion; không thêm bảng/migration.
+- [x] **LRN-006-T039 — Tính Learning Item.** Domain calculator và use case hợp nhất Problem solved +
+      Quiz passed, chỉ tính item đang hiển thị.
+- [x] **LRN-006-T040 — Regression.** Unit cho Problem-only/Quiz-only/mixed; fixture PostgreSQL cho
+      hold/delete/detach/republish/revision và fail sau pass. Suite PostgreSQL skip khi thiếu URL test.
+- [x] **LRN-006-T041 — Verify/bàn giao.** Unit liên quan 55/55 và HTTP Course 39/39 qua, ESLint phần đổi qua,
+      `build:learning` qua; typecheck chỉ còn baseline Identity `officialName`; worked entry được ghi.
+- [x] **LRN-006-T042 — Tích hợp report sau rebase.** Course report dùng cùng projection Problem/Quiz
+      và tính Quiz hoàn thành từ attempt `FINISHED` có `passed=true`; typecheck/build và regression qua.

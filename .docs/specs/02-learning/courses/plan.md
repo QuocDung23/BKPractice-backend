@@ -27,15 +27,15 @@ Approved
 Được chủ sở hữu sản phẩm phê duyệt ngày `2026-09-30` (phê duyệt gộp: chủ sở hữu duyệt trước các
 phương án đề xuất trong kế hoạch này).
 
-Kế hoạch này bám theo phiên bản `1.0` (Approved) của đặc tả LRN-003. Nó là tài liệu thiết kế, không
+Kế hoạch này bám theo phiên bản `1.1` (Approved) của đặc tả LRN-003. Nó là tài liệu thiết kế, không
 triển khai code và không thay đổi đặc tả.
 
 ## Đặc tả liên quan
 
 - [LRN-003 Quản lý Course](./spec.md)
 - Trạng thái: `Approved`
-- Phiên bản: `1.0`
-- Ngày phê duyệt: `2026-09-30`
+- Phiên bản: `1.1`
+- Ngày phê duyệt amendment: `2026-11-12`
 
 Kế hoạch không thêm hành vi, trạng thái hay giới hạn nào ngoài đặc tả.
 
@@ -128,8 +128,9 @@ Bước chuyển bị cấm trả `InvalidCourseState` và không đổi state.
 
 ### Domain service `CourseReadiness`
 
-Đầu vào: aggregate + tập trạng thái hiện tại của các Problem được tham chiếu (lấy qua port).
-Lỗi có thể trả: `TITLE_REQUIRED`, `CHAPTER_REQUIRED`, `PUBLISHED_PROBLEM_REQUIRED`. Dùng bởi publish,
+Đầu vào: aggregate + tập `LearningItemState` hiện tại của các Problem/Quiz được tham chiếu (lấy qua
+hai catalog port và hợp nhất ở application).
+Lỗi có thể trả: `TITLE_REQUIRED`, `CHAPTER_REQUIRED`, `PUBLISHED_CONTENT_REQUIRED`. Dùng bởi publish,
 republish, phần mức độ sẵn sàng ở phía quản lý, và kiểm tra "giữ điều kiện xuất bản" khi sửa Course
 `PUBLISHED` (FR-008, FR-019).
 
@@ -153,7 +154,8 @@ dòng `courses`), kiểm quyền và sở hữu qua `CourseAuthorization`, rồi
 | `RemoveChapter`          | `course:update`       | Gỡ Chapter và tham chiếu của nó; nếu `PUBLISHED` thì kiểm readiness  | FR-005, FR-019; AC-019         |
 | `ReorderChapters`        | `course:update`       | Tập ID phải trùng đúng tập hiện có                                   | FR-005; AC-009                 |
 | `AttachProblem`          | `course:update`       | `ProblemAttachPolicy`; kiểm trùng trong Course; kiểm ≤ 50            | FR-006; AC-008, AC-018, AC-020 |
-| `DetachProblem`          | `course:update`       | Nếu `PUBLISHED` thì kiểm readiness                                   | FR-006, FR-019; AC-019         |
+| `DetachProblem`          | `course:update`       | Nếu `PUBLISHED` thì kiểm readiness Problem + Quiz                    | FR-006, FR-019; AC-019/022     |
+| `DetachQuiz`             | `course:update`       | Nếu `PUBLISHED` thì kiểm readiness Problem + Quiz                    | FR-019/020; AC-021–023         |
 | `ReorderChapterProblems` | `course:update`       | Tập ID phải trùng đúng tập hiện có trong Chapter                     | FR-006; AC-009                 |
 | `PublishCourse`          | `course:publish`      | `DRAFT` → `PUBLISHED`                                                | FR-008; AC-006, AC-007         |
 | `HoldCourse`             | `course:hold`         | `PUBLISHED` → `ON_HOLD`                                              | FR-007                         |
@@ -175,11 +177,24 @@ principal.userId`. `ADMIN` không có ngoại lệ.
 | `CourseRepository`       | Nạp/lưu aggregate; `loadForUpdate`; tìm theo slug/id; liệt kê đã xuất bản; liệt kê của chủ sở hữu                     | TypeORM (`courses`, `chapters`, `chapter_problems`) |
 | `CourseReferenceChecker` | Có Class hay Assignment nào tham chiếu Course không                                                                   | TypeORM (`classes`, `assignments`)                  |
 | `ProblemReferenceReader` | Đọc `id`, `slug`, `title`, `problemType`, `difficulty`, `publishStatus`, `deletedAt`, `createdBy` của một tập Problem | Provider do module `problems` export                |
+| `CourseQuizCatalog`      | Đọc metadata/trạng thái Quiz theo ID, không đọc đáp án hay repository ghi                                             | Adapter qua `QuizReferenceReader`                   |
 | `TransactionRunner`      | (LRN-001)                                                                                                             | `DataSource`                                        |
 
 `ProblemReferenceReader` là API công khai duy nhất của module `problems` mà `courses` dùng; nó chỉ
 đọc và không trả Test Case, harness hay nội dung đề. Principal tin cậy không phải port: controller
 dùng `@TrustedPrincipal()`/`TrustedPrincipalGuard` của LRN-001 và truyền `Principal` vào use case.
+
+### Amendment Course content 1.1
+
+- `LearningItemState` là projection domain nhỏ `{ id, type, status, isDeleted }`; không phải entity
+  mới và không tạo bảng.
+- `CoursePublishReadinessService` đọc đồng thời `CourseProblemCatalog` và `CourseQuizCatalog`, hợp
+  nhất state rồi gọi domain `CourseReadiness`.
+- Course Problem-only, Quiz-only và mixed đều publish được khi còn ít nhất một item khả dụng.
+- Detach Problem/Quiz và remove Chapter trên Course `PUBLISHED` phải giữ ít nhất một item khả dụng.
+- Quiz hold/delete sau khi Course publish bị ẩn như Problem hold/delete; Course không tự đổi trạng
+  thái. Republish Course luôn kiểm lại trạng thái hiện tại.
+- Không gộp hai thứ tự Problem/Quiz và không migration schema trong amendment này.
 
 ## Lưu trữ
 

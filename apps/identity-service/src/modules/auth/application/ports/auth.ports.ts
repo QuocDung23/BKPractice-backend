@@ -1,9 +1,15 @@
 import type { BkAccessClaims, BkRefreshClaims } from '@app/contracts';
 
-import type { AuthAccount, LocalAuthAccount, MicrosoftIdentity } from '@/modules/auth/domain';
+import type {
+  AuthAccount,
+  LocalAuthAccount,
+  LoginLookup,
+  MicrosoftIdentity,
+} from '@/modules/auth/domain';
 
 export interface AuthAccountRepository {
   findByIdentifier(identifier: string): Promise<LocalAuthAccount | null>;
+  findForLogin(identifier: string): Promise<LoginLookup>;
   findById(userId: string): Promise<AuthAccount | null>;
 }
 

@@ -15,6 +15,7 @@ import {
 import { Profile } from '@/modules/profiles/infrastructure/persistence';
 import { Role } from '@/modules/rbac/infrastructure/persistence';
 import { AccountStatus, User } from '@/modules/users/infrastructure/persistence';
+import { writeAdminAudit } from '@/modules/users/infrastructure/persistence/admin-audit';
 
 @Injectable()
 export class TypeormAccountImportRepository implements AccountImportRepository {
@@ -30,7 +31,7 @@ export class TypeormAccountImportRepository implements AccountImportRepository {
     }
   }
 
-  async createAll(rows: PreparedImportAccount[]): Promise<void> {
+  async createAll(rows: PreparedImportAccount[], actorId: string): Promise<void> {
     try {
       await this.database.transaction(async (manager) => {
         const roles = await this.loadRoles(manager, rows);
@@ -61,6 +62,16 @@ export class TypeormAccountImportRepository implements AccountImportRepository {
             role_id: roles.get(rows[index]!.role)!,
           })),
         );
+        for (let index = 0; index < users.length; index++) {
+          await writeAdminAudit(manager, {
+            actorId,
+            targetId: users[index]!.id,
+            action: 'IMPORT',
+            reason: 'Excel account import',
+            beforeState: null,
+            afterState: { status: 'ACTIVE', roles: [rows[index]!.role], deletedAt: null },
+          });
+        }
       });
     } catch (error) {
       if (error instanceof AccountImportFailure) throw error;

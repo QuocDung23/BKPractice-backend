@@ -45,7 +45,7 @@ services:
     image: redis:7.4-alpine
     command: [redis-server, --appendonly, 'no', --save, '']
     ports:
-      - '${REDIS_PORT:-6379}:6379'
+      - '${REDIS_BIND_IP:-127.0.0.1}:${REDIS_PORT:-6379}:6379'
     healthcheck:
       test: [CMD, redis-cli, ping]
       interval: 5s
@@ -94,7 +94,10 @@ services:
     <<: *app
     command: [pnpm, start:learning]
     environment:
+      IDENTITY_SERVICE_URL: http://identity-service:3001
       LEARNING_DATABASE_URL: postgresql://${POSTGRES_USER:-bkpractice}:${POSTGRES_PASSWORD}@postgres:5432/bkpractice_learning
+      IDENTITY_SERVICE_URL: http://identity-service:3001
+      SUBMISSION_SERVICE_URL: http://submission-service:3003
       RABBITMQ_URL: amqp://${RABBITMQ_USER:-bkpractice}:${RABBITMQ_PASSWORD}@rabbitmq:5672
       HEALTH_PORT: 3002
     ports: ['3002:3002']

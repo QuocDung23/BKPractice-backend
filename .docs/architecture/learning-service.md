@@ -14,7 +14,11 @@ DDD names how that model is built; Hexagonal names how it is kept free of framew
 Problem/TestCase, Course, Progress and Recommendation stay inside this one
 bounded context. They must not be split into a Problem Service or Recommendation Service.
 
-LRN-008 (2026-11-07) chuyển Learning sang tự học: `ADMIN` quản lý nội dung, mọi `ADMIN` có thể quản lý nội dung của nhau; Class, Enrollment và Assignment không còn thuộc sản phẩm Learning.
+LRN-009 1.3 (Approved 2026-11-11) bổ sung Quiz/ngân hàng trong cùng Learning, LECTURER quản lý nội dung mình tạo và ADMIN quản lý mọi nội dung. Chính sách này thay ADMIN-only của LRN-008.
+
+Lịch sử LRN-008 (2026-11-07) chuyển Learning sang tự học: `ADMIN` quản lý nội dung, mọi `ADMIN` có thể quản lý nội dung của nhau; Class, Enrollment và Assignment không còn thuộc sản phẩm Learning.
+
+LRN-009 theo SRS v3 (2026-11-08) phục hồi quyền quản lý nội dung cho `LECTURER` trên nội dung họ tạo, giữ `ADMIN` quản lý tất cả, và thêm báo cáo Course cho Giảng viên. Class, Enrollment và Assignment vẫn không thuộc sản phẩm; Quiz tạm giữ. Learning đọc roster và số lượt nộp qua port/HTTP nội bộ, không truy cập DB Identity hoặc Submission.
 
 ## The hexagon
 

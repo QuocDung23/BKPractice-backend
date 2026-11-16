@@ -1,0 +1,25 @@
+# Add this as the second Compose file after /srv/bkpractice/compose.yml.
+# The three API services remain reachable only through host loopback.
+services:
+  identity-service:
+    ports:
+      - '127.0.0.1:3101:3001'
+
+  learning-service:
+    ports:
+      - '127.0.0.1:3102:3002'
+
+  submission-service:
+    ports:
+      - '127.0.0.1:3103:3003'
+
+  swagger-ui:
+    image: swaggerapi/swagger-ui:v5.34.1
+    restart: unless-stopped
+    environment:
+      BASE_URL: /docs
+    ports:
+      - '127.0.0.1:3105:8080'
+    volumes:
+      - /srv/bkpractice/swagger/swagger-initializer.js:/opt/bkpractice/swagger-initializer.js:ro
+      - /srv/bkpractice/swagger/99-install-initializer.sh:/docker-entrypoint.d/99-install-initializer.sh:ro

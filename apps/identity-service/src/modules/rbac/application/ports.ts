@@ -10,10 +10,19 @@ export interface IdentityAccountContext {
 }
 
 export interface RbacRepository extends IdentityAccountContext {
+  lockUser(userId: string): Promise<void>;
   assignRole(userId: string, role: RoleName): Promise<void>;
   revokeRole(userId: string, role: RoleName): Promise<void>;
   lockAdminRole(): Promise<void>;
   countAdmins(): Promise<number>;
+  recordRoleAudit(input: {
+    actorId: string;
+    targetId: string;
+    action: 'ASSIGN_ROLE' | 'REVOKE_ROLE';
+    reason: string;
+    before: RoleName[];
+    after: RoleName[];
+  }): Promise<void>;
 }
 
 export interface TransactionRunner {
