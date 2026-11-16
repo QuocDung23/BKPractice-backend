@@ -2,6 +2,8 @@ import type { JudgeRequest, JudgeResult, JudgeStatus } from '@app/contracts';
 import { normalizeJudgeOutput } from '@app/shared';
 import { Inject, Injectable } from '@nestjs/common';
 
+import { SandboxUnavailableError } from './application/errors/sandbox-unavailable.error';
+import { UnsupportedLanguageError } from './application/errors/unsupported-language.error';
 import { SANDBOX_PORT } from './application/ports/out/sandbox.port';
 import type {
   SandboxOutcome,
@@ -112,7 +114,11 @@ export class JudgeEngine {
         submissionId: request.submissionId,
         mode: request.mode,
         status: 'INTERNAL_ERROR',
-        stderr: error instanceof Error ? error.message : 'Unknown judge error',
+        // Only errors with fixed, host-free messages may reach the result (JDG-002-FR-011).
+        stderr:
+          error instanceof SandboxUnavailableError || error instanceof UnsupportedLanguageError
+            ? error.message
+            : 'Judge internal error',
       };
     } finally {
       if (workspace) await this.sandbox.disposeWorkspace(workspace);

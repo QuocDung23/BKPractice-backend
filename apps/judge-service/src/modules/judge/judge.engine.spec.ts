@@ -3,6 +3,7 @@ import type { JudgeRequest } from '@app/contracts';
 import { SandboxUnavailableError } from './application/errors/sandbox-unavailable.error';
 import type {
   SandboxExecution,
+  SandboxFile,
   SandboxOutcome,
   SandboxPort,
   SandboxWorkspace,
@@ -39,9 +40,11 @@ const outcome = (overrides: Partial<SandboxOutcome> = {}): SandboxOutcome => ({
 
 class FakeSandbox implements SandboxPort {
   readonly executions: SandboxExecution[] = [];
+  readonly workspaces: (readonly SandboxFile[])[] = [];
   disposed = 0;
   constructor(private readonly next: (stage: string) => Promise<SandboxOutcome>) {}
-  createWorkspace(executionId: string): Promise<SandboxWorkspace> {
+  createWorkspace(executionId: string, files: readonly SandboxFile[]): Promise<SandboxWorkspace> {
+    this.workspaces.push(files);
     return Promise.resolve({ executionId });
   }
   execute(_workspace: SandboxWorkspace, execution: SandboxExecution): Promise<SandboxOutcome> {
@@ -106,5 +109,58 @@ describe('JudgeEngine sandbox outcomes', () => {
     const { sandbox, result } = judgeWith(() => Promise.resolve(outcome()));
     await expect(result).resolves.toMatchObject({ status: 'ACCEPTED', score: 10 });
     expect(sandbox.disposed).toBe(1);
+  });
+});
+
+describe('JudgeEngine runner trust boundary (JDG-002)', () => {
+  it('never creates a workspace or container for an unapproved language', async () => {
+    const { sandbox, result } = judgeWith(() => Promise.resolve(outcome()), {
+      ...request,
+      language: 'ruby; docker run evil' as JudgeRequest['language'],
+    });
+    await expect(result).resolves.toMatchObject({
+      status: 'INTERNAL_ERROR',
+      stderr: 'Unsupported language',
+    });
+    expect(sandbox.workspaces).toHaveLength(0);
+    expect(sandbox.executions).toHaveLength(0);
+  });
+
+  it('keeps filename, image and argv fixed whatever the source and stdin contain', async () => {
+    const hostile = '"; rm -rf / #$(id) `id` -o /etc/passwd ../../x\n--image=evil';
+    const { sandbox, result } = judgeWith(() => Promise.resolve(outcome()), {
+      ...request,
+      language: 'cpp',
+      sourceCode: hostile,
+      testCases: [{ stdin: hostile, expectedOutput: '1' }],
+    });
+    await result;
+    expect(sandbox.workspaces).toEqual([[{ name: 'main.cpp', content: hostile }]]);
+    expect(sandbox.executions.map(({ image, command }) => ({ image, command }))).toEqual([
+      {
+        image: 'bkpractice-judge-cpp:latest',
+        command: ['g++', '-std=c++20', '-O2', '-pipe', 'main.cpp', '-o', 'main'],
+      },
+      { image: 'bkpractice-judge-cpp:latest', command: ['./main'] },
+    ]);
+    expect(sandbox.executions[0]?.stdin).toBe('');
+  });
+
+  it('runs the Python syntax check before execution and reports COMPILE_ERROR', async () => {
+    const { sandbox, result } = judgeWith(() =>
+      Promise.resolve(outcome({ exitCode: 1, stderr: 'SyntaxError: invalid syntax' })),
+    );
+    await expect(result).resolves.toMatchObject({ status: 'COMPILE_ERROR' });
+    expect(sandbox.executions.map((execution) => execution.stage)).toEqual(['compile']);
+  });
+
+  it('does not leak an unexpected error message into the result', async () => {
+    const { result } = judgeWith(() =>
+      Promise.reject(new Error("ENOENT: open '/var/lib/judge/workspaces/exec-1/main.py'")),
+    );
+    await expect(result).resolves.toMatchObject({
+      status: 'INTERNAL_ERROR',
+      stderr: 'Judge internal error',
+    });
   });
 });

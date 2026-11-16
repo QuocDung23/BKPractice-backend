@@ -1,4 +1,5 @@
 import type { SupportedLanguage } from '@app/contracts';
+import { UnsupportedLanguageError } from '@judge/modules/judge/application/errors/unsupported-language.error';
 import { Injectable } from '@nestjs/common';
 
 import { CRunner } from './c.runner';
@@ -17,7 +18,7 @@ export class RunnerRegistry {
 
   get(language: SupportedLanguage): LanguageRunner {
     const runner = this.runners.get(language);
-    if (!runner) throw new Error(`Unsupported language: ${language}`);
+    if (!runner) throw new UnsupportedLanguageError();
     return runner;
   }
 }
