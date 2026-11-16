@@ -155,6 +155,29 @@ describe('Submission realtime isolation and connection lifecycle', () => {
     expect(owner.emit).toHaveBeenCalledWith('submission.result', notification);
     expect(other.emit).not.toHaveBeenCalled();
   });
+
+  it('delivers one notification to every open session of the same learner', async () => {
+    const sessions = [
+      createClient({ token: await token() }),
+      createClient({ token: await token() }),
+    ];
+    const other = createClient({ token: await token('other') });
+    for (const client of [...sessions, other])
+      await gateway.handleConnection(client as unknown as Socket);
+    const notification = {
+      submissionId: 'id',
+      kind: 'RUN',
+      status: 'EXECUTED',
+      ready: true,
+    } as const;
+    receive({ userId: 'owner', notification });
+    await jest.advanceTimersByTimeAsync(0);
+    for (const client of sessions) {
+      expect(client.emit).toHaveBeenCalledTimes(1);
+      expect(client.emit).toHaveBeenCalledWith('submission.result', notification);
+    }
+    expect(other.emit).not.toHaveBeenCalled();
+  });
   it('closes at expiry even without a result and releases its lease', async () => {
     const client = createClient({ token: await token('owner', 1) });
     await gateway.handleConnection(client as unknown as Socket);

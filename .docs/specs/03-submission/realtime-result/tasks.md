@@ -158,8 +158,9 @@ thực tế; tích một mục nghĩa là mục đó đã hoàn thành và đã 
 - [x] Kiểm thử mở kênh thiếu hoặc sai token → không có kênh nào được thiết lập.
 - [x] Kiểm thử giao lại cùng một kết quả → không có thông báo thứ hai.
 - [ ] Kiểm thử kết nối gián đoạn rồi mở lại → không mất kết quả phát sinh trong lúc gián đoạn.
-- [ ] Kiểm thử nhiều phiên cùng một người học → mọi phiên đều có thể nhận; không phiên nào của người
+- [x] Kiểm thử nhiều phiên cùng một người học → mọi phiên đều có thể nhận; không phiên nào của người
       khác.
+      `submission-realtime.gateway.spec.ts`: hai phiên cùng người học đều nhận (2026-11-16).
 - [ ] Kiểm thử không nhận thông báo nào → client không kết luận bản ghi chưa xong.
 - [x] Kiểm thử bản ghi `INTERNAL_ERROR` → thông báo nêu trạng thái lỗi hệ thống, không phải phán quyết
       lời giải.
