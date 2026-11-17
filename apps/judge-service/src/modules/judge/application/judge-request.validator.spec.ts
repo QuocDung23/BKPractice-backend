@@ -66,8 +66,15 @@ describe('validateJudgeRequest', () => {
     ['non-numeric memory limit', { memoryLimitMb: '128' }],
     ['infinite time limit', { timeLimitMs: Number.POSITIVE_INFINITY }],
     ['non-string harness', { hiddenHarness: 7 }],
+    ['FUNCTION without a harness', { problemType: 'FUNCTION' }],
+    ['FUNCTION with a blank harness', { problemType: 'FUNCTION', hiddenHarness: '   ' }],
   ])('rejects %s but keeps the identifiers for correlation', (_name, override) => {
     expect(validateJudgeRequest({ ...submit, ...override })).toEqual({ kind: 'rejected', ...ids });
+  });
+
+  it('accepts a FUNCTION request that carries a harness', () => {
+    const request = { ...submit, problemType: 'FUNCTION', hiddenHarness: 'int main(){}' };
+    expect(validateJudgeRequest(request)).toMatchObject({ kind: 'valid' });
   });
 
   it('accepts a Submit test case with score 0', () => {
