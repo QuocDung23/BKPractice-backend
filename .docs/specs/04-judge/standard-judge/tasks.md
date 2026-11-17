@@ -1,11 +1,11 @@
 # JDG-001 Tasks Chấm bài chuẩn
 
-**Trạng thái:** Draft for review; chưa thực hiện. Phụ thuộc [spec Proposed v0.2](./spec.md), [plan draft](./plan.md), runner JDG-002 và sandbox JDG-005.
+**Trạng thái:** Chưa thực hiện. Phụ thuộc [spec Approved v1.0](./spec.md), [plan reviewed](./plan.md), runner JDG-002 và sandbox JDG-005.
 
 ## Cổng trước triển khai
 
-- [ ] Chốt stop/continue, scoring, comparator, Run status, output theo mode, runtime/memory, compile timeout, output-limit verdict, poison message và retry/DLQ; cập nhật spec/plan.
-- [ ] Đồng bộ các quyết định với SUB-001/SUB-002/SUB-003 và contract `JudgeRequest`/`JudgeResult`.
+- [x] Chốt stop/continue, scoring, comparator, Run status, output theo mode, runtime/memory, compile timeout, output-limit verdict, poison message và retry/DLQ — xong 2026-10-07 theo [REVIEW.md](../REVIEW.md) D-01…D-07; ghi vào FR/Quy tắc nghiệp vụ của spec.
+- [x] Đồng bộ các quyết định với SUB-001/SUB-002/SUB-003 (đã Approved) và contract `JudgeRequest`/`JudgeResult` — D-02 lấy theo SUB-001 mục "Vòng đời Run", D-04 theo SUB-002-FR-019 và SUB-003-FR-011; không mở rộng `JudgeStatus`.
 - [ ] Xác nhận spec Approved, plan được review, kiến trúc Judge và trạng thái worktree.
 
 ## Core và transport
@@ -37,29 +37,44 @@ Các mục dưới đây phân rã checklist trên thành đầu việc có th�
 
 ### A. Chốt contract và chuẩn bị
 
-- [ ] **JDG001-T01 — Đóng quyết định sản phẩm:** ghi kết luận cho D-01..D-07 trong spec/review; định nghĩa stop/continue, score, comparator, Run result, field theo mode, metric, timeout/output-limit và delivery policy.
-- [ ] **JDG001-T02 — So khớp contract liên dịch vụ:** đối chiếu `JudgeRequest`/`JudgeResult` với SUB-001/002/003 và LRN-002; ghi rõ field bắt buộc/tùy chọn, compatibility và owner của từng field.
-- [ ] **JDG001-T03 — Chốt data validation:** viết bảng validation theo mode/type, IDs, enum, giới hạn testcase và kích thước từ nguồn Approved; mọi reject path được xác định trước khi mở workspace.
+- [x] **JDG001-T01 — Đóng quyết định sản phẩm:** ghi kết luận cho D-01..D-07 trong spec/review; định nghĩa stop/continue, score, comparator, Run result, field theo mode, metric, timeout/output-limit và delivery policy.
+      Đã chốt tại spec v1.0, D-01…D-07.
+- [x] **JDG001-T02 — So khớp contract liên dịch vụ:** đối chiếu `JudgeRequest`/`JudgeResult` với SUB-001/002/003 và LRN-002; ghi rõ field bắt buộc/tùy chọn, compatibility và owner của từng field.
+      Đối chiếu `rabbit-judge-job.adapter.ts` (Submission) và `build-judge-package.use-case.ts` (Learning): Submit luôn có `expectedOutput` và `score`; Run gửi một testcase chỉ có `stdin` (2026-11-17).
+- [x] **JDG001-T03 — Chốt data validation:** viết bảng validation theo mode/type, IDs, enum, giới hạn testcase và kích thước từ nguồn Approved; mọi reject path được xác định trước khi mở workspace.
+      `judge-request.validator.ts` theo bảng Đầu vào của spec; `judge-request.validator.spec.ts` (2026-11-17).
 - [ ] **JDG001-T04 — Chốt delivery semantics:** quyết định poison payload, publish failure, redelivery, duplicate execution, stale result và ACK timing; kiểm tra không đổi semantics RabbitMQ dùng chung ngoài scope.
+      CHƯA XONG: JSON không parse được vẫn đi theo retry ≤3 rồi DLQ của `RabbitMqService` dùng chung (không chạy mã, không lặp vô hạn) thay vì log + ACK + bỏ như FR-024; sửa service dùng chung nằm ngoài phạm vi, chờ chủ repo quyết định.
 
 ### B. Pipeline và đánh giá
 
-- [ ] **JDG001-T05 — Tách transport khỏi use case:** consumer giải mã message, gọi operation core và quản lý delivery; không đặt scoring/comparator trong consumer.
-- [ ] **JDG001-T06 — Validate trước side effect:** kiểm tra ID/mode/type/language/source/testcases/harness/limits; chứng minh request invalid không tạo workspace/container.
-- [ ] **JDG001-T07 — Chọn runner và compile:** dùng registry whitelist, compile tối đa theo chính sách đã chốt, phân biệt source error với lỗi image/toolchain/harness; không lấy command/path từ payload.
-- [ ] **JDG001-T08 — Chạy testcase theo policy:** bảo toàn thứ tự testcase; áp stop/continue đã duyệt; phân loại timeout, memory, output-limit, exit và infrastructure outcome trước bước so output.
-- [ ] **JDG001-T09 — Comparator và verdict:** áp chuẩn hóa output đã duyệt; xác định verdict cho mismatch, compile/runtime/resource error và testcase rỗng theo spec.
-- [ ] **JDG001-T10 — Score và metrics:** tính `passedTests`, `totalTests`, score, runtime và memory theo policy; không dùng fallback/default ngoài spec; định nghĩa hành vi khi metric không khả dụng.
-- [ ] **JDG001-T11 — Dựng result:** giữ nguyên `executionId`, `submissionId`, `mode`; chỉ đưa field được phép theo RUN/SUBMIT; không để stdout/stderr phản chiếu hidden stdin hoặc diagnostics lộ source/host path.
-- [ ] **JDG001-T12 — Dọn tài nguyên:** gọi Sandbox cleanup trên success, compile failure, runtime failure, timeout và exception; đưa cleanup failure vào policy đã duyệt và không làm mất correlation IDs.
+- [x] **JDG001-T05 — Tách transport khỏi use case:** consumer giải mã message, gọi operation core và quản lý delivery; không đặt scoring/comparator trong consumer.
+      `ProcessJudgeRequestUseCase`; `judge.consumer.ts` chỉ còn transport (2026-11-17).
+- [x] **JDG001-T06 — Validate trước side effect:** kiểm tra ID/mode/type/language/source/testcases/harness/limits; chứng minh request invalid không tạo workspace/container.
+      `process-judge-request.use-case.spec.ts`: request sai không gọi pipeline; `judge.engine.spec.ts`: không tạo workspace (2026-11-17).
+- [x] **JDG001-T07 — Chọn runner và compile:** dùng registry whitelist, compile tối đa theo chính sách đã chốt, phân biệt source error với lỗi image/toolchain/harness; không lấy command/path từ payload.
+      Kế thừa JDG-002; `judge.engine.spec.ts` › runner trust boundary.
+- [x] **JDG001-T08 — Chạy testcase theo policy:** bảo toàn thứ tự testcase; áp stop/continue đã duyệt; phân loại timeout, memory, output-limit, exit và infrastructure outcome trước bước so output.
+      `judge.engine.spec.ts`: thứ tự stage, dừng ở testcase sai đầu tiên, OOM/exit/timeout trước comparator (2026-11-17).
+- [x] **JDG001-T09 — Comparator và verdict:** áp chuẩn hóa output đã duyệt; xác định verdict cho mismatch, compile/runtime/resource error và testcase rỗng theo spec.
+      Comparator `normalizeJudgeOutput` (`@app/shared`) giữ nguyên theo D-03; bộ test rỗng → `INTERNAL_ERROR` (2026-11-17).
+- [x] **JDG001-T10 — Score và metrics:** tính `passedTests`, `totalTests`, score, runtime và memory theo policy; không dùng fallback/default ngoài spec; định nghĩa hành vi khi metric không khả dụng.
+      Bỏ `score || 100`; `runtimeMs` chỉ cộng execute; không gửi `memoryKb` (2026-11-17).
+- [x] **JDG001-T11 — Dựng result:** giữ nguyên `executionId`, `submissionId`, `mode`; chỉ đưa field được phép theo RUN/SUBMIT; không để stdout/stderr phản chiếu hidden stdin hoặc diagnostics lộ source/host path.
+      `judge.engine.spec.ts`: giữ ID/mode, không lộ source/stdin/expected, lọc `/workspace/` khỏi diagnostics (2026-11-17).
+- [x] **JDG001-T12 — Dọn tài nguyên:** gọi Sandbox cleanup trên success, compile failure, runtime failure, timeout và exception; đưa cleanup failure vào policy đã duyệt và không làm mất correlation IDs.
+      `finally` trong `JudgeEngine.judge`; kiểm thử dispose ở đường thành công và lỗi hạ tầng; cleanup lỗi do adapter log theo JDG-005.
 
 ### C. Messaging, bảo mật và kiểm chứng
 
 - [ ] **JDG001-T13 — Publish và ACK:** publish đúng routing key/message ID; ACK chỉ theo publisher confirm và delivery policy đã chốt; kiểm chứng broker failure và redelivery.
+      Một phần: `judge.consumer.spec.ts` kiểm routing key, message ID và publish lỗi → handler reject; chưa kiểm với broker thật.
 - [ ] **JDG001-T14 — Tính idempotent ở biên:** chạy lại cùng execution theo delivery semantics; kiểm chứng Submission có thể nhận duplicate/stale result theo contract mà không phát sinh kết quả sai.
-- [ ] **JDG001-T15 — Unit tests pipeline:** cover validation, stage order, comparator, stop/continue, precedence verdict, scoring/counts/metrics và result filtering, gắn assertion với FR tương ứng.
+- [x] **JDG001-T15 — Unit tests pipeline:** cover validation, stage order, comparator, stop/continue, precedence verdict, scoring/counts/metrics và result filtering, gắn assertion với FR tương ứng.
+      `judge.engine.spec.ts`, `judge-request.validator.spec.ts`, `process-judge-request.use-case.spec.ts` (2026-11-17).
 - [ ] **JDG001-T16 — Integration/contract tests:** cover consumer→core→Sandbox/runner→publisher, IDs/mode, publish confirm/ACK, malformed payload, retry/DLQ và compatibility Submission.
-- [ ] **JDG001-T17 — Security regression:** kiểm tra hidden stdin/output/harness/source không xuất hiện trong result/log; kiểm tra source/stdin không thể thành command/path.
+- [x] **JDG001-T17 — Security regression:** kiểm tra hidden stdin/output/harness/source không xuất hiện trong result/log; kiểm tra source/stdin không thể thành command/path.
+      Result: `judge.engine.spec.ts` (AC-006); log: `judge.consumer.spec.ts` không ghi payload; argv/path: kiểm thử JDG-002 (2026-11-17).
 - [ ] **JDG001-T18 — Traceability và hoàn tất:** đánh dấu từng FR/AC trong spec bằng test/evidence; cập nhật tasks, plan nếu lệch, worked entry và Definition of Done.
 
 ### Ma trận hoàn tất theo acceptance criteria

@@ -133,6 +133,8 @@ services:
       JUDGE_DOCKER_WORKSPACE_ROOT: ${PWD}/.judge-workspaces
       HEALTH_PORT: 3004
     ports: ['3004:3004']
+    # Worker runs as UID 1000 (node); grant the host docker.sock group so it can reach the daemon.
+    group_add: ['${DOCKER_GID:-999}']
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - ./.judge-workspaces:/tmp/bkpractice-judge

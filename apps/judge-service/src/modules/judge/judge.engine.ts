@@ -1,50 +1,68 @@
-import { chmod, mkdtemp, mkdir, rm, writeFile } from 'node:fs/promises';
-import { join, resolve } from 'node:path';
-
 import type { JudgeRequest, JudgeResult, JudgeStatus } from '@app/contracts';
 import { normalizeJudgeOutput } from '@app/shared';
-import { Injectable } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
+import { Inject, Injectable } from '@nestjs/common';
 
+import { HarnessFailureError } from './application/errors/harness-failure.error';
+import { SandboxUnavailableError } from './application/errors/sandbox-unavailable.error';
+import { UnsupportedLanguageError } from './application/errors/unsupported-language.error';
+import {
+  findCrashLine,
+  findFirstDiagnosticLine,
+  keepLearnerDiagnostics,
+  keepLearnerFrames,
+} from './application/harness-diagnostics';
+import { SANDBOX_PORT } from './application/ports/out/sandbox.port';
+import type {
+  SandboxOutcome,
+  SandboxPort,
+  SandboxWorkspace,
+} from './application/ports/out/sandbox.port';
 import { parseCompilerError } from './compiler-error.parser';
 import { RunnerRegistry } from './runners/runner.registry';
-import { DockerSandboxExecutor } from './sandbox/docker-sandbox.executor';
 
 @Injectable()
 export class JudgeEngine {
   constructor(
     private readonly runners: RunnerRegistry,
-    private readonly sandbox: DockerSandboxExecutor,
-    private readonly config: ConfigService,
+    @Inject(SANDBOX_PORT) private readonly sandbox: SandboxPort,
   ) {}
 
   async judge(request: JudgeRequest): Promise<JudgeResult> {
-    const root = resolve(this.config.getOrThrow<string>('JUDGE_WORKSPACE_ROOT'));
-    await mkdir(root, { recursive: true, mode: 0o700 });
-    const workspace = await mkdtemp(join(root, `${request.executionId}-`));
-    await chmod(workspace, 0o777);
+    let workspace: SandboxWorkspace | undefined;
     try {
       const runner = this.runners.get(request.language);
-      const source = request.hiddenHarness
-        ? `${request.sourceCode}\n\n${request.hiddenHarness}`
-        : request.sourceCode;
-      await writeFile(join(workspace, runner.sourceFile), source, {
-        encoding: 'utf8',
-        mode: 0o666,
-      });
+      // JDG-001-AC-008: an empty test set is never evidence of a correct solution.
+      if (request.testCases.length === 0) throw new Error('Empty test set');
+      // JDG-003-FR-013: one source file, harness after the learner's code. Lines up to
+      // `learnerLines` are the learner region; a harness is used only by FUNCTION/OOP.
+      const harness = request.problemType === 'STANDARD' ? undefined : request.hiddenHarness;
+      const learnerLines = harness ? request.sourceCode.split('\n').length : undefined;
+      const source = harness ? `${request.sourceCode}\n\n${harness}` : request.sourceCode;
+      workspace = await this.sandbox.createWorkspace(request.executionId, [
+        { name: runner.sourceFile, content: source },
+      ]);
 
       if (runner.compileCommand) {
-        const compilation = await this.sandbox.execute({
-          executionId: `${request.executionId}-compile`,
-          workspace,
+        const compilation = await this.sandbox.execute(workspace, {
+          stage: 'compile',
           image: runner.image,
           command: runner.compileCommand,
           stdin: '',
           timeoutMs: Math.max(request.timeLimitMs * 3, 10_000),
           memoryLimitMb: request.memoryLimitMb,
         });
-        if (compilation.exitCode !== 0) {
-          const output = `${compilation.stdout}${compilation.stderr}`;
+        if (compilation.exitCode !== 0 || compilation.timedOut) {
+          // JDG-001-FR-015: diagnostics must not carry the sandbox workspace path.
+          const raw = `${compilation.stdout}${compilation.stderr}`.replaceAll('/workspace/', '');
+          if (learnerLines !== undefined && !compilation.timedOut) {
+            // JDG-003-FR-007: a compile error located in the harness is a configuration failure.
+            if ((findFirstDiagnosticLine(raw, runner.sourceFile) ?? 0) > learnerLines)
+              throw new HarnessFailureError();
+          }
+          const output =
+            learnerLines === undefined
+              ? raw
+              : keepLearnerDiagnostics(raw, learnerLines, runner.sourceFile);
           return {
             executionId: request.executionId,
             submissionId: request.submissionId,
@@ -62,19 +80,31 @@ export class JudgeEngine {
       let lastStdout = '';
       let lastStderr = '';
       for (const testCase of request.testCases) {
-        const execution = await this.sandbox.execute({
-          executionId: `${request.executionId}-${passedTests}`,
-          workspace,
+        const execution = await this.sandbox.execute(workspace, {
+          stage: `test-${passedTests}`,
           image: runner.image,
           command: runner.executeCommand,
           stdin: testCase.stdin,
           timeoutMs: request.timeLimitMs,
           memoryLimitMb: request.memoryLimitMb,
         });
+        // The sandbox working directory is an internal detail; traces name the bare file.
+        const stderr = execution.stderr.replaceAll('/workspace/', '');
         totalRuntimeMs += execution.runtimeMs;
         lastStdout = execution.stdout;
-        lastStderr = execution.stderr;
+        // JDG-003-FR-004: harness frames and their echoed source never reach the result.
+        lastStderr =
+          learnerLines === undefined
+            ? stderr
+            : keepLearnerFrames(stderr, learnerLines, runner.sourceFile);
         const errorStatus = this.executionErrorStatus(execution);
+        // JDG-003-FR-008: a crash diagnosed inside the harness is not the learner's fault.
+        if (
+          errorStatus === 'RUNTIME_ERROR' &&
+          learnerLines !== undefined &&
+          (findCrashLine(stderr, runner.sourceFile) ?? 0) > learnerLines
+        )
+          throw new HarnessFailureError();
         if (errorStatus) {
           return this.result(
             request,
@@ -107,7 +137,7 @@ export class JudgeEngine {
         request,
         'ACCEPTED',
         passedTests,
-        score || 100,
+        score,
         totalRuntimeMs,
         lastStdout,
         lastStderr,
@@ -118,21 +148,24 @@ export class JudgeEngine {
         submissionId: request.submissionId,
         mode: request.mode,
         status: 'INTERNAL_ERROR',
-        stderr: error instanceof Error ? error.message : 'Unknown judge error',
+        // Only errors with fixed, host-free messages may reach the result (JDG-002-FR-011).
+        stderr:
+          error instanceof SandboxUnavailableError ||
+          error instanceof UnsupportedLanguageError ||
+          error instanceof HarnessFailureError
+            ? error.message
+            : 'Judge internal error',
       };
     } finally {
-      await rm(workspace, { recursive: true, force: true });
+      if (workspace) await this.sandbox.disposeWorkspace(workspace);
     }
   }
 
-  private executionErrorStatus(result: {
-    timedOut: boolean;
-    outputLimitExceeded: boolean;
-    exitCode: number;
-  }): JudgeStatus | undefined {
+  private executionErrorStatus(result: SandboxOutcome): JudgeStatus | undefined {
     if (result.timedOut) return 'TIME_LIMIT_EXCEEDED';
     if (result.outputLimitExceeded) return 'RUNTIME_ERROR';
-    if (result.exitCode === 137) return 'MEMORY_LIMIT_EXCEEDED';
+    // JDG-005-SR-022: only a runtime-reported OOM kill counts; a bare exit 137 does not.
+    if (result.oomKilled) return 'MEMORY_LIMIT_EXCEEDED';
     if (result.exitCode !== 0) return 'RUNTIME_ERROR';
     return undefined;
   }

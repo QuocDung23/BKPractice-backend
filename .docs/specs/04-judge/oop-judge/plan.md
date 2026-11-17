@@ -2,7 +2,9 @@
 
 ## Trạng thái và đặc tả liên quan
 
-**Draft for review.** [JDG-004 spec v0.2](./spec.md) còn `Proposed`; plan này chỉ để duyệt cùng spec/tasks. Class/method contract, cú pháp chuỗi thao tác trong stdin, multi-file layout, state giữa testcase và mapping lỗi phải được chốt trước Approved.
+**Reviewed.** [JDG-004 spec v1.0](./spec.md) đã `Approved` ngày 2026-10-07 theo
+[`REVIEW.md`](../REVIEW.md); contract scope, single-file layout và mapping lỗi (D-10) đã chốt, plan
+này là căn cứ triển khai.
 
 ## Service đích và kiến trúc bắt buộc
 

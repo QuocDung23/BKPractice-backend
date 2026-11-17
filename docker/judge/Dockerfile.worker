@@ -15,4 +15,6 @@ RUN apk add --no-cache docker-cli && corepack enable
 COPY --from=dependencies /workspace/node_modules ./node_modules
 COPY --from=builder /workspace/dist ./dist
 COPY package.json ./
+# JDG-005-SR-016: workspaces are owner-only, so the worker shares the sandbox UID 1000 (node).
+USER node
 CMD ["pnpm", "start:judge"]

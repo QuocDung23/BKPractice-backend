@@ -2,7 +2,7 @@
 
 ## Trạng thái
 
-Proposed — phiên bản 0.2, ngày 2026-09-30.
+Approved — phiên bản 1.0, ngày 2026-10-07.
 
 ## Mục tiêu
 
@@ -15,24 +15,29 @@ Judge khởi chạy compiler/runtime thông qua Sandbox boundary; Docker hiện 
 Sandbox nhận lệnh do runner tin cậy dựng và dữ liệu source/stdin. Request không được điều khiển
 command, image, filename hoặc Docker flags.
 
-### Baseline quan sát từ adapter hiện tại
+### Trần nền tảng đã duyệt
 
-| Control         | Giá trị/hành vi hiện tại                                                   | Nguồn                        |
-| --------------- | -------------------------------------------------------------------------- | ---------------------------- |
-| Network         | `none`                                                                     | `docker-sandbox.executor.ts` |
-| CPU             | 1 CPU                                                                      | `--cpus 1`                   |
-| Memory/swap     | Memory theo request; swap bằng memory limit                                | `--memory`, `--memory-swap`  |
-| PID             | 64                                                                         | `--pids-limit 64`            |
-| User/capability | UID:GID 1000:1000; drop ALL; no-new-privileges                             | Docker args                  |
-| Root/temp       | Root read-only; `/tmp` tmpfs 64 MiB, `noexec,nosuid`                       | Docker args                  |
-| Workspace       | Bind mount read-write; cùng workspace được dùng giữa compile và test       | Docker args/engine           |
-| Output          | stdout+stderr cộng dồn, ngưỡng từ config; khi vượt thì kill                | executor                     |
-| Timeout         | `timeLimitMs` cho execution; compile hiện dùng `max(3 * timeLimitMs, 10s)` | engine/executor              |
-| Cleanup         | Docker `--rm`; host workspace bị xóa ở finally                             | executor/engine              |
+Bảng dưới vừa là baseline của adapter vừa là trần nền tảng đã duyệt (quyết định D-11, 2026-10-07).
+Giá trị chỉ đổi qua quyết định bảo mật/kiến trúc riêng theo `.docs/specs/00-system/judge-security.md`.
 
-Đây chỉ là inventory để review. Tính đúng đắn, trần tối đa và quyền file thực tế cần đối chiếu các
-SR/AC dưới đây; đặc biệt, workspace hiện được tạo với quyền rộng và mount read-write, nên không được
-coi baseline đó là chuẩn an toàn nếu chưa qua security review.
+| Control         | Trần đã duyệt                                                                                        | Nguồn                        |
+| --------------- | ---------------------------------------------------------------------------------------------------- | ---------------------------- |
+| Network         | `none`                                                                                               | `docker-sandbox.executor.ts` |
+| CPU             | 1 CPU                                                                                                | `--cpus 1`                   |
+| Memory/swap     | Memory theo request; swap bằng memory limit                                                          | `--memory`, `--memory-swap`  |
+| PID             | 64                                                                                                   | `--pids-limit 64`            |
+| User/capability | UID:GID 1000:1000; drop ALL; no-new-privileges                                                       | Docker args                  |
+| Root/temp       | Root read-only; `/tmp` tmpfs 64 MiB, `noexec,nosuid`                                                 | Docker args                  |
+| Workspace       | Bind mount read-write, riêng theo request; compile artifact và mọi testcase trong request dùng chung | Docker args/engine           |
+| Output          | stdout+stderr cộng dồn, trần 1 MiB (`JUDGE_MAX_OUTPUT_BYTES`); vượt thì kill                         | executor                     |
+| Timeout         | `timeLimitMs` cho từng lần execute; compile `max(3 * timeLimitMs, 10s)`                              | engine/executor              |
+| Source          | `sourceCode` tối đa 1 MiB theo JDG-001/JDG-002                                                       | JDG-001                      |
+| Cleanup         | Docker `--rm`; host workspace bị xóa ở finally; cleanup fail → log + ACK                             | executor/engine              |
+
+Workspace read-write dùng chung giữa compile và các testcase trong cùng request được duyệt như hiện
+trạng; các testcase cùng một request có thể phụ thuộc file do nhau ghi. Việc nâng quyền file workspace
+lên đúng UID chạy container (bỏ world-writable) là yêu cầu bắt buộc tại SR-016 và phải sửa khi
+triển khai.
 
 ## Yêu cầu chức năng và bảo mật
 
@@ -40,16 +45,18 @@ coi baseline đó là chuẩn an toàn nếu chưa qua security review.
 - **JDG-005-SR-002 — Tài nguyên:** Mọi compile/run MUST áp CPU, memory và wall-clock timeout; memory
   swap MUST không cho phép vượt memory ceiling.
 - **JDG-005-SR-003 — Process:** Sandbox MUST giới hạn số process/PID.
-- **JDG-005-SR-004 — Output:** Stdout/stderr/compiler output MUST có giới hạn byte; vượt ngưỡng phải
-  dừng hoặc cắt theo chính sách được chốt và có kết quả phân loại xác định.
+- **JDG-005-SR-004 — Output:** Stdout/stderr/compiler output MUST có giới hạn byte (trần 1 MiB,
+  tính gộp stdout+stderr); vượt ngưỡng MUST dừng lần execute đang chạy và trả cờ output-limit để
+  JDG-001 phân loại `RUNTIME_ERROR` rồi dừng request.
 - **JDG-005-SR-005 — Privilege:** Container MUST chạy với đặc quyền tối thiểu, drop capabilities,
   bật no-new-privileges và MUST NOT chạy privileged.
 - **JDG-005-SR-006 — Filesystem:** Root filesystem MUST read-only khi có thể; writable temp phải
   giới hạn và không thực thi file tuỳ tiện ngoài workspace được cấp.
 - **JDG-005-SR-007 — Commands:** Executable, arguments nền tảng, filename và image MUST do adapter
   tin cậy kiểm soát; dữ liệu payload chỉ truyền qua file/stdin đã quy định.
-- **JDG-005-SR-008 — Workspace:** Mỗi execution MUST dùng workspace riêng, không chia sẻ state với
-  submission khác; quyền file không được cấp rộng hơn cần thiết.
+- **JDG-005-SR-008 — Workspace:** Mỗi request MUST dùng workspace riêng, không chia sẻ với request
+  khác; compile artifact và mọi testcase trong cùng request dùng chung workspace đó. Quyền file
+  workspace không được rộng hơn UID chạy container (xem SR-016).
 - **JDG-005-SR-009 — Cleanup:** Workspace và container MUST được dọn cả sau success, timeout, lỗi
   process và lỗi bất thường; cleanup failure phải được phát hiện/ghi nhận an toàn.
 - **JDG-005-SR-010 — Output capture:** Sandbox MUST thu stdout/stderr và compiler diagnostics trong
@@ -64,8 +71,10 @@ coi baseline đó là chuẩn an toàn nếu chưa qua security review.
 - **JDG-005-SR-014 — CPU quota:** Mỗi sandbox MUST có CPU quota hữu hạn do platform đặt; request
   không thể chọn/nới quota. Nếu đang dùng Docker, quota phải được truyền dưới dạng control cgroup
   tương đương `--cpus`.
-- **JDG-005-SR-015 — Disk quota:** Writable workspace và tmpfs MUST có giới hạn dung lượng; đầy
-  disk phải kết thúc execution có kiểm soát, không ảnh hưởng host hay workspace khác.
+- **JDG-005-SR-015 — Disk quota:** Writable temp MUST có giới hạn dung lượng (tmpfs `/tmp` 64 MiB).
+  Workspace bind mount không có quota riêng trong bản này; nó bị giới hạn gián tiếp bởi trần source
+  1 MiB, trần output và việc không cấp đường ghi ngoài workspace. Đầy disk MUST kết thúc execution
+  có kiểm soát, không ảnh hưởng host hay workspace khác.
 - **JDG-005-SR-016 — File permissions:** Workspace MUST chỉ cấp quyền cần thiết cho UID chạy
   container. Không dùng quyền world-writable nếu không có quyết định security được duyệt.
 - **JDG-005-SR-017 — Path isolation:** Mọi đường dẫn do source/harness tạo MUST bị giới hạn trong
@@ -133,29 +142,29 @@ security controls hiện hành.
 [Judge security](../../00-system/judge-security.md), [Judge architecture](../../../architecture/judge-service.md),
 [JDG-001](../standard-judge/spec.md), [JDG-002](../language-runners/spec.md), Docker sandbox adapter.
 
-## Câu hỏi mở
+## Quyết định khi duyệt
 
-1. Trần platform chính xác cho memory, wall timeout, workspace disk, tmpfs, source size và output
-   bytes là bao nhiêu? Baseline hiện tại là CPU 1 và PID 64; có giữ nguyên không?
-2. Timeout áp riêng compile, container startup, từng testcase hay toàn request? Compile hiện cấp
-   `max(3 * timeLimitMs, 10s)`; đây có phải product policy không?
-3. Khi output trần vượt: kill toàn request hay testcase; verdict hiện khả dụng `RUNTIME_ERROR` hay
-   cần thêm status contract?
-4. Compile artifacts có cần writable giữa compile và mỗi testcase không; executable có thể read-only
-   khi chạy không; chương trình được phép ghi file không? Hiện các testcase dùng chung writable
-   workspace, điều này có thể làm test phụ thuộc thứ tự.
-5. Docker host/workspace mapping, quota disk, file descriptors, ulimit và seccomp/apparmor profile
-   nào là chuẩn được hỗ trợ?
-6. Cần memory metric thực đo không; nếu có thì nguồn đo và độ chính xác tối thiểu là gì? Docker API
-   hiện không trả metric này trong `SandboxResult`.
-7. Cleanup failure xử lý ACK/result/retry/DLQ ra sao để không che mất kết quả hay để orphan container?
-8. Có yêu cầu chống giao trùng message bằng executionId và tránh tên container collision ra sao?
-9. Source và stdin có giới hạn byte độc lập nào? LRN-002 quy định testcase/harness, không đặt giới
-   hạn cho source của người học.
+Phiên bản này được duyệt ngày 2026-10-07 theo phiếu [`.docs/specs/04-judge/REVIEW.md`](../REVIEW.md):
+
+| Quyết định | Nội dung chốt                                                                                                                                                                                       |
+| ---------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| D-11.1     | Giữ trần nền tảng theo bảng trên: network `none`, CPU 1, PID 64, memory/memswap theo request, user 1000:1000, cap-drop ALL, no-new-privileges, root read-only, tmpfs `/tmp` 64 MiB `noexec,nosuid`. |
+| D-11.2     | Timeout áp cho từng lần execute (`timeLimitMs`) và cho compile (`max(3 × timeLimitMs, 10s)`); không có timeout tổng cho cả request.                                                                 |
+| D-11.3     | Vượt trần output: kill lần execute đó → `RUNTIME_ERROR` + dừng request (JDG-001); không thêm verdict contract mới.                                                                                  |
+| D-11.4     | Workspace read-write dùng chung theo request (chấp nhận phụ thuộc thứ tự trong request); workspace hai request khác nhau không đọc/ghi lẫn nhau.                                                    |
+| D-11.5     | Không thêm quota disk workspace, FD limit hay seccomp/apparmor profile trong bản này; tmpfs 64 MiB là quota ghi duy nhất.                                                                           |
+| D-11.6     | Không đo memory metric; `memoryKb` không được gửi (JDG-001-FR-012). `MEMORY_LIMIT_EXCEEDED` chỉ được kết luận khi có tín hiệu OOM đáng tin; exit 137 đơn lẻ chưa đủ (SR-022/AC-015).                |
+| D-07.1     | Cleanup failure: ghi log + ACK, không giữ result, không tính lại; container chạy mồ côi MUST bị kill/`--rm` dọn theo SR-009/SR-011.                                                                 |
+| D-07.2     | Chống trùng: container name sinh từ `executionId` đã sanitize; delivery trùng executionId không tính lại, Submission giữ kết quả đến trước (JDG-001).                                               |
+
+Lưu ý khi triển khai: code hiện tại ghi workspace quyền `0777/0666` và map exit `137` thành
+`MEMORY_LIMIT_EXCEEDED` — cả hai đều chưa khớp SR-016 và SR-022/AC-015 ở trên; đây là công việc phải
+sửa, không phải chuẩn đã duyệt.
 
 ## Lịch sử sửa đổi
 
-| Ngày       | Phiên bản | Tác giả/Người review | Tóm tắt                                                                |
-| ---------- | --------- | -------------------- | ---------------------------------------------------------------------- |
-| 2026-09-30 | 0.1       | Codex / chờ review   | SRS đề xuất                                                            |
-| 2026-09-30 | 0.2       | Codex / chờ review   | Thêm baseline Docker, disk/path/process controls và nghiệm thu đo được |
+| Ngày       | Phiên bản | Tác giả/Người review    | Tóm tắt                                                                                    |
+| ---------- | --------- | ----------------------- | ------------------------------------------------------------------------------------------ |
+| 2026-09-30 | 0.1       | Codex / chờ review      | SRS đề xuất                                                                                |
+| 2026-09-30 | 0.2       | Codex / chờ review      | Thêm baseline Docker, disk/path/process controls và nghiệm thu đo được                     |
+| 2026-10-07 | 1.0       | Codex / Chủ sở hữu repo | Duyệt: chốt trần nền tảng, timeout/output/workspace policy, cleanup/duplicate (D-11, D-07) |

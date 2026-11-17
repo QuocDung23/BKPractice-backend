@@ -2,7 +2,8 @@
 
 ## Trạng thái và đặc tả liên quan
 
-**Draft for review.** [JDG-003 spec v0.2](./spec.md) còn `Proposed`; plan này dành cho duyệt đồng thời, chưa có hiệu lực triển khai. Callable contract, source/harness layout và mapping lỗi harness phải được quyết định trong spec trước khi plan được review.
+**Reviewed.** [JDG-003 spec v1.0](./spec.md) đã `Approved` ngày 2026-10-07 theo
+[`REVIEW.md`](../REVIEW.md); các câu hỏi mở (D-09) đã chốt, plan này là căn cứ triển khai.
 
 ## Service đích và kiến trúc bắt buộc
 

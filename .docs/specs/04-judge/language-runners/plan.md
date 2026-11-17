@@ -2,7 +2,9 @@
 
 ## Trạng thái và đặc tả
 
-**Draft for review.** [JDG-002 spec v0.2](./spec.md) còn `Proposed`; soạn để người dùng duyệt đồng thời, chưa phải reviewed plan hay căn cứ triển khai. Cần chốt phiên bản toolchain, Java entrypoint, Python syntax check và source/diagnostic limits trước khi Approved.
+**Reviewed.** [JDG-002 spec v1.0](./spec.md) đã `Approved` ngày 2026-10-07 theo
+[`REVIEW.md`](../REVIEW.md); toolchain, entrypoint và limits đã chốt (D-08), plan này là căn cứ
+triển khai.
 
 ## Service và kiến trúc bắt buộc
 
