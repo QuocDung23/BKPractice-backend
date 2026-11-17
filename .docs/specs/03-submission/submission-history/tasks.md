@@ -68,7 +68,8 @@ $cursorId)`.
       (`1792515603000-AddSubmissionPublicIdAndIndex`, làm cùng SUB-001).
 - [x] Không xoá public ID khi rollback đã phát ID đó ra API; ghi quy trình dữ liệu riêng.
 - [x] Chạy `pnpm migration:run:submission` ngoài giờ cao điểm vì index được tạo trên bảng có dữ liệu.
-- [ ] Xác minh `EXPLAIN` dùng index mới cho truy vấn phân trang có con trỏ.
+- [x] Xác minh `EXPLAIN` dùng index mới cho truy vấn phân trang có con trỏ.
+      2026-11-16, 40.000 dòng/200 chủ sở hữu: `Index Only Scan using IDX_submissions_owner_created`, không có bước Sort; điều kiện con trỏ là Filter trên index.
 - [x] Xác minh `synchronize` vẫn tắt và migration `InitialSubmissionSchema` không bị sửa.
 
 ## API
@@ -111,10 +112,12 @@ $cursorId)`.
       bắt buộc ở adapter và bộ lọc phòng thủ ở use case).
 - [x] Kiểm thử danh sách gồm cả Run và Submit, mỗi bản ghi nêu rõ loại.
 - [x] Kiểm thử lọc theo loại và theo Problem, tập trả về vẫn giới hạn trong sở hữu.
-- [ ] Kiểm thử nhiều bản ghi trùng `created_at` → lật trang không lặp và không bỏ sót. Đã viết kiểm thử
+- [x] Kiểm thử nhiều bản ghi trùng `created_at` → lật trang không lặp và không bỏ sót. Đã viết kiểm thử
       tích hợp trong `typeorm-submission.repository.integration.spec.ts`; chưa chạy trên PostgreSQL thật.
-- [ ] Kiểm thử thêm bản ghi mới giữa lúc lật trang → bản ghi cũ không bị bỏ sót hay lặp lại. Đã viết
+      Đã chạy trên PostgreSQL 17 thật (container tạm, DB `submission_test`) ngày 2026-11-16: pass, lặp 5/5.
+- [x] Kiểm thử thêm bản ghi mới giữa lúc lật trang → bản ghi cũ không bị bỏ sót hay lặp lại. Đã viết
       trong cùng file tích hợp; chưa chạy trên PostgreSQL thật.
+      Đã chạy trên PostgreSQL 17 thật (container tạm, DB `submission_test`) ngày 2026-11-16: pass, lặp 5/5.
 - [x] Kiểm thử `cursor` thiếu `cursorId` hoặc ngược lại → `400`.
 - [x] Kiểm thử `limit` vượt tối đa → `400`, phản hồi giữ kích thước đã phê duyệt.
 - [x] Kiểm thử chi tiết có đủ nhóm trường "Chi tiết".
