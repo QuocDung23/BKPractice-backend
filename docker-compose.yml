@@ -96,7 +96,6 @@ services:
     environment:
       IDENTITY_SERVICE_URL: http://identity-service:3001
       LEARNING_DATABASE_URL: postgresql://${POSTGRES_USER:-bkpractice}:${POSTGRES_PASSWORD}@postgres:5432/bkpractice_learning
-      IDENTITY_SERVICE_URL: http://identity-service:3001
       SUBMISSION_SERVICE_URL: http://submission-service:3003
       RABBITMQ_URL: amqp://${RABBITMQ_USER:-bkpractice}:${RABBITMQ_PASSWORD}@rabbitmq:5672
       HEALTH_PORT: 3002
