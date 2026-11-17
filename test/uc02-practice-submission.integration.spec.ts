@@ -2,8 +2,9 @@ import { randomUUID } from 'node:crypto';
 import { createServer, type IncomingHttpHeaders, type Server } from 'node:http';
 import type { AddressInfo } from 'node:net';
 
+import { AllExceptionsFilter, createValidationPipe } from '@app/common';
 import { HttpModule } from '@nestjs/axios';
-import { type INestApplication, ValidationPipe } from '@nestjs/common';
+import { type INestApplication } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { JwtModule, JwtService } from '@nestjs/jwt';
 import { Test } from '@nestjs/testing';
@@ -295,7 +296,8 @@ databaseTests('UC02 practice API - Gateway, Submission and PostgreSQL', () => {
           provide: JudgeResultConsumer,
           useFactory: (repository: TypeormSubmissionRepository) =>
             new JudgeResultConsumer(
-              undefined as never,
+              // The broker is not part of this test; results are fed to handleResult directly.
+              { consume: () => Promise.resolve() } as never,
               new ApplyRunJudgeResultUseCase(repository, realtime),
               new ApplySubmitJudgeResultUseCase(repository, realtime),
             ),
@@ -316,9 +318,9 @@ databaseTests('UC02 practice API - Gateway, Submission and PostgreSQL', () => {
       ],
     }).compile();
     submissionApp = moduleRef.createNestApplication({ logger: false });
-    submissionApp.useGlobalPipes(
-      new ValidationPipe({ transform: true, whitelist: true, forbidNonWhitelisted: true }),
-    );
+    // Same pipe and filter as libs/common bootstrap, so errors use the shared envelope the Gateway expects.
+    submissionApp.useGlobalPipes(createValidationPipe());
+    submissionApp.useGlobalFilters(new AllExceptionsFilter());
     await submissionApp.listen(0, '127.0.0.1');
     submissionUrl = await submissionApp.getUrl();
     database = submissionApp.get(DataSource);
@@ -1160,7 +1162,11 @@ databaseTests('UC02 practice API - Gateway, Submission and PostgreSQL', () => {
       });
       expect(foreign.status).toBe(404);
       expect(missing.status).toBe(404);
-      expect(foreign.body).toEqual(missing.body);
+      // ERR-001 gives every response its own requestId; everything else must be identical.
+      expect({ ...foreign.body, requestId: undefined }).toEqual({
+        ...missing.body,
+        requestId: undefined,
+      });
     });
 
     it('[HIS-09] detail with a non-UUID-v4 id returns 400', async () => {
