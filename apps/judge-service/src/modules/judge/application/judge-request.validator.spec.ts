@@ -67,6 +67,8 @@ describe('validateJudgeRequest', () => {
     ['infinite time limit', { timeLimitMs: Number.POSITIVE_INFINITY }],
     ['non-string harness', { hiddenHarness: 7 }],
     ['FUNCTION without a harness', { problemType: 'FUNCTION' }],
+    ['OOP without a harness', { problemType: 'OOP' }],
+    ['OOP with an empty harness', { problemType: 'OOP', hiddenHarness: '' }],
     ['FUNCTION with a blank harness', { problemType: 'FUNCTION', hiddenHarness: '   ' }],
   ])('rejects %s but keeps the identifiers for correlation', (_name, override) => {
     expect(validateJudgeRequest({ ...submit, ...override })).toEqual({ kind: 'rejected', ...ids });

@@ -34,31 +34,50 @@ Task dưới đây phân rã FR/AC để review tiến độ. Contract OOP là d
 
 ### A. OOP contract và preparation
 
-- [ ] **JDG004-T01 — Chốt class contract:** định nghĩa class, constructor, method signatures, visibility, type mapping, package/module và entrypoint theo từng language.
-- [ ] **JDG004-T02 — Chốt testcase protocol:** định nghĩa cú pháp stdin cho chuỗi thao tác, biểu diễn arguments/return values/errors và stdout format chính xác.
-- [ ] **JDG004-T03 — Chốt file/state model:** quyết định multi-file contract, source/harness layout, process reuse và state giữa thao tác/testcase.
-- [ ] **JDG004-T04 — Chốt error mapping:** phân biệt lỗi compile user/harness, method/class không tồn tại, assertion, exception và lỗi configuration/toolchain.
-- [ ] **JDG004-T05 — Contract compatibility:** nếu cần field multi-file/metadata, phối hợp Learning/Submission sửa và version contract trước khi triển khai.
-- [ ] **JDG004-T06 — Validate request:** chỉ nhận `problemType=OOP`, language/testcases/limits hợp lệ và harness cần thiết; không fallback sang STANDARD/FUNCTION.
-- [ ] **JDG004-T07 — Tạo trusted layout:** file/class/package names được xác định bởi contract và adapter, không từ payload tự do; kiểm tra không ghi đè vùng ngoài workspace.
+- [x] **JDG004-T01 — Chốt class contract:** định nghĩa class, constructor, method signatures, visibility, type mapping, package/module và entrypoint theo từng language.
+      Đã chốt tại D-10.1: contract class do Learning sở hữu.
+- [x] **JDG004-T02 — Chốt testcase protocol:** định nghĩa cú pháp stdin cho chuỗi thao tác, biểu diễn arguments/return values/errors và stdout format chính xác.
+      Đã chốt tại D-10.1/FR-008: stdin nguyên văn, harness diễn giải chuỗi thao tác.
+- [x] **JDG004-T03 — Chốt file/state model:** quyết định multi-file contract, source/harness layout, process reuse và state giữa thao tác/testcase.
+      Đã chốt tại D-10.2/D-10.3: một file; mỗi testcase một container, không giữ state process.
+- [x] **JDG004-T04 — Chốt error mapping:** phân biệt lỗi compile user/harness, method/class không tồn tại, assertion, exception và lỗi configuration/toolchain.
+      Đã chốt tại D-10.4.
+- [x] **JDG004-T05 — Contract compatibility:** nếu cần field multi-file/metadata, phối hợp Learning/Submission sửa và version contract trước khi triển khai.
+      `JudgeRequest` không đổi; dùng chung cơ chế với JDG-003.
+- [x] **JDG004-T06 — Validate request:** chỉ nhận `problemType=OOP`, language/testcases/limits hợp lệ và harness cần thiết; không fallback sang STANDARD/FUNCTION.
+      `judge-request.validator.ts`: OOP thiếu/rỗng harness bị từ chối; `judge-request.validator.spec.ts` (2026-11-17).
+- [x] **JDG004-T07 — Tạo trusted layout:** file/class/package names được xác định bởi contract và adapter, không từ payload tự do; kiểm tra không ghi đè vùng ngoài workspace.
+      `judge.engine.spec.ts` › OOP harness: một file, tên do runner cấp (2026-11-17).
 
 ### B. Compile, execute, result
 
-- [ ] **JDG004-T08 — Dispatch runner:** dùng registry JDG-002 và Sandbox JDG-005; giữ command/image ngoài core OOP.
-- [ ] **JDG004-T09 — Compile và provenance:** biên dịch source+harness theo layout; giữ đủ thông tin để phân biệt nguồn lỗi user với harness/configuration.
-- [ ] **JDG004-T10 — Thực thi operation sequence:** chuyển stdin thô tới harness; harness diễn giải giao thức đã Approved, khởi tạo/call object và in stdout theo contract.
-- [ ] **JDG004-T11 — State isolation:** áp lifecycle process/object/workspace đã duyệt cho từng operation/testcase; không dùng state ngầm ngoài spec.
-- [ ] **JDG004-T12 — Compare/classify:** so stdout với expected output qua comparator JDG-001; phân loại compile/runtime/assertion/timeout/resource trước comparator khi phù hợp.
-- [ ] **JDG004-T13 — Build result/filter:** dùng verdict/score/count/mode policy JDG-001; lọc hidden harness, input/output và diagnostic.
-- [ ] **JDG004-T14 — Cleanup:** đảm bảo sandbox/container/workspace được dọn trên mọi đường, gồm lỗi parse operation/harness và timeout.
+- [x] **JDG004-T08 — Dispatch runner:** dùng registry JDG-002 và Sandbox JDG-005; giữ command/image ngoài core OOP.
+      Kế thừa registry JDG-002.
+- [x] **JDG004-T09 — Compile và provenance:** biên dịch source+harness theo layout; giữ đủ thông tin để phân biệt nguồn lỗi user với harness/configuration.
+      `oop-judge.integration.spec.ts` (Docker 29.8.2; C++, Java, Python) (2026-11-17).
+- [x] **JDG004-T10 — Thực thi operation sequence:** chuyển stdin thô tới harness; harness diễn giải giao thức đã Approved, khởi tạo/call object và in stdout theo contract.
+      `oop-judge.integration.spec.ts` (Docker 29.8.2; C++, Java, Python): chuỗi thao tác `inc inc get` qua stdin (2026-11-17).
+- [x] **JDG004-T11 — State isolation:** áp lifecycle process/object/workspace đã duyệt cho từng operation/testcase; không dùng state ngầm ngoài spec.
+      `oop-judge.integration.spec.ts` (Docker 29.8.2; C++, Java, Python): biến static đếm số object vẫn là 1 ở testcase thứ hai → không giữ state process. File trong workspace dùng chung giữa testcase là chính sách đã duyệt ở JDG-005 D-11.4.
+- [x] **JDG004-T12 — Compare/classify:** so stdout với expected output qua comparator JDG-001; phân loại compile/runtime/assertion/timeout/resource trước comparator khi phù hợp.
+      `oop-judge.integration.spec.ts` (Docker 29.8.2; C++, Java, Python): sai hành vi → `WRONG_ANSWER`; phân loại theo vùng như JDG-003.
+- [x] **JDG004-T13 — Build result/filter:** dùng verdict/score/count/mode policy JDG-001; lọc hidden harness, input/output và diagnostic.
+      Marker harness không xuất hiện trong result ở mọi đường (`oop-judge.integration.spec.ts` (Docker 29.8.2; C++, Java, Python)).
+- [x] **JDG004-T14 — Cleanup:** đảm bảo sandbox/container/workspace được dọn trên mọi đường, gồm lỗi parse operation/harness và timeout.
+      `finally` của `JudgeEngine.judge` dùng chung.
 
 ### C. Kiểm chứng và hoàn tất
 
-- [ ] **JDG004-T15 — Contract fixtures:** mỗi language có fixture thể hiện class construction, method call, input operation format và output format theo spec.
-- [ ] **JDG004-T16 — OOP behavior tests:** cover constructor, nhiều method calls, method visibility/overload nếu spec hỗ trợ, sai signature/class và return values.
-- [ ] **JDG004-T17 — State tests:** kiểm tra state trong cùng operation sequence và reset/giữ state giữa testcase đúng quyết định.
-- [ ] **JDG004-T18 — Error provenance tests:** phân biệt user compile/runtime, harness/configuration, malformed operation và toolchain failure.
+- [x] **JDG004-T15 — Contract fixtures:** mỗi language có fixture thể hiện class construction, method call, input operation format và output format theo spec.
+      Fixture `Counter` ba ngôn ngữ trong `oop-judge.integration.spec.ts` (Docker 29.8.2; C++, Java, Python). C không có fixture OOP.
+- [x] **JDG004-T16 — OOP behavior tests:** cover constructor, nhiều method calls, method visibility/overload nếu spec hỗ trợ, sai signature/class và return values.
+      `oop-judge.integration.spec.ts` (Docker 29.8.2; C++, Java, Python) (2026-11-17).
+- [x] **JDG004-T17 — State tests:** kiểm tra state trong cùng operation sequence và reset/giữ state giữa testcase đúng quyết định.
+      `oop-judge.integration.spec.ts` (Docker 29.8.2; C++, Java, Python) (2026-11-17).
+- [x] **JDG004-T18 — Error provenance tests:** phân biệt user compile/runtime, harness/configuration, malformed operation và toolchain failure.
+      `oop-judge.integration.spec.ts` (Docker 29.8.2; C++, Java, Python). Lưu ý: người học thiếu method của contract bị quy cho vùng harness → `INTERNAL_ERROR` theo đúng chữ D-10.4 ở cả ba ngôn ngữ; đã báo chủ repo.
 - [ ] **JDG004-T19 — Sandbox/security tests:** kiểm tra timeout/resource exhaustion, không lộ hidden contract/data và cleanup.
+      Một phần: không lộ harness đã kiểm; harness/submission chạm trần tài nguyên (AC-004) dựa vào kiểm thử JDG-005, chưa có ca riêng cho OOP.
 - [ ] **JDG004-T20 — Traceability/DoD:** gắn FR-001..011, AC-001..005 với tests/evidence; chạy DoD khi có code; cập nhật plan/tasks/worked entry.
 
 ### Ma trận kiểm chứng tối thiểu
