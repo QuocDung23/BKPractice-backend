@@ -1,6 +1,11 @@
 import { Module } from '@nestjs/common';
 
 import { SANDBOX_PORT } from './application/ports/out/sandbox.port';
+import {
+  JUDGE_PIPELINE,
+  ProcessJudgeRequestUseCase,
+} from './application/process-judge-request.use-case';
+import type { JudgePipeline } from './application/process-judge-request.use-case';
 import { runBoundedProcess } from './infrastructure/sandbox/bounded-process';
 import {
   BOUNDED_PROCESS_RUNNER,
@@ -25,6 +30,12 @@ import { RunnerRegistry } from './runners/runner.registry';
     DockerSandboxAdapter,
     { provide: SANDBOX_PORT, useExisting: DockerSandboxAdapter },
     JudgeEngine,
+    { provide: JUDGE_PIPELINE, useExisting: JudgeEngine },
+    {
+      provide: ProcessJudgeRequestUseCase,
+      inject: [JUDGE_PIPELINE],
+      useFactory: (pipeline: JudgePipeline) => new ProcessJudgeRequestUseCase(pipeline),
+    },
     JudgeConsumer,
   ],
 })
