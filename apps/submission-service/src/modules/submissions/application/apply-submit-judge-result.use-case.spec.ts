@@ -95,6 +95,9 @@ describe('ApplySubmitJudgeResultUseCase', () => {
         status: SubmissionStatus.Accepted,
         ready: true,
       });
+      expect(repository.applySubmitVerdictOnce.mock.invocationCallOrder[0]).toBeLessThan(
+        realtime.publishResult.mock.invocationCallOrder[0] ?? 0,
+      );
     },
   );
 

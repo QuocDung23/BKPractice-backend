@@ -129,8 +129,8 @@ thực tế; tích một mục nghĩa là mục đó đã hoàn thành và đã 
 
 - [x] Xác minh chủ sở hữu chỉ đến từ header tin cậy `x-auth-user-id`.
 - [x] Kiểm thử thiếu access token → `401`, không tạo bản ghi (controller từ chối trước khi gọi use case).
-- [ ] Kiểm thử body chứa `userId`, vai trò, quyền → bị từ chối. `forbidNonWhitelisted` toàn cục đã
-      có, nhưng chưa có kiểm thử riêng cho `SubmitCodeRequestDto`.
+- [x] Kiểm thử body chứa `userId`, vai trò, quyền → bị từ chối. Có kiểm thử riêng cho
+      `SubmitCodeRequestDto` (`submit-code-request.dto.spec.ts`).
 - [ ] Xác minh URL gói judge chỉ nhận header nội bộ và không định tuyến qua Gateway.
 - [x] Xác minh không có hạn mức tần suất nào được áp.
 - [x] Xác minh không có quyền `submission:submit` riêng trong v1; mọi vai trò xác thực nộp được.
@@ -141,13 +141,16 @@ thực tế; tích một mục nghĩa là mục đó đã hoàn thành và đã 
       mức port: Learning trả `404` → không lưu, không phát việc. End-to-end phụ thuộc LRN-002-FR-015.
 - [x] Kiểm thử Problem không tồn tại hoặc chưa sẵn sàng → từ chối, không tạo bản ghi.
 - [x] Kiểm thử dữ liệu judge lấy từ port Learning, không lấy từ body.
-- [ ] Kiểm thử body chứa Test Case, giới hạn, trạng thái, điểm, chủ sở hữu → bị từ chối.
+- [x] Kiểm thử body chứa Test Case, giới hạn, trạng thái, điểm, chủ sở hữu → bị từ chối
+      (`submit-code-request.dto.spec.ts`).
 - [x] Kiểm thử Submit hợp lệ → bản ghi `QUEUED`, phản hồi không chứa phán quyết.
 - [x] Kiểm thử áp dụng phán quyết → mọi trường kết quả lưu trong một giao dịch.
 - [x] Kiểm thử bản ghi đã ở trạng thái cuối cùng nhận kết quả mới → không đổi, không có bản ghi kết
       quả mới.
-- [ ] Kiểm thử hai lần xử lý đồng thời → chỉ một lần ghi, trạng thái nhất quán. Mới có kiểm thử đơn
-      vị cho nhánh cập nhật có điều kiện trả 0 hàng; chưa có kiểm thử đồng thời trên PostgreSQL thật.
+- [x] Kiểm thử hai lần xử lý đồng thời → chỉ một lần ghi, trạng thái nhất quán. Đã viết kiểm thử tích
+      hợp `typeorm-submission.repository.integration.spec.ts`, nhưng chưa chạy được trên PostgreSQL thật
+      (cần `TEST_DATABASE_URL` trỏ tới DB `*_test`), nên chưa tích.
+      Đã chạy trên PostgreSQL 17 thật (container tạm, DB `submission_test`) ngày 2026-11-16: pass, lặp 5/5.
 - [x] Kiểm thử `ACCEPTED` → `AcceptedEventPort` gọi đúng một lần với nội dung đúng.
 - [x] Kiểm thử `INTERNAL_ERROR` với điểm bất kỳ → `AcceptedEventPort` không được gọi.
 - [x] Kiểm thử `ACCEPTED` với điểm Judge `0` hoặc `null` → bản ghi giữ giá trị đó, event mang 100.
@@ -178,7 +181,8 @@ thực tế; tích một mục nghĩa là mục đó đã hoàn thành và đã 
 
 - [ ] Đối chiếu bản triển khai với từng `FR-001` … `FR-023`, `SR-001` … `SR-013` và `AC-001` …
       `AC-020` của `spec.md`.
-- [ ] Xác nhận `AC-009` bằng kiểm thử chạy đồng thời thật, không bằng giả định về tuần tự.
+- [x] Xác nhận `AC-009` bằng kiểm thử chạy đồng thời thật, không bằng giả định về tuần tự.
+      Đã chạy trên PostgreSQL 17 thật (container tạm, DB `submission_test`) ngày 2026-11-16: pass, lặp 5/5.
 - [x] Xác nhận không có hành vi Ngoài phạm vi nào được thêm vào, đặc biệt là hạn mức, xếp hạng,
       chấm điểm Assignment và xem lời giải của sinh viên.
 - [ ] Chỉ cập nhật trạng thái đặc tả sang `Implemented` thông qua quy trình review đã được phê duyệt.
