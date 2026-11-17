@@ -56,10 +56,13 @@ export class JudgeEngine {
           const raw = `${compilation.stdout}${compilation.stderr}`.replaceAll('/workspace/', '');
           if (learnerLines !== undefined && !compilation.timedOut) {
             // JDG-003-FR-007: a compile error located in the harness is a configuration failure.
-            if ((findFirstDiagnosticLine(raw) ?? 0) > learnerLines) throw new HarnessFailureError();
+            if ((findFirstDiagnosticLine(raw, runner.sourceFile) ?? 0) > learnerLines)
+              throw new HarnessFailureError();
           }
           const output =
-            learnerLines === undefined ? raw : keepLearnerDiagnostics(raw, learnerLines);
+            learnerLines === undefined
+              ? raw
+              : keepLearnerDiagnostics(raw, learnerLines, runner.sourceFile);
           return {
             executionId: request.executionId,
             submissionId: request.submissionId,
@@ -85,19 +88,21 @@ export class JudgeEngine {
           timeoutMs: request.timeLimitMs,
           memoryLimitMb: request.memoryLimitMb,
         });
+        // The sandbox working directory is an internal detail; traces name the bare file.
+        const stderr = execution.stderr.replaceAll('/workspace/', '');
         totalRuntimeMs += execution.runtimeMs;
         lastStdout = execution.stdout;
         // JDG-003-FR-004: harness frames and their echoed source never reach the result.
         lastStderr =
           learnerLines === undefined
-            ? execution.stderr
-            : keepLearnerFrames(execution.stderr, learnerLines);
+            ? stderr
+            : keepLearnerFrames(stderr, learnerLines, runner.sourceFile);
         const errorStatus = this.executionErrorStatus(execution);
         // JDG-003-FR-008: a crash diagnosed inside the harness is not the learner's fault.
         if (
           errorStatus === 'RUNTIME_ERROR' &&
           learnerLines !== undefined &&
-          (findCrashLine(execution.stderr) ?? 0) > learnerLines
+          (findCrashLine(stderr, runner.sourceFile) ?? 0) > learnerLines
         )
           throw new HarnessFailureError();
         if (errorStatus) {

@@ -133,6 +133,18 @@ describeDocker('FUNCTION judge (real Docker)', () => {
       });
     });
 
+    if (language === 'c' || language === 'cpp') {
+      // g++ reports an unclosed learner brace in a system header first, so no region is known and
+      // the learner gets COMPILE_ERROR. gcc reports it at the end of the file, inside the harness
+      // region, so the literal rule of D-09.3 yields INTERNAL_ERROR. Flagged to the spec owner.
+      it('classifies an unclosed learner brace by where the compiler reports it', async () => {
+        const unclosed = fixture.good.replace(/ }$/, '');
+        await expect(judge(language, unclosed, fixture.harness)).resolves.toMatchObject({
+          status: language === 'cpp' ? 'COMPILE_ERROR' : 'INTERNAL_ERROR',
+        });
+      });
+    }
+
     it('reports a harness compile error as INTERNAL_ERROR', async () => {
       const result = await judge(language, fixture.good, fixture.brokenHarness);
       expect(result).toMatchObject({ status: 'INTERNAL_ERROR', stderr: 'Harness failure' });
