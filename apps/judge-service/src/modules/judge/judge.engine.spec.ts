@@ -353,3 +353,32 @@ describe('JudgeEngine FUNCTION harness (JDG-003)', () => {
     await expect(result).resolves.toMatchObject({ status: 'WRONG_ANSWER', passedTests: 0 });
   });
 });
+
+describe('JudgeEngine OOP harness (JDG-004)', () => {
+  it('applies the same single-file layout and region rules as FUNCTION', async () => {
+    const { sandbox, result } = judgeWith(
+      (stage) =>
+        Promise.resolve(
+          stage === 'compile'
+            ? outcome()
+            : outcome({
+                exitCode: 1,
+                stderr:
+                  'Traceback (most recent call last):\n  File "main.py", line 5, in <module>\n    HIDDEN_OOP(Counter())\nNameError: HIDDEN_OOP',
+              }),
+        ),
+      {
+        ...request,
+        problemType: 'OOP',
+        sourceCode: 'class Counter:\n    pass',
+        hiddenHarness: '\nHIDDEN_OOP(Counter())',
+      },
+    );
+    const resolved = await result;
+    expect(sandbox.workspaces[0]?.[0]?.content).toBe(
+      'class Counter:\n    pass\n\n\nHIDDEN_OOP(Counter())',
+    );
+    expect(resolved).toMatchObject({ status: 'INTERNAL_ERROR', stderr: 'Harness failure' });
+    expect(JSON.stringify(resolved)).not.toContain('HIDDEN_OOP');
+  });
+});
