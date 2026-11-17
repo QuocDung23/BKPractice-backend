@@ -255,3 +255,130 @@ describe('JudgeEngine standard evaluation (JDG-001)', () => {
     });
   });
 });
+
+describe('JudgeEngine FUNCTION harness (JDG-003)', () => {
+  // Learner region is lines 1-2; the harness starts at line 4 of the combined file.
+  const functionRequest: JudgeRequest = {
+    ...request,
+    problemType: 'FUNCTION',
+    sourceCode: 'def solve(n):\n    return n',
+    hiddenHarness: 'print(HIDDEN_CASE(solve(int(input()))))',
+  };
+  const failing = (stderr: string) => () => Promise.resolve(outcome({ exitCode: 1, stderr }));
+
+  it('writes one source file with the harness after the learner code (FR-013)', async () => {
+    const { sandbox, result } = judgeWith(() => Promise.resolve(outcome()), functionRequest);
+    await expect(result).resolves.toMatchObject({ status: 'ACCEPTED' });
+    expect(sandbox.workspaces).toEqual([
+      [
+        {
+          name: 'main.py',
+          content: 'def solve(n):\n    return n\n\nprint(HIDDEN_CASE(solve(int(input()))))',
+        },
+      ],
+    ]);
+  });
+
+  it('ignores a harness on a STANDARD request', async () => {
+    const { sandbox, result } = judgeWith(() => Promise.resolve(outcome()), {
+      ...functionRequest,
+      problemType: 'STANDARD',
+    });
+    await result;
+    expect(sandbox.workspaces[0]?.[0]?.content).toBe('def solve(n):\n    return n');
+  });
+
+  it('reports a compile error in the learner region as COMPILE_ERROR without harness text', async () => {
+    const { result } = judgeWith(
+      failing(
+        'main.py:2:5: error: bad learner code\n    2 | return n\nmain.py:4:1: error: HIDDEN_CASE broken\n    4 | print(HIDDEN_CASE(',
+      ),
+      functionRequest,
+    );
+    const resolved = await result;
+    expect(resolved).toMatchObject({ status: 'COMPILE_ERROR', error: { line: 2 } });
+    expect(JSON.stringify(resolved)).not.toContain('HIDDEN_CASE');
+  });
+
+  it('reports a compile error in the harness region as INTERNAL_ERROR with no diagnostics', async () => {
+    const { sandbox, result } = judgeWith(
+      failing('main.py:4:1: error: HIDDEN_CASE broken\n    4 | print(HIDDEN_CASE('),
+      functionRequest,
+    );
+    const resolved = await result;
+    expect(resolved).toMatchObject({ status: 'INTERNAL_ERROR', stderr: 'Harness failure' });
+    expect(resolved).not.toHaveProperty('compileOutput');
+    expect(JSON.stringify(resolved)).not.toContain('HIDDEN_CASE');
+    expect(sandbox.executions.map((execution) => execution.stage)).toEqual(['compile']);
+  });
+
+  const crashAt = (stderr: string) => (stage: string) =>
+    Promise.resolve(stage === 'compile' ? outcome() : outcome({ exitCode: 1, stderr }));
+
+  it('reports a crash raised in the learner region as RUNTIME_ERROR without harness frames', async () => {
+    const { result } = judgeWith(
+      crashAt(
+        'Traceback (most recent call last):\n  File "main.py", line 4, in <module>\n    print(HIDDEN_CASE(solve(int(input()))))\n  File "main.py", line 2, in solve\n    return n\nValueError: boom',
+      ),
+      functionRequest,
+    );
+    const resolved = await result;
+    expect(resolved).toMatchObject({ status: 'RUNTIME_ERROR', passedTests: 0 });
+    expect(resolved.stderr).toContain('ValueError: boom');
+    expect(JSON.stringify(resolved)).not.toContain('HIDDEN_CASE');
+  });
+
+  it('reports a crash raised in the harness region as INTERNAL_ERROR', async () => {
+    const { result } = judgeWith(
+      crashAt(
+        'Traceback (most recent call last):\n  File "main.py", line 4, in <module>\n    print(HIDDEN_CASE(solve(int(input()))))\nNameError: HIDDEN_CASE',
+      ),
+      functionRequest,
+    );
+    const resolved = await result;
+    expect(resolved).toMatchObject({ status: 'INTERNAL_ERROR', stderr: 'Harness failure' });
+    expect(JSON.stringify(resolved)).not.toContain('HIDDEN_CASE');
+  });
+
+  it('reports a crash without a line diagnosis as RUNTIME_ERROR (D-09.3)', async () => {
+    const { result } = judgeWith(crashAt('Segmentation fault'), functionRequest);
+    await expect(result).resolves.toMatchObject({ status: 'RUNTIME_ERROR' });
+  });
+
+  it('maps a harness-detected wrong answer to WRONG_ANSWER (D-09.4)', async () => {
+    const { result } = judgeWith(
+      () => Promise.resolve(outcome({ stdout: 'FAIL\n' })),
+      functionRequest,
+    );
+    await expect(result).resolves.toMatchObject({ status: 'WRONG_ANSWER', passedTests: 0 });
+  });
+});
+
+describe('JudgeEngine OOP harness (JDG-004)', () => {
+  it('applies the same single-file layout and region rules as FUNCTION', async () => {
+    const { sandbox, result } = judgeWith(
+      (stage) =>
+        Promise.resolve(
+          stage === 'compile'
+            ? outcome()
+            : outcome({
+                exitCode: 1,
+                stderr:
+                  'Traceback (most recent call last):\n  File "main.py", line 5, in <module>\n    HIDDEN_OOP(Counter())\nNameError: HIDDEN_OOP',
+              }),
+        ),
+      {
+        ...request,
+        problemType: 'OOP',
+        sourceCode: 'class Counter:\n    pass',
+        hiddenHarness: '\nHIDDEN_OOP(Counter())',
+      },
+    );
+    const resolved = await result;
+    expect(sandbox.workspaces[0]?.[0]?.content).toBe(
+      'class Counter:\n    pass\n\n\nHIDDEN_OOP(Counter())',
+    );
+    expect(resolved).toMatchObject({ status: 'INTERNAL_ERROR', stderr: 'Harness failure' });
+    expect(JSON.stringify(resolved)).not.toContain('HIDDEN_OOP');
+  });
+});

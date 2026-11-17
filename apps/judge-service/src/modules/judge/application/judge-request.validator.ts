@@ -35,6 +35,9 @@ function hasValidBody(payload: Record<string, unknown>, mode: Correlation['mode'
     isBoundedText(sourceCode) &&
     sourceCode.length > 0 &&
     (hiddenHarness === undefined || hiddenHarness === null || isBoundedText(hiddenHarness)) &&
+    // JDG-003-FR-002, JDG-004-FR-002: FUNCTION and OOP never fall back to STANDARD semantics.
+    (problemType === 'STANDARD' ||
+      (typeof hiddenHarness === 'string' && hiddenHarness.trim().length > 0)) &&
     isPositiveLimit(payload.timeLimitMs) &&
     isPositiveLimit(payload.memoryLimitMb) &&
     Array.isArray(testCases) &&
