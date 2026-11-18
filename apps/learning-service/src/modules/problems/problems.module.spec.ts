@@ -12,6 +12,7 @@ import { HOLD_PROBLEM_PORT_IN } from './application/ports/in/hold-problem.port.i
 import { LIST_MANAGED_PROBLEMS_PORT_IN } from './application/ports/in/list-managed-problems.port.in';
 import { LIST_PUBLIC_PROBLEMS_PORT_IN } from './application/ports/in/list-public-problems.port.in';
 import { LIST_TEST_CASES_PORT_IN } from './application/ports/in/list-test-cases.port.in';
+import { LIST_TOPICS_PORT_IN } from './application/ports/in/list-topics.port.in';
 import { PREVIEW_PROBLEM_PORT_IN } from './application/ports/in/preview-problem.port.in';
 import { PUBLISH_PROBLEM_PORT_IN } from './application/ports/in/publish-problem.port.in';
 import { REMOVE_HARNESS_PORT_IN } from './application/ports/in/remove-harness.port.in';
@@ -34,6 +35,7 @@ import { HoldProblemUseCase } from './application/use-cases/hold-problem.use-cas
 import { ListManagedProblemsUseCase } from './application/use-cases/list-managed-problems.use-case';
 import { ListPublicProblemsUseCase } from './application/use-cases/list-public-problems.use-case';
 import { ListTestCasesUseCase } from './application/use-cases/list-test-cases.use-case';
+import { ListTopicsUseCase } from './application/use-cases/list-topics.use-case';
 import { PreviewProblemUseCase } from './application/use-cases/preview-problem.use-case';
 import { PublishProblemUseCase } from './application/use-cases/publish-problem.use-case';
 import { RemoveHarnessUseCase } from './application/use-cases/remove-harness.use-case';
@@ -58,6 +60,7 @@ import { InternalServiceGuard } from './internal-service.guard';
 import { ManagedProblemsController } from './presentation/http/managed-problems.controller';
 import { ManagedTestCasesController } from './presentation/http/managed-test-cases.controller';
 import { PublicProblemsController } from './presentation/http/public-problems.controller';
+import { PublicTopicsController } from './presentation/http/public-topics.controller';
 import {
   HARNESS_REPOSITORY,
   PROBLEM_REFERENCE_READER,
@@ -97,6 +100,7 @@ const INBOUND_BINDINGS = [
   [REMOVE_TEST_CASE_PORT_IN, RemoveTestCaseUseCase],
   [REORDER_TEST_CASES_PORT_IN, ReorderTestCasesUseCase],
   [LIST_TEST_CASES_PORT_IN, ListTestCasesUseCase],
+  [LIST_TOPICS_PORT_IN, ListTopicsUseCase],
   [GET_TEST_CASE_PORT_IN, GetTestCaseUseCase],
   [SET_HARNESS_PORT_IN, SetHarnessUseCase],
   [REMOVE_HARNESS_PORT_IN, RemoveHarnessUseCase],
@@ -136,6 +140,10 @@ describe('ProblemsModule inbound port wiring', () => {
       GET_PUBLIC_PROBLEM_PORT_IN,
       LIST_PUBLIC_PROBLEMS_PORT_IN,
     ]);
+  });
+
+  it('wires the public topic controller to its inbound port token', () => {
+    expect(injectedTokens(PublicTopicsController)).toEqual([LIST_TOPICS_PORT_IN]);
   });
 
   it('wires managed test case controller to inbound port tokens', () => {

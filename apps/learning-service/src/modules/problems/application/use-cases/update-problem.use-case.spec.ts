@@ -302,6 +302,7 @@ function topicTagReaderMock() {
     findMissingTagIds: jest.fn().mockResolvedValue([]),
     findTopicNames: jest.fn(),
     findTagNames: jest.fn(),
+    listTopics: jest.fn().mockResolvedValue([]),
   };
 }
 

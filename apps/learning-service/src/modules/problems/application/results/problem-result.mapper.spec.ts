@@ -264,5 +264,6 @@ function readerMock() {
     findMissingTagIds: jest.fn(),
     findTopicNames: jest.fn(),
     findTagNames: jest.fn(),
+    listTopics: jest.fn().mockResolvedValue([]),
   };
 }

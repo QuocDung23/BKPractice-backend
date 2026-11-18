@@ -397,6 +397,7 @@ describe('Learning route transport', () => {
     ['GET', '/api/progress/me/courses/courseId-1'],
     ['GET', '/api/progress/courses/courseId-1/students'],
     ['GET', '/api/recommendations'],
+    ['GET', '/api/topics'],
   ];
   const config = new ConfigService({
     IDENTITY_SERVICE_URL: 'http://identity:3001',
@@ -447,6 +448,9 @@ describe('Learning route transport', () => {
     ['GET', '/api/assignmentsX'],
     ['GET', '/api/progressX'],
     ['GET', '/api/recommendationsX'],
+    ['GET', '/api/topicsX'],
+    ['GET', '/api/topics/id'],
+    ['POST', '/api/topics'],
     ['GET', '/api/classes/enrolled'],
     ['GET', '/api/assignments/id'],
     ['GET', '/api/progress/me/assignments/id'],
@@ -465,7 +469,7 @@ describe('Learning route transport', () => {
     });
     expect(upstream.request).not.toHaveBeenCalled();
   });
-  it.each(['problems', 'courses', 'progress', 'recommendations'])(
+  it.each(['problems', 'courses', 'progress', 'recommendations', 'topics'])(
     'blocks unsafe %s paths',
     async (prefix) => {
       for (const suffix of [

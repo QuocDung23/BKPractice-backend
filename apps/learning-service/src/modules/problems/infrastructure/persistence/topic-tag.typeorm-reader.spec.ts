@@ -61,6 +61,27 @@ describe('TopicTagTypeOrmReader', () => {
     await expect(emptyReader.findTagNames([])).resolves.toEqual(new Map());
     expect(emptyQuery).not.toHaveBeenCalled();
   });
+
+  it('lists the whole topic catalog ordered by name', async () => {
+    const query = jest.fn().mockResolvedValue([
+      { id: 'b', name: 'Sắp xếp' },
+      { id: 'a', name: 'Mảng' },
+    ]);
+    const reader = readerWith(query);
+
+    await expect(reader.listTopics()).resolves.toEqual([
+      { id: 'b', name: 'Sắp xếp' },
+      { id: 'a', name: 'Mảng' },
+    ]);
+    expect(query).toHaveBeenCalledWith('SELECT "id", "name" FROM "topics" ORDER BY "name" ASC');
+  });
+
+  it('returns an empty catalog without a query when the table is empty', async () => {
+    const query = jest.fn().mockResolvedValue([]);
+    const reader = readerWith(query);
+
+    await expect(reader.listTopics()).resolves.toEqual([]);
+  });
 });
 
 function readerWith(query: jest.Mock): TopicTagTypeOrmReader {
