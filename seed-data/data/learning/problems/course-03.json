@@ -1,0 +1,3752 @@
+[
+  {
+    "id": "b2a61652-174f-54bb-9b32-bd241280bcf9",
+    "key": "c03-ch01-p01",
+    "courseKey": "c03",
+    "chapterKey": "c03-ch01",
+    "slug": "c03-ch01-p01",
+    "title": "Chương 1: Mảng — Tính tổng các phần tử #01",
+    "description": "Cho một dãy số nguyên. Hãy tính tổng các phần tử theo yêu cầu và in kết quả. Dữ liệu bảo đảm phù hợp với giới hạn đã cho.",
+    "problemType": "STANDARD",
+    "difficulty": "EASY",
+    "inputSpecification": "Dòng đầu chứa N (và K nếu bài yêu cầu). Dòng tiếp theo chứa N số nguyên.",
+    "outputSpecification": "In kết quả theo đúng định dạng của đề bài.",
+    "examples": [
+      {
+        "input": "6\n14 -4 1 6 11 -7",
+        "output": "21",
+        "explanation": "Áp dụng thao tác tính tổng các phần tử trên dãy đã cho."
+      },
+      {
+        "input": "6\n-6 -1 4 9 14 -4",
+        "output": "16",
+        "explanation": "Áp dụng thao tác tính tổng các phần tử trên dãy đã cho."
+      }
+    ],
+    "constraints": "1 ≤ N ≤ 100000; |Ai| ≤ 10^9.",
+    "timeLimitMs": 1000,
+    "memoryLimitMb": 256,
+    "publishStatus": "PUBLISHED",
+    "createdBy": "ac9fadc2-1955-59e4-984d-26f74bbb4f53",
+    "topicName": "Mảng",
+    "testCases": [
+      {
+        "input": "6\n14 -4 1 6 11 -7",
+        "expectedOutput": "21",
+        "isHidden": false,
+        "score": 1,
+        "displayOrder": 0
+      },
+      {
+        "input": "6\n-6 -1 4 9 14 -4",
+        "expectedOutput": "16",
+        "isHidden": false,
+        "score": 1,
+        "displayOrder": 1
+      },
+      {
+        "input": "6\n-3 2 7 12 -6 -1",
+        "expectedOutput": "11",
+        "isHidden": true,
+        "score": 1,
+        "displayOrder": 2
+      },
+      {
+        "input": "6\n0 5 10 15 -3 2",
+        "expectedOutput": "29",
+        "isHidden": true,
+        "score": 1,
+        "displayOrder": 3
+      },
+      {
+        "input": "6\n3 8 13 -5 0 5",
+        "expectedOutput": "24",
+        "isHidden": true,
+        "score": 1,
+        "displayOrder": 4
+      }
+    ],
+    "languages": ["c", "cpp", "java", "python"],
+    "starterCodes": {
+      "c": "#include <stdio.h>\nint main(void) { return 0; }",
+      "cpp": "#include <bits/stdc++.h>\nusing namespace std;\nint main(){ios::sync_with_stdio(false);cin.tie(nullptr);return 0;}",
+      "java": "import java.util.*;\npublic class Main { public static void main(String[] args) {} }",
+      "python": "import sys\n\ndef main():\n    data = sys.stdin.read().split()\n\nif __name__ == \"__main__\":\n    main()"
+    }
+  },
+  {
+    "id": "37b8f214-02b7-559d-9867-76afee47bc48",
+    "key": "c03-ch01-p02",
+    "courseKey": "c03",
+    "chapterKey": "c03-ch01",
+    "slug": "c03-ch01-p02",
+    "title": "Chương 1: Mảng — Tìm giá trị lớn nhất #02",
+    "description": "Cho một dãy số nguyên. Hãy tìm giá trị lớn nhất theo yêu cầu và in kết quả. Dữ liệu bảo đảm phù hợp với giới hạn đã cho.",
+    "problemType": "STANDARD",
+    "difficulty": "MEDIUM",
+    "inputSpecification": "Dòng đầu chứa N (và K nếu bài yêu cầu). Dòng tiếp theo chứa N số nguyên.",
+    "outputSpecification": "In kết quả theo đúng định dạng của đề bài.",
+    "examples": [
+      {
+        "input": "6\n-6 -1 4 9 14 -4",
+        "output": "14",
+        "explanation": "Áp dụng thao tác tìm giá trị lớn nhất trên dãy đã cho."
+      },
+      {
+        "input": "6\n-3 2 7 12 -6 -1",
+        "output": "12",
+        "explanation": "Áp dụng thao tác tìm giá trị lớn nhất trên dãy đã cho."
+      }
+    ],
+    "constraints": "1 ≤ N ≤ 100000; |Ai| ≤ 10^9.",
+    "timeLimitMs": 1000,
+    "memoryLimitMb": 256,
+    "publishStatus": "PUBLISHED",
+    "createdBy": "ac9fadc2-1955-59e4-984d-26f74bbb4f53",
+    "topicName": "Mảng",
+    "testCases": [
+      {
+        "input": "6\n-6 -1 4 9 14 -4",
+        "expectedOutput": "14",
+        "isHidden": false,
+        "score": 1,
+        "displayOrder": 0
+      },
+      {
+        "input": "6\n-3 2 7 12 -6 -1",
+        "expectedOutput": "12",
+        "isHidden": false,
+        "score": 1,
+        "displayOrder": 1
+      },
+      {
+        "input": "6\n0 5 10 15 -3 2",
+        "expectedOutput": "15",
+        "isHidden": true,
+        "score": 1,
+        "displayOrder": 2
+      },
+      {
+        "input": "6\n3 8 13 -5 0 5",
+        "expectedOutput": "13",
+        "isHidden": true,
+        "score": 1,
+        "displayOrder": 3
+      },
+      {
+        "input": "6\n6 11 -7 -2 3 8",
+        "expectedOutput": "11",
+        "isHidden": true,
+        "score": 1,
+        "displayOrder": 4
+      }
+    ],
+    "languages": ["c", "cpp", "java", "python"],
+    "starterCodes": {
+      "c": "#include <stdio.h>\nint main(void) { return 0; }",
+      "cpp": "#include <bits/stdc++.h>\nusing namespace std;\nint main(){ios::sync_with_stdio(false);cin.tie(nullptr);return 0;}",
+      "java": "import java.util.*;\npublic class Main { public static void main(String[] args) {} }",
+      "python": "import sys\n\ndef main():\n    data = sys.stdin.read().split()\n\nif __name__ == \"__main__\":\n    main()"
+    }
+  },
+  {
+    "id": "5396c628-bded-5d40-9d8b-518b46c9bd10",
+    "key": "c03-ch01-p03",
+    "courseKey": "c03",
+    "chapterKey": "c03-ch01",
+    "slug": "c03-ch01-p03",
+    "title": "Chương 1: Mảng — Tìm giá trị nhỏ nhất #03",
+    "description": "Cho một dãy số nguyên. Hãy tìm giá trị nhỏ nhất theo yêu cầu và in kết quả. Dữ liệu bảo đảm phù hợp với giới hạn đã cho.",
+    "problemType": "STANDARD",
+    "difficulty": "HARD",
+    "inputSpecification": "Dòng đầu chứa N (và K nếu bài yêu cầu). Dòng tiếp theo chứa N số nguyên.",
+    "outputSpecification": "In kết quả theo đúng định dạng của đề bài.",
+    "examples": [
+      {
+        "input": "6\n-3 2 7 12 -6 -1",
+        "output": "-6",
+        "explanation": "Áp dụng thao tác tìm giá trị nhỏ nhất trên dãy đã cho."
+      },
+      {
+        "input": "6\n0 5 10 15 -3 2",
+        "output": "-3",
+        "explanation": "Áp dụng thao tác tìm giá trị nhỏ nhất trên dãy đã cho."
+      }
+    ],
+    "constraints": "1 ≤ N ≤ 100000; |Ai| ≤ 10^9.",
+    "timeLimitMs": 1000,
+    "memoryLimitMb": 256,
+    "publishStatus": "PUBLISHED",
+    "createdBy": "ac9fadc2-1955-59e4-984d-26f74bbb4f53",
+    "topicName": "Mảng",
+    "testCases": [
+      {
+        "input": "6\n-3 2 7 12 -6 -1",
+        "expectedOutput": "-6",
+        "isHidden": false,
+        "score": 1,
+        "displayOrder": 0
+      },
+      {
+        "input": "6\n0 5 10 15 -3 2",
+        "expectedOutput": "-3",
+        "isHidden": false,
+        "score": 1,
+        "displayOrder": 1
+      },
+      {
+        "input": "6\n3 8 13 -5 0 5",
+        "expectedOutput": "-5",
+        "isHidden": true,
+        "score": 1,
+        "displayOrder": 2
+      },
+      {
+        "input": "6\n6 11 -7 -2 3 8",
+        "expectedOutput": "-7",
+        "isHidden": true,
+        "score": 1,
+        "displayOrder": 3
+      },
+      {
+        "input": "6\n9 14 -4 1 6 11",
+        "expectedOutput": "-4",
+        "isHidden": true,
+        "score": 1,
+        "displayOrder": 4
+      }
+    ],
+    "languages": ["c", "cpp", "java", "python"],
+    "starterCodes": {
+      "c": "#include <stdio.h>\nint main(void) { return 0; }",
+      "cpp": "#include <bits/stdc++.h>\nusing namespace std;\nint main(){ios::sync_with_stdio(false);cin.tie(nullptr);return 0;}",
+      "java": "import java.util.*;\npublic class Main { public static void main(String[] args) {} }",
+      "python": "import sys\n\ndef main():\n    data = sys.stdin.read().split()\n\nif __name__ == \"__main__\":\n    main()"
+    }
+  },
+  {
+    "id": "4e9c12b3-45ab-5615-9525-b149db1898c7",
+    "key": "c03-ch01-p04",
+    "courseKey": "c03",
+    "chapterKey": "c03-ch01",
+    "slug": "c03-ch01-p04",
+    "title": "Chương 1: Mảng — Đếm số chẵn #04",
+    "description": "Cho một dãy số nguyên. Hãy đếm số chẵn theo yêu cầu và in kết quả. Dữ liệu bảo đảm phù hợp với giới hạn đã cho.",
+    "problemType": "STANDARD",
+    "difficulty": "EASY",
+    "inputSpecification": "Dòng đầu chứa N (và K nếu bài yêu cầu). Dòng tiếp theo chứa N số nguyên.",
+    "outputSpecification": "In kết quả theo đúng định dạng của đề bài.",
+    "examples": [
+      {
+        "input": "6\n0 5 10 15 -3 2",
+        "output": "3",
+        "explanation": "Áp dụng thao tác đếm số chẵn trên dãy đã cho."
+      },
+      {
+        "input": "6\n3 8 13 -5 0 5",
+        "output": "2",
+        "explanation": "Áp dụng thao tác đếm số chẵn trên dãy đã cho."
+      }
+    ],
+    "constraints": "1 ≤ N ≤ 100000; |Ai| ≤ 10^9.",
+    "timeLimitMs": 1000,
+    "memoryLimitMb": 256,
+    "publishStatus": "PUBLISHED",
+    "createdBy": "ac9fadc2-1955-59e4-984d-26f74bbb4f53",
+    "topicName": "Mảng",
+    "testCases": [
+      {
+        "input": "6\n0 5 10 15 -3 2",
+        "expectedOutput": "3",
+        "isHidden": false,
+        "score": 1,
+        "displayOrder": 0
+      },
+      {
+        "input": "6\n3 8 13 -5 0 5",
+        "expectedOutput": "2",
+        "isHidden": false,
+        "score": 1,
+        "displayOrder": 1
+      },
+      {
+        "input": "6\n6 11 -7 -2 3 8",
+        "expectedOutput": "3",
+        "isHidden": true,
+        "score": 1,
+        "displayOrder": 2
+      },
+      {
+        "input": "6\n9 14 -4 1 6 11",
+        "expectedOutput": "3",
+        "isHidden": true,
+        "score": 1,
+        "displayOrder": 3
+      },
+      {
+        "input": "6\n12 -6 -1 4 9 14",
+        "expectedOutput": "4",
+        "isHidden": true,
+        "score": 1,
+        "displayOrder": 4
+      }
+    ],
+    "languages": ["c", "cpp", "java", "python"],
+    "starterCodes": {
+      "c": "#include <stdio.h>\nint main(void) { return 0; }",
+      "cpp": "#include <bits/stdc++.h>\nusing namespace std;\nint main(){ios::sync_with_stdio(false);cin.tie(nullptr);return 0;}",
+      "java": "import java.util.*;\npublic class Main { public static void main(String[] args) {} }",
+      "python": "import sys\n\ndef main():\n    data = sys.stdin.read().split()\n\nif __name__ == \"__main__\":\n    main()"
+    }
+  },
+  {
+    "id": "e0f5388b-7d0b-5cf3-9b61-04260acefb69",
+    "key": "c03-ch01-p05",
+    "courseKey": "c03",
+    "chapterKey": "c03-ch01",
+    "slug": "c03-ch01-p05",
+    "title": "Chương 1: Mảng — Đếm bội số của K #05",
+    "description": "Cho một dãy số nguyên. Hãy đếm bội số của k theo yêu cầu và in kết quả. Dữ liệu bảo đảm phù hợp với giới hạn đã cho.",
+    "problemType": "STANDARD",
+    "difficulty": "MEDIUM",
+    "inputSpecification": "Dòng đầu chứa N (và K nếu bài yêu cầu). Dòng tiếp theo chứa N số nguyên.",
+    "outputSpecification": "In kết quả theo đúng định dạng của đề bài.",
+    "examples": [
+      {
+        "input": "6 3\n3 8 13 -5 0 5",
+        "output": "2",
+        "explanation": "Áp dụng thao tác đếm bội số của k trên dãy đã cho."
+      },
+      {
+        "input": "6 4\n6 11 -7 -2 3 8",
+        "output": "1",
+        "explanation": "Áp dụng thao tác đếm bội số của k trên dãy đã cho."
+      }
+    ],
+    "constraints": "1 ≤ N ≤ 100000; |Ai| ≤ 10^9.",
+    "timeLimitMs": 1000,
+    "memoryLimitMb": 256,
+    "publishStatus": "PUBLISHED",
+    "createdBy": "ac9fadc2-1955-59e4-984d-26f74bbb4f53",
+    "topicName": "Mảng",
+    "testCases": [
+      {
+        "input": "6 3\n3 8 13 -5 0 5",
+        "expectedOutput": "2",
+        "isHidden": false,
+        "score": 1,
+        "displayOrder": 0
+      },
+      {
+        "input": "6 4\n6 11 -7 -2 3 8",
+        "expectedOutput": "1",
+        "isHidden": false,
+        "score": 1,
+        "displayOrder": 1
+      },
+      {
+        "input": "6 5\n9 14 -4 1 6 11",
+        "expectedOutput": "0",
+        "isHidden": true,
+        "score": 1,
+        "displayOrder": 2
+      },
+      {
+        "input": "6 6\n12 -6 -1 4 9 14",
+        "expectedOutput": "2",
+        "isHidden": true,
+        "score": 1,
+        "displayOrder": 3
+      },
+      {
+        "input": "6 7\n15 -3 2 7 12 -6",
+        "expectedOutput": "1",
+        "isHidden": true,
+        "score": 1,
+        "displayOrder": 4
+      }
+    ],
+    "languages": ["c", "cpp", "java", "python"],
+    "starterCodes": {
+      "c": "#include <stdio.h>\nint main(void) { return 0; }",
+      "cpp": "#include <bits/stdc++.h>\nusing namespace std;\nint main(){ios::sync_with_stdio(false);cin.tie(nullptr);return 0;}",
+      "java": "import java.util.*;\npublic class Main { public static void main(String[] args) {} }",
+      "python": "import sys\n\ndef main():\n    data = sys.stdin.read().split()\n\nif __name__ == \"__main__\":\n    main()"
+    }
+  },
+  {
+    "id": "ecf10e53-5920-5375-8a65-21c52ec62cbb",
+    "key": "c03-ch01-p06",
+    "courseKey": "c03",
+    "chapterKey": "c03-ch01",
+    "slug": "c03-ch01-p06",
+    "title": "Chương 1: Mảng — Đảo ngược dãy #06",
+    "description": "Cho một dãy số nguyên. Hãy đảo ngược dãy theo yêu cầu và in kết quả. Dữ liệu bảo đảm phù hợp với giới hạn đã cho.",
+    "problemType": "STANDARD",
+    "difficulty": "HARD",
+    "inputSpecification": "Dòng đầu chứa N (và K nếu bài yêu cầu). Dòng tiếp theo chứa N số nguyên.",
+    "outputSpecification": "In kết quả theo đúng định dạng của đề bài.",
+    "examples": [
+      {
+        "input": "6\n6 11 -7 -2 3 8",
+        "output": "8 3 -2 -7 11 6",
+        "explanation": "Áp dụng thao tác đảo ngược dãy trên dãy đã cho."
+      },
+      {
+        "input": "6\n9 14 -4 1 6 11",
+        "output": "11 6 1 -4 14 9",
+        "explanation": "Áp dụng thao tác đảo ngược dãy trên dãy đã cho."
+      }
+    ],
+    "constraints": "1 ≤ N ≤ 100000; |Ai| ≤ 10^9.",
+    "timeLimitMs": 1000,
+    "memoryLimitMb": 256,
+    "publishStatus": "PUBLISHED",
+    "createdBy": "ac9fadc2-1955-59e4-984d-26f74bbb4f53",
+    "topicName": "Mảng",
+    "testCases": [
+      {
+        "input": "6\n6 11 -7 -2 3 8",
+        "expectedOutput": "8 3 -2 -7 11 6",
+        "isHidden": false,
+        "score": 1,
+        "displayOrder": 0
+      },
+      {
+        "input": "6\n9 14 -4 1 6 11",
+        "expectedOutput": "11 6 1 -4 14 9",
+        "isHidden": false,
+        "score": 1,
+        "displayOrder": 1
+      },
+      {
+        "input": "6\n12 -6 -1 4 9 14",
+        "expectedOutput": "14 9 4 -1 -6 12",
+        "isHidden": true,
+        "score": 1,
+        "displayOrder": 2
+      },
+      {
+        "input": "6\n15 -3 2 7 12 -6",
+        "expectedOutput": "-6 12 7 2 -3 15",
+        "isHidden": true,
+        "score": 1,
+        "displayOrder": 3
+      },
+      {
+        "input": "6\n-5 0 5 10 15 -3",
+        "expectedOutput": "-3 15 10 5 0 -5",
+        "isHidden": true,
+        "score": 1,
+        "displayOrder": 4
+      }
+    ],
+    "languages": ["c", "cpp", "java", "python"],
+    "starterCodes": {
+      "c": "#include <stdio.h>\nint main(void) { return 0; }",
+      "cpp": "#include <bits/stdc++.h>\nusing namespace std;\nint main(){ios::sync_with_stdio(false);cin.tie(nullptr);return 0;}",
+      "java": "import java.util.*;\npublic class Main { public static void main(String[] args) {} }",
+      "python": "import sys\n\ndef main():\n    data = sys.stdin.read().split()\n\nif __name__ == \"__main__\":\n    main()"
+    }
+  },
+  {
+    "id": "57bc8074-e247-5a8e-b50d-9149c6a3290d",
+    "key": "c03-ch01-p07",
+    "courseKey": "c03",
+    "chapterKey": "c03-ch01",
+    "slug": "c03-ch01-p07",
+    "title": "Chương 1: Mảng — Sắp xếp tăng dần #07",
+    "description": "Cho một dãy số nguyên. Hãy sắp xếp tăng dần theo yêu cầu và in kết quả. Dữ liệu bảo đảm phù hợp với giới hạn đã cho.",
+    "problemType": "STANDARD",
+    "difficulty": "EASY",
+    "inputSpecification": "Dòng đầu chứa N (và K nếu bài yêu cầu). Dòng tiếp theo chứa N số nguyên.",
+    "outputSpecification": "In kết quả theo đúng định dạng của đề bài.",
+    "examples": [
+      {
+        "input": "6\n9 14 -4 1 6 11",
+        "output": "-4 1 6 9 11 14",
+        "explanation": "Áp dụng thao tác sắp xếp tăng dần trên dãy đã cho."
+      },
+      {
+        "input": "6\n12 -6 -1 4 9 14",
+        "output": "-6 -1 4 9 12 14",
+        "explanation": "Áp dụng thao tác sắp xếp tăng dần trên dãy đã cho."
+      }
+    ],
+    "constraints": "1 ≤ N ≤ 100000; |Ai| ≤ 10^9.",
+    "timeLimitMs": 1000,
+    "memoryLimitMb": 256,
+    "publishStatus": "PUBLISHED",
+    "createdBy": "ac9fadc2-1955-59e4-984d-26f74bbb4f53",
+    "topicName": "Mảng",
+    "testCases": [
+      {
+        "input": "6\n9 14 -4 1 6 11",
+        "expectedOutput": "-4 1 6 9 11 14",
+        "isHidden": false,
+        "score": 1,
+        "displayOrder": 0
+      },
+      {
+        "input": "6\n12 -6 -1 4 9 14",
+        "expectedOutput": "-6 -1 4 9 12 14",
+        "isHidden": false,
+        "score": 1,
+        "displayOrder": 1
+      },
+      {
+        "input": "6\n15 -3 2 7 12 -6",
+        "expectedOutput": "-6 -3 2 7 12 15",
+        "isHidden": true,
+        "score": 1,
+        "displayOrder": 2
+      },
+      {
+        "input": "6\n-5 0 5 10 15 -3",
+        "expectedOutput": "-5 -3 0 5 10 15",
+        "isHidden": true,
+        "score": 1,
+        "displayOrder": 3
+      },
+      {
+        "input": "6\n-2 3 8 13 -5 0",
+        "expectedOutput": "-5 -2 0 3 8 13",
+        "isHidden": true,
+        "score": 1,
+        "displayOrder": 4
+      }
+    ],
+    "languages": ["c", "cpp", "java", "python"],
+    "starterCodes": {
+      "c": "#include <stdio.h>\nint main(void) { return 0; }",
+      "cpp": "#include <bits/stdc++.h>\nusing namespace std;\nint main(){ios::sync_with_stdio(false);cin.tie(nullptr);return 0;}",
+      "java": "import java.util.*;\npublic class Main { public static void main(String[] args) {} }",
+      "python": "import sys\n\ndef main():\n    data = sys.stdin.read().split()\n\nif __name__ == \"__main__\":\n    main()"
+    }
+  },
+  {
+    "id": "46ecaafc-e6a8-5db3-8a95-aed2fe1b6fbe",
+    "key": "c03-ch01-p08",
+    "courseKey": "c03",
+    "chapterKey": "c03-ch01",
+    "slug": "c03-ch01-p08",
+    "title": "Chương 1: Mảng — Đếm phần tử lớn hơn K #08",
+    "description": "Cho một dãy số nguyên. Hãy đếm phần tử lớn hơn k theo yêu cầu và in kết quả. Dữ liệu bảo đảm phù hợp với giới hạn đã cho.",
+    "problemType": "STANDARD",
+    "difficulty": "MEDIUM",
+    "inputSpecification": "Dòng đầu chứa N (và K nếu bài yêu cầu). Dòng tiếp theo chứa N số nguyên.",
+    "outputSpecification": "In kết quả theo đúng định dạng của đề bài.",
+    "examples": [
+      {
+        "input": "6 6\n12 -6 -1 4 9 14",
+        "output": "3",
+        "explanation": "Áp dụng thao tác đếm phần tử lớn hơn k trên dãy đã cho."
+      },
+      {
+        "input": "6 7\n15 -3 2 7 12 -6",
+        "output": "2",
+        "explanation": "Áp dụng thao tác đếm phần tử lớn hơn k trên dãy đã cho."
+      }
+    ],
+    "constraints": "1 ≤ N ≤ 100000; |Ai| ≤ 10^9.",
+    "timeLimitMs": 1000,
+    "memoryLimitMb": 256,
+    "publishStatus": "PUBLISHED",
+    "createdBy": "ac9fadc2-1955-59e4-984d-26f74bbb4f53",
+    "topicName": "Mảng",
+    "testCases": [
+      {
+        "input": "6 6\n12 -6 -1 4 9 14",
+        "expectedOutput": "3",
+        "isHidden": false,
+        "score": 1,
+        "displayOrder": 0
+      },
+      {
+        "input": "6 7\n15 -3 2 7 12 -6",
+        "expectedOutput": "2",
+        "isHidden": false,
+        "score": 1,
+        "displayOrder": 1
+      },
+      {
+        "input": "6 8\n-5 0 5 10 15 -3",
+        "expectedOutput": "2",
+        "isHidden": true,
+        "score": 1,
+        "displayOrder": 2
+      },
+      {
+        "input": "6 2\n-2 3 8 13 -5 0",
+        "expectedOutput": "3",
+        "isHidden": true,
+        "score": 1,
+        "displayOrder": 3
+      },
+      {
+        "input": "6 3\n1 6 11 -7 -2 3",
+        "expectedOutput": "2",
+        "isHidden": true,
+        "score": 1,
+        "displayOrder": 4
+      }
+    ],
+    "languages": ["c", "cpp", "java", "python"],
+    "starterCodes": {
+      "c": "#include <stdio.h>\nint main(void) { return 0; }",
+      "cpp": "#include <bits/stdc++.h>\nusing namespace std;\nint main(){ios::sync_with_stdio(false);cin.tie(nullptr);return 0;}",
+      "java": "import java.util.*;\npublic class Main { public static void main(String[] args) {} }",
+      "python": "import sys\n\ndef main():\n    data = sys.stdin.read().split()\n\nif __name__ == \"__main__\":\n    main()"
+    }
+  },
+  {
+    "id": "f9990aed-0a01-5db0-851d-4900bcb2275d",
+    "key": "c03-ch01-p09",
+    "courseKey": "c03",
+    "chapterKey": "c03-ch01",
+    "slug": "c03-ch01-p09",
+    "title": "Chương 1: Mảng — Tính tổng ba phần tử đầu #09",
+    "description": "Cho một dãy số nguyên. Hãy tính tổng ba phần tử đầu theo yêu cầu và in kết quả. Dữ liệu bảo đảm phù hợp với giới hạn đã cho.",
+    "problemType": "STANDARD",
+    "difficulty": "HARD",
+    "inputSpecification": "Dòng đầu chứa N (và K nếu bài yêu cầu). Dòng tiếp theo chứa N số nguyên.",
+    "outputSpecification": "In kết quả theo đúng định dạng của đề bài.",
+    "examples": [
+      {
+        "input": "6\n15 -3 2 7 12 -6",
+        "output": "14",
+        "explanation": "Áp dụng thao tác tính tổng ba phần tử đầu trên dãy đã cho."
+      },
+      {
+        "input": "6\n-5 0 5 10 15 -3",
+        "output": "0",
+        "explanation": "Áp dụng thao tác tính tổng ba phần tử đầu trên dãy đã cho."
+      }
+    ],
+    "constraints": "1 ≤ N ≤ 100000; |Ai| ≤ 10^9.",
+    "timeLimitMs": 1000,
+    "memoryLimitMb": 256,
+    "publishStatus": "PUBLISHED",
+    "createdBy": "ac9fadc2-1955-59e4-984d-26f74bbb4f53",
+    "topicName": "Mảng",
+    "testCases": [
+      {
+        "input": "6\n15 -3 2 7 12 -6",
+        "expectedOutput": "14",
+        "isHidden": false,
+        "score": 1,
+        "displayOrder": 0
+      },
+      {
+        "input": "6\n-5 0 5 10 15 -3",
+        "expectedOutput": "0",
+        "isHidden": false,
+        "score": 1,
+        "displayOrder": 1
+      },
+      {
+        "input": "6\n-2 3 8 13 -5 0",
+        "expectedOutput": "9",
+        "isHidden": true,
+        "score": 1,
+        "displayOrder": 2
+      },
+      {
+        "input": "6\n1 6 11 -7 -2 3",
+        "expectedOutput": "18",
+        "isHidden": true,
+        "score": 1,
+        "displayOrder": 3
+      },
+      {
+        "input": "6\n4 9 14 -4 1 6",
+        "expectedOutput": "27",
+        "isHidden": true,
+        "score": 1,
+        "displayOrder": 4
+      }
+    ],
+    "languages": ["c", "cpp", "java", "python"],
+    "starterCodes": {
+      "c": "#include <stdio.h>\nint main(void) { return 0; }",
+      "cpp": "#include <bits/stdc++.h>\nusing namespace std;\nint main(){ios::sync_with_stdio(false);cin.tie(nullptr);return 0;}",
+      "java": "import java.util.*;\npublic class Main { public static void main(String[] args) {} }",
+      "python": "import sys\n\ndef main():\n    data = sys.stdin.read().split()\n\nif __name__ == \"__main__\":\n    main()"
+    }
+  },
+  {
+    "id": "b2c5a054-b4da-5417-b1fe-b01b5441b5c2",
+    "key": "c03-ch01-p10",
+    "courseKey": "c03",
+    "chapterKey": "c03-ch01",
+    "slug": "c03-ch01-p10",
+    "title": "Chương 1: Mảng — Tìm ước chung lớn nhất #10",
+    "description": "Cho một dãy số nguyên. Hãy tìm ước chung lớn nhất theo yêu cầu và in kết quả. Dữ liệu bảo đảm phù hợp với giới hạn đã cho.",
+    "problemType": "STANDARD",
+    "difficulty": "EASY",
+    "inputSpecification": "Dòng đầu chứa N (và K nếu bài yêu cầu). Dòng tiếp theo chứa N số nguyên.",
+    "outputSpecification": "In kết quả theo đúng định dạng của đề bài.",
+    "examples": [
+      {
+        "input": "6\n-5 0 5 10 15 -3",
+        "output": "1",
+        "explanation": "Áp dụng thao tác tìm ước chung lớn nhất trên dãy đã cho."
+      },
+      {
+        "input": "6\n-2 3 8 13 -5 0",
+        "output": "1",
+        "explanation": "Áp dụng thao tác tìm ước chung lớn nhất trên dãy đã cho."
+      }
+    ],
+    "constraints": "1 ≤ N ≤ 100000; |Ai| ≤ 10^9.",
+    "timeLimitMs": 1000,
+    "memoryLimitMb": 256,
+    "publishStatus": "PUBLISHED",
+    "createdBy": "ac9fadc2-1955-59e4-984d-26f74bbb4f53",
+    "topicName": "Mảng",
+    "testCases": [
+      {
+        "input": "6\n-5 0 5 10 15 -3",
+        "expectedOutput": "1",
+        "isHidden": false,
+        "score": 1,
+        "displayOrder": 0
+      },
+      {
+        "input": "6\n-2 3 8 13 -5 0",
+        "expectedOutput": "1",
+        "isHidden": false,
+        "score": 1,
+        "displayOrder": 1
+      },
+      {
+        "input": "6\n1 6 11 -7 -2 3",
+        "expectedOutput": "1",
+        "isHidden": true,
+        "score": 1,
+        "displayOrder": 2
+      },
+      {
+        "input": "6\n4 9 14 -4 1 6",
+        "expectedOutput": "1",
+        "isHidden": true,
+        "score": 1,
+        "displayOrder": 3
+      },
+      {
+        "input": "6\n7 12 -6 -1 4 9",
+        "expectedOutput": "1",
+        "isHidden": true,
+        "score": 1,
+        "displayOrder": 4
+      }
+    ],
+    "languages": ["c", "cpp", "java", "python"],
+    "starterCodes": {
+      "c": "#include <stdio.h>\nint main(void) { return 0; }",
+      "cpp": "#include <bits/stdc++.h>\nusing namespace std;\nint main(){ios::sync_with_stdio(false);cin.tie(nullptr);return 0;}",
+      "java": "import java.util.*;\npublic class Main { public static void main(String[] args) {} }",
+      "python": "import sys\n\ndef main():\n    data = sys.stdin.read().split()\n\nif __name__ == \"__main__\":\n    main()"
+    }
+  },
+  {
+    "id": "a55d6e53-180e-55b8-b6c8-2516eafd95d9",
+    "key": "c03-ch02-p01",
+    "courseKey": "c03",
+    "chapterKey": "c03-ch02",
+    "slug": "c03-ch02-p01",
+    "title": "Chương 2: Sắp xếp — Tính tổng các phần tử #01",
+    "description": "Cho một dãy số nguyên. Hãy tính tổng các phần tử theo yêu cầu và in kết quả. Dữ liệu bảo đảm phù hợp với giới hạn đã cho.",
+    "problemType": "STANDARD",
+    "difficulty": "EASY",
+    "inputSpecification": "Dòng đầu chứa N (và K nếu bài yêu cầu). Dòng tiếp theo chứa N số nguyên.",
+    "outputSpecification": "In kết quả theo đúng định dạng của đề bài.",
+    "examples": [
+      {
+        "input": "6\n-2 3 8 13 -5 0",
+        "output": "17",
+        "explanation": "Áp dụng thao tác tính tổng các phần tử trên dãy đã cho."
+      },
+      {
+        "input": "6\n1 6 11 -7 -2 3",
+        "output": "12",
+        "explanation": "Áp dụng thao tác tính tổng các phần tử trên dãy đã cho."
+      }
+    ],
+    "constraints": "1 ≤ N ≤ 100000; |Ai| ≤ 10^9.",
+    "timeLimitMs": 1000,
+    "memoryLimitMb": 256,
+    "publishStatus": "PUBLISHED",
+    "createdBy": "ac9fadc2-1955-59e4-984d-26f74bbb4f53",
+    "topicName": "Sắp xếp",
+    "testCases": [
+      {
+        "input": "6\n-2 3 8 13 -5 0",
+        "expectedOutput": "17",
+        "isHidden": false,
+        "score": 1,
+        "displayOrder": 0
+      },
+      {
+        "input": "6\n1 6 11 -7 -2 3",
+        "expectedOutput": "12",
+        "isHidden": false,
+        "score": 1,
+        "displayOrder": 1
+      },
+      {
+        "input": "6\n4 9 14 -4 1 6",
+        "expectedOutput": "30",
+        "isHidden": true,
+        "score": 1,
+        "displayOrder": 2
+      },
+      {
+        "input": "6\n7 12 -6 -1 4 9",
+        "expectedOutput": "25",
+        "isHidden": true,
+        "score": 1,
+        "displayOrder": 3
+      },
+      {
+        "input": "6\n10 15 -3 2 7 12",
+        "expectedOutput": "43",
+        "isHidden": true,
+        "score": 1,
+        "displayOrder": 4
+      }
+    ],
+    "languages": ["c", "cpp", "java", "python"],
+    "starterCodes": {
+      "c": "#include <stdio.h>\nint main(void) { return 0; }",
+      "cpp": "#include <bits/stdc++.h>\nusing namespace std;\nint main(){ios::sync_with_stdio(false);cin.tie(nullptr);return 0;}",
+      "java": "import java.util.*;\npublic class Main { public static void main(String[] args) {} }",
+      "python": "import sys\n\ndef main():\n    data = sys.stdin.read().split()\n\nif __name__ == \"__main__\":\n    main()"
+    }
+  },
+  {
+    "id": "80e74fad-cd41-5a31-b36e-5511a428c237",
+    "key": "c03-ch02-p02",
+    "courseKey": "c03",
+    "chapterKey": "c03-ch02",
+    "slug": "c03-ch02-p02",
+    "title": "Chương 2: Sắp xếp — Tìm giá trị lớn nhất #02",
+    "description": "Cho một dãy số nguyên. Hãy tìm giá trị lớn nhất theo yêu cầu và in kết quả. Dữ liệu bảo đảm phù hợp với giới hạn đã cho.",
+    "problemType": "STANDARD",
+    "difficulty": "MEDIUM",
+    "inputSpecification": "Dòng đầu chứa N (và K nếu bài yêu cầu). Dòng tiếp theo chứa N số nguyên.",
+    "outputSpecification": "In kết quả theo đúng định dạng của đề bài.",
+    "examples": [
+      {
+        "input": "6\n1 6 11 -7 -2 3",
+        "output": "11",
+        "explanation": "Áp dụng thao tác tìm giá trị lớn nhất trên dãy đã cho."
+      },
+      {
+        "input": "6\n4 9 14 -4 1 6",
+        "output": "14",
+        "explanation": "Áp dụng thao tác tìm giá trị lớn nhất trên dãy đã cho."
+      }
+    ],
+    "constraints": "1 ≤ N ≤ 100000; |Ai| ≤ 10^9.",
+    "timeLimitMs": 1000,
+    "memoryLimitMb": 256,
+    "publishStatus": "PUBLISHED",
+    "createdBy": "ac9fadc2-1955-59e4-984d-26f74bbb4f53",
+    "topicName": "Sắp xếp",
+    "testCases": [
+      {
+        "input": "6\n1 6 11 -7 -2 3",
+        "expectedOutput": "11",
+        "isHidden": false,
+        "score": 1,
+        "displayOrder": 0
+      },
+      {
+        "input": "6\n4 9 14 -4 1 6",
+        "expectedOutput": "14",
+        "isHidden": false,
+        "score": 1,
+        "displayOrder": 1
+      },
+      {
+        "input": "6\n7 12 -6 -1 4 9",
+        "expectedOutput": "12",
+        "isHidden": true,
+        "score": 1,
+        "displayOrder": 2
+      },
+      {
+        "input": "6\n10 15 -3 2 7 12",
+        "expectedOutput": "15",
+        "isHidden": true,
+        "score": 1,
+        "displayOrder": 3
+      },
+      {
+        "input": "6\n13 -5 0 5 10 15",
+        "expectedOutput": "15",
+        "isHidden": true,
+        "score": 1,
+        "displayOrder": 4
+      }
+    ],
+    "languages": ["c", "cpp", "java", "python"],
+    "starterCodes": {
+      "c": "#include <stdio.h>\nint main(void) { return 0; }",
+      "cpp": "#include <bits/stdc++.h>\nusing namespace std;\nint main(){ios::sync_with_stdio(false);cin.tie(nullptr);return 0;}",
+      "java": "import java.util.*;\npublic class Main { public static void main(String[] args) {} }",
+      "python": "import sys\n\ndef main():\n    data = sys.stdin.read().split()\n\nif __name__ == \"__main__\":\n    main()"
+    }
+  },
+  {
+    "id": "345cd96b-d143-53ac-9ce3-6d4aebe957e5",
+    "key": "c03-ch02-p03",
+    "courseKey": "c03",
+    "chapterKey": "c03-ch02",
+    "slug": "c03-ch02-p03",
+    "title": "Chương 2: Sắp xếp — Tìm giá trị nhỏ nhất #03",
+    "description": "Cho một dãy số nguyên. Hãy tìm giá trị nhỏ nhất theo yêu cầu và in kết quả. Dữ liệu bảo đảm phù hợp với giới hạn đã cho.",
+    "problemType": "STANDARD",
+    "difficulty": "HARD",
+    "inputSpecification": "Dòng đầu chứa N (và K nếu bài yêu cầu). Dòng tiếp theo chứa N số nguyên.",
+    "outputSpecification": "In kết quả theo đúng định dạng của đề bài.",
+    "examples": [
+      {
+        "input": "6\n4 9 14 -4 1 6",
+        "output": "-4",
+        "explanation": "Áp dụng thao tác tìm giá trị nhỏ nhất trên dãy đã cho."
+      },
+      {
+        "input": "6\n7 12 -6 -1 4 9",
+        "output": "-6",
+        "explanation": "Áp dụng thao tác tìm giá trị nhỏ nhất trên dãy đã cho."
+      }
+    ],
+    "constraints": "1 ≤ N ≤ 100000; |Ai| ≤ 10^9.",
+    "timeLimitMs": 1000,
+    "memoryLimitMb": 256,
+    "publishStatus": "PUBLISHED",
+    "createdBy": "ac9fadc2-1955-59e4-984d-26f74bbb4f53",
+    "topicName": "Sắp xếp",
+    "testCases": [
+      {
+        "input": "6\n4 9 14 -4 1 6",
+        "expectedOutput": "-4",
+        "isHidden": false,
+        "score": 1,
+        "displayOrder": 0
+      },
+      {
+        "input": "6\n7 12 -6 -1 4 9",
+        "expectedOutput": "-6",
+        "isHidden": false,
+        "score": 1,
+        "displayOrder": 1
+      },
+      {
+        "input": "6\n10 15 -3 2 7 12",
+        "expectedOutput": "-3",
+        "isHidden": true,
+        "score": 1,
+        "displayOrder": 2
+      },
+      {
+        "input": "6\n13 -5 0 5 10 15",
+        "expectedOutput": "-5",
+        "isHidden": true,
+        "score": 1,
+        "displayOrder": 3
+      },
+      {
+        "input": "6\n-7 -2 3 8 13 -5",
+        "expectedOutput": "-7",
+        "isHidden": true,
+        "score": 1,
+        "displayOrder": 4
+      }
+    ],
+    "languages": ["c", "cpp", "java", "python"],
+    "starterCodes": {
+      "c": "#include <stdio.h>\nint main(void) { return 0; }",
+      "cpp": "#include <bits/stdc++.h>\nusing namespace std;\nint main(){ios::sync_with_stdio(false);cin.tie(nullptr);return 0;}",
+      "java": "import java.util.*;\npublic class Main { public static void main(String[] args) {} }",
+      "python": "import sys\n\ndef main():\n    data = sys.stdin.read().split()\n\nif __name__ == \"__main__\":\n    main()"
+    }
+  },
+  {
+    "id": "bfe6c92d-f187-5323-a66c-93c2554cb5e5",
+    "key": "c03-ch02-p04",
+    "courseKey": "c03",
+    "chapterKey": "c03-ch02",
+    "slug": "c03-ch02-p04",
+    "title": "Chương 2: Sắp xếp — Đếm số chẵn #04",
+    "description": "Cho một dãy số nguyên. Hãy đếm số chẵn theo yêu cầu và in kết quả. Dữ liệu bảo đảm phù hợp với giới hạn đã cho.",
+    "problemType": "STANDARD",
+    "difficulty": "EASY",
+    "inputSpecification": "Dòng đầu chứa N (và K nếu bài yêu cầu). Dòng tiếp theo chứa N số nguyên.",
+    "outputSpecification": "In kết quả theo đúng định dạng của đề bài.",
+    "examples": [
+      {
+        "input": "6\n7 12 -6 -1 4 9",
+        "output": "3",
+        "explanation": "Áp dụng thao tác đếm số chẵn trên dãy đã cho."
+      },
+      {
+        "input": "6\n10 15 -3 2 7 12",
+        "output": "3",
+        "explanation": "Áp dụng thao tác đếm số chẵn trên dãy đã cho."
+      }
+    ],
+    "constraints": "1 ≤ N ≤ 100000; |Ai| ≤ 10^9.",
+    "timeLimitMs": 1000,
+    "memoryLimitMb": 256,
+    "publishStatus": "PUBLISHED",
+    "createdBy": "ac9fadc2-1955-59e4-984d-26f74bbb4f53",
+    "topicName": "Sắp xếp",
+    "testCases": [
+      {
+        "input": "6\n7 12 -6 -1 4 9",
+        "expectedOutput": "3",
+        "isHidden": false,
+        "score": 1,
+        "displayOrder": 0
+      },
+      {
+        "input": "6\n10 15 -3 2 7 12",
+        "expectedOutput": "3",
+        "isHidden": false,
+        "score": 1,
+        "displayOrder": 1
+      },
+      {
+        "input": "6\n13 -5 0 5 10 15",
+        "expectedOutput": "2",
+        "isHidden": true,
+        "score": 1,
+        "displayOrder": 2
+      },
+      {
+        "input": "6\n-7 -2 3 8 13 -5",
+        "expectedOutput": "2",
+        "isHidden": true,
+        "score": 1,
+        "displayOrder": 3
+      },
+      {
+        "input": "6\n-4 1 6 11 -7 -2",
+        "expectedOutput": "3",
+        "isHidden": true,
+        "score": 1,
+        "displayOrder": 4
+      }
+    ],
+    "languages": ["c", "cpp", "java", "python"],
+    "starterCodes": {
+      "c": "#include <stdio.h>\nint main(void) { return 0; }",
+      "cpp": "#include <bits/stdc++.h>\nusing namespace std;\nint main(){ios::sync_with_stdio(false);cin.tie(nullptr);return 0;}",
+      "java": "import java.util.*;\npublic class Main { public static void main(String[] args) {} }",
+      "python": "import sys\n\ndef main():\n    data = sys.stdin.read().split()\n\nif __name__ == \"__main__\":\n    main()"
+    }
+  },
+  {
+    "id": "9b250550-5c5b-5e50-b6c9-8bb9a0fc4144",
+    "key": "c03-ch02-p05",
+    "courseKey": "c03",
+    "chapterKey": "c03-ch02",
+    "slug": "c03-ch02-p05",
+    "title": "Chương 2: Sắp xếp — Đếm bội số của K #05",
+    "description": "Cho một dãy số nguyên. Hãy đếm bội số của k theo yêu cầu và in kết quả. Dữ liệu bảo đảm phù hợp với giới hạn đã cho.",
+    "problemType": "STANDARD",
+    "difficulty": "MEDIUM",
+    "inputSpecification": "Dòng đầu chứa N (và K nếu bài yêu cầu). Dòng tiếp theo chứa N số nguyên.",
+    "outputSpecification": "In kết quả theo đúng định dạng của đề bài.",
+    "examples": [
+      {
+        "input": "6 6\n10 15 -3 2 7 12",
+        "output": "1",
+        "explanation": "Áp dụng thao tác đếm bội số của k trên dãy đã cho."
+      },
+      {
+        "input": "6 7\n13 -5 0 5 10 15",
+        "output": "1",
+        "explanation": "Áp dụng thao tác đếm bội số của k trên dãy đã cho."
+      }
+    ],
+    "constraints": "1 ≤ N ≤ 100000; |Ai| ≤ 10^9.",
+    "timeLimitMs": 1000,
+    "memoryLimitMb": 256,
+    "publishStatus": "PUBLISHED",
+    "createdBy": "ac9fadc2-1955-59e4-984d-26f74bbb4f53",
+    "topicName": "Sắp xếp",
+    "testCases": [
+      {
+        "input": "6 6\n10 15 -3 2 7 12",
+        "expectedOutput": "1",
+        "isHidden": false,
+        "score": 1,
+        "displayOrder": 0
+      },
+      {
+        "input": "6 7\n13 -5 0 5 10 15",
+        "expectedOutput": "1",
+        "isHidden": false,
+        "score": 1,
+        "displayOrder": 1
+      },
+      {
+        "input": "6 8\n-7 -2 3 8 13 -5",
+        "expectedOutput": "1",
+        "isHidden": true,
+        "score": 1,
+        "displayOrder": 2
+      },
+      {
+        "input": "6 2\n-4 1 6 11 -7 -2",
+        "expectedOutput": "3",
+        "isHidden": true,
+        "score": 1,
+        "displayOrder": 3
+      },
+      {
+        "input": "6 3\n-1 4 9 14 -4 1",
+        "expectedOutput": "1",
+        "isHidden": true,
+        "score": 1,
+        "displayOrder": 4
+      }
+    ],
+    "languages": ["c", "cpp", "java", "python"],
+    "starterCodes": {
+      "c": "#include <stdio.h>\nint main(void) { return 0; }",
+      "cpp": "#include <bits/stdc++.h>\nusing namespace std;\nint main(){ios::sync_with_stdio(false);cin.tie(nullptr);return 0;}",
+      "java": "import java.util.*;\npublic class Main { public static void main(String[] args) {} }",
+      "python": "import sys\n\ndef main():\n    data = sys.stdin.read().split()\n\nif __name__ == \"__main__\":\n    main()"
+    }
+  },
+  {
+    "id": "aa0565ff-64b2-5639-910d-6f21c0883da9",
+    "key": "c03-ch02-p06",
+    "courseKey": "c03",
+    "chapterKey": "c03-ch02",
+    "slug": "c03-ch02-p06",
+    "title": "Chương 2: Sắp xếp — Đảo ngược dãy #06",
+    "description": "Cho một dãy số nguyên. Hãy đảo ngược dãy theo yêu cầu và in kết quả. Dữ liệu bảo đảm phù hợp với giới hạn đã cho.",
+    "problemType": "STANDARD",
+    "difficulty": "HARD",
+    "inputSpecification": "Dòng đầu chứa N (và K nếu bài yêu cầu). Dòng tiếp theo chứa N số nguyên.",
+    "outputSpecification": "In kết quả theo đúng định dạng của đề bài.",
+    "examples": [
+      {
+        "input": "6\n13 -5 0 5 10 15",
+        "output": "15 10 5 0 -5 13",
+        "explanation": "Áp dụng thao tác đảo ngược dãy trên dãy đã cho."
+      },
+      {
+        "input": "6\n-7 -2 3 8 13 -5",
+        "output": "-5 13 8 3 -2 -7",
+        "explanation": "Áp dụng thao tác đảo ngược dãy trên dãy đã cho."
+      }
+    ],
+    "constraints": "1 ≤ N ≤ 100000; |Ai| ≤ 10^9.",
+    "timeLimitMs": 1000,
+    "memoryLimitMb": 256,
+    "publishStatus": "PUBLISHED",
+    "createdBy": "ac9fadc2-1955-59e4-984d-26f74bbb4f53",
+    "topicName": "Sắp xếp",
+    "testCases": [
+      {
+        "input": "6\n13 -5 0 5 10 15",
+        "expectedOutput": "15 10 5 0 -5 13",
+        "isHidden": false,
+        "score": 1,
+        "displayOrder": 0
+      },
+      {
+        "input": "6\n-7 -2 3 8 13 -5",
+        "expectedOutput": "-5 13 8 3 -2 -7",
+        "isHidden": false,
+        "score": 1,
+        "displayOrder": 1
+      },
+      {
+        "input": "6\n-4 1 6 11 -7 -2",
+        "expectedOutput": "-2 -7 11 6 1 -4",
+        "isHidden": true,
+        "score": 1,
+        "displayOrder": 2
+      },
+      {
+        "input": "6\n-1 4 9 14 -4 1",
+        "expectedOutput": "1 -4 14 9 4 -1",
+        "isHidden": true,
+        "score": 1,
+        "displayOrder": 3
+      },
+      {
+        "input": "6\n2 7 12 -6 -1 4",
+        "expectedOutput": "4 -1 -6 12 7 2",
+        "isHidden": true,
+        "score": 1,
+        "displayOrder": 4
+      }
+    ],
+    "languages": ["c", "cpp", "java", "python"],
+    "starterCodes": {
+      "c": "#include <stdio.h>\nint main(void) { return 0; }",
+      "cpp": "#include <bits/stdc++.h>\nusing namespace std;\nint main(){ios::sync_with_stdio(false);cin.tie(nullptr);return 0;}",
+      "java": "import java.util.*;\npublic class Main { public static void main(String[] args) {} }",
+      "python": "import sys\n\ndef main():\n    data = sys.stdin.read().split()\n\nif __name__ == \"__main__\":\n    main()"
+    }
+  },
+  {
+    "id": "d3bc6f02-5960-532c-a9d1-b3d82a06c0c7",
+    "key": "c03-ch02-p07",
+    "courseKey": "c03",
+    "chapterKey": "c03-ch02",
+    "slug": "c03-ch02-p07",
+    "title": "Chương 2: Sắp xếp — Sắp xếp tăng dần #07",
+    "description": "Cho một dãy số nguyên. Hãy sắp xếp tăng dần theo yêu cầu và in kết quả. Dữ liệu bảo đảm phù hợp với giới hạn đã cho.",
+    "problemType": "STANDARD",
+    "difficulty": "EASY",
+    "inputSpecification": "Dòng đầu chứa N (và K nếu bài yêu cầu). Dòng tiếp theo chứa N số nguyên.",
+    "outputSpecification": "In kết quả theo đúng định dạng của đề bài.",
+    "examples": [
+      {
+        "input": "6\n-7 -2 3 8 13 -5",
+        "output": "-7 -5 -2 3 8 13",
+        "explanation": "Áp dụng thao tác sắp xếp tăng dần trên dãy đã cho."
+      },
+      {
+        "input": "6\n-4 1 6 11 -7 -2",
+        "output": "-7 -4 -2 1 6 11",
+        "explanation": "Áp dụng thao tác sắp xếp tăng dần trên dãy đã cho."
+      }
+    ],
+    "constraints": "1 ≤ N ≤ 100000; |Ai| ≤ 10^9.",
+    "timeLimitMs": 1000,
+    "memoryLimitMb": 256,
+    "publishStatus": "PUBLISHED",
+    "createdBy": "ac9fadc2-1955-59e4-984d-26f74bbb4f53",
+    "topicName": "Sắp xếp",
+    "testCases": [
+      {
+        "input": "6\n-7 -2 3 8 13 -5",
+        "expectedOutput": "-7 -5 -2 3 8 13",
+        "isHidden": false,
+        "score": 1,
+        "displayOrder": 0
+      },
+      {
+        "input": "6\n-4 1 6 11 -7 -2",
+        "expectedOutput": "-7 -4 -2 1 6 11",
+        "isHidden": false,
+        "score": 1,
+        "displayOrder": 1
+      },
+      {
+        "input": "6\n-1 4 9 14 -4 1",
+        "expectedOutput": "-4 -1 1 4 9 14",
+        "isHidden": true,
+        "score": 1,
+        "displayOrder": 2
+      },
+      {
+        "input": "6\n2 7 12 -6 -1 4",
+        "expectedOutput": "-6 -1 2 4 7 12",
+        "isHidden": true,
+        "score": 1,
+        "displayOrder": 3
+      },
+      {
+        "input": "6\n5 10 15 -3 2 7",
+        "expectedOutput": "-3 2 5 7 10 15",
+        "isHidden": true,
+        "score": 1,
+        "displayOrder": 4
+      }
+    ],
+    "languages": ["c", "cpp", "java", "python"],
+    "starterCodes": {
+      "c": "#include <stdio.h>\nint main(void) { return 0; }",
+      "cpp": "#include <bits/stdc++.h>\nusing namespace std;\nint main(){ios::sync_with_stdio(false);cin.tie(nullptr);return 0;}",
+      "java": "import java.util.*;\npublic class Main { public static void main(String[] args) {} }",
+      "python": "import sys\n\ndef main():\n    data = sys.stdin.read().split()\n\nif __name__ == \"__main__\":\n    main()"
+    }
+  },
+  {
+    "id": "4a2fc217-10b9-5bc6-bd89-de1141c7898b",
+    "key": "c03-ch02-p08",
+    "courseKey": "c03",
+    "chapterKey": "c03-ch02",
+    "slug": "c03-ch02-p08",
+    "title": "Chương 2: Sắp xếp — Đếm phần tử lớn hơn K #08",
+    "description": "Cho một dãy số nguyên. Hãy đếm phần tử lớn hơn k theo yêu cầu và in kết quả. Dữ liệu bảo đảm phù hợp với giới hạn đã cho.",
+    "problemType": "STANDARD",
+    "difficulty": "MEDIUM",
+    "inputSpecification": "Dòng đầu chứa N (và K nếu bài yêu cầu). Dòng tiếp theo chứa N số nguyên.",
+    "outputSpecification": "In kết quả theo đúng định dạng của đề bài.",
+    "examples": [
+      {
+        "input": "6 2\n-4 1 6 11 -7 -2",
+        "output": "2",
+        "explanation": "Áp dụng thao tác đếm phần tử lớn hơn k trên dãy đã cho."
+      },
+      {
+        "input": "6 3\n-1 4 9 14 -4 1",
+        "output": "3",
+        "explanation": "Áp dụng thao tác đếm phần tử lớn hơn k trên dãy đã cho."
+      }
+    ],
+    "constraints": "1 ≤ N ≤ 100000; |Ai| ≤ 10^9.",
+    "timeLimitMs": 1000,
+    "memoryLimitMb": 256,
+    "publishStatus": "PUBLISHED",
+    "createdBy": "ac9fadc2-1955-59e4-984d-26f74bbb4f53",
+    "topicName": "Sắp xếp",
+    "testCases": [
+      {
+        "input": "6 2\n-4 1 6 11 -7 -2",
+        "expectedOutput": "2",
+        "isHidden": false,
+        "score": 1,
+        "displayOrder": 0
+      },
+      {
+        "input": "6 3\n-1 4 9 14 -4 1",
+        "expectedOutput": "3",
+        "isHidden": false,
+        "score": 1,
+        "displayOrder": 1
+      },
+      {
+        "input": "6 4\n2 7 12 -6 -1 4",
+        "expectedOutput": "2",
+        "isHidden": true,
+        "score": 1,
+        "displayOrder": 2
+      },
+      {
+        "input": "6 5\n5 10 15 -3 2 7",
+        "expectedOutput": "3",
+        "isHidden": true,
+        "score": 1,
+        "displayOrder": 3
+      },
+      {
+        "input": "6 6\n8 13 -5 0 5 10",
+        "expectedOutput": "3",
+        "isHidden": true,
+        "score": 1,
+        "displayOrder": 4
+      }
+    ],
+    "languages": ["c", "cpp", "java", "python"],
+    "starterCodes": {
+      "c": "#include <stdio.h>\nint main(void) { return 0; }",
+      "cpp": "#include <bits/stdc++.h>\nusing namespace std;\nint main(){ios::sync_with_stdio(false);cin.tie(nullptr);return 0;}",
+      "java": "import java.util.*;\npublic class Main { public static void main(String[] args) {} }",
+      "python": "import sys\n\ndef main():\n    data = sys.stdin.read().split()\n\nif __name__ == \"__main__\":\n    main()"
+    }
+  },
+  {
+    "id": "8b0febba-4434-5521-948a-b6277c7c1026",
+    "key": "c03-ch02-p09",
+    "courseKey": "c03",
+    "chapterKey": "c03-ch02",
+    "slug": "c03-ch02-p09",
+    "title": "Chương 2: Sắp xếp — Tính tổng ba phần tử đầu #09",
+    "description": "Cho một dãy số nguyên. Hãy tính tổng ba phần tử đầu theo yêu cầu và in kết quả. Dữ liệu bảo đảm phù hợp với giới hạn đã cho.",
+    "problemType": "STANDARD",
+    "difficulty": "HARD",
+    "inputSpecification": "Dòng đầu chứa N (và K nếu bài yêu cầu). Dòng tiếp theo chứa N số nguyên.",
+    "outputSpecification": "In kết quả theo đúng định dạng của đề bài.",
+    "examples": [
+      {
+        "input": "6\n-1 4 9 14 -4 1",
+        "output": "12",
+        "explanation": "Áp dụng thao tác tính tổng ba phần tử đầu trên dãy đã cho."
+      },
+      {
+        "input": "6\n2 7 12 -6 -1 4",
+        "output": "21",
+        "explanation": "Áp dụng thao tác tính tổng ba phần tử đầu trên dãy đã cho."
+      }
+    ],
+    "constraints": "1 ≤ N ≤ 100000; |Ai| ≤ 10^9.",
+    "timeLimitMs": 1000,
+    "memoryLimitMb": 256,
+    "publishStatus": "PUBLISHED",
+    "createdBy": "ac9fadc2-1955-59e4-984d-26f74bbb4f53",
+    "topicName": "Sắp xếp",
+    "testCases": [
+      {
+        "input": "6\n-1 4 9 14 -4 1",
+        "expectedOutput": "12",
+        "isHidden": false,
+        "score": 1,
+        "displayOrder": 0
+      },
+      {
+        "input": "6\n2 7 12 -6 -1 4",
+        "expectedOutput": "21",
+        "isHidden": false,
+        "score": 1,
+        "displayOrder": 1
+      },
+      {
+        "input": "6\n5 10 15 -3 2 7",
+        "expectedOutput": "30",
+        "isHidden": true,
+        "score": 1,
+        "displayOrder": 2
+      },
+      {
+        "input": "6\n8 13 -5 0 5 10",
+        "expectedOutput": "16",
+        "isHidden": true,
+        "score": 1,
+        "displayOrder": 3
+      },
+      {
+        "input": "6\n11 -7 -2 3 8 13",
+        "expectedOutput": "2",
+        "isHidden": true,
+        "score": 1,
+        "displayOrder": 4
+      }
+    ],
+    "languages": ["c", "cpp", "java", "python"],
+    "starterCodes": {
+      "c": "#include <stdio.h>\nint main(void) { return 0; }",
+      "cpp": "#include <bits/stdc++.h>\nusing namespace std;\nint main(){ios::sync_with_stdio(false);cin.tie(nullptr);return 0;}",
+      "java": "import java.util.*;\npublic class Main { public static void main(String[] args) {} }",
+      "python": "import sys\n\ndef main():\n    data = sys.stdin.read().split()\n\nif __name__ == \"__main__\":\n    main()"
+    }
+  },
+  {
+    "id": "0b8362f7-a593-596b-bba0-74d702ba38dc",
+    "key": "c03-ch02-p10",
+    "courseKey": "c03",
+    "chapterKey": "c03-ch02",
+    "slug": "c03-ch02-p10",
+    "title": "Chương 2: Sắp xếp — Tìm ước chung lớn nhất #10",
+    "description": "Cho một dãy số nguyên. Hãy tìm ước chung lớn nhất theo yêu cầu và in kết quả. Dữ liệu bảo đảm phù hợp với giới hạn đã cho.",
+    "problemType": "STANDARD",
+    "difficulty": "EASY",
+    "inputSpecification": "Dòng đầu chứa N (và K nếu bài yêu cầu). Dòng tiếp theo chứa N số nguyên.",
+    "outputSpecification": "In kết quả theo đúng định dạng của đề bài.",
+    "examples": [
+      {
+        "input": "6\n2 7 12 -6 -1 4",
+        "output": "1",
+        "explanation": "Áp dụng thao tác tìm ước chung lớn nhất trên dãy đã cho."
+      },
+      {
+        "input": "6\n5 10 15 -3 2 7",
+        "output": "1",
+        "explanation": "Áp dụng thao tác tìm ước chung lớn nhất trên dãy đã cho."
+      }
+    ],
+    "constraints": "1 ≤ N ≤ 100000; |Ai| ≤ 10^9.",
+    "timeLimitMs": 1000,
+    "memoryLimitMb": 256,
+    "publishStatus": "PUBLISHED",
+    "createdBy": "ac9fadc2-1955-59e4-984d-26f74bbb4f53",
+    "topicName": "Sắp xếp",
+    "testCases": [
+      {
+        "input": "6\n2 7 12 -6 -1 4",
+        "expectedOutput": "1",
+        "isHidden": false,
+        "score": 1,
+        "displayOrder": 0
+      },
+      {
+        "input": "6\n5 10 15 -3 2 7",
+        "expectedOutput": "1",
+        "isHidden": false,
+        "score": 1,
+        "displayOrder": 1
+      },
+      {
+        "input": "6\n8 13 -5 0 5 10",
+        "expectedOutput": "1",
+        "isHidden": true,
+        "score": 1,
+        "displayOrder": 2
+      },
+      {
+        "input": "6\n11 -7 -2 3 8 13",
+        "expectedOutput": "1",
+        "isHidden": true,
+        "score": 1,
+        "displayOrder": 3
+      },
+      {
+        "input": "6\n14 -4 1 6 11 -7",
+        "expectedOutput": "1",
+        "isHidden": true,
+        "score": 1,
+        "displayOrder": 4
+      }
+    ],
+    "languages": ["c", "cpp", "java", "python"],
+    "starterCodes": {
+      "c": "#include <stdio.h>\nint main(void) { return 0; }",
+      "cpp": "#include <bits/stdc++.h>\nusing namespace std;\nint main(){ios::sync_with_stdio(false);cin.tie(nullptr);return 0;}",
+      "java": "import java.util.*;\npublic class Main { public static void main(String[] args) {} }",
+      "python": "import sys\n\ndef main():\n    data = sys.stdin.read().split()\n\nif __name__ == \"__main__\":\n    main()"
+    }
+  },
+  {
+    "id": "03b06bea-5498-5620-aa5f-50264048485c",
+    "key": "c03-ch03-p01",
+    "courseKey": "c03",
+    "chapterKey": "c03-ch03",
+    "slug": "c03-ch03-p01",
+    "title": "Chương 3: Chuỗi — Tính tổng các phần tử #01",
+    "description": "Cho một dãy số nguyên. Hãy tính tổng các phần tử theo yêu cầu và in kết quả. Dữ liệu bảo đảm phù hợp với giới hạn đã cho.",
+    "problemType": "STANDARD",
+    "difficulty": "EASY",
+    "inputSpecification": "Dòng đầu chứa N (và K nếu bài yêu cầu). Dòng tiếp theo chứa N số nguyên.",
+    "outputSpecification": "In kết quả theo đúng định dạng của đề bài.",
+    "examples": [
+      {
+        "input": "6\n5 10 15 -3 2 7",
+        "output": "36",
+        "explanation": "Áp dụng thao tác tính tổng các phần tử trên dãy đã cho."
+      },
+      {
+        "input": "6\n8 13 -5 0 5 10",
+        "output": "31",
+        "explanation": "Áp dụng thao tác tính tổng các phần tử trên dãy đã cho."
+      }
+    ],
+    "constraints": "1 ≤ N ≤ 100000; |Ai| ≤ 10^9.",
+    "timeLimitMs": 1000,
+    "memoryLimitMb": 256,
+    "publishStatus": "PUBLISHED",
+    "createdBy": "ac9fadc2-1955-59e4-984d-26f74bbb4f53",
+    "topicName": "Chuỗi",
+    "testCases": [
+      {
+        "input": "6\n5 10 15 -3 2 7",
+        "expectedOutput": "36",
+        "isHidden": false,
+        "score": 1,
+        "displayOrder": 0
+      },
+      {
+        "input": "6\n8 13 -5 0 5 10",
+        "expectedOutput": "31",
+        "isHidden": false,
+        "score": 1,
+        "displayOrder": 1
+      },
+      {
+        "input": "6\n11 -7 -2 3 8 13",
+        "expectedOutput": "26",
+        "isHidden": true,
+        "score": 1,
+        "displayOrder": 2
+      },
+      {
+        "input": "6\n14 -4 1 6 11 -7",
+        "expectedOutput": "21",
+        "isHidden": true,
+        "score": 1,
+        "displayOrder": 3
+      },
+      {
+        "input": "6\n-6 -1 4 9 14 -4",
+        "expectedOutput": "16",
+        "isHidden": true,
+        "score": 1,
+        "displayOrder": 4
+      }
+    ],
+    "languages": ["c", "cpp", "java", "python"],
+    "starterCodes": {
+      "c": "#include <stdio.h>\nint main(void) { return 0; }",
+      "cpp": "#include <bits/stdc++.h>\nusing namespace std;\nint main(){ios::sync_with_stdio(false);cin.tie(nullptr);return 0;}",
+      "java": "import java.util.*;\npublic class Main { public static void main(String[] args) {} }",
+      "python": "import sys\n\ndef main():\n    data = sys.stdin.read().split()\n\nif __name__ == \"__main__\":\n    main()"
+    }
+  },
+  {
+    "id": "959be9de-54fd-5aec-b136-2049c5be7630",
+    "key": "c03-ch03-p02",
+    "courseKey": "c03",
+    "chapterKey": "c03-ch03",
+    "slug": "c03-ch03-p02",
+    "title": "Chương 3: Chuỗi — Tìm giá trị lớn nhất #02",
+    "description": "Cho một dãy số nguyên. Hãy tìm giá trị lớn nhất theo yêu cầu và in kết quả. Dữ liệu bảo đảm phù hợp với giới hạn đã cho.",
+    "problemType": "STANDARD",
+    "difficulty": "MEDIUM",
+    "inputSpecification": "Dòng đầu chứa N (và K nếu bài yêu cầu). Dòng tiếp theo chứa N số nguyên.",
+    "outputSpecification": "In kết quả theo đúng định dạng của đề bài.",
+    "examples": [
+      {
+        "input": "6\n8 13 -5 0 5 10",
+        "output": "13",
+        "explanation": "Áp dụng thao tác tìm giá trị lớn nhất trên dãy đã cho."
+      },
+      {
+        "input": "6\n11 -7 -2 3 8 13",
+        "output": "13",
+        "explanation": "Áp dụng thao tác tìm giá trị lớn nhất trên dãy đã cho."
+      }
+    ],
+    "constraints": "1 ≤ N ≤ 100000; |Ai| ≤ 10^9.",
+    "timeLimitMs": 1000,
+    "memoryLimitMb": 256,
+    "publishStatus": "PUBLISHED",
+    "createdBy": "ac9fadc2-1955-59e4-984d-26f74bbb4f53",
+    "topicName": "Chuỗi",
+    "testCases": [
+      {
+        "input": "6\n8 13 -5 0 5 10",
+        "expectedOutput": "13",
+        "isHidden": false,
+        "score": 1,
+        "displayOrder": 0
+      },
+      {
+        "input": "6\n11 -7 -2 3 8 13",
+        "expectedOutput": "13",
+        "isHidden": false,
+        "score": 1,
+        "displayOrder": 1
+      },
+      {
+        "input": "6\n14 -4 1 6 11 -7",
+        "expectedOutput": "14",
+        "isHidden": true,
+        "score": 1,
+        "displayOrder": 2
+      },
+      {
+        "input": "6\n-6 -1 4 9 14 -4",
+        "expectedOutput": "14",
+        "isHidden": true,
+        "score": 1,
+        "displayOrder": 3
+      },
+      {
+        "input": "6\n-3 2 7 12 -6 -1",
+        "expectedOutput": "12",
+        "isHidden": true,
+        "score": 1,
+        "displayOrder": 4
+      }
+    ],
+    "languages": ["c", "cpp", "java", "python"],
+    "starterCodes": {
+      "c": "#include <stdio.h>\nint main(void) { return 0; }",
+      "cpp": "#include <bits/stdc++.h>\nusing namespace std;\nint main(){ios::sync_with_stdio(false);cin.tie(nullptr);return 0;}",
+      "java": "import java.util.*;\npublic class Main { public static void main(String[] args) {} }",
+      "python": "import sys\n\ndef main():\n    data = sys.stdin.read().split()\n\nif __name__ == \"__main__\":\n    main()"
+    }
+  },
+  {
+    "id": "ca267b9a-1a6b-502f-b5b3-be4949ca991e",
+    "key": "c03-ch03-p03",
+    "courseKey": "c03",
+    "chapterKey": "c03-ch03",
+    "slug": "c03-ch03-p03",
+    "title": "Chương 3: Chuỗi — Tìm giá trị nhỏ nhất #03",
+    "description": "Cho một dãy số nguyên. Hãy tìm giá trị nhỏ nhất theo yêu cầu và in kết quả. Dữ liệu bảo đảm phù hợp với giới hạn đã cho.",
+    "problemType": "STANDARD",
+    "difficulty": "HARD",
+    "inputSpecification": "Dòng đầu chứa N (và K nếu bài yêu cầu). Dòng tiếp theo chứa N số nguyên.",
+    "outputSpecification": "In kết quả theo đúng định dạng của đề bài.",
+    "examples": [
+      {
+        "input": "6\n11 -7 -2 3 8 13",
+        "output": "-7",
+        "explanation": "Áp dụng thao tác tìm giá trị nhỏ nhất trên dãy đã cho."
+      },
+      {
+        "input": "6\n14 -4 1 6 11 -7",
+        "output": "-7",
+        "explanation": "Áp dụng thao tác tìm giá trị nhỏ nhất trên dãy đã cho."
+      }
+    ],
+    "constraints": "1 ≤ N ≤ 100000; |Ai| ≤ 10^9.",
+    "timeLimitMs": 1000,
+    "memoryLimitMb": 256,
+    "publishStatus": "PUBLISHED",
+    "createdBy": "ac9fadc2-1955-59e4-984d-26f74bbb4f53",
+    "topicName": "Chuỗi",
+    "testCases": [
+      {
+        "input": "6\n11 -7 -2 3 8 13",
+        "expectedOutput": "-7",
+        "isHidden": false,
+        "score": 1,
+        "displayOrder": 0
+      },
+      {
+        "input": "6\n14 -4 1 6 11 -7",
+        "expectedOutput": "-7",
+        "isHidden": false,
+        "score": 1,
+        "displayOrder": 1
+      },
+      {
+        "input": "6\n-6 -1 4 9 14 -4",
+        "expectedOutput": "-6",
+        "isHidden": true,
+        "score": 1,
+        "displayOrder": 2
+      },
+      {
+        "input": "6\n-3 2 7 12 -6 -1",
+        "expectedOutput": "-6",
+        "isHidden": true,
+        "score": 1,
+        "displayOrder": 3
+      },
+      {
+        "input": "6\n0 5 10 15 -3 2",
+        "expectedOutput": "-3",
+        "isHidden": true,
+        "score": 1,
+        "displayOrder": 4
+      }
+    ],
+    "languages": ["c", "cpp", "java", "python"],
+    "starterCodes": {
+      "c": "#include <stdio.h>\nint main(void) { return 0; }",
+      "cpp": "#include <bits/stdc++.h>\nusing namespace std;\nint main(){ios::sync_with_stdio(false);cin.tie(nullptr);return 0;}",
+      "java": "import java.util.*;\npublic class Main { public static void main(String[] args) {} }",
+      "python": "import sys\n\ndef main():\n    data = sys.stdin.read().split()\n\nif __name__ == \"__main__\":\n    main()"
+    }
+  },
+  {
+    "id": "0d62778c-f5b0-56c0-a906-97e09fabb218",
+    "key": "c03-ch03-p04",
+    "courseKey": "c03",
+    "chapterKey": "c03-ch03",
+    "slug": "c03-ch03-p04",
+    "title": "Chương 3: Chuỗi — Đếm số chẵn #04",
+    "description": "Cho một dãy số nguyên. Hãy đếm số chẵn theo yêu cầu và in kết quả. Dữ liệu bảo đảm phù hợp với giới hạn đã cho.",
+    "problemType": "STANDARD",
+    "difficulty": "EASY",
+    "inputSpecification": "Dòng đầu chứa N (và K nếu bài yêu cầu). Dòng tiếp theo chứa N số nguyên.",
+    "outputSpecification": "In kết quả theo đúng định dạng của đề bài.",
+    "examples": [
+      {
+        "input": "6\n14 -4 1 6 11 -7",
+        "output": "3",
+        "explanation": "Áp dụng thao tác đếm số chẵn trên dãy đã cho."
+      },
+      {
+        "input": "6\n-6 -1 4 9 14 -4",
+        "output": "4",
+        "explanation": "Áp dụng thao tác đếm số chẵn trên dãy đã cho."
+      }
+    ],
+    "constraints": "1 ≤ N ≤ 100000; |Ai| ≤ 10^9.",
+    "timeLimitMs": 1000,
+    "memoryLimitMb": 256,
+    "publishStatus": "PUBLISHED",
+    "createdBy": "ac9fadc2-1955-59e4-984d-26f74bbb4f53",
+    "topicName": "Chuỗi",
+    "testCases": [
+      {
+        "input": "6\n14 -4 1 6 11 -7",
+        "expectedOutput": "3",
+        "isHidden": false,
+        "score": 1,
+        "displayOrder": 0
+      },
+      {
+        "input": "6\n-6 -1 4 9 14 -4",
+        "expectedOutput": "4",
+        "isHidden": false,
+        "score": 1,
+        "displayOrder": 1
+      },
+      {
+        "input": "6\n-3 2 7 12 -6 -1",
+        "expectedOutput": "3",
+        "isHidden": true,
+        "score": 1,
+        "displayOrder": 2
+      },
+      {
+        "input": "6\n0 5 10 15 -3 2",
+        "expectedOutput": "3",
+        "isHidden": true,
+        "score": 1,
+        "displayOrder": 3
+      },
+      {
+        "input": "6\n3 8 13 -5 0 5",
+        "expectedOutput": "2",
+        "isHidden": true,
+        "score": 1,
+        "displayOrder": 4
+      }
+    ],
+    "languages": ["c", "cpp", "java", "python"],
+    "starterCodes": {
+      "c": "#include <stdio.h>\nint main(void) { return 0; }",
+      "cpp": "#include <bits/stdc++.h>\nusing namespace std;\nint main(){ios::sync_with_stdio(false);cin.tie(nullptr);return 0;}",
+      "java": "import java.util.*;\npublic class Main { public static void main(String[] args) {} }",
+      "python": "import sys\n\ndef main():\n    data = sys.stdin.read().split()\n\nif __name__ == \"__main__\":\n    main()"
+    }
+  },
+  {
+    "id": "11ce2500-9f0e-50cd-b9f3-70273c20429f",
+    "key": "c03-ch03-p05",
+    "courseKey": "c03",
+    "chapterKey": "c03-ch03",
+    "slug": "c03-ch03-p05",
+    "title": "Chương 3: Chuỗi — Đếm bội số của K #05",
+    "description": "Cho một dãy số nguyên. Hãy đếm bội số của k theo yêu cầu và in kết quả. Dữ liệu bảo đảm phù hợp với giới hạn đã cho.",
+    "problemType": "STANDARD",
+    "difficulty": "MEDIUM",
+    "inputSpecification": "Dòng đầu chứa N (và K nếu bài yêu cầu). Dòng tiếp theo chứa N số nguyên.",
+    "outputSpecification": "In kết quả theo đúng định dạng của đề bài.",
+    "examples": [
+      {
+        "input": "6 2\n-6 -1 4 9 14 -4",
+        "output": "4",
+        "explanation": "Áp dụng thao tác đếm bội số của k trên dãy đã cho."
+      },
+      {
+        "input": "6 3\n-3 2 7 12 -6 -1",
+        "output": "3",
+        "explanation": "Áp dụng thao tác đếm bội số của k trên dãy đã cho."
+      }
+    ],
+    "constraints": "1 ≤ N ≤ 100000; |Ai| ≤ 10^9.",
+    "timeLimitMs": 1000,
+    "memoryLimitMb": 256,
+    "publishStatus": "PUBLISHED",
+    "createdBy": "ac9fadc2-1955-59e4-984d-26f74bbb4f53",
+    "topicName": "Chuỗi",
+    "testCases": [
+      {
+        "input": "6 2\n-6 -1 4 9 14 -4",
+        "expectedOutput": "4",
+        "isHidden": false,
+        "score": 1,
+        "displayOrder": 0
+      },
+      {
+        "input": "6 3\n-3 2 7 12 -6 -1",
+        "expectedOutput": "3",
+        "isHidden": false,
+        "score": 1,
+        "displayOrder": 1
+      },
+      {
+        "input": "6 4\n0 5 10 15 -3 2",
+        "expectedOutput": "1",
+        "isHidden": true,
+        "score": 1,
+        "displayOrder": 2
+      },
+      {
+        "input": "6 5\n3 8 13 -5 0 5",
+        "expectedOutput": "3",
+        "isHidden": true,
+        "score": 1,
+        "displayOrder": 3
+      },
+      {
+        "input": "6 6\n6 11 -7 -2 3 8",
+        "expectedOutput": "1",
+        "isHidden": true,
+        "score": 1,
+        "displayOrder": 4
+      }
+    ],
+    "languages": ["c", "cpp", "java", "python"],
+    "starterCodes": {
+      "c": "#include <stdio.h>\nint main(void) { return 0; }",
+      "cpp": "#include <bits/stdc++.h>\nusing namespace std;\nint main(){ios::sync_with_stdio(false);cin.tie(nullptr);return 0;}",
+      "java": "import java.util.*;\npublic class Main { public static void main(String[] args) {} }",
+      "python": "import sys\n\ndef main():\n    data = sys.stdin.read().split()\n\nif __name__ == \"__main__\":\n    main()"
+    }
+  },
+  {
+    "id": "91ebb20b-9bb4-56c8-93ff-ad4bbe49266d",
+    "key": "c03-ch03-p06",
+    "courseKey": "c03",
+    "chapterKey": "c03-ch03",
+    "slug": "c03-ch03-p06",
+    "title": "Chương 3: Chuỗi — Đảo ngược dãy #06",
+    "description": "Cho một dãy số nguyên. Hãy đảo ngược dãy theo yêu cầu và in kết quả. Dữ liệu bảo đảm phù hợp với giới hạn đã cho.",
+    "problemType": "STANDARD",
+    "difficulty": "HARD",
+    "inputSpecification": "Dòng đầu chứa N (và K nếu bài yêu cầu). Dòng tiếp theo chứa N số nguyên.",
+    "outputSpecification": "In kết quả theo đúng định dạng của đề bài.",
+    "examples": [
+      {
+        "input": "6\n-3 2 7 12 -6 -1",
+        "output": "-1 -6 12 7 2 -3",
+        "explanation": "Áp dụng thao tác đảo ngược dãy trên dãy đã cho."
+      },
+      {
+        "input": "6\n0 5 10 15 -3 2",
+        "output": "2 -3 15 10 5 0",
+        "explanation": "Áp dụng thao tác đảo ngược dãy trên dãy đã cho."
+      }
+    ],
+    "constraints": "1 ≤ N ≤ 100000; |Ai| ≤ 10^9.",
+    "timeLimitMs": 1000,
+    "memoryLimitMb": 256,
+    "publishStatus": "PUBLISHED",
+    "createdBy": "ac9fadc2-1955-59e4-984d-26f74bbb4f53",
+    "topicName": "Chuỗi",
+    "testCases": [
+      {
+        "input": "6\n-3 2 7 12 -6 -1",
+        "expectedOutput": "-1 -6 12 7 2 -3",
+        "isHidden": false,
+        "score": 1,
+        "displayOrder": 0
+      },
+      {
+        "input": "6\n0 5 10 15 -3 2",
+        "expectedOutput": "2 -3 15 10 5 0",
+        "isHidden": false,
+        "score": 1,
+        "displayOrder": 1
+      },
+      {
+        "input": "6\n3 8 13 -5 0 5",
+        "expectedOutput": "5 0 -5 13 8 3",
+        "isHidden": true,
+        "score": 1,
+        "displayOrder": 2
+      },
+      {
+        "input": "6\n6 11 -7 -2 3 8",
+        "expectedOutput": "8 3 -2 -7 11 6",
+        "isHidden": true,
+        "score": 1,
+        "displayOrder": 3
+      },
+      {
+        "input": "6\n9 14 -4 1 6 11",
+        "expectedOutput": "11 6 1 -4 14 9",
+        "isHidden": true,
+        "score": 1,
+        "displayOrder": 4
+      }
+    ],
+    "languages": ["c", "cpp", "java", "python"],
+    "starterCodes": {
+      "c": "#include <stdio.h>\nint main(void) { return 0; }",
+      "cpp": "#include <bits/stdc++.h>\nusing namespace std;\nint main(){ios::sync_with_stdio(false);cin.tie(nullptr);return 0;}",
+      "java": "import java.util.*;\npublic class Main { public static void main(String[] args) {} }",
+      "python": "import sys\n\ndef main():\n    data = sys.stdin.read().split()\n\nif __name__ == \"__main__\":\n    main()"
+    }
+  },
+  {
+    "id": "c11ece2a-2379-54c4-9bd0-af4cd9162f9d",
+    "key": "c03-ch03-p07",
+    "courseKey": "c03",
+    "chapterKey": "c03-ch03",
+    "slug": "c03-ch03-p07",
+    "title": "Chương 3: Chuỗi — Sắp xếp tăng dần #07",
+    "description": "Cho một dãy số nguyên. Hãy sắp xếp tăng dần theo yêu cầu và in kết quả. Dữ liệu bảo đảm phù hợp với giới hạn đã cho.",
+    "problemType": "STANDARD",
+    "difficulty": "EASY",
+    "inputSpecification": "Dòng đầu chứa N (và K nếu bài yêu cầu). Dòng tiếp theo chứa N số nguyên.",
+    "outputSpecification": "In kết quả theo đúng định dạng của đề bài.",
+    "examples": [
+      {
+        "input": "6\n0 5 10 15 -3 2",
+        "output": "-3 0 2 5 10 15",
+        "explanation": "Áp dụng thao tác sắp xếp tăng dần trên dãy đã cho."
+      },
+      {
+        "input": "6\n3 8 13 -5 0 5",
+        "output": "-5 0 3 5 8 13",
+        "explanation": "Áp dụng thao tác sắp xếp tăng dần trên dãy đã cho."
+      }
+    ],
+    "constraints": "1 ≤ N ≤ 100000; |Ai| ≤ 10^9.",
+    "timeLimitMs": 1000,
+    "memoryLimitMb": 256,
+    "publishStatus": "PUBLISHED",
+    "createdBy": "ac9fadc2-1955-59e4-984d-26f74bbb4f53",
+    "topicName": "Chuỗi",
+    "testCases": [
+      {
+        "input": "6\n0 5 10 15 -3 2",
+        "expectedOutput": "-3 0 2 5 10 15",
+        "isHidden": false,
+        "score": 1,
+        "displayOrder": 0
+      },
+      {
+        "input": "6\n3 8 13 -5 0 5",
+        "expectedOutput": "-5 0 3 5 8 13",
+        "isHidden": false,
+        "score": 1,
+        "displayOrder": 1
+      },
+      {
+        "input": "6\n6 11 -7 -2 3 8",
+        "expectedOutput": "-7 -2 3 6 8 11",
+        "isHidden": true,
+        "score": 1,
+        "displayOrder": 2
+      },
+      {
+        "input": "6\n9 14 -4 1 6 11",
+        "expectedOutput": "-4 1 6 9 11 14",
+        "isHidden": true,
+        "score": 1,
+        "displayOrder": 3
+      },
+      {
+        "input": "6\n12 -6 -1 4 9 14",
+        "expectedOutput": "-6 -1 4 9 12 14",
+        "isHidden": true,
+        "score": 1,
+        "displayOrder": 4
+      }
+    ],
+    "languages": ["c", "cpp", "java", "python"],
+    "starterCodes": {
+      "c": "#include <stdio.h>\nint main(void) { return 0; }",
+      "cpp": "#include <bits/stdc++.h>\nusing namespace std;\nint main(){ios::sync_with_stdio(false);cin.tie(nullptr);return 0;}",
+      "java": "import java.util.*;\npublic class Main { public static void main(String[] args) {} }",
+      "python": "import sys\n\ndef main():\n    data = sys.stdin.read().split()\n\nif __name__ == \"__main__\":\n    main()"
+    }
+  },
+  {
+    "id": "db973bea-de98-57dc-bf55-c067aa85d4cd",
+    "key": "c03-ch03-p08",
+    "courseKey": "c03",
+    "chapterKey": "c03-ch03",
+    "slug": "c03-ch03-p08",
+    "title": "Chương 3: Chuỗi — Đếm phần tử lớn hơn K #08",
+    "description": "Cho một dãy số nguyên. Hãy đếm phần tử lớn hơn k theo yêu cầu và in kết quả. Dữ liệu bảo đảm phù hợp với giới hạn đã cho.",
+    "problemType": "STANDARD",
+    "difficulty": "MEDIUM",
+    "inputSpecification": "Dòng đầu chứa N (và K nếu bài yêu cầu). Dòng tiếp theo chứa N số nguyên.",
+    "outputSpecification": "In kết quả theo đúng định dạng của đề bài.",
+    "examples": [
+      {
+        "input": "6 5\n3 8 13 -5 0 5",
+        "output": "2",
+        "explanation": "Áp dụng thao tác đếm phần tử lớn hơn k trên dãy đã cho."
+      },
+      {
+        "input": "6 6\n6 11 -7 -2 3 8",
+        "output": "2",
+        "explanation": "Áp dụng thao tác đếm phần tử lớn hơn k trên dãy đã cho."
+      }
+    ],
+    "constraints": "1 ≤ N ≤ 100000; |Ai| ≤ 10^9.",
+    "timeLimitMs": 1000,
+    "memoryLimitMb": 256,
+    "publishStatus": "PUBLISHED",
+    "createdBy": "ac9fadc2-1955-59e4-984d-26f74bbb4f53",
+    "topicName": "Chuỗi",
+    "testCases": [
+      {
+        "input": "6 5\n3 8 13 -5 0 5",
+        "expectedOutput": "2",
+        "isHidden": false,
+        "score": 1,
+        "displayOrder": 0
+      },
+      {
+        "input": "6 6\n6 11 -7 -2 3 8",
+        "expectedOutput": "2",
+        "isHidden": false,
+        "score": 1,
+        "displayOrder": 1
+      },
+      {
+        "input": "6 7\n9 14 -4 1 6 11",
+        "expectedOutput": "3",
+        "isHidden": true,
+        "score": 1,
+        "displayOrder": 2
+      },
+      {
+        "input": "6 8\n12 -6 -1 4 9 14",
+        "expectedOutput": "3",
+        "isHidden": true,
+        "score": 1,
+        "displayOrder": 3
+      },
+      {
+        "input": "6 2\n15 -3 2 7 12 -6",
+        "expectedOutput": "3",
+        "isHidden": true,
+        "score": 1,
+        "displayOrder": 4
+      }
+    ],
+    "languages": ["c", "cpp", "java", "python"],
+    "starterCodes": {
+      "c": "#include <stdio.h>\nint main(void) { return 0; }",
+      "cpp": "#include <bits/stdc++.h>\nusing namespace std;\nint main(){ios::sync_with_stdio(false);cin.tie(nullptr);return 0;}",
+      "java": "import java.util.*;\npublic class Main { public static void main(String[] args) {} }",
+      "python": "import sys\n\ndef main():\n    data = sys.stdin.read().split()\n\nif __name__ == \"__main__\":\n    main()"
+    }
+  },
+  {
+    "id": "47050623-982f-5e12-bca0-9cd583e5be0b",
+    "key": "c03-ch03-p09",
+    "courseKey": "c03",
+    "chapterKey": "c03-ch03",
+    "slug": "c03-ch03-p09",
+    "title": "Chương 3: Chuỗi — Tính tổng ba phần tử đầu #09",
+    "description": "Cho một dãy số nguyên. Hãy tính tổng ba phần tử đầu theo yêu cầu và in kết quả. Dữ liệu bảo đảm phù hợp với giới hạn đã cho.",
+    "problemType": "STANDARD",
+    "difficulty": "HARD",
+    "inputSpecification": "Dòng đầu chứa N (và K nếu bài yêu cầu). Dòng tiếp theo chứa N số nguyên.",
+    "outputSpecification": "In kết quả theo đúng định dạng của đề bài.",
+    "examples": [
+      {
+        "input": "6\n6 11 -7 -2 3 8",
+        "output": "10",
+        "explanation": "Áp dụng thao tác tính tổng ba phần tử đầu trên dãy đã cho."
+      },
+      {
+        "input": "6\n9 14 -4 1 6 11",
+        "output": "19",
+        "explanation": "Áp dụng thao tác tính tổng ba phần tử đầu trên dãy đã cho."
+      }
+    ],
+    "constraints": "1 ≤ N ≤ 100000; |Ai| ≤ 10^9.",
+    "timeLimitMs": 1000,
+    "memoryLimitMb": 256,
+    "publishStatus": "PUBLISHED",
+    "createdBy": "ac9fadc2-1955-59e4-984d-26f74bbb4f53",
+    "topicName": "Chuỗi",
+    "testCases": [
+      {
+        "input": "6\n6 11 -7 -2 3 8",
+        "expectedOutput": "10",
+        "isHidden": false,
+        "score": 1,
+        "displayOrder": 0
+      },
+      {
+        "input": "6\n9 14 -4 1 6 11",
+        "expectedOutput": "19",
+        "isHidden": false,
+        "score": 1,
+        "displayOrder": 1
+      },
+      {
+        "input": "6\n12 -6 -1 4 9 14",
+        "expectedOutput": "5",
+        "isHidden": true,
+        "score": 1,
+        "displayOrder": 2
+      },
+      {
+        "input": "6\n15 -3 2 7 12 -6",
+        "expectedOutput": "14",
+        "isHidden": true,
+        "score": 1,
+        "displayOrder": 3
+      },
+      {
+        "input": "6\n-5 0 5 10 15 -3",
+        "expectedOutput": "0",
+        "isHidden": true,
+        "score": 1,
+        "displayOrder": 4
+      }
+    ],
+    "languages": ["c", "cpp", "java", "python"],
+    "starterCodes": {
+      "c": "#include <stdio.h>\nint main(void) { return 0; }",
+      "cpp": "#include <bits/stdc++.h>\nusing namespace std;\nint main(){ios::sync_with_stdio(false);cin.tie(nullptr);return 0;}",
+      "java": "import java.util.*;\npublic class Main { public static void main(String[] args) {} }",
+      "python": "import sys\n\ndef main():\n    data = sys.stdin.read().split()\n\nif __name__ == \"__main__\":\n    main()"
+    }
+  },
+  {
+    "id": "1207802b-9979-599b-bd24-b24c12b9d58c",
+    "key": "c03-ch03-p10",
+    "courseKey": "c03",
+    "chapterKey": "c03-ch03",
+    "slug": "c03-ch03-p10",
+    "title": "Chương 3: Chuỗi — Tìm ước chung lớn nhất #10",
+    "description": "Cho một dãy số nguyên. Hãy tìm ước chung lớn nhất theo yêu cầu và in kết quả. Dữ liệu bảo đảm phù hợp với giới hạn đã cho.",
+    "problemType": "STANDARD",
+    "difficulty": "EASY",
+    "inputSpecification": "Dòng đầu chứa N (và K nếu bài yêu cầu). Dòng tiếp theo chứa N số nguyên.",
+    "outputSpecification": "In kết quả theo đúng định dạng của đề bài.",
+    "examples": [
+      {
+        "input": "6\n9 14 -4 1 6 11",
+        "output": "1",
+        "explanation": "Áp dụng thao tác tìm ước chung lớn nhất trên dãy đã cho."
+      },
+      {
+        "input": "6\n12 -6 -1 4 9 14",
+        "output": "1",
+        "explanation": "Áp dụng thao tác tìm ước chung lớn nhất trên dãy đã cho."
+      }
+    ],
+    "constraints": "1 ≤ N ≤ 100000; |Ai| ≤ 10^9.",
+    "timeLimitMs": 1000,
+    "memoryLimitMb": 256,
+    "publishStatus": "PUBLISHED",
+    "createdBy": "ac9fadc2-1955-59e4-984d-26f74bbb4f53",
+    "topicName": "Chuỗi",
+    "testCases": [
+      {
+        "input": "6\n9 14 -4 1 6 11",
+        "expectedOutput": "1",
+        "isHidden": false,
+        "score": 1,
+        "displayOrder": 0
+      },
+      {
+        "input": "6\n12 -6 -1 4 9 14",
+        "expectedOutput": "1",
+        "isHidden": false,
+        "score": 1,
+        "displayOrder": 1
+      },
+      {
+        "input": "6\n15 -3 2 7 12 -6",
+        "expectedOutput": "1",
+        "isHidden": true,
+        "score": 1,
+        "displayOrder": 2
+      },
+      {
+        "input": "6\n-5 0 5 10 15 -3",
+        "expectedOutput": "1",
+        "isHidden": true,
+        "score": 1,
+        "displayOrder": 3
+      },
+      {
+        "input": "6\n-2 3 8 13 -5 0",
+        "expectedOutput": "1",
+        "isHidden": true,
+        "score": 1,
+        "displayOrder": 4
+      }
+    ],
+    "languages": ["c", "cpp", "java", "python"],
+    "starterCodes": {
+      "c": "#include <stdio.h>\nint main(void) { return 0; }",
+      "cpp": "#include <bits/stdc++.h>\nusing namespace std;\nint main(){ios::sync_with_stdio(false);cin.tie(nullptr);return 0;}",
+      "java": "import java.util.*;\npublic class Main { public static void main(String[] args) {} }",
+      "python": "import sys\n\ndef main():\n    data = sys.stdin.read().split()\n\nif __name__ == \"__main__\":\n    main()"
+    }
+  },
+  {
+    "id": "ebc61dde-944a-55da-badd-8bb597d3e168",
+    "key": "c03-ch04-p01",
+    "courseKey": "c03",
+    "chapterKey": "c03-ch04",
+    "slug": "c03-ch04-p01",
+    "title": "Chương 4: OOP — Tính tổng các phần tử #01",
+    "description": "Cho một dãy số nguyên. Hãy tính tổng các phần tử theo yêu cầu và in kết quả. Dữ liệu bảo đảm phù hợp với giới hạn đã cho.",
+    "problemType": "STANDARD",
+    "difficulty": "EASY",
+    "inputSpecification": "Dòng đầu chứa N (và K nếu bài yêu cầu). Dòng tiếp theo chứa N số nguyên.",
+    "outputSpecification": "In kết quả theo đúng định dạng của đề bài.",
+    "examples": [
+      {
+        "input": "6\n12 -6 -1 4 9 14",
+        "output": "32",
+        "explanation": "Áp dụng thao tác tính tổng các phần tử trên dãy đã cho."
+      },
+      {
+        "input": "6\n15 -3 2 7 12 -6",
+        "output": "27",
+        "explanation": "Áp dụng thao tác tính tổng các phần tử trên dãy đã cho."
+      }
+    ],
+    "constraints": "1 ≤ N ≤ 100000; |Ai| ≤ 10^9.",
+    "timeLimitMs": 1000,
+    "memoryLimitMb": 256,
+    "publishStatus": "PUBLISHED",
+    "createdBy": "ac9fadc2-1955-59e4-984d-26f74bbb4f53",
+    "topicName": "OOP",
+    "testCases": [
+      {
+        "input": "6\n12 -6 -1 4 9 14",
+        "expectedOutput": "32",
+        "isHidden": false,
+        "score": 1,
+        "displayOrder": 0
+      },
+      {
+        "input": "6\n15 -3 2 7 12 -6",
+        "expectedOutput": "27",
+        "isHidden": false,
+        "score": 1,
+        "displayOrder": 1
+      },
+      {
+        "input": "6\n-5 0 5 10 15 -3",
+        "expectedOutput": "22",
+        "isHidden": true,
+        "score": 1,
+        "displayOrder": 2
+      },
+      {
+        "input": "6\n-2 3 8 13 -5 0",
+        "expectedOutput": "17",
+        "isHidden": true,
+        "score": 1,
+        "displayOrder": 3
+      },
+      {
+        "input": "6\n1 6 11 -7 -2 3",
+        "expectedOutput": "12",
+        "isHidden": true,
+        "score": 1,
+        "displayOrder": 4
+      }
+    ],
+    "languages": ["c", "cpp", "java", "python"],
+    "starterCodes": {
+      "c": "#include <stdio.h>\nint main(void) { return 0; }",
+      "cpp": "#include <bits/stdc++.h>\nusing namespace std;\nint main(){ios::sync_with_stdio(false);cin.tie(nullptr);return 0;}",
+      "java": "import java.util.*;\npublic class Main { public static void main(String[] args) {} }",
+      "python": "import sys\n\ndef main():\n    data = sys.stdin.read().split()\n\nif __name__ == \"__main__\":\n    main()"
+    }
+  },
+  {
+    "id": "02ba6e7f-9843-5cde-9827-3c062eead101",
+    "key": "c03-ch04-p02",
+    "courseKey": "c03",
+    "chapterKey": "c03-ch04",
+    "slug": "c03-ch04-p02",
+    "title": "Chương 4: OOP — Tìm giá trị lớn nhất #02",
+    "description": "Cho một dãy số nguyên. Hãy tìm giá trị lớn nhất theo yêu cầu và in kết quả. Dữ liệu bảo đảm phù hợp với giới hạn đã cho.",
+    "problemType": "STANDARD",
+    "difficulty": "MEDIUM",
+    "inputSpecification": "Dòng đầu chứa N (và K nếu bài yêu cầu). Dòng tiếp theo chứa N số nguyên.",
+    "outputSpecification": "In kết quả theo đúng định dạng của đề bài.",
+    "examples": [
+      {
+        "input": "6\n15 -3 2 7 12 -6",
+        "output": "15",
+        "explanation": "Áp dụng thao tác tìm giá trị lớn nhất trên dãy đã cho."
+      },
+      {
+        "input": "6\n-5 0 5 10 15 -3",
+        "output": "15",
+        "explanation": "Áp dụng thao tác tìm giá trị lớn nhất trên dãy đã cho."
+      }
+    ],
+    "constraints": "1 ≤ N ≤ 100000; |Ai| ≤ 10^9.",
+    "timeLimitMs": 1000,
+    "memoryLimitMb": 256,
+    "publishStatus": "PUBLISHED",
+    "createdBy": "ac9fadc2-1955-59e4-984d-26f74bbb4f53",
+    "topicName": "OOP",
+    "testCases": [
+      {
+        "input": "6\n15 -3 2 7 12 -6",
+        "expectedOutput": "15",
+        "isHidden": false,
+        "score": 1,
+        "displayOrder": 0
+      },
+      {
+        "input": "6\n-5 0 5 10 15 -3",
+        "expectedOutput": "15",
+        "isHidden": false,
+        "score": 1,
+        "displayOrder": 1
+      },
+      {
+        "input": "6\n-2 3 8 13 -5 0",
+        "expectedOutput": "13",
+        "isHidden": true,
+        "score": 1,
+        "displayOrder": 2
+      },
+      {
+        "input": "6\n1 6 11 -7 -2 3",
+        "expectedOutput": "11",
+        "isHidden": true,
+        "score": 1,
+        "displayOrder": 3
+      },
+      {
+        "input": "6\n4 9 14 -4 1 6",
+        "expectedOutput": "14",
+        "isHidden": true,
+        "score": 1,
+        "displayOrder": 4
+      }
+    ],
+    "languages": ["c", "cpp", "java", "python"],
+    "starterCodes": {
+      "c": "#include <stdio.h>\nint main(void) { return 0; }",
+      "cpp": "#include <bits/stdc++.h>\nusing namespace std;\nint main(){ios::sync_with_stdio(false);cin.tie(nullptr);return 0;}",
+      "java": "import java.util.*;\npublic class Main { public static void main(String[] args) {} }",
+      "python": "import sys\n\ndef main():\n    data = sys.stdin.read().split()\n\nif __name__ == \"__main__\":\n    main()"
+    }
+  },
+  {
+    "id": "118ae0ca-153c-5adc-b2ec-c2b8d390130a",
+    "key": "c03-ch04-p03",
+    "courseKey": "c03",
+    "chapterKey": "c03-ch04",
+    "slug": "c03-ch04-p03",
+    "title": "Chương 4: OOP — Tìm giá trị nhỏ nhất #03",
+    "description": "Cho một dãy số nguyên. Hãy tìm giá trị nhỏ nhất theo yêu cầu và in kết quả. Dữ liệu bảo đảm phù hợp với giới hạn đã cho.",
+    "problemType": "STANDARD",
+    "difficulty": "HARD",
+    "inputSpecification": "Dòng đầu chứa N (và K nếu bài yêu cầu). Dòng tiếp theo chứa N số nguyên.",
+    "outputSpecification": "In kết quả theo đúng định dạng của đề bài.",
+    "examples": [
+      {
+        "input": "6\n-5 0 5 10 15 -3",
+        "output": "-5",
+        "explanation": "Áp dụng thao tác tìm giá trị nhỏ nhất trên dãy đã cho."
+      },
+      {
+        "input": "6\n-2 3 8 13 -5 0",
+        "output": "-5",
+        "explanation": "Áp dụng thao tác tìm giá trị nhỏ nhất trên dãy đã cho."
+      }
+    ],
+    "constraints": "1 ≤ N ≤ 100000; |Ai| ≤ 10^9.",
+    "timeLimitMs": 1000,
+    "memoryLimitMb": 256,
+    "publishStatus": "PUBLISHED",
+    "createdBy": "ac9fadc2-1955-59e4-984d-26f74bbb4f53",
+    "topicName": "OOP",
+    "testCases": [
+      {
+        "input": "6\n-5 0 5 10 15 -3",
+        "expectedOutput": "-5",
+        "isHidden": false,
+        "score": 1,
+        "displayOrder": 0
+      },
+      {
+        "input": "6\n-2 3 8 13 -5 0",
+        "expectedOutput": "-5",
+        "isHidden": false,
+        "score": 1,
+        "displayOrder": 1
+      },
+      {
+        "input": "6\n1 6 11 -7 -2 3",
+        "expectedOutput": "-7",
+        "isHidden": true,
+        "score": 1,
+        "displayOrder": 2
+      },
+      {
+        "input": "6\n4 9 14 -4 1 6",
+        "expectedOutput": "-4",
+        "isHidden": true,
+        "score": 1,
+        "displayOrder": 3
+      },
+      {
+        "input": "6\n7 12 -6 -1 4 9",
+        "expectedOutput": "-6",
+        "isHidden": true,
+        "score": 1,
+        "displayOrder": 4
+      }
+    ],
+    "languages": ["c", "cpp", "java", "python"],
+    "starterCodes": {
+      "c": "#include <stdio.h>\nint main(void) { return 0; }",
+      "cpp": "#include <bits/stdc++.h>\nusing namespace std;\nint main(){ios::sync_with_stdio(false);cin.tie(nullptr);return 0;}",
+      "java": "import java.util.*;\npublic class Main { public static void main(String[] args) {} }",
+      "python": "import sys\n\ndef main():\n    data = sys.stdin.read().split()\n\nif __name__ == \"__main__\":\n    main()"
+    }
+  },
+  {
+    "id": "6aafd6f9-54df-5d60-9c89-3b58df728a9b",
+    "key": "c03-ch04-p04",
+    "courseKey": "c03",
+    "chapterKey": "c03-ch04",
+    "slug": "c03-ch04-p04",
+    "title": "Chương 4: OOP — Đếm số chẵn #04",
+    "description": "Cho một dãy số nguyên. Hãy đếm số chẵn theo yêu cầu và in kết quả. Dữ liệu bảo đảm phù hợp với giới hạn đã cho.",
+    "problemType": "STANDARD",
+    "difficulty": "EASY",
+    "inputSpecification": "Dòng đầu chứa N (và K nếu bài yêu cầu). Dòng tiếp theo chứa N số nguyên.",
+    "outputSpecification": "In kết quả theo đúng định dạng của đề bài.",
+    "examples": [
+      {
+        "input": "6\n-2 3 8 13 -5 0",
+        "output": "3",
+        "explanation": "Áp dụng thao tác đếm số chẵn trên dãy đã cho."
+      },
+      {
+        "input": "6\n1 6 11 -7 -2 3",
+        "output": "2",
+        "explanation": "Áp dụng thao tác đếm số chẵn trên dãy đã cho."
+      }
+    ],
+    "constraints": "1 ≤ N ≤ 100000; |Ai| ≤ 10^9.",
+    "timeLimitMs": 1000,
+    "memoryLimitMb": 256,
+    "publishStatus": "PUBLISHED",
+    "createdBy": "ac9fadc2-1955-59e4-984d-26f74bbb4f53",
+    "topicName": "OOP",
+    "testCases": [
+      {
+        "input": "6\n-2 3 8 13 -5 0",
+        "expectedOutput": "3",
+        "isHidden": false,
+        "score": 1,
+        "displayOrder": 0
+      },
+      {
+        "input": "6\n1 6 11 -7 -2 3",
+        "expectedOutput": "2",
+        "isHidden": false,
+        "score": 1,
+        "displayOrder": 1
+      },
+      {
+        "input": "6\n4 9 14 -4 1 6",
+        "expectedOutput": "4",
+        "isHidden": true,
+        "score": 1,
+        "displayOrder": 2
+      },
+      {
+        "input": "6\n7 12 -6 -1 4 9",
+        "expectedOutput": "3",
+        "isHidden": true,
+        "score": 1,
+        "displayOrder": 3
+      },
+      {
+        "input": "6\n10 15 -3 2 7 12",
+        "expectedOutput": "3",
+        "isHidden": true,
+        "score": 1,
+        "displayOrder": 4
+      }
+    ],
+    "languages": ["c", "cpp", "java", "python"],
+    "starterCodes": {
+      "c": "#include <stdio.h>\nint main(void) { return 0; }",
+      "cpp": "#include <bits/stdc++.h>\nusing namespace std;\nint main(){ios::sync_with_stdio(false);cin.tie(nullptr);return 0;}",
+      "java": "import java.util.*;\npublic class Main { public static void main(String[] args) {} }",
+      "python": "import sys\n\ndef main():\n    data = sys.stdin.read().split()\n\nif __name__ == \"__main__\":\n    main()"
+    }
+  },
+  {
+    "id": "6b302e7c-5f72-5a41-8d5c-980a048bed75",
+    "key": "c03-ch04-p05",
+    "courseKey": "c03",
+    "chapterKey": "c03-ch04",
+    "slug": "c03-ch04-p05",
+    "title": "Chương 4: OOP — Đếm bội số của K #05",
+    "description": "Cho một dãy số nguyên. Hãy đếm bội số của k theo yêu cầu và in kết quả. Dữ liệu bảo đảm phù hợp với giới hạn đã cho.",
+    "problemType": "STANDARD",
+    "difficulty": "MEDIUM",
+    "inputSpecification": "Dòng đầu chứa N (và K nếu bài yêu cầu). Dòng tiếp theo chứa N số nguyên.",
+    "outputSpecification": "In kết quả theo đúng định dạng của đề bài.",
+    "examples": [
+      {
+        "input": "6 5\n1 6 11 -7 -2 3",
+        "output": "0",
+        "explanation": "Áp dụng thao tác đếm bội số của k trên dãy đã cho."
+      },
+      {
+        "input": "6 6\n4 9 14 -4 1 6",
+        "output": "1",
+        "explanation": "Áp dụng thao tác đếm bội số của k trên dãy đã cho."
+      }
+    ],
+    "constraints": "1 ≤ N ≤ 100000; |Ai| ≤ 10^9.",
+    "timeLimitMs": 1000,
+    "memoryLimitMb": 256,
+    "publishStatus": "PUBLISHED",
+    "createdBy": "ac9fadc2-1955-59e4-984d-26f74bbb4f53",
+    "topicName": "OOP",
+    "testCases": [
+      {
+        "input": "6 5\n1 6 11 -7 -2 3",
+        "expectedOutput": "0",
+        "isHidden": false,
+        "score": 1,
+        "displayOrder": 0
+      },
+      {
+        "input": "6 6\n4 9 14 -4 1 6",
+        "expectedOutput": "1",
+        "isHidden": false,
+        "score": 1,
+        "displayOrder": 1
+      },
+      {
+        "input": "6 7\n7 12 -6 -1 4 9",
+        "expectedOutput": "1",
+        "isHidden": true,
+        "score": 1,
+        "displayOrder": 2
+      },
+      {
+        "input": "6 8\n10 15 -3 2 7 12",
+        "expectedOutput": "0",
+        "isHidden": true,
+        "score": 1,
+        "displayOrder": 3
+      },
+      {
+        "input": "6 2\n13 -5 0 5 10 15",
+        "expectedOutput": "2",
+        "isHidden": true,
+        "score": 1,
+        "displayOrder": 4
+      }
+    ],
+    "languages": ["c", "cpp", "java", "python"],
+    "starterCodes": {
+      "c": "#include <stdio.h>\nint main(void) { return 0; }",
+      "cpp": "#include <bits/stdc++.h>\nusing namespace std;\nint main(){ios::sync_with_stdio(false);cin.tie(nullptr);return 0;}",
+      "java": "import java.util.*;\npublic class Main { public static void main(String[] args) {} }",
+      "python": "import sys\n\ndef main():\n    data = sys.stdin.read().split()\n\nif __name__ == \"__main__\":\n    main()"
+    }
+  },
+  {
+    "id": "a9e93c3e-c255-5c07-816a-d1b432111955",
+    "key": "c03-ch04-p06",
+    "courseKey": "c03",
+    "chapterKey": "c03-ch04",
+    "slug": "c03-ch04-p06",
+    "title": "Chương 4: OOP — Đảo ngược dãy #06",
+    "description": "Cho một dãy số nguyên. Hãy đảo ngược dãy theo yêu cầu và in kết quả. Dữ liệu bảo đảm phù hợp với giới hạn đã cho.",
+    "problemType": "STANDARD",
+    "difficulty": "HARD",
+    "inputSpecification": "Dòng đầu chứa N (và K nếu bài yêu cầu). Dòng tiếp theo chứa N số nguyên.",
+    "outputSpecification": "In kết quả theo đúng định dạng của đề bài.",
+    "examples": [
+      {
+        "input": "6\n4 9 14 -4 1 6",
+        "output": "6 1 -4 14 9 4",
+        "explanation": "Áp dụng thao tác đảo ngược dãy trên dãy đã cho."
+      },
+      {
+        "input": "6\n7 12 -6 -1 4 9",
+        "output": "9 4 -1 -6 12 7",
+        "explanation": "Áp dụng thao tác đảo ngược dãy trên dãy đã cho."
+      }
+    ],
+    "constraints": "1 ≤ N ≤ 100000; |Ai| ≤ 10^9.",
+    "timeLimitMs": 1000,
+    "memoryLimitMb": 256,
+    "publishStatus": "PUBLISHED",
+    "createdBy": "ac9fadc2-1955-59e4-984d-26f74bbb4f53",
+    "topicName": "OOP",
+    "testCases": [
+      {
+        "input": "6\n4 9 14 -4 1 6",
+        "expectedOutput": "6 1 -4 14 9 4",
+        "isHidden": false,
+        "score": 1,
+        "displayOrder": 0
+      },
+      {
+        "input": "6\n7 12 -6 -1 4 9",
+        "expectedOutput": "9 4 -1 -6 12 7",
+        "isHidden": false,
+        "score": 1,
+        "displayOrder": 1
+      },
+      {
+        "input": "6\n10 15 -3 2 7 12",
+        "expectedOutput": "12 7 2 -3 15 10",
+        "isHidden": true,
+        "score": 1,
+        "displayOrder": 2
+      },
+      {
+        "input": "6\n13 -5 0 5 10 15",
+        "expectedOutput": "15 10 5 0 -5 13",
+        "isHidden": true,
+        "score": 1,
+        "displayOrder": 3
+      },
+      {
+        "input": "6\n-7 -2 3 8 13 -5",
+        "expectedOutput": "-5 13 8 3 -2 -7",
+        "isHidden": true,
+        "score": 1,
+        "displayOrder": 4
+      }
+    ],
+    "languages": ["c", "cpp", "java", "python"],
+    "starterCodes": {
+      "c": "#include <stdio.h>\nint main(void) { return 0; }",
+      "cpp": "#include <bits/stdc++.h>\nusing namespace std;\nint main(){ios::sync_with_stdio(false);cin.tie(nullptr);return 0;}",
+      "java": "import java.util.*;\npublic class Main { public static void main(String[] args) {} }",
+      "python": "import sys\n\ndef main():\n    data = sys.stdin.read().split()\n\nif __name__ == \"__main__\":\n    main()"
+    }
+  },
+  {
+    "id": "bc38dcb8-8d72-52cd-9f68-c82217ed7c18",
+    "key": "c03-ch04-p07",
+    "courseKey": "c03",
+    "chapterKey": "c03-ch04",
+    "slug": "c03-ch04-p07",
+    "title": "Chương 4: OOP — Sắp xếp tăng dần #07",
+    "description": "Cho một dãy số nguyên. Hãy sắp xếp tăng dần theo yêu cầu và in kết quả. Dữ liệu bảo đảm phù hợp với giới hạn đã cho.",
+    "problemType": "STANDARD",
+    "difficulty": "EASY",
+    "inputSpecification": "Dòng đầu chứa N (và K nếu bài yêu cầu). Dòng tiếp theo chứa N số nguyên.",
+    "outputSpecification": "In kết quả theo đúng định dạng của đề bài.",
+    "examples": [
+      {
+        "input": "6\n7 12 -6 -1 4 9",
+        "output": "-6 -1 4 7 9 12",
+        "explanation": "Áp dụng thao tác sắp xếp tăng dần trên dãy đã cho."
+      },
+      {
+        "input": "6\n10 15 -3 2 7 12",
+        "output": "-3 2 7 10 12 15",
+        "explanation": "Áp dụng thao tác sắp xếp tăng dần trên dãy đã cho."
+      }
+    ],
+    "constraints": "1 ≤ N ≤ 100000; |Ai| ≤ 10^9.",
+    "timeLimitMs": 1000,
+    "memoryLimitMb": 256,
+    "publishStatus": "PUBLISHED",
+    "createdBy": "ac9fadc2-1955-59e4-984d-26f74bbb4f53",
+    "topicName": "OOP",
+    "testCases": [
+      {
+        "input": "6\n7 12 -6 -1 4 9",
+        "expectedOutput": "-6 -1 4 7 9 12",
+        "isHidden": false,
+        "score": 1,
+        "displayOrder": 0
+      },
+      {
+        "input": "6\n10 15 -3 2 7 12",
+        "expectedOutput": "-3 2 7 10 12 15",
+        "isHidden": false,
+        "score": 1,
+        "displayOrder": 1
+      },
+      {
+        "input": "6\n13 -5 0 5 10 15",
+        "expectedOutput": "-5 0 5 10 13 15",
+        "isHidden": true,
+        "score": 1,
+        "displayOrder": 2
+      },
+      {
+        "input": "6\n-7 -2 3 8 13 -5",
+        "expectedOutput": "-7 -5 -2 3 8 13",
+        "isHidden": true,
+        "score": 1,
+        "displayOrder": 3
+      },
+      {
+        "input": "6\n-4 1 6 11 -7 -2",
+        "expectedOutput": "-7 -4 -2 1 6 11",
+        "isHidden": true,
+        "score": 1,
+        "displayOrder": 4
+      }
+    ],
+    "languages": ["c", "cpp", "java", "python"],
+    "starterCodes": {
+      "c": "#include <stdio.h>\nint main(void) { return 0; }",
+      "cpp": "#include <bits/stdc++.h>\nusing namespace std;\nint main(){ios::sync_with_stdio(false);cin.tie(nullptr);return 0;}",
+      "java": "import java.util.*;\npublic class Main { public static void main(String[] args) {} }",
+      "python": "import sys\n\ndef main():\n    data = sys.stdin.read().split()\n\nif __name__ == \"__main__\":\n    main()"
+    }
+  },
+  {
+    "id": "86a3cbb9-97ed-513d-ac03-b516ff43dd93",
+    "key": "c03-ch04-p08",
+    "courseKey": "c03",
+    "chapterKey": "c03-ch04",
+    "slug": "c03-ch04-p08",
+    "title": "Chương 4: OOP — Đếm phần tử lớn hơn K #08",
+    "description": "Cho một dãy số nguyên. Hãy đếm phần tử lớn hơn k theo yêu cầu và in kết quả. Dữ liệu bảo đảm phù hợp với giới hạn đã cho.",
+    "problemType": "STANDARD",
+    "difficulty": "MEDIUM",
+    "inputSpecification": "Dòng đầu chứa N (và K nếu bài yêu cầu). Dòng tiếp theo chứa N số nguyên.",
+    "outputSpecification": "In kết quả theo đúng định dạng của đề bài.",
+    "examples": [
+      {
+        "input": "6 8\n10 15 -3 2 7 12",
+        "output": "3",
+        "explanation": "Áp dụng thao tác đếm phần tử lớn hơn k trên dãy đã cho."
+      },
+      {
+        "input": "6 2\n13 -5 0 5 10 15",
+        "output": "4",
+        "explanation": "Áp dụng thao tác đếm phần tử lớn hơn k trên dãy đã cho."
+      }
+    ],
+    "constraints": "1 ≤ N ≤ 100000; |Ai| ≤ 10^9.",
+    "timeLimitMs": 1000,
+    "memoryLimitMb": 256,
+    "publishStatus": "PUBLISHED",
+    "createdBy": "ac9fadc2-1955-59e4-984d-26f74bbb4f53",
+    "topicName": "OOP",
+    "testCases": [
+      {
+        "input": "6 8\n10 15 -3 2 7 12",
+        "expectedOutput": "3",
+        "isHidden": false,
+        "score": 1,
+        "displayOrder": 0
+      },
+      {
+        "input": "6 2\n13 -5 0 5 10 15",
+        "expectedOutput": "4",
+        "isHidden": false,
+        "score": 1,
+        "displayOrder": 1
+      },
+      {
+        "input": "6 3\n-7 -2 3 8 13 -5",
+        "expectedOutput": "2",
+        "isHidden": true,
+        "score": 1,
+        "displayOrder": 2
+      },
+      {
+        "input": "6 4\n-4 1 6 11 -7 -2",
+        "expectedOutput": "2",
+        "isHidden": true,
+        "score": 1,
+        "displayOrder": 3
+      },
+      {
+        "input": "6 5\n-1 4 9 14 -4 1",
+        "expectedOutput": "2",
+        "isHidden": true,
+        "score": 1,
+        "displayOrder": 4
+      }
+    ],
+    "languages": ["c", "cpp", "java", "python"],
+    "starterCodes": {
+      "c": "#include <stdio.h>\nint main(void) { return 0; }",
+      "cpp": "#include <bits/stdc++.h>\nusing namespace std;\nint main(){ios::sync_with_stdio(false);cin.tie(nullptr);return 0;}",
+      "java": "import java.util.*;\npublic class Main { public static void main(String[] args) {} }",
+      "python": "import sys\n\ndef main():\n    data = sys.stdin.read().split()\n\nif __name__ == \"__main__\":\n    main()"
+    }
+  },
+  {
+    "id": "eab7ea0b-9b14-5df2-a055-588d617b432f",
+    "key": "c03-ch04-p09",
+    "courseKey": "c03",
+    "chapterKey": "c03-ch04",
+    "slug": "c03-ch04-p09",
+    "title": "Chương 4: OOP — Tính tổng ba phần tử đầu #09",
+    "description": "Cho một dãy số nguyên. Hãy tính tổng ba phần tử đầu theo yêu cầu và in kết quả. Dữ liệu bảo đảm phù hợp với giới hạn đã cho.",
+    "problemType": "STANDARD",
+    "difficulty": "HARD",
+    "inputSpecification": "Dòng đầu chứa N (và K nếu bài yêu cầu). Dòng tiếp theo chứa N số nguyên.",
+    "outputSpecification": "In kết quả theo đúng định dạng của đề bài.",
+    "examples": [
+      {
+        "input": "6\n13 -5 0 5 10 15",
+        "output": "8",
+        "explanation": "Áp dụng thao tác tính tổng ba phần tử đầu trên dãy đã cho."
+      },
+      {
+        "input": "6\n-7 -2 3 8 13 -5",
+        "output": "-6",
+        "explanation": "Áp dụng thao tác tính tổng ba phần tử đầu trên dãy đã cho."
+      }
+    ],
+    "constraints": "1 ≤ N ≤ 100000; |Ai| ≤ 10^9.",
+    "timeLimitMs": 1000,
+    "memoryLimitMb": 256,
+    "publishStatus": "PUBLISHED",
+    "createdBy": "ac9fadc2-1955-59e4-984d-26f74bbb4f53",
+    "topicName": "OOP",
+    "testCases": [
+      {
+        "input": "6\n13 -5 0 5 10 15",
+        "expectedOutput": "8",
+        "isHidden": false,
+        "score": 1,
+        "displayOrder": 0
+      },
+      {
+        "input": "6\n-7 -2 3 8 13 -5",
+        "expectedOutput": "-6",
+        "isHidden": false,
+        "score": 1,
+        "displayOrder": 1
+      },
+      {
+        "input": "6\n-4 1 6 11 -7 -2",
+        "expectedOutput": "3",
+        "isHidden": true,
+        "score": 1,
+        "displayOrder": 2
+      },
+      {
+        "input": "6\n-1 4 9 14 -4 1",
+        "expectedOutput": "12",
+        "isHidden": true,
+        "score": 1,
+        "displayOrder": 3
+      },
+      {
+        "input": "6\n2 7 12 -6 -1 4",
+        "expectedOutput": "21",
+        "isHidden": true,
+        "score": 1,
+        "displayOrder": 4
+      }
+    ],
+    "languages": ["c", "cpp", "java", "python"],
+    "starterCodes": {
+      "c": "#include <stdio.h>\nint main(void) { return 0; }",
+      "cpp": "#include <bits/stdc++.h>\nusing namespace std;\nint main(){ios::sync_with_stdio(false);cin.tie(nullptr);return 0;}",
+      "java": "import java.util.*;\npublic class Main { public static void main(String[] args) {} }",
+      "python": "import sys\n\ndef main():\n    data = sys.stdin.read().split()\n\nif __name__ == \"__main__\":\n    main()"
+    }
+  },
+  {
+    "id": "16c8d8c1-9ca0-5120-a31c-4128f09e5743",
+    "key": "c03-ch04-p10",
+    "courseKey": "c03",
+    "chapterKey": "c03-ch04",
+    "slug": "c03-ch04-p10",
+    "title": "Chương 4: OOP — Tìm ước chung lớn nhất #10",
+    "description": "Cho một dãy số nguyên. Hãy tìm ước chung lớn nhất theo yêu cầu và in kết quả. Dữ liệu bảo đảm phù hợp với giới hạn đã cho.",
+    "problemType": "STANDARD",
+    "difficulty": "EASY",
+    "inputSpecification": "Dòng đầu chứa N (và K nếu bài yêu cầu). Dòng tiếp theo chứa N số nguyên.",
+    "outputSpecification": "In kết quả theo đúng định dạng của đề bài.",
+    "examples": [
+      {
+        "input": "6\n-7 -2 3 8 13 -5",
+        "output": "1",
+        "explanation": "Áp dụng thao tác tìm ước chung lớn nhất trên dãy đã cho."
+      },
+      {
+        "input": "6\n-4 1 6 11 -7 -2",
+        "output": "1",
+        "explanation": "Áp dụng thao tác tìm ước chung lớn nhất trên dãy đã cho."
+      }
+    ],
+    "constraints": "1 ≤ N ≤ 100000; |Ai| ≤ 10^9.",
+    "timeLimitMs": 1000,
+    "memoryLimitMb": 256,
+    "publishStatus": "PUBLISHED",
+    "createdBy": "ac9fadc2-1955-59e4-984d-26f74bbb4f53",
+    "topicName": "OOP",
+    "testCases": [
+      {
+        "input": "6\n-7 -2 3 8 13 -5",
+        "expectedOutput": "1",
+        "isHidden": false,
+        "score": 1,
+        "displayOrder": 0
+      },
+      {
+        "input": "6\n-4 1 6 11 -7 -2",
+        "expectedOutput": "1",
+        "isHidden": false,
+        "score": 1,
+        "displayOrder": 1
+      },
+      {
+        "input": "6\n-1 4 9 14 -4 1",
+        "expectedOutput": "1",
+        "isHidden": true,
+        "score": 1,
+        "displayOrder": 2
+      },
+      {
+        "input": "6\n2 7 12 -6 -1 4",
+        "expectedOutput": "1",
+        "isHidden": true,
+        "score": 1,
+        "displayOrder": 3
+      },
+      {
+        "input": "6\n5 10 15 -3 2 7",
+        "expectedOutput": "1",
+        "isHidden": true,
+        "score": 1,
+        "displayOrder": 4
+      }
+    ],
+    "languages": ["c", "cpp", "java", "python"],
+    "starterCodes": {
+      "c": "#include <stdio.h>\nint main(void) { return 0; }",
+      "cpp": "#include <bits/stdc++.h>\nusing namespace std;\nint main(){ios::sync_with_stdio(false);cin.tie(nullptr);return 0;}",
+      "java": "import java.util.*;\npublic class Main { public static void main(String[] args) {} }",
+      "python": "import sys\n\ndef main():\n    data = sys.stdin.read().split()\n\nif __name__ == \"__main__\":\n    main()"
+    }
+  },
+  {
+    "id": "79e38c31-8e75-57fe-a8cd-8baca1855bc7",
+    "key": "c03-ch05-p01",
+    "courseKey": "c03",
+    "chapterKey": "c03-ch05",
+    "slug": "c03-ch05-p01",
+    "title": "Chương 5: Đồ thị — Tính tổng các phần tử #01",
+    "description": "Cho một dãy số nguyên. Hãy tính tổng các phần tử theo yêu cầu và in kết quả. Dữ liệu bảo đảm phù hợp với giới hạn đã cho.",
+    "problemType": "STANDARD",
+    "difficulty": "EASY",
+    "inputSpecification": "Dòng đầu chứa N (và K nếu bài yêu cầu). Dòng tiếp theo chứa N số nguyên.",
+    "outputSpecification": "In kết quả theo đúng định dạng của đề bài.",
+    "examples": [
+      {
+        "input": "6\n-4 1 6 11 -7 -2",
+        "output": "5",
+        "explanation": "Áp dụng thao tác tính tổng các phần tử trên dãy đã cho."
+      },
+      {
+        "input": "6\n-1 4 9 14 -4 1",
+        "output": "23",
+        "explanation": "Áp dụng thao tác tính tổng các phần tử trên dãy đã cho."
+      }
+    ],
+    "constraints": "1 ≤ N ≤ 100000; |Ai| ≤ 10^9.",
+    "timeLimitMs": 1000,
+    "memoryLimitMb": 256,
+    "publishStatus": "PUBLISHED",
+    "createdBy": "ac9fadc2-1955-59e4-984d-26f74bbb4f53",
+    "topicName": "Đồ thị",
+    "testCases": [
+      {
+        "input": "6\n-4 1 6 11 -7 -2",
+        "expectedOutput": "5",
+        "isHidden": false,
+        "score": 1,
+        "displayOrder": 0
+      },
+      {
+        "input": "6\n-1 4 9 14 -4 1",
+        "expectedOutput": "23",
+        "isHidden": false,
+        "score": 1,
+        "displayOrder": 1
+      },
+      {
+        "input": "6\n2 7 12 -6 -1 4",
+        "expectedOutput": "18",
+        "isHidden": true,
+        "score": 1,
+        "displayOrder": 2
+      },
+      {
+        "input": "6\n5 10 15 -3 2 7",
+        "expectedOutput": "36",
+        "isHidden": true,
+        "score": 1,
+        "displayOrder": 3
+      },
+      {
+        "input": "6\n8 13 -5 0 5 10",
+        "expectedOutput": "31",
+        "isHidden": true,
+        "score": 1,
+        "displayOrder": 4
+      }
+    ],
+    "languages": ["c", "cpp", "java", "python"],
+    "starterCodes": {
+      "c": "#include <stdio.h>\nint main(void) { return 0; }",
+      "cpp": "#include <bits/stdc++.h>\nusing namespace std;\nint main(){ios::sync_with_stdio(false);cin.tie(nullptr);return 0;}",
+      "java": "import java.util.*;\npublic class Main { public static void main(String[] args) {} }",
+      "python": "import sys\n\ndef main():\n    data = sys.stdin.read().split()\n\nif __name__ == \"__main__\":\n    main()"
+    }
+  },
+  {
+    "id": "04b31579-f35d-5487-a880-f1f14b8a2414",
+    "key": "c03-ch05-p02",
+    "courseKey": "c03",
+    "chapterKey": "c03-ch05",
+    "slug": "c03-ch05-p02",
+    "title": "Chương 5: Đồ thị — Tìm giá trị lớn nhất #02",
+    "description": "Cho một dãy số nguyên. Hãy tìm giá trị lớn nhất theo yêu cầu và in kết quả. Dữ liệu bảo đảm phù hợp với giới hạn đã cho.",
+    "problemType": "STANDARD",
+    "difficulty": "MEDIUM",
+    "inputSpecification": "Dòng đầu chứa N (và K nếu bài yêu cầu). Dòng tiếp theo chứa N số nguyên.",
+    "outputSpecification": "In kết quả theo đúng định dạng của đề bài.",
+    "examples": [
+      {
+        "input": "6\n-1 4 9 14 -4 1",
+        "output": "14",
+        "explanation": "Áp dụng thao tác tìm giá trị lớn nhất trên dãy đã cho."
+      },
+      {
+        "input": "6\n2 7 12 -6 -1 4",
+        "output": "12",
+        "explanation": "Áp dụng thao tác tìm giá trị lớn nhất trên dãy đã cho."
+      }
+    ],
+    "constraints": "1 ≤ N ≤ 100000; |Ai| ≤ 10^9.",
+    "timeLimitMs": 1000,
+    "memoryLimitMb": 256,
+    "publishStatus": "PUBLISHED",
+    "createdBy": "ac9fadc2-1955-59e4-984d-26f74bbb4f53",
+    "topicName": "Đồ thị",
+    "testCases": [
+      {
+        "input": "6\n-1 4 9 14 -4 1",
+        "expectedOutput": "14",
+        "isHidden": false,
+        "score": 1,
+        "displayOrder": 0
+      },
+      {
+        "input": "6\n2 7 12 -6 -1 4",
+        "expectedOutput": "12",
+        "isHidden": false,
+        "score": 1,
+        "displayOrder": 1
+      },
+      {
+        "input": "6\n5 10 15 -3 2 7",
+        "expectedOutput": "15",
+        "isHidden": true,
+        "score": 1,
+        "displayOrder": 2
+      },
+      {
+        "input": "6\n8 13 -5 0 5 10",
+        "expectedOutput": "13",
+        "isHidden": true,
+        "score": 1,
+        "displayOrder": 3
+      },
+      {
+        "input": "6\n11 -7 -2 3 8 13",
+        "expectedOutput": "13",
+        "isHidden": true,
+        "score": 1,
+        "displayOrder": 4
+      }
+    ],
+    "languages": ["c", "cpp", "java", "python"],
+    "starterCodes": {
+      "c": "#include <stdio.h>\nint main(void) { return 0; }",
+      "cpp": "#include <bits/stdc++.h>\nusing namespace std;\nint main(){ios::sync_with_stdio(false);cin.tie(nullptr);return 0;}",
+      "java": "import java.util.*;\npublic class Main { public static void main(String[] args) {} }",
+      "python": "import sys\n\ndef main():\n    data = sys.stdin.read().split()\n\nif __name__ == \"__main__\":\n    main()"
+    }
+  },
+  {
+    "id": "1e14a129-3cdd-5278-b2bf-070c7ea6ae1f",
+    "key": "c03-ch05-p03",
+    "courseKey": "c03",
+    "chapterKey": "c03-ch05",
+    "slug": "c03-ch05-p03",
+    "title": "Chương 5: Đồ thị — Tìm giá trị nhỏ nhất #03",
+    "description": "Cho một dãy số nguyên. Hãy tìm giá trị nhỏ nhất theo yêu cầu và in kết quả. Dữ liệu bảo đảm phù hợp với giới hạn đã cho.",
+    "problemType": "STANDARD",
+    "difficulty": "HARD",
+    "inputSpecification": "Dòng đầu chứa N (và K nếu bài yêu cầu). Dòng tiếp theo chứa N số nguyên.",
+    "outputSpecification": "In kết quả theo đúng định dạng của đề bài.",
+    "examples": [
+      {
+        "input": "6\n2 7 12 -6 -1 4",
+        "output": "-6",
+        "explanation": "Áp dụng thao tác tìm giá trị nhỏ nhất trên dãy đã cho."
+      },
+      {
+        "input": "6\n5 10 15 -3 2 7",
+        "output": "-3",
+        "explanation": "Áp dụng thao tác tìm giá trị nhỏ nhất trên dãy đã cho."
+      }
+    ],
+    "constraints": "1 ≤ N ≤ 100000; |Ai| ≤ 10^9.",
+    "timeLimitMs": 1000,
+    "memoryLimitMb": 256,
+    "publishStatus": "PUBLISHED",
+    "createdBy": "ac9fadc2-1955-59e4-984d-26f74bbb4f53",
+    "topicName": "Đồ thị",
+    "testCases": [
+      {
+        "input": "6\n2 7 12 -6 -1 4",
+        "expectedOutput": "-6",
+        "isHidden": false,
+        "score": 1,
+        "displayOrder": 0
+      },
+      {
+        "input": "6\n5 10 15 -3 2 7",
+        "expectedOutput": "-3",
+        "isHidden": false,
+        "score": 1,
+        "displayOrder": 1
+      },
+      {
+        "input": "6\n8 13 -5 0 5 10",
+        "expectedOutput": "-5",
+        "isHidden": true,
+        "score": 1,
+        "displayOrder": 2
+      },
+      {
+        "input": "6\n11 -7 -2 3 8 13",
+        "expectedOutput": "-7",
+        "isHidden": true,
+        "score": 1,
+        "displayOrder": 3
+      },
+      {
+        "input": "6\n14 -4 1 6 11 -7",
+        "expectedOutput": "-7",
+        "isHidden": true,
+        "score": 1,
+        "displayOrder": 4
+      }
+    ],
+    "languages": ["c", "cpp", "java", "python"],
+    "starterCodes": {
+      "c": "#include <stdio.h>\nint main(void) { return 0; }",
+      "cpp": "#include <bits/stdc++.h>\nusing namespace std;\nint main(){ios::sync_with_stdio(false);cin.tie(nullptr);return 0;}",
+      "java": "import java.util.*;\npublic class Main { public static void main(String[] args) {} }",
+      "python": "import sys\n\ndef main():\n    data = sys.stdin.read().split()\n\nif __name__ == \"__main__\":\n    main()"
+    }
+  },
+  {
+    "id": "d9e28e81-7e37-5a32-a608-2d09e3ea95af",
+    "key": "c03-ch05-p04",
+    "courseKey": "c03",
+    "chapterKey": "c03-ch05",
+    "slug": "c03-ch05-p04",
+    "title": "Chương 5: Đồ thị — Đếm số chẵn #04",
+    "description": "Cho một dãy số nguyên. Hãy đếm số chẵn theo yêu cầu và in kết quả. Dữ liệu bảo đảm phù hợp với giới hạn đã cho.",
+    "problemType": "STANDARD",
+    "difficulty": "EASY",
+    "inputSpecification": "Dòng đầu chứa N (và K nếu bài yêu cầu). Dòng tiếp theo chứa N số nguyên.",
+    "outputSpecification": "In kết quả theo đúng định dạng của đề bài.",
+    "examples": [
+      {
+        "input": "6\n5 10 15 -3 2 7",
+        "output": "2",
+        "explanation": "Áp dụng thao tác đếm số chẵn trên dãy đã cho."
+      },
+      {
+        "input": "6\n8 13 -5 0 5 10",
+        "output": "3",
+        "explanation": "Áp dụng thao tác đếm số chẵn trên dãy đã cho."
+      }
+    ],
+    "constraints": "1 ≤ N ≤ 100000; |Ai| ≤ 10^9.",
+    "timeLimitMs": 1000,
+    "memoryLimitMb": 256,
+    "publishStatus": "PUBLISHED",
+    "createdBy": "ac9fadc2-1955-59e4-984d-26f74bbb4f53",
+    "topicName": "Đồ thị",
+    "testCases": [
+      {
+        "input": "6\n5 10 15 -3 2 7",
+        "expectedOutput": "2",
+        "isHidden": false,
+        "score": 1,
+        "displayOrder": 0
+      },
+      {
+        "input": "6\n8 13 -5 0 5 10",
+        "expectedOutput": "3",
+        "isHidden": false,
+        "score": 1,
+        "displayOrder": 1
+      },
+      {
+        "input": "6\n11 -7 -2 3 8 13",
+        "expectedOutput": "2",
+        "isHidden": true,
+        "score": 1,
+        "displayOrder": 2
+      },
+      {
+        "input": "6\n14 -4 1 6 11 -7",
+        "expectedOutput": "3",
+        "isHidden": true,
+        "score": 1,
+        "displayOrder": 3
+      },
+      {
+        "input": "6\n-6 -1 4 9 14 -4",
+        "expectedOutput": "4",
+        "isHidden": true,
+        "score": 1,
+        "displayOrder": 4
+      }
+    ],
+    "languages": ["c", "cpp", "java", "python"],
+    "starterCodes": {
+      "c": "#include <stdio.h>\nint main(void) { return 0; }",
+      "cpp": "#include <bits/stdc++.h>\nusing namespace std;\nint main(){ios::sync_with_stdio(false);cin.tie(nullptr);return 0;}",
+      "java": "import java.util.*;\npublic class Main { public static void main(String[] args) {} }",
+      "python": "import sys\n\ndef main():\n    data = sys.stdin.read().split()\n\nif __name__ == \"__main__\":\n    main()"
+    }
+  },
+  {
+    "id": "af2af235-34ca-5791-9a99-937eca0eb8aa",
+    "key": "c03-ch05-p05",
+    "courseKey": "c03",
+    "chapterKey": "c03-ch05",
+    "slug": "c03-ch05-p05",
+    "title": "Chương 5: Đồ thị — Đếm bội số của K #05",
+    "description": "Cho một dãy số nguyên. Hãy đếm bội số của k theo yêu cầu và in kết quả. Dữ liệu bảo đảm phù hợp với giới hạn đã cho.",
+    "problemType": "STANDARD",
+    "difficulty": "MEDIUM",
+    "inputSpecification": "Dòng đầu chứa N (và K nếu bài yêu cầu). Dòng tiếp theo chứa N số nguyên.",
+    "outputSpecification": "In kết quả theo đúng định dạng của đề bài.",
+    "examples": [
+      {
+        "input": "6 8\n8 13 -5 0 5 10",
+        "output": "2",
+        "explanation": "Áp dụng thao tác đếm bội số của k trên dãy đã cho."
+      },
+      {
+        "input": "6 2\n11 -7 -2 3 8 13",
+        "output": "2",
+        "explanation": "Áp dụng thao tác đếm bội số của k trên dãy đã cho."
+      }
+    ],
+    "constraints": "1 ≤ N ≤ 100000; |Ai| ≤ 10^9.",
+    "timeLimitMs": 1000,
+    "memoryLimitMb": 256,
+    "publishStatus": "PUBLISHED",
+    "createdBy": "ac9fadc2-1955-59e4-984d-26f74bbb4f53",
+    "topicName": "Đồ thị",
+    "testCases": [
+      {
+        "input": "6 8\n8 13 -5 0 5 10",
+        "expectedOutput": "2",
+        "isHidden": false,
+        "score": 1,
+        "displayOrder": 0
+      },
+      {
+        "input": "6 2\n11 -7 -2 3 8 13",
+        "expectedOutput": "2",
+        "isHidden": false,
+        "score": 1,
+        "displayOrder": 1
+      },
+      {
+        "input": "6 3\n14 -4 1 6 11 -7",
+        "expectedOutput": "1",
+        "isHidden": true,
+        "score": 1,
+        "displayOrder": 2
+      },
+      {
+        "input": "6 4\n-6 -1 4 9 14 -4",
+        "expectedOutput": "2",
+        "isHidden": true,
+        "score": 1,
+        "displayOrder": 3
+      },
+      {
+        "input": "6 5\n-3 2 7 12 -6 -1",
+        "expectedOutput": "0",
+        "isHidden": true,
+        "score": 1,
+        "displayOrder": 4
+      }
+    ],
+    "languages": ["c", "cpp", "java", "python"],
+    "starterCodes": {
+      "c": "#include <stdio.h>\nint main(void) { return 0; }",
+      "cpp": "#include <bits/stdc++.h>\nusing namespace std;\nint main(){ios::sync_with_stdio(false);cin.tie(nullptr);return 0;}",
+      "java": "import java.util.*;\npublic class Main { public static void main(String[] args) {} }",
+      "python": "import sys\n\ndef main():\n    data = sys.stdin.read().split()\n\nif __name__ == \"__main__\":\n    main()"
+    }
+  },
+  {
+    "id": "087cf7bd-c2fa-5814-baa3-edd335ce2d65",
+    "key": "c03-ch05-p06",
+    "courseKey": "c03",
+    "chapterKey": "c03-ch05",
+    "slug": "c03-ch05-p06",
+    "title": "Chương 5: Đồ thị — Đảo ngược dãy #06",
+    "description": "Cho một dãy số nguyên. Hãy đảo ngược dãy theo yêu cầu và in kết quả. Dữ liệu bảo đảm phù hợp với giới hạn đã cho.",
+    "problemType": "STANDARD",
+    "difficulty": "HARD",
+    "inputSpecification": "Dòng đầu chứa N (và K nếu bài yêu cầu). Dòng tiếp theo chứa N số nguyên.",
+    "outputSpecification": "In kết quả theo đúng định dạng của đề bài.",
+    "examples": [
+      {
+        "input": "6\n11 -7 -2 3 8 13",
+        "output": "13 8 3 -2 -7 11",
+        "explanation": "Áp dụng thao tác đảo ngược dãy trên dãy đã cho."
+      },
+      {
+        "input": "6\n14 -4 1 6 11 -7",
+        "output": "-7 11 6 1 -4 14",
+        "explanation": "Áp dụng thao tác đảo ngược dãy trên dãy đã cho."
+      }
+    ],
+    "constraints": "1 ≤ N ≤ 100000; |Ai| ≤ 10^9.",
+    "timeLimitMs": 1000,
+    "memoryLimitMb": 256,
+    "publishStatus": "PUBLISHED",
+    "createdBy": "ac9fadc2-1955-59e4-984d-26f74bbb4f53",
+    "topicName": "Đồ thị",
+    "testCases": [
+      {
+        "input": "6\n11 -7 -2 3 8 13",
+        "expectedOutput": "13 8 3 -2 -7 11",
+        "isHidden": false,
+        "score": 1,
+        "displayOrder": 0
+      },
+      {
+        "input": "6\n14 -4 1 6 11 -7",
+        "expectedOutput": "-7 11 6 1 -4 14",
+        "isHidden": false,
+        "score": 1,
+        "displayOrder": 1
+      },
+      {
+        "input": "6\n-6 -1 4 9 14 -4",
+        "expectedOutput": "-4 14 9 4 -1 -6",
+        "isHidden": true,
+        "score": 1,
+        "displayOrder": 2
+      },
+      {
+        "input": "6\n-3 2 7 12 -6 -1",
+        "expectedOutput": "-1 -6 12 7 2 -3",
+        "isHidden": true,
+        "score": 1,
+        "displayOrder": 3
+      },
+      {
+        "input": "6\n0 5 10 15 -3 2",
+        "expectedOutput": "2 -3 15 10 5 0",
+        "isHidden": true,
+        "score": 1,
+        "displayOrder": 4
+      }
+    ],
+    "languages": ["c", "cpp", "java", "python"],
+    "starterCodes": {
+      "c": "#include <stdio.h>\nint main(void) { return 0; }",
+      "cpp": "#include <bits/stdc++.h>\nusing namespace std;\nint main(){ios::sync_with_stdio(false);cin.tie(nullptr);return 0;}",
+      "java": "import java.util.*;\npublic class Main { public static void main(String[] args) {} }",
+      "python": "import sys\n\ndef main():\n    data = sys.stdin.read().split()\n\nif __name__ == \"__main__\":\n    main()"
+    }
+  },
+  {
+    "id": "64604299-95cd-53f8-9d4f-e0bb1dc6524d",
+    "key": "c03-ch05-p07",
+    "courseKey": "c03",
+    "chapterKey": "c03-ch05",
+    "slug": "c03-ch05-p07",
+    "title": "Chương 5: Đồ thị — Sắp xếp tăng dần #07",
+    "description": "Cho một dãy số nguyên. Hãy sắp xếp tăng dần theo yêu cầu và in kết quả. Dữ liệu bảo đảm phù hợp với giới hạn đã cho.",
+    "problemType": "STANDARD",
+    "difficulty": "EASY",
+    "inputSpecification": "Dòng đầu chứa N (và K nếu bài yêu cầu). Dòng tiếp theo chứa N số nguyên.",
+    "outputSpecification": "In kết quả theo đúng định dạng của đề bài.",
+    "examples": [
+      {
+        "input": "6\n14 -4 1 6 11 -7",
+        "output": "-7 -4 1 6 11 14",
+        "explanation": "Áp dụng thao tác sắp xếp tăng dần trên dãy đã cho."
+      },
+      {
+        "input": "6\n-6 -1 4 9 14 -4",
+        "output": "-6 -4 -1 4 9 14",
+        "explanation": "Áp dụng thao tác sắp xếp tăng dần trên dãy đã cho."
+      }
+    ],
+    "constraints": "1 ≤ N ≤ 100000; |Ai| ≤ 10^9.",
+    "timeLimitMs": 1000,
+    "memoryLimitMb": 256,
+    "publishStatus": "PUBLISHED",
+    "createdBy": "ac9fadc2-1955-59e4-984d-26f74bbb4f53",
+    "topicName": "Đồ thị",
+    "testCases": [
+      {
+        "input": "6\n14 -4 1 6 11 -7",
+        "expectedOutput": "-7 -4 1 6 11 14",
+        "isHidden": false,
+        "score": 1,
+        "displayOrder": 0
+      },
+      {
+        "input": "6\n-6 -1 4 9 14 -4",
+        "expectedOutput": "-6 -4 -1 4 9 14",
+        "isHidden": false,
+        "score": 1,
+        "displayOrder": 1
+      },
+      {
+        "input": "6\n-3 2 7 12 -6 -1",
+        "expectedOutput": "-6 -3 -1 2 7 12",
+        "isHidden": true,
+        "score": 1,
+        "displayOrder": 2
+      },
+      {
+        "input": "6\n0 5 10 15 -3 2",
+        "expectedOutput": "-3 0 2 5 10 15",
+        "isHidden": true,
+        "score": 1,
+        "displayOrder": 3
+      },
+      {
+        "input": "6\n3 8 13 -5 0 5",
+        "expectedOutput": "-5 0 3 5 8 13",
+        "isHidden": true,
+        "score": 1,
+        "displayOrder": 4
+      }
+    ],
+    "languages": ["c", "cpp", "java", "python"],
+    "starterCodes": {
+      "c": "#include <stdio.h>\nint main(void) { return 0; }",
+      "cpp": "#include <bits/stdc++.h>\nusing namespace std;\nint main(){ios::sync_with_stdio(false);cin.tie(nullptr);return 0;}",
+      "java": "import java.util.*;\npublic class Main { public static void main(String[] args) {} }",
+      "python": "import sys\n\ndef main():\n    data = sys.stdin.read().split()\n\nif __name__ == \"__main__\":\n    main()"
+    }
+  },
+  {
+    "id": "c6b43599-3945-5043-bf5a-8904a52f3b16",
+    "key": "c03-ch05-p08",
+    "courseKey": "c03",
+    "chapterKey": "c03-ch05",
+    "slug": "c03-ch05-p08",
+    "title": "Chương 5: Đồ thị — Đếm phần tử lớn hơn K #08",
+    "description": "Cho một dãy số nguyên. Hãy đếm phần tử lớn hơn k theo yêu cầu và in kết quả. Dữ liệu bảo đảm phù hợp với giới hạn đã cho.",
+    "problemType": "STANDARD",
+    "difficulty": "MEDIUM",
+    "inputSpecification": "Dòng đầu chứa N (và K nếu bài yêu cầu). Dòng tiếp theo chứa N số nguyên.",
+    "outputSpecification": "In kết quả theo đúng định dạng của đề bài.",
+    "examples": [
+      {
+        "input": "6 4\n-6 -1 4 9 14 -4",
+        "output": "2",
+        "explanation": "Áp dụng thao tác đếm phần tử lớn hơn k trên dãy đã cho."
+      },
+      {
+        "input": "6 5\n-3 2 7 12 -6 -1",
+        "output": "2",
+        "explanation": "Áp dụng thao tác đếm phần tử lớn hơn k trên dãy đã cho."
+      }
+    ],
+    "constraints": "1 ≤ N ≤ 100000; |Ai| ≤ 10^9.",
+    "timeLimitMs": 1000,
+    "memoryLimitMb": 256,
+    "publishStatus": "PUBLISHED",
+    "createdBy": "ac9fadc2-1955-59e4-984d-26f74bbb4f53",
+    "topicName": "Đồ thị",
+    "testCases": [
+      {
+        "input": "6 4\n-6 -1 4 9 14 -4",
+        "expectedOutput": "2",
+        "isHidden": false,
+        "score": 1,
+        "displayOrder": 0
+      },
+      {
+        "input": "6 5\n-3 2 7 12 -6 -1",
+        "expectedOutput": "2",
+        "isHidden": false,
+        "score": 1,
+        "displayOrder": 1
+      },
+      {
+        "input": "6 6\n0 5 10 15 -3 2",
+        "expectedOutput": "2",
+        "isHidden": true,
+        "score": 1,
+        "displayOrder": 2
+      },
+      {
+        "input": "6 7\n3 8 13 -5 0 5",
+        "expectedOutput": "2",
+        "isHidden": true,
+        "score": 1,
+        "displayOrder": 3
+      },
+      {
+        "input": "6 8\n6 11 -7 -2 3 8",
+        "expectedOutput": "1",
+        "isHidden": true,
+        "score": 1,
+        "displayOrder": 4
+      }
+    ],
+    "languages": ["c", "cpp", "java", "python"],
+    "starterCodes": {
+      "c": "#include <stdio.h>\nint main(void) { return 0; }",
+      "cpp": "#include <bits/stdc++.h>\nusing namespace std;\nint main(){ios::sync_with_stdio(false);cin.tie(nullptr);return 0;}",
+      "java": "import java.util.*;\npublic class Main { public static void main(String[] args) {} }",
+      "python": "import sys\n\ndef main():\n    data = sys.stdin.read().split()\n\nif __name__ == \"__main__\":\n    main()"
+    }
+  },
+  {
+    "id": "88f9ed90-e39e-5a78-9479-539d8b5a7581",
+    "key": "c03-ch05-p09",
+    "courseKey": "c03",
+    "chapterKey": "c03-ch05",
+    "slug": "c03-ch05-p09",
+    "title": "Chương 5: Đồ thị — Tính tổng ba phần tử đầu #09",
+    "description": "Cho một dãy số nguyên. Hãy tính tổng ba phần tử đầu theo yêu cầu và in kết quả. Dữ liệu bảo đảm phù hợp với giới hạn đã cho.",
+    "problemType": "STANDARD",
+    "difficulty": "HARD",
+    "inputSpecification": "Dòng đầu chứa N (và K nếu bài yêu cầu). Dòng tiếp theo chứa N số nguyên.",
+    "outputSpecification": "In kết quả theo đúng định dạng của đề bài.",
+    "examples": [
+      {
+        "input": "6\n-3 2 7 12 -6 -1",
+        "output": "6",
+        "explanation": "Áp dụng thao tác tính tổng ba phần tử đầu trên dãy đã cho."
+      },
+      {
+        "input": "6\n0 5 10 15 -3 2",
+        "output": "15",
+        "explanation": "Áp dụng thao tác tính tổng ba phần tử đầu trên dãy đã cho."
+      }
+    ],
+    "constraints": "1 ≤ N ≤ 100000; |Ai| ≤ 10^9.",
+    "timeLimitMs": 1000,
+    "memoryLimitMb": 256,
+    "publishStatus": "PUBLISHED",
+    "createdBy": "ac9fadc2-1955-59e4-984d-26f74bbb4f53",
+    "topicName": "Đồ thị",
+    "testCases": [
+      {
+        "input": "6\n-3 2 7 12 -6 -1",
+        "expectedOutput": "6",
+        "isHidden": false,
+        "score": 1,
+        "displayOrder": 0
+      },
+      {
+        "input": "6\n0 5 10 15 -3 2",
+        "expectedOutput": "15",
+        "isHidden": false,
+        "score": 1,
+        "displayOrder": 1
+      },
+      {
+        "input": "6\n3 8 13 -5 0 5",
+        "expectedOutput": "24",
+        "isHidden": true,
+        "score": 1,
+        "displayOrder": 2
+      },
+      {
+        "input": "6\n6 11 -7 -2 3 8",
+        "expectedOutput": "10",
+        "isHidden": true,
+        "score": 1,
+        "displayOrder": 3
+      },
+      {
+        "input": "6\n9 14 -4 1 6 11",
+        "expectedOutput": "19",
+        "isHidden": true,
+        "score": 1,
+        "displayOrder": 4
+      }
+    ],
+    "languages": ["c", "cpp", "java", "python"],
+    "starterCodes": {
+      "c": "#include <stdio.h>\nint main(void) { return 0; }",
+      "cpp": "#include <bits/stdc++.h>\nusing namespace std;\nint main(){ios::sync_with_stdio(false);cin.tie(nullptr);return 0;}",
+      "java": "import java.util.*;\npublic class Main { public static void main(String[] args) {} }",
+      "python": "import sys\n\ndef main():\n    data = sys.stdin.read().split()\n\nif __name__ == \"__main__\":\n    main()"
+    }
+  },
+  {
+    "id": "e5c1c8b7-6a7f-5398-806a-74604538daf9",
+    "key": "c03-ch05-p10",
+    "courseKey": "c03",
+    "chapterKey": "c03-ch05",
+    "slug": "c03-ch05-p10",
+    "title": "Chương 5: Đồ thị — Tìm ước chung lớn nhất #10",
+    "description": "Cho một dãy số nguyên. Hãy tìm ước chung lớn nhất theo yêu cầu và in kết quả. Dữ liệu bảo đảm phù hợp với giới hạn đã cho.",
+    "problemType": "STANDARD",
+    "difficulty": "EASY",
+    "inputSpecification": "Dòng đầu chứa N (và K nếu bài yêu cầu). Dòng tiếp theo chứa N số nguyên.",
+    "outputSpecification": "In kết quả theo đúng định dạng của đề bài.",
+    "examples": [
+      {
+        "input": "6\n0 5 10 15 -3 2",
+        "output": "1",
+        "explanation": "Áp dụng thao tác tìm ước chung lớn nhất trên dãy đã cho."
+      },
+      {
+        "input": "6\n3 8 13 -5 0 5",
+        "output": "1",
+        "explanation": "Áp dụng thao tác tìm ước chung lớn nhất trên dãy đã cho."
+      }
+    ],
+    "constraints": "1 ≤ N ≤ 100000; |Ai| ≤ 10^9.",
+    "timeLimitMs": 1000,
+    "memoryLimitMb": 256,
+    "publishStatus": "PUBLISHED",
+    "createdBy": "ac9fadc2-1955-59e4-984d-26f74bbb4f53",
+    "topicName": "Đồ thị",
+    "testCases": [
+      {
+        "input": "6\n0 5 10 15 -3 2",
+        "expectedOutput": "1",
+        "isHidden": false,
+        "score": 1,
+        "displayOrder": 0
+      },
+      {
+        "input": "6\n3 8 13 -5 0 5",
+        "expectedOutput": "1",
+        "isHidden": false,
+        "score": 1,
+        "displayOrder": 1
+      },
+      {
+        "input": "6\n6 11 -7 -2 3 8",
+        "expectedOutput": "1",
+        "isHidden": true,
+        "score": 1,
+        "displayOrder": 2
+      },
+      {
+        "input": "6\n9 14 -4 1 6 11",
+        "expectedOutput": "1",
+        "isHidden": true,
+        "score": 1,
+        "displayOrder": 3
+      },
+      {
+        "input": "6\n12 -6 -1 4 9 14",
+        "expectedOutput": "1",
+        "isHidden": true,
+        "score": 1,
+        "displayOrder": 4
+      }
+    ],
+    "languages": ["c", "cpp", "java", "python"],
+    "starterCodes": {
+      "c": "#include <stdio.h>\nint main(void) { return 0; }",
+      "cpp": "#include <bits/stdc++.h>\nusing namespace std;\nint main(){ios::sync_with_stdio(false);cin.tie(nullptr);return 0;}",
+      "java": "import java.util.*;\npublic class Main { public static void main(String[] args) {} }",
+      "python": "import sys\n\ndef main():\n    data = sys.stdin.read().split()\n\nif __name__ == \"__main__\":\n    main()"
+    }
+  }
+]

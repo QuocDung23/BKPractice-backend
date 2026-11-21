@@ -1,0 +1,252 @@
+[
+  {
+    "id": "e9186199-2964-51bf-98f1-fc8661ea8d36",
+    "slug": "cpp-foundation",
+    "title": "C++ nền tảng",
+    "description": "Rèn luyện tư duy lập trình với biến, điều kiện, vòng lặp và hàm.",
+    "createdBy": "ac9fadc2-1955-59e4-984d-26f74bbb4f53",
+    "status": "PUBLISHED",
+    "chapters": [
+      {
+        "id": "de9b8c8f-5059-58d2-9f37-bc70920fca11",
+        "key": "c01-ch01",
+        "title": "Chương 1: Mảng",
+        "description": "Lý thuyết và bài luyện tập về mảng.",
+        "displayOrder": 0,
+        "topicName": "Mảng"
+      },
+      {
+        "id": "6910221c-7d70-59df-b548-bde60fc6b967",
+        "key": "c01-ch02",
+        "title": "Chương 2: Sắp xếp",
+        "description": "Lý thuyết và bài luyện tập về sắp xếp.",
+        "displayOrder": 1,
+        "topicName": "Sắp xếp"
+      },
+      {
+        "id": "9104a842-80de-5d6f-88fa-3c856acb89d8",
+        "key": "c01-ch03",
+        "title": "Chương 3: Chuỗi",
+        "description": "Lý thuyết và bài luyện tập về chuỗi.",
+        "displayOrder": 2,
+        "topicName": "Chuỗi"
+      },
+      {
+        "id": "3483b2a1-c825-5f5e-8fdc-f875ab3e2ce5",
+        "key": "c01-ch04",
+        "title": "Chương 4: OOP",
+        "description": "Lý thuyết và bài luyện tập về oop.",
+        "displayOrder": 3,
+        "topicName": "OOP"
+      },
+      {
+        "id": "0012ff43-de0f-5162-afc0-8ee5da8bdcd2",
+        "key": "c01-ch05",
+        "title": "Chương 5: Đồ thị",
+        "description": "Lý thuyết và bài luyện tập về đồ thị.",
+        "displayOrder": 4,
+        "topicName": "Đồ thị"
+      }
+    ]
+  },
+  {
+    "id": "d509b9ae-f0da-5436-a3d6-dae9d008de86",
+    "slug": "data-structures",
+    "title": "Cấu trúc dữ liệu",
+    "description": "Thực hành mảng, chuỗi, ngăn xếp, hàng đợi và cây.",
+    "createdBy": "ac9fadc2-1955-59e4-984d-26f74bbb4f53",
+    "status": "PUBLISHED",
+    "chapters": [
+      {
+        "id": "5d60f391-dbca-5a7f-b90e-70d80e566c8e",
+        "key": "c02-ch01",
+        "title": "Chương 1: Cấu trúc cây",
+        "description": "Lý thuyết và bài luyện tập về cấu trúc cây.",
+        "displayOrder": 0,
+        "topicName": "Cấu trúc cây"
+      },
+      {
+        "id": "d9e89e54-e332-5700-bd81-5bc8c154aced",
+        "key": "c02-ch02",
+        "title": "Chương 2: Quy hoạch động",
+        "description": "Lý thuyết và bài luyện tập về quy hoạch động.",
+        "displayOrder": 1,
+        "topicName": "Quy hoạch động"
+      },
+      {
+        "id": "4e92d617-b552-5d9e-9c17-f1d33c874bf8",
+        "key": "c02-ch03",
+        "title": "Chương 3: Đệ quy",
+        "description": "Lý thuyết và bài luyện tập về đệ quy.",
+        "displayOrder": 2,
+        "topicName": "Đệ quy"
+      },
+      {
+        "id": "d7a27cb2-cf5e-5c1c-8816-6c2b9d1bc3e8",
+        "key": "c02-ch04",
+        "title": "Chương 4: Tìm kiếm nhị phân",
+        "description": "Lý thuyết và bài luyện tập về tìm kiếm nhị phân.",
+        "displayOrder": 3,
+        "topicName": "Tìm kiếm nhị phân"
+      },
+      {
+        "id": "e02a8ecf-b4b0-56d6-8633-245e5dda18a9",
+        "key": "c02-ch05",
+        "title": "Chương 5: Ngăn xếp/Hàng đợi",
+        "description": "Lý thuyết và bài luyện tập về ngăn xếp/hàng đợi.",
+        "displayOrder": 4,
+        "topicName": "Ngăn xếp/Hàng đợi"
+      }
+    ]
+  },
+  {
+    "id": "2a080914-b2ec-51d5-9c8e-52ea18ddec17",
+    "slug": "algorithms",
+    "title": "Thuật toán cơ bản",
+    "description": "Luyện tìm kiếm, sắp xếp, đệ quy và quy hoạch động.",
+    "createdBy": "ac9fadc2-1955-59e4-984d-26f74bbb4f53",
+    "status": "PUBLISHED",
+    "chapters": [
+      {
+        "id": "234ac4e7-228a-5a03-bde7-24392384b9fe",
+        "key": "c03-ch01",
+        "title": "Chương 1: Mảng",
+        "description": "Lý thuyết và bài luyện tập về mảng.",
+        "displayOrder": 0,
+        "topicName": "Mảng"
+      },
+      {
+        "id": "c5e2e18a-e632-573f-9755-b8d2015e2d9c",
+        "key": "c03-ch02",
+        "title": "Chương 2: Sắp xếp",
+        "description": "Lý thuyết và bài luyện tập về sắp xếp.",
+        "displayOrder": 1,
+        "topicName": "Sắp xếp"
+      },
+      {
+        "id": "59cbee58-00d8-5758-9daf-6211b2bdd3b3",
+        "key": "c03-ch03",
+        "title": "Chương 3: Chuỗi",
+        "description": "Lý thuyết và bài luyện tập về chuỗi.",
+        "displayOrder": 2,
+        "topicName": "Chuỗi"
+      },
+      {
+        "id": "9022f87a-51d9-58b0-bdb1-36e57f87aade",
+        "key": "c03-ch04",
+        "title": "Chương 4: OOP",
+        "description": "Lý thuyết và bài luyện tập về oop.",
+        "displayOrder": 3,
+        "topicName": "OOP"
+      },
+      {
+        "id": "5e81a0e8-f11e-5560-bc46-f054fc65ed9e",
+        "key": "c03-ch05",
+        "title": "Chương 5: Đồ thị",
+        "description": "Lý thuyết và bài luyện tập về đồ thị.",
+        "displayOrder": 4,
+        "topicName": "Đồ thị"
+      }
+    ]
+  },
+  {
+    "id": "35d2ef8a-b3ec-5d06-9011-1c4c0fbdaadd",
+    "slug": "graph-tree",
+    "title": "Đồ thị và cây",
+    "description": "Mô hình hóa quan hệ và giải các bài toán trên đồ thị, cây.",
+    "createdBy": "ac9fadc2-1955-59e4-984d-26f74bbb4f53",
+    "status": "PUBLISHED",
+    "chapters": [
+      {
+        "id": "099d05a1-6010-558a-96b8-3985a6de55ae",
+        "key": "c04-ch01",
+        "title": "Chương 1: Cấu trúc cây",
+        "description": "Lý thuyết và bài luyện tập về cấu trúc cây.",
+        "displayOrder": 0,
+        "topicName": "Cấu trúc cây"
+      },
+      {
+        "id": "5a5d8bcf-0b15-54b4-8f3a-653192b8efdc",
+        "key": "c04-ch02",
+        "title": "Chương 2: Quy hoạch động",
+        "description": "Lý thuyết và bài luyện tập về quy hoạch động.",
+        "displayOrder": 1,
+        "topicName": "Quy hoạch động"
+      },
+      {
+        "id": "4198917d-d776-5865-9cef-0a82161a57ef",
+        "key": "c04-ch03",
+        "title": "Chương 3: Đệ quy",
+        "description": "Lý thuyết và bài luyện tập về đệ quy.",
+        "displayOrder": 2,
+        "topicName": "Đệ quy"
+      },
+      {
+        "id": "9d531f06-bd0c-5526-af4b-48a85cb2d75d",
+        "key": "c04-ch04",
+        "title": "Chương 4: Tìm kiếm nhị phân",
+        "description": "Lý thuyết và bài luyện tập về tìm kiếm nhị phân.",
+        "displayOrder": 3,
+        "topicName": "Tìm kiếm nhị phân"
+      },
+      {
+        "id": "45beb319-f2bb-50c0-9d82-a9889d3de1a6",
+        "key": "c04-ch05",
+        "title": "Chương 5: Ngăn xếp/Hàng đợi",
+        "description": "Lý thuyết và bài luyện tập về ngăn xếp/hàng đợi.",
+        "displayOrder": 4,
+        "topicName": "Ngăn xếp/Hàng đợi"
+      }
+    ]
+  },
+  {
+    "id": "d883521f-961c-580e-97e8-f60166c49647",
+    "slug": "problem-solving",
+    "title": "Kỹ năng giải bài",
+    "description": "Tổng hợp kỹ thuật phân tích, cài đặt và tối ưu lời giải.",
+    "createdBy": "ac9fadc2-1955-59e4-984d-26f74bbb4f53",
+    "status": "PUBLISHED",
+    "chapters": [
+      {
+        "id": "94081892-e5b8-5d60-b829-46be5da88383",
+        "key": "c05-ch01",
+        "title": "Chương 1: Mảng",
+        "description": "Lý thuyết và bài luyện tập về mảng.",
+        "displayOrder": 0,
+        "topicName": "Mảng"
+      },
+      {
+        "id": "bb63dd08-96ec-5a34-ba7a-dfe49838fe40",
+        "key": "c05-ch02",
+        "title": "Chương 2: Sắp xếp",
+        "description": "Lý thuyết và bài luyện tập về sắp xếp.",
+        "displayOrder": 1,
+        "topicName": "Sắp xếp"
+      },
+      {
+        "id": "fd79f288-951d-516e-97a7-b517ff91c18d",
+        "key": "c05-ch03",
+        "title": "Chương 3: Chuỗi",
+        "description": "Lý thuyết và bài luyện tập về chuỗi.",
+        "displayOrder": 2,
+        "topicName": "Chuỗi"
+      },
+      {
+        "id": "9ac0c02d-d96e-5e74-bbda-69b3c16605bb",
+        "key": "c05-ch04",
+        "title": "Chương 4: OOP",
+        "description": "Lý thuyết và bài luyện tập về oop.",
+        "displayOrder": 3,
+        "topicName": "OOP"
+      },
+      {
+        "id": "63d6842c-fb5e-55df-8c4e-f1ed0ffa0dd0",
+        "key": "c05-ch05",
+        "title": "Chương 5: Đồ thị",
+        "description": "Lý thuyết và bài luyện tập về đồ thị.",
+        "displayOrder": 4,
+        "topicName": "Đồ thị"
+      }
+    ]
+  }
+]
