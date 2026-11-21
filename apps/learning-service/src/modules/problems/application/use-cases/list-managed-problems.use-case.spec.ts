@@ -16,7 +16,7 @@ const PRINCIPAL = {
 };
 
 describe('ListManagedProblemsUseCase', () => {
-  it('lists owned problems with readiness for every item', async () => {
+  it('lists problems with readiness for every item', async () => {
     const authorization = authorizationMock();
     const repository = repositoryMock();
     const publishValidator = publishValidatorMock();
@@ -35,7 +35,9 @@ describe('ListManagedProblemsUseCase', () => {
     publishValidator.validate.mockReturnValue(readiness);
     resultMapper.toManagedPage.mockResolvedValue(page);
 
-    await expect(useCase.execute(PRINCIPAL, true, 0, 500)).resolves.toBe(page);
+    await expect(
+      useCase.execute(PRINCIPAL, { includeDeleted: true, page: 0, limit: 500 }),
+    ).resolves.toBe(page);
 
     expect(authorization.requireManagedList).toHaveBeenCalledTimes(1);
     expect(repository.listManaged).toHaveBeenCalledWith({
@@ -60,7 +62,7 @@ describe('ListManagedProblemsUseCase', () => {
 
     repository.listManaged.mockResolvedValue({ items: [], total: 0, page: 1, limit: 20 });
 
-    await useCase.execute(PRINCIPAL, false, 1, 20);
+    await useCase.execute(PRINCIPAL, { includeDeleted: false, page: 1, limit: 20 });
 
     expect(resultMapper.toManagedPage).toHaveBeenCalledWith([], 0, 1, 20, new Map());
   });
@@ -69,11 +71,30 @@ describe('ListManagedProblemsUseCase', () => {
     const repository = repositoryMock();
     const useCase = createUseCase({ repository });
 
-    await useCase.execute(PRINCIPAL, false, Number.NaN, 0);
+    await useCase.execute(PRINCIPAL, { includeDeleted: false, page: Number.NaN, limit: 0 });
 
     expect(repository.listManaged).toHaveBeenCalledWith(
       expect.objectContaining({ page: 1, limit: 20 }),
     );
+  });
+
+  it('combines the requested search and status with the trusted lecturer ID', async () => {
+    const repository = repositoryMock();
+    const useCase = createUseCase({ repository });
+    const filter = {
+      includeDeleted: false,
+      page: 2,
+      limit: 10,
+      search: 'arrays',
+      publishStatus: 'PUBLISHED',
+    } as const;
+
+    await useCase.execute({ ...PRINCIPAL, roles: ['LECTURER'] }, filter);
+
+    expect(repository.listManaged).toHaveBeenCalledWith({
+      ...filter,
+      createdBy: PRINCIPAL.userId,
+    });
   });
 
   it('does not query the repository when the principal lacks the managed list gate', async () => {
@@ -85,7 +106,9 @@ describe('ListManagedProblemsUseCase', () => {
       throw new Error('forbidden');
     });
 
-    await expect(useCase.execute(PRINCIPAL, false, 1, 20)).rejects.toThrow('forbidden');
+    await expect(
+      useCase.execute(PRINCIPAL, { includeDeleted: false, page: 1, limit: 20 }),
+    ).rejects.toThrow('forbidden');
     expect(repository.listManaged).not.toHaveBeenCalled();
   });
 });

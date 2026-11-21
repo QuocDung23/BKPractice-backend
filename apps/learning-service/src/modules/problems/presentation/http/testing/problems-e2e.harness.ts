@@ -204,7 +204,13 @@ export class InMemoryProblemRepository implements ProblemRepository {
     const items = [...this.stored.values()]
       .filter((item) => filter.includeDeleted || !item.deletedMarker.isDeleted)
       .filter((item) => !filter.createdBy || item.createdBy.value === filter.createdBy)
-      .sort((left, right) => right.createdAt.getTime() - left.createdAt.getTime());
+      .filter((item) => !filter.publishStatus || item.publishStatus === filter.publishStatus)
+      .filter((item) => matchesFilter(item, filter))
+      .sort(
+        (left, right) =>
+          right.updatedAt.getTime() - left.updatedAt.getTime() ||
+          right.id.value.localeCompare(left.id.value),
+      );
 
     return paginate(items, filter.page, filter.limit);
   }
@@ -458,9 +464,12 @@ function matchesFilter(snapshot: ProblemSnapshot, filter: ProblemListFilter): bo
   }
 
   if (filter.search !== undefined) {
-    const needle = filter.search.toLowerCase();
+    const needle = filter.search.trim().toLowerCase();
 
-    if (!snapshot.title.value.toLowerCase().includes(needle)) {
+    if (
+      !snapshot.title.value.toLowerCase().includes(needle) &&
+      !snapshot.slug.value.toLowerCase().includes(needle)
+    ) {
       return false;
     }
   }

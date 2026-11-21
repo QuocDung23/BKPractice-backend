@@ -1,5 +1,9 @@
 import { PROBLEM_TYPES, type ProblemType } from '@app/contracts';
-import type { Difficulty } from '@learning/modules/problems/domain/value-objects';
+import {
+  PUBLISH_STATUSES,
+  type Difficulty,
+  type PublishStatus,
+} from '@learning/modules/problems/domain/value-objects';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { Transform, Type } from 'class-transformer';
 import {
@@ -83,6 +87,17 @@ export class ManagedProblemQueryDto {
   )
   @IsBoolean()
   includeDeleted = false;
+
+  @ApiPropertyOptional({ enum: PUBLISH_STATUSES })
+  @IsOptional()
+  @IsIn(PUBLISH_STATUSES)
+  publishStatus?: PublishStatus;
+
+  @ApiPropertyOptional({ maxLength: 200, description: 'Case-insensitive title or slug search' })
+  @IsOptional()
+  @IsString()
+  @MaxLength(200)
+  search?: string;
 }
 
 export class IncludeDeletedQueryDto {

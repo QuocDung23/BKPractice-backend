@@ -1,6 +1,10 @@
 import type { ProblemType } from '@app/contracts';
 import type { Problem } from '@learning/modules/problems/domain/problem.aggregate';
-import type { Difficulty, TestSuiteSummary } from '@learning/modules/problems/domain/value-objects';
+import type {
+  Difficulty,
+  PublishStatus,
+  TestSuiteSummary,
+} from '@learning/modules/problems/domain/value-objects';
 
 export interface ProblemListFilter {
   readonly search?: string;
@@ -14,6 +18,8 @@ export interface ProblemListFilter {
 
 export interface ManagedProblemListFilter {
   readonly createdBy?: string;
+  readonly search?: string;
+  readonly publishStatus?: PublishStatus;
   readonly includeDeleted: boolean;
   readonly page: number;
   readonly limit: number;

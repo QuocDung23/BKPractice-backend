@@ -217,6 +217,8 @@ Approved và không thay đổi `plan.md`.
       Test Case ẩn ở dạng thô.
       **Phụ thuộc:** LRN-001-T012, LRN-001-T023.
       **Truy vết:** LRN-001-FR-009, LRN-001-FR-023; LRN-001-SR-003; LRN-001-AC-031.
+      Bổ sung `publishStatus` và `search` để truy vấn cho bộ chọn gắn bài trong đúng phạm vi chủ sở
+      hữu. Kiểm tra bộ lọc tác động đến cả danh sách và tổng số trước phân trang.
 
 - [x] **LRN-001-T020 — Hiện thực `PreviewProblem`.** Kiểm tra quyền sở hữu; chiếu ra biểu diễn hướng
       người học của bản nháp hiện tại mà không xuất bản, không thực thi mã, không thay đổi

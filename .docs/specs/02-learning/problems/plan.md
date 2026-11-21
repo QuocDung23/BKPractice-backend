@@ -434,6 +434,9 @@ tuân theo quy ước của repository khi triển khai.
   Hỗ trợ cờ query `includeDeleted` giới hạn trong phạm vi chủ sở hữu (mặc định `false`) để có thể
   liệt kê các Problem đã xoá mềm phục vụ luồng khôi phục; bản nháp cũng có thông tin mức độ sẵn sàng
   khi phù hợp.
+- **Bộ lọc tùy chọn:** `publishStatus` lọc theo trạng thái và `search` tìm theo tiêu đề hoặc slug
+  không phân biệt hoa thường. Áp dụng cả hai bộ lọc cùng quyền sở hữu trước khi đếm và phân trang
+  để bộ chọn gắn bài vào chương truy vấn đúng các bài đã xuất bản mà người gọi có quyền quản lý.
 - **Đầu ra:** các bản tóm tắt quản lý có phân trang, bao gồm bản nháp, `ON_HOLD`, và (khi được yêu
   cầu) các mục đã xoá mềm, kèm thông tin mức độ sẵn sàng và dấu xoá khi phù hợp.
 
@@ -565,7 +568,7 @@ repository):
 | `POST /api/problems/:id/restore`                    | Bearer + `problem:restore` + quyền sở hữu                            | `RestoreProblem`        | `200` với trạng thái đã khôi phục (`PUBLISHED` hoặc `ON_HOLD`)                                                                           |
 | `GET /api/problems`                                 | Bearer (đã xác thực)                                                 | `ListPublishedProblems` | `200` các bản tóm tắt công khai có phân trang; rỗng là thành công                                                                        |
 | `GET /api/problems/:idOrSlug`                       | Bearer (đã xác thực)                                                 | `GetPublishedProblem`   | `200` chi tiết công khai; bản nháp/tạm giữ/đã xoá mềm -> `404` mà không lộ state                                                         |
-| `GET /api/problems/managed`                         | Bearer + phạm vi chủ sở hữu                                          | `ListManagedProblems`   | `200` các bản tóm tắt quản lý có phân trang, gồm bản nháp/`ON_HOLD` + mức độ sẵn sàng; `?includeDeleted=true` bổ sung các mục đã xoá mềm |
+| `GET /api/problems/managed`                         | Bearer + phạm vi chủ sở hữu                                          | `ListManagedProblems`   | `200` các bản tóm tắt quản lý có phân trang, mức độ sẵn sàng; hỗ trợ `publishStatus`, `search` và `includeDeleted`                       |
 | `GET /api/problems/managed/:id`                     | Bearer + phạm vi chủ sở hữu (+ `includeDeleted` với nội dung đã xoá) | `GetManagedProblem`     | `200` chi tiết quản lý gồm trạng thái/mức độ sẵn sàng/dấu xoá; không kèm đáp án Test Case ẩn                                             |
 | `POST /api/problems/:id/preview`                    | Bearer + phạm vi chủ sở hữu                                          | `PreviewProblem`        | `200` phần thân theo hình dạng người học; không thay đổi state                                                                           |
 | `GET internal/problems/:id/judge-package/:language` | `InternalServiceGuard` (mạng nội bộ + `INTERNAL_SERVICE_SECRET`)     | Giữ nguyên (REUSE)      | Contract dữ liệu judge được bảo vệ, không đổi; không thuộc phạm vi LRN-001                                                               |
