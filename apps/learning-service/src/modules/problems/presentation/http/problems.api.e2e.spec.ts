@@ -105,6 +105,58 @@ describe('Problems API end-to-end contract', () => {
     ).toBe(200);
   });
 
+  it('searches and paginates published problems within the managed ownership scope', async () => {
+    const lecturerA = { ...adminHeaders(ADMIN_A_ID), 'x-auth-roles': 'LECTURER' };
+    const lecturerB = { ...adminHeaders(ADMIN_B_ID), 'x-auth-roles': 'LECTURER' };
+
+    async function createProblem(
+      slug: string,
+      title: string,
+      headers: Record<string, string>,
+      published = true,
+    ): Promise<string> {
+      const created = await post('/api/problems', createProblemPayload({ slug, title }), headers);
+      expect(created.status).toBe(201);
+      const id = text(created.body.id);
+      if (published) {
+        expect((await post(`/api/problems/${id}/publish`, {}, headers)).status).toBe(200);
+      }
+      return id;
+    }
+
+    const own = [
+      await createProblem('sum-first', 'Sum First', lecturerA),
+      await createProblem('sum-second', 'Second Exercise', lecturerA),
+    ];
+    await createProblem('sum-other', 'Sum Other', lecturerB);
+    await createProblem('sum-draft', 'Sum Draft', lecturerA, false);
+    await createProblem('unrelated', 'Unrelated Exercise', lecturerA);
+
+    const path = '/api/problems/managed?publishStatus=PUBLISHED&search=SUM&limit=1';
+    const first = await send(`${path}&page=1`, { headers: lecturerA });
+    const second = await send(`${path}&page=2`, { headers: lecturerA });
+    expect(first.status).toBe(200);
+    expect(second.status).toBe(200);
+    expect(first.body.total).toBe(2);
+    expect(second.body.total).toBe(2);
+    expect(asArray(first.body.items)).toHaveLength(1);
+    expect(asArray(second.body.items)).toHaveLength(1);
+    expect(
+      new Set(
+        [...asArray(first.body.items), ...asArray(second.body.items)].map(
+          (row) => asObject(row).id,
+        ),
+      ),
+    ).toEqual(new Set(own));
+
+    const asAdmin = await send(path, { headers: adminHeaders() });
+    expect(asAdmin.status).toBe(200);
+    expect(asAdmin.body.total).toBe(3);
+    expect(
+      (await send('/api/problems/managed?publishStatus=INVALID', { headers: lecturerA })).status,
+    ).toBe(400);
+  });
+
   it('keeps drafts out of public surfaces while the owner can manage them', async () => {
     const id = await createDraft();
 

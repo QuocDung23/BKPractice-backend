@@ -450,13 +450,7 @@ function applyPublicFilters(
     });
   }
 
-  const search = filter.search?.trim();
-
-  if (search !== undefined && search.length > 0) {
-    query.andWhere("(p.title ILIKE :search ESCAPE '\\' OR p.slug ILIKE :search ESCAPE '\\')", {
-      search: `%${escapeLike(search)}%`,
-    });
-  }
+  applySearchFilter(query, filter.search);
 
   if (filter.topicId !== undefined) {
     query.andWhere(
@@ -485,8 +479,21 @@ function applyManagedFilters(
   if (!filter.includeDeleted) {
     query.andWhere('p.deletedAt IS NULL');
   }
+  if (filter.publishStatus !== undefined) {
+    query.andWhere('p.publishStatus = :publishStatus', { publishStatus: filter.publishStatus });
+  }
+  applySearchFilter(query, filter.search);
 
   return query;
+}
+
+function applySearchFilter(query: SelectQueryBuilder<ProblemEntity>, value?: string): void {
+  const search = value?.trim();
+  if (search) {
+    query.andWhere("(p.title ILIKE :search ESCAPE '\\' OR p.slug ILIKE :search ESCAPE '\\')", {
+      search: `%${escapeLike(search)}%`,
+    });
+  }
 }
 
 function escapeLike(value: string): string {

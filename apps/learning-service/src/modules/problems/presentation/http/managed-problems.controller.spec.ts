@@ -48,7 +48,7 @@ describe('ManagedProblemsController', () => {
     const query = { includeDeleted: true, page: 2, limit: 5 } as ManagedProblemQueryDto;
 
     await expect(controller.listManaged(PRINCIPAL, query)).resolves.toEqual(RESPONSE);
-    expect(listManagedProblems.execute).toHaveBeenCalledWith(PRINCIPAL, true, 2, 5);
+    expect(listManagedProblems.execute).toHaveBeenCalledWith(PRINCIPAL, query);
     expect(responseMapper.toManagedPage).toHaveBeenCalledWith(PAGE, true);
   });
 

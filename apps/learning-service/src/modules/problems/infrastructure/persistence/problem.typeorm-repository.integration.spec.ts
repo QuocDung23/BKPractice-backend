@@ -226,6 +226,32 @@ describeIntegration('ProblemTypeOrmRepository', () => {
   });
 
   describe('managed list', () => {
+    it('filters by status and literal search within the owner scope before paging', async () => {
+      const match = { title: new ProblemTitle('Array_1') };
+      const first = publishedProblem(match);
+      const second = publishedProblem(match);
+      const deleted = publishedProblem(match);
+      deleted.softDelete(nextClock());
+      await persist(first);
+      await persist(second);
+      await persist(deleted);
+      await persist(draftProblem(match));
+      await persist(publishedProblem({ ...match, createdBy: new CreatedBy(OTHER_OWNER_ID) }));
+      await persist(publishedProblem({ title: new ProblemTitle('ArrayX1') }));
+
+      const result = await repository.listManaged({
+        createdBy: OWNER_ID,
+        includeDeleted: false,
+        publishStatus: 'PUBLISHED',
+        search: '  array_1  ',
+        page: 2,
+        limit: 1,
+      });
+
+      expect(result.total).toBe(2);
+      expect(result.items.map((problem) => problem.id.value)).toEqual([first.id.value]);
+    });
+
     it('lists every creator, includes deleted rows only when requested, and orders by updated_at', async () => {
       const ownedEarlier = publishedProblem({}, new Date('2026-03-01T00:00:00.000Z'));
       const ownedLater = publishedProblem({}, new Date('2026-03-02T00:00:00.000Z'));

@@ -4,6 +4,7 @@ import { ProblemResultMapper } from '@learning/modules/problems/application/resu
 import type { ManagedProblemSummaryResult } from '@learning/modules/problems/application/results/problem.results';
 import { ProblemAuthorizationService } from '@learning/modules/problems/application/services/problem-authorization.service';
 import type {
+  ManagedProblemListFilter,
   ProblemPage,
   ProblemRepository,
 } from '@learning/modules/problems/domain/repositories/problem.repository.port.out';
@@ -29,18 +30,14 @@ export class ListManagedProblemsUseCase implements IListManagedProblemsPortIn {
 
   async execute(
     principal: Principal,
-    includeDeleted: boolean,
-    page: number,
-    limit: number,
+    filter: Omit<ManagedProblemListFilter, 'createdBy'>,
   ): Promise<ProblemPage<ManagedProblemSummaryResult>> {
     this.authorization.requireManagedList(principal);
-    const normalizedPage = normalizePage(page);
-    const normalizedLimit = normalizeLimit(limit);
     const result = await this.repository.listManaged({
+      ...filter,
       createdBy: principal.roles.includes('ADMIN') ? undefined : principal.userId,
-      includeDeleted,
-      page: normalizedPage,
-      limit: normalizedLimit,
+      page: normalizePage(filter.page),
+      limit: normalizeLimit(filter.limit),
     });
     const summaries = await this.repository.loadTestSuiteSummaries(
       result.items.map((problem) => problem.id.value),

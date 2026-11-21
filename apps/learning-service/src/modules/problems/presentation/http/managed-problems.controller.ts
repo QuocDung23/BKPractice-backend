@@ -136,9 +136,9 @@ export class ManagedProblemsController {
 
   @Get('managed')
   @ApiOperation({
-    summary: 'List problems owned by the current admin',
+    summary: 'List managed problems',
     description:
-      'Returns paginated list of problems owned by the authenticated admin. Supports includeDeleted filter. Only problems where the admin is the creator are returned.',
+      'Lecturers see their own problems; admins can see all problems. Supports title or slug search, publication status, and inclusion of soft-deleted problems.',
   })
   @ApiOkResponse({
     type: ManagedProblemListResponseDto,
@@ -146,18 +146,13 @@ export class ManagedProblemsController {
   })
   @ApiBadRequestResponse({ description: 'Invalid query parameters' })
   @ApiUnauthorizedResponse({ description: 'Missing or invalid access token' })
-  @ApiForbiddenResponse({ description: 'Missing ADMIN role or problem:read-managed permission' })
+  @ApiForbiddenResponse({ description: 'Missing permission to list managed problems' })
   @ApiInternalServerErrorResponse({ description: 'Internal server error' })
   async listManaged(
     @TrustedPrincipal() principal: Principal,
     @Query() query: ManagedProblemQueryDto,
   ): Promise<ManagedProblemListResponseDto> {
-    const page = await this.listManagedProblems.execute(
-      principal,
-      query.includeDeleted,
-      query.page,
-      query.limit,
-    );
+    const page = await this.listManagedProblems.execute(principal, query);
     return this.responseMapper.toManagedPage(page, query.includeDeleted);
   }
 
