@@ -464,7 +464,8 @@ databaseTests('UC02 practice API - Gateway, Submission and PostgreSQL', () => {
         '/api/assignments/x',
       ]) {
         const result = await gw('GET', path, { token: bearer });
-        expect([403, 404]).toContain(result.status);
+        expect(result.status).toBe(502);
+        expect(result.body.code).toBe('UPSTREAM_NOT_CONFIGURED');
       }
       expect(captured.url).toBeUndefined();
     });
@@ -1032,14 +1033,23 @@ databaseTests('UC02 practice API - Gateway, Submission and PostgreSQL', () => {
 
     it('[VER-10] the watchdog moves a PENDING/QUEUED record older than 10 minutes to INTERNAL_ERROR and notifies the owner', async () => {
       const id = await submitOk();
-      expect(await expire.execute(new Date(Date.now() + 9 * 60_000))).toBe(0);
-      expect(await expire.execute(new Date(Date.now() + 11 * 60_000))).toBe(1);
+      const created = firstRow(
+        await rows<{ created_at: Date }>(
+          'SELECT created_at FROM submissions WHERE public_id = $1',
+          [id],
+        ),
+      ).created_at.getTime();
+      expect(await expire.execute(new Date(created + 9 * 60_000))).toBe(0);
+      expect(realtime.sent).toHaveLength(0);
+      expect(await expire.execute(new Date(created + 11 * 60_000))).toBe(1);
       const detail = await gw('GET', `/api/submissions/${id}`, { token: await token(student) });
       expect(detail.body).toMatchObject({ status: 'INTERNAL_ERROR' });
-      expect(realtime.sent.at(-1)).toMatchObject({
-        ownerId: student,
-        notification: { status: 'INTERNAL_ERROR' },
-      });
+      expect(realtime.sent).toEqual([
+        {
+          ownerId: student,
+          notification: { submissionId: id, kind: 'SUBMIT', status: 'INTERNAL_ERROR', ready: true },
+        },
+      ]);
       await feedVerdict(id, 'SUBMIT', { status: 'ACCEPTED' });
       expect(
         (await gw('GET', `/api/submissions/${id}`, { token: await token(student) })).body,
@@ -1189,7 +1199,8 @@ databaseTests('UC02 practice API - Gateway, Submission and PostgreSQL', () => {
           token: bearer,
           body: method === 'DELETE' ? undefined : { sourceCode: 'x' },
         });
-        expect([403, 404, 405]).toContain(result.status);
+        expect(result.status).toBe(502);
+        expect(result.body.code).toBe('UPSTREAM_NOT_CONFIGURED');
       }
       const row = firstRow(
         await rows<{ source_code: string }>('SELECT source_code FROM submissions'),

@@ -12,6 +12,20 @@ jobs:
     runs-on: ubuntu-24.04
     permissions:
       contents: read
+    services:
+      postgres:
+        image: postgres:17-alpine
+        env:
+          POSTGRES_USER: ci
+          POSTGRES_PASSWORD: ci
+          POSTGRES_DB: bkpractice_integration_test
+        ports:
+          - 5432/tcp
+        options: >-
+          --health-cmd "pg_isready -U ci -d bkpractice_integration_test"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
     steps:
       - uses: actions/checkout@v7
       - uses: pnpm/action-setup@v6
@@ -23,6 +37,15 @@ jobs:
       - run: pnpm lint
       - run: pnpm typecheck
       - run: pnpm test
+      - name: Run PostgreSQL integration suites
+        env:
+          UC02_SUBMISSION_TEST_DATABASE_URL: postgresql://ci:ci@127.0.0.1:${{ job.services.postgres.ports[5432] }}/bkpractice_integration_test
+          TEST_DATABASE_URL: postgresql://ci:ci@127.0.0.1:${{ job.services.postgres.ports[5432] }}/bkpractice_integration_test
+        run: >-
+          pnpm test --runTestsByPath
+          test/uc02-practice-submission.integration.spec.ts
+          test/uc03-problem-bank.integration.spec.ts
+          apps/learning-service/src/modules/courses/courses.module.integration.spec.ts
       - run: pnpm build
 
   publish:
