@@ -144,6 +144,47 @@ describe('RabbitMqService', () => {
     expect(connection.close).toHaveBeenCalled();
   });
 
+  it('closes a connection that finishes opening after shutdown', async () => {
+    const connection = new FakeConnection();
+    let completeConnect!: (connection: FakeConnection) => void;
+    connect.mockReturnValueOnce(
+      new Promise<FakeConnection>((resolve) => {
+        completeConnect = resolve;
+      }),
+    );
+    const rabbit = new RabbitMqService(config);
+    const start = rabbit.consume('judge.requests', jest.fn());
+
+    await rabbit.onApplicationShutdown();
+    completeConnect(connection);
+    await start;
+    await jest.advanceTimersByTimeAsync(RABBIT_RECONNECT_MAX_DELAY_MS);
+
+    expect(connection.close).toHaveBeenCalledTimes(1);
+    expect(connection.channel.consume).not.toHaveBeenCalled();
+    expect(connect).toHaveBeenCalledTimes(1);
+  });
+
+  it('reconnects when republishing fails to confirm on an open channel', async () => {
+    const first = new FakeConnection();
+    const recovered = new FakeConnection();
+    connect.mockResolvedValueOnce(first).mockResolvedValueOnce(recovered);
+    first.channel.waitForConfirms.mockRejectedValueOnce(new Error('message nacked'));
+    const handler = jest.fn().mockRejectedValueOnce(new Error('temporary failure'));
+    const rabbit = new RabbitMqService(config);
+    await rabbit.consume('judge.requests', handler);
+
+    const delivered = message({ id: 'pending' });
+    deliveryCallback(first.channel)(delivered);
+    await jest.advanceTimersByTimeAsync(RABBIT_RECONNECT_INITIAL_DELAY_MS);
+
+    expect(first.close).toHaveBeenCalledTimes(1);
+    expect(first.channel.ack).not.toHaveBeenCalled();
+    deliveryCallback(recovered.channel)(delivered);
+    await jest.advanceTimersByTimeAsync(0);
+    expect(recovered.channel.ack).toHaveBeenCalledWith(delivered);
+  });
+
   it('acknowledges a handled message on the channel that delivered it', async () => {
     const connection = new FakeConnection();
     connect.mockResolvedValue(connection);

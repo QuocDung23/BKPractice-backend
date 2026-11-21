@@ -127,11 +127,13 @@ export class RabbitMqService implements OnApplicationShutdown {
     connection.on('error', (error: Error) => this.logger.error(error.message));
     connection.on('close', () => this.handleConnectionLost(connection));
     try {
+      if (this.shuttingDown) throw new Error('RabbitMQ service is shutting down');
       const channel = await connection.createConfirmChannel();
       channel.on('error', (error: Error) => this.logger.error(error.message));
       channel.on('close', () => this.handleConnectionLost(connection));
       await channel.prefetch(1);
       await this.assertTopology(channel);
+      if (this.shuttingDown) throw new Error('RabbitMQ service is shutting down');
       this.connection = connection;
       this.channel = channel;
       this.reconnectDelayMs = RABBIT_RECONNECT_INITIAL_DELAY_MS;
@@ -216,6 +218,11 @@ export class RabbitMqService implements OnApplicationShutdown {
       }
     } catch (error: unknown) {
       this.logger.warn(`RabbitMQ delivery left for redelivery: ${describe(error)}`);
+      // A failed confirm can leave the delivering channel open with its only prefetch slot occupied.
+      // Close that connection to release the unacknowledged delivery and reattach the consumers.
+      if (this.channel === channel && this.connection) {
+        this.handleConnectionLost(this.connection);
+      }
     }
   }
 
