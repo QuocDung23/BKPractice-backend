@@ -229,7 +229,8 @@ export class TypeormSubmissionRepository
     cutoff: Date,
     now: Date,
   ): Promise<readonly PersistedSubmissionRecord[]> {
-    const rows = await this.submissions.query<RawSubmissionRow[]>(
+    // TypeORM's PostgreSQL driver returns [rows, affected] for raw UPDATE statements.
+    const [rows] = await this.submissions.query<[RawSubmissionRow[], number]>(
       `UPDATE "submissions"
        SET "status" = $1, "updated_at" = $2
        WHERE "status" IN ($3, $4)

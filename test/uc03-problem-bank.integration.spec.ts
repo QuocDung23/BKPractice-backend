@@ -464,7 +464,9 @@ describeIntegration(
         const id = await createProblem();
         const res = await call('POST', `/api/problems/${id}/publish`, { body: {} });
         expect(res.status).toBe(400);
-        expect(JSON.stringify(res.body.issues)).toContain('TEST_CASE_HIDDEN_REQUIRED');
+        expect(res.body.details).toEqual(
+          expect.arrayContaining([expect.objectContaining({ code: 'TEST_CASE_HIDDEN_REQUIRED' })]),
+        );
         const [row] = await dataSource.query<Json[]>(
           `SELECT "publish_status" FROM "problems" WHERE "id" = $1`,
           [id],
@@ -519,7 +521,9 @@ describeIntegration(
         const tcId = rows(list.body.items)[0]!.id as string;
         const del = await call('DELETE', `/api/problems/${id}/test-cases/${tcId}`);
         expect(del.status).toBe(400);
-        expect(JSON.stringify(del.body.issues)).toContain('TEST_CASE_HIDDEN_REQUIRED');
+        expect(del.body.details).toEqual(
+          expect.arrayContaining([expect.objectContaining({ code: 'TEST_CASE_HIDDEN_REQUIRED' })]),
+        );
         const after = await call('GET', `/api/problems/managed/${id}/test-cases`);
         expect(rows(after.body.items)).toHaveLength(1);
       });
@@ -677,9 +681,13 @@ describeIntegration(
         );
         expect(denied.status).toBe(400);
         expect(unknown.status).toBe(400);
-        expect(JSON.stringify(denied.body)).toEqual(
-          JSON.stringify(unknown.body).replace(MISSING, foreign),
-        );
+        const { requestId: deniedRequestId, ...deniedError } = denied.body;
+        const { requestId: unknownRequestId, ...unknownError } = unknown.body;
+        expect(deniedRequestId).toEqual(expect.any(String));
+        expect(unknownRequestId).toEqual(expect.any(String));
+        expect(deniedRequestId).not.toBe(unknownRequestId);
+        expect(deniedError.code).toBe('COURSE_PROBLEM_NOT_ATTACHABLE');
+        expect(deniedError).toEqual(unknownError);
       });
 
       it('UC03-E3 admin can attach any lecturer problem', async () => {

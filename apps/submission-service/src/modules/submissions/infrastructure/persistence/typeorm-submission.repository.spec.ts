@@ -148,15 +148,17 @@ describe('TypeormSubmissionRepository dispatch and expiry', () => {
 
   it('expires PENDING and QUEUED records of both kinds created before the cutoff', async () => {
     const submissions = {
-      query: jest.fn().mockResolvedValue([]),
+      query: jest.fn().mockResolvedValue([[], 0]),
     } as unknown as jest.Mocked<Repository<Submission>>;
     const cutoff = new Date('2026-10-27T05:50:00.000Z');
     const now = new Date('2026-10-27T06:00:00.000Z');
 
-    await new TypeormSubmissionRepository(submissions, {} as DataSource).expireStaleSubmissions(
-      cutoff,
-      now,
-    );
+    await expect(
+      new TypeormSubmissionRepository(submissions, {} as DataSource).expireStaleSubmissions(
+        cutoff,
+        now,
+      ),
+    ).resolves.toEqual([]);
 
     const [sql, params] = submissions.query.mock.calls[0]!;
     const whereClause = String(sql).split('WHERE')[1]!.split('RETURNING')[0];
