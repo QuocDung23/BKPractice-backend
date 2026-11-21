@@ -1,0 +1,4562 @@
+[
+  {
+    "id": "22e2c94e-1aa6-5327-bc77-4a2f1ad2440b",
+    "revisionId": "3610a9fe-393b-5cd0-a1ef-6bcb286e7fe5",
+    "key": "c05-ch01-q01",
+    "courseKey": "c05",
+    "chapterKey": "c05-ch01",
+    "createdBy": "ac9fadc2-1955-59e4-984d-26f74bbb4f53",
+    "clientRequestId": "bdd865b0-2c5d-5967-9ff8-26c5b4c6f557",
+    "isPrivate": false,
+    "requestHash": "121a8fe0ee4bd5d69e064f3336891731b48ef3466cc04efa64e0281b57c31434",
+    "content": "Phát biểu nào mô tả đúng về mảng? (Câu 01)",
+    "explanation": "Truy cập phần tử theo chỉ số trong mảng thường mất O(1). Đây là đặc điểm cần ghi nhớ khi áp dụng chủ đề này.",
+    "options": [
+      {
+        "id": "88070fbc-9231-5834-9d73-4147a7fa39f4",
+        "content": "Truy cập phần tử theo chỉ số trong mảng thường mất O(1).",
+        "isCorrect": true
+      },
+      {
+        "id": "906f9866-bb6f-5a15-b504-9ae69d08c18c",
+        "content": "Mọi phép duyệt đều có độ phức tạp O(1).",
+        "isCorrect": false
+      },
+      {
+        "id": "809061d1-2356-5cfc-9ed5-3af49b228cd7",
+        "content": "Có thể bỏ điều kiện dừng mà vẫn đảm bảo thuật toán kết thúc.",
+        "isCorrect": false
+      },
+      {
+        "id": "ab9925ac-0b72-5e0d-8911-476687a0ddab",
+        "content": "Kết quả không phụ thuộc vào thứ tự hay dữ liệu đầu vào.",
+        "isCorrect": false
+      }
+    ],
+    "difficulty": "EASY",
+    "topicName": "Mảng",
+    "tagNames": []
+  },
+  {
+    "id": "4348edd0-c4f4-5033-930d-52a9d5a3d425",
+    "revisionId": "80fe8256-c87f-5afa-9f9e-feb46703f242",
+    "key": "c05-ch01-q02",
+    "courseKey": "c05",
+    "chapterKey": "c05-ch01",
+    "createdBy": "ac9fadc2-1955-59e4-984d-26f74bbb4f53",
+    "clientRequestId": "0cbcc327-6d67-54a1-9c5a-01fcc0b3d234",
+    "isPrivate": false,
+    "requestHash": "fcd833a125aa2fbaa3ff1b5d6366225658c2b87d4a612c7889dffcfb328a74dc",
+    "content": "Khi ôn tập mảng, kết luận nào là chính xác? (Câu 02)",
+    "explanation": "Duyệt toàn bộ N phần tử của mảng mất O(N). Đây là đặc điểm cần ghi nhớ khi áp dụng chủ đề này.",
+    "options": [
+      {
+        "id": "68ff5223-c165-5ce0-8540-5a3778a3fc5b",
+        "content": "Mọi phép duyệt đều có độ phức tạp O(1).",
+        "isCorrect": false
+      },
+      {
+        "id": "98c9cdc1-3c10-5260-a35e-b656f2e84d93",
+        "content": "Có thể bỏ điều kiện dừng mà vẫn đảm bảo thuật toán kết thúc.",
+        "isCorrect": false
+      },
+      {
+        "id": "e2c3a8c2-2c0d-5964-9116-40ddc117f0f7",
+        "content": "Kết quả không phụ thuộc vào thứ tự hay dữ liệu đầu vào.",
+        "isCorrect": false
+      },
+      {
+        "id": "7982bf92-5f62-526b-9654-b6815a76e572",
+        "content": "Duyệt toàn bộ N phần tử của mảng mất O(N).",
+        "isCorrect": true
+      }
+    ],
+    "difficulty": "MEDIUM",
+    "topicName": "Mảng",
+    "tagNames": []
+  },
+  {
+    "id": "44e7c738-5128-5fff-9b1c-612cd75681a7",
+    "revisionId": "b1dc2ee2-e0a2-51af-a364-bcbe4fab11ce",
+    "key": "c05-ch01-q03",
+    "courseKey": "c05",
+    "chapterKey": "c05-ch01",
+    "createdBy": "ac9fadc2-1955-59e4-984d-26f74bbb4f53",
+    "clientRequestId": "1d58486e-48c5-516c-8208-fa9a4c523e4f",
+    "isPrivate": false,
+    "requestHash": "d0442dbf48268d2aee4a86310fce3f58a5165cb06568998ee59b0a08a9faf52d",
+    "content": "Một người học đang giải bài về mảng. Nhận định nào nên được chọn? (Câu 03)",
+    "explanation": "Mảng liên tiếp lưu các phần tử cùng kiểu trong vùng nhớ liền nhau. Đây là đặc điểm cần ghi nhớ khi áp dụng chủ đề này.",
+    "options": [
+      {
+        "id": "ed148b85-839d-53fd-b099-e9c7a6fb6c6f",
+        "content": "Có thể bỏ điều kiện dừng mà vẫn đảm bảo thuật toán kết thúc.",
+        "isCorrect": false
+      },
+      {
+        "id": "2f489594-a735-5ecb-b11c-d104923864be",
+        "content": "Kết quả không phụ thuộc vào thứ tự hay dữ liệu đầu vào.",
+        "isCorrect": false
+      },
+      {
+        "id": "f0fa5af6-77c1-59be-a054-8041ee23c2cd",
+        "content": "Mảng liên tiếp lưu các phần tử cùng kiểu trong vùng nhớ liền nhau.",
+        "isCorrect": true
+      },
+      {
+        "id": "f4391c79-1c6e-51a7-bbb9-205f195de3a7",
+        "content": "Mọi phép duyệt đều có độ phức tạp O(1).",
+        "isCorrect": false
+      }
+    ],
+    "difficulty": "HARD",
+    "topicName": "Mảng",
+    "tagNames": []
+  },
+  {
+    "id": "60fdf299-837f-52d6-a77d-71b8749b3f8f",
+    "revisionId": "6fc4b1df-c541-587e-addc-03357f23793a",
+    "key": "c05-ch01-q04",
+    "courseKey": "c05",
+    "chapterKey": "c05-ch01",
+    "createdBy": "ac9fadc2-1955-59e4-984d-26f74bbb4f53",
+    "clientRequestId": "330418d8-c2e8-57af-b255-1aa9d36f1351",
+    "isPrivate": false,
+    "requestHash": "0b85760ecd51122b35228ccaf492f9124bfe6d1988c63657a1110e3421427c0b",
+    "content": "Đâu là kiến thức đúng khi làm việc với mảng? (Câu 04)",
+    "explanation": "Truy cập phần tử theo chỉ số trong mảng thường mất O(1). Đây là đặc điểm cần ghi nhớ khi áp dụng chủ đề này.",
+    "options": [
+      {
+        "id": "7ba104f3-96e8-5abc-8af5-351d9d18fd75",
+        "content": "Kết quả không phụ thuộc vào thứ tự hay dữ liệu đầu vào.",
+        "isCorrect": false
+      },
+      {
+        "id": "273653d4-e66a-5672-85d7-83eb639ec6ff",
+        "content": "Truy cập phần tử theo chỉ số trong mảng thường mất O(1).",
+        "isCorrect": true
+      },
+      {
+        "id": "7d103af5-e47e-5c5a-9e44-a20f631a09ef",
+        "content": "Mọi phép duyệt đều có độ phức tạp O(1).",
+        "isCorrect": false
+      },
+      {
+        "id": "bb322a9b-55e2-5e4b-b890-71860c80d9d5",
+        "content": "Có thể bỏ điều kiện dừng mà vẫn đảm bảo thuật toán kết thúc.",
+        "isCorrect": false
+      }
+    ],
+    "difficulty": "EASY",
+    "topicName": "Mảng",
+    "tagNames": []
+  },
+  {
+    "id": "1b5f7cf9-5033-5d21-9b2a-fd473b1359c2",
+    "revisionId": "7ff03ddb-3c80-52cd-bc74-2f1dc11f0adc",
+    "key": "c05-ch01-q05",
+    "courseKey": "c05",
+    "chapterKey": "c05-ch01",
+    "createdBy": "ac9fadc2-1955-59e4-984d-26f74bbb4f53",
+    "clientRequestId": "a8126530-6535-5706-9a20-36d838e38a88",
+    "isPrivate": false,
+    "requestHash": "38b0e6e510e86c7c5a15f130bd16923cf641089d1a460474185d7f371590c580",
+    "content": "Phát biểu nào mô tả đúng về mảng? (Câu 05)",
+    "explanation": "Duyệt toàn bộ N phần tử của mảng mất O(N). Đây là đặc điểm cần ghi nhớ khi áp dụng chủ đề này.",
+    "options": [
+      {
+        "id": "0dfb0efa-a0a3-5c82-a260-3e4e434dd9f8",
+        "content": "Duyệt toàn bộ N phần tử của mảng mất O(N).",
+        "isCorrect": true
+      },
+      {
+        "id": "6de6e823-257b-523e-b70b-9efd56573a50",
+        "content": "Mọi phép duyệt đều có độ phức tạp O(1).",
+        "isCorrect": false
+      },
+      {
+        "id": "7116e00e-6948-56d2-bd18-6f854e8c2309",
+        "content": "Có thể bỏ điều kiện dừng mà vẫn đảm bảo thuật toán kết thúc.",
+        "isCorrect": false
+      },
+      {
+        "id": "c0c961e7-402c-56b1-9500-823173edeae9",
+        "content": "Kết quả không phụ thuộc vào thứ tự hay dữ liệu đầu vào.",
+        "isCorrect": false
+      }
+    ],
+    "difficulty": "MEDIUM",
+    "topicName": "Mảng",
+    "tagNames": []
+  },
+  {
+    "id": "32e8f8f1-96bd-5470-9aed-403d47fea3d5",
+    "revisionId": "6556add3-5e5f-5501-91e7-4404ea611b16",
+    "key": "c05-ch01-q06",
+    "courseKey": "c05",
+    "chapterKey": "c05-ch01",
+    "createdBy": "ac9fadc2-1955-59e4-984d-26f74bbb4f53",
+    "clientRequestId": "c1ad9942-36d3-522c-bd93-b9c2ffc28aff",
+    "isPrivate": false,
+    "requestHash": "41efae7d91943b819682c318265742f0440280fe4a46fd5f1377f826b9da8457",
+    "content": "Khi ôn tập mảng, kết luận nào là chính xác? (Câu 06)",
+    "explanation": "Mảng liên tiếp lưu các phần tử cùng kiểu trong vùng nhớ liền nhau. Đây là đặc điểm cần ghi nhớ khi áp dụng chủ đề này.",
+    "options": [
+      {
+        "id": "e6b6d3f6-72c9-565c-836b-8ce27667e3cf",
+        "content": "Mọi phép duyệt đều có độ phức tạp O(1).",
+        "isCorrect": false
+      },
+      {
+        "id": "6ab1bd6f-9249-50dc-990a-4ee78462f6d1",
+        "content": "Có thể bỏ điều kiện dừng mà vẫn đảm bảo thuật toán kết thúc.",
+        "isCorrect": false
+      },
+      {
+        "id": "67708ae4-ad47-54ef-8867-7941f01cb0a4",
+        "content": "Kết quả không phụ thuộc vào thứ tự hay dữ liệu đầu vào.",
+        "isCorrect": false
+      },
+      {
+        "id": "f191a613-9b71-5fd3-92d6-c3b7af820aee",
+        "content": "Mảng liên tiếp lưu các phần tử cùng kiểu trong vùng nhớ liền nhau.",
+        "isCorrect": true
+      }
+    ],
+    "difficulty": "HARD",
+    "topicName": "Mảng",
+    "tagNames": []
+  },
+  {
+    "id": "dda17d19-1535-59f3-93d5-cb1e08908712",
+    "revisionId": "e5242f01-5f09-578e-85e7-404d8aacf1fc",
+    "key": "c05-ch01-q07",
+    "courseKey": "c05",
+    "chapterKey": "c05-ch01",
+    "createdBy": "ac9fadc2-1955-59e4-984d-26f74bbb4f53",
+    "clientRequestId": "5a2f24d0-42a2-552e-920a-e458f735d5ef",
+    "isPrivate": false,
+    "requestHash": "06cdc94b3764cb5d5875df9238e8f50c199ff990659ce734ca17c459f88c1aca",
+    "content": "Một người học đang giải bài về mảng. Nhận định nào nên được chọn? (Câu 07)",
+    "explanation": "Truy cập phần tử theo chỉ số trong mảng thường mất O(1). Đây là đặc điểm cần ghi nhớ khi áp dụng chủ đề này.",
+    "options": [
+      {
+        "id": "0007c170-eb99-52d5-95e6-221ee7878138",
+        "content": "Có thể bỏ điều kiện dừng mà vẫn đảm bảo thuật toán kết thúc.",
+        "isCorrect": false
+      },
+      {
+        "id": "9f00aa59-0fcc-5082-aa83-67e1e41fbf34",
+        "content": "Kết quả không phụ thuộc vào thứ tự hay dữ liệu đầu vào.",
+        "isCorrect": false
+      },
+      {
+        "id": "74603273-58b3-59bf-afb3-32469d5dc71e",
+        "content": "Truy cập phần tử theo chỉ số trong mảng thường mất O(1).",
+        "isCorrect": true
+      },
+      {
+        "id": "f0f88714-da8c-5c79-9cb9-1bcb02a5d554",
+        "content": "Mọi phép duyệt đều có độ phức tạp O(1).",
+        "isCorrect": false
+      }
+    ],
+    "difficulty": "EASY",
+    "topicName": "Mảng",
+    "tagNames": []
+  },
+  {
+    "id": "c64bb6c9-b099-5801-8b18-80258d4e3ea1",
+    "revisionId": "f3cc859c-0e59-52cd-b567-5aae6668b51b",
+    "key": "c05-ch01-q08",
+    "courseKey": "c05",
+    "chapterKey": "c05-ch01",
+    "createdBy": "ac9fadc2-1955-59e4-984d-26f74bbb4f53",
+    "clientRequestId": "460ac333-093e-5069-9f80-f7a0cb7b8bbb",
+    "isPrivate": false,
+    "requestHash": "b95afe31cea35d1ff4ff1d4456c090f419bae25e642f09d9ec0c591c6b449fef",
+    "content": "Đâu là kiến thức đúng khi làm việc với mảng? (Câu 08)",
+    "explanation": "Duyệt toàn bộ N phần tử của mảng mất O(N). Đây là đặc điểm cần ghi nhớ khi áp dụng chủ đề này.",
+    "options": [
+      {
+        "id": "3b9be4ba-cba9-534f-b46a-b09dd8d0b7ed",
+        "content": "Kết quả không phụ thuộc vào thứ tự hay dữ liệu đầu vào.",
+        "isCorrect": false
+      },
+      {
+        "id": "e8a68354-327b-582b-94dd-5a959419b6ef",
+        "content": "Duyệt toàn bộ N phần tử của mảng mất O(N).",
+        "isCorrect": true
+      },
+      {
+        "id": "8f245fa2-cff2-5328-8836-791c7271216b",
+        "content": "Mọi phép duyệt đều có độ phức tạp O(1).",
+        "isCorrect": false
+      },
+      {
+        "id": "c72a2dda-b63c-5a4c-86f2-0ea319a30473",
+        "content": "Có thể bỏ điều kiện dừng mà vẫn đảm bảo thuật toán kết thúc.",
+        "isCorrect": false
+      }
+    ],
+    "difficulty": "MEDIUM",
+    "topicName": "Mảng",
+    "tagNames": []
+  },
+  {
+    "id": "35d03d8c-7bd7-576f-a8bc-c4b4b1b4f8d5",
+    "revisionId": "5eb307de-7ab8-5380-81a7-5d0507efbda4",
+    "key": "c05-ch01-q09",
+    "courseKey": "c05",
+    "chapterKey": "c05-ch01",
+    "createdBy": "ac9fadc2-1955-59e4-984d-26f74bbb4f53",
+    "clientRequestId": "3e4a62f4-e175-55bd-bb32-c04e2c24d913",
+    "isPrivate": false,
+    "requestHash": "ef0170e9ddce136d57ca0f8f563bcc31a1b5d2995c5037f249fd6f9c548c0fc7",
+    "content": "Phát biểu nào mô tả đúng về mảng? (Câu 09)",
+    "explanation": "Mảng liên tiếp lưu các phần tử cùng kiểu trong vùng nhớ liền nhau. Đây là đặc điểm cần ghi nhớ khi áp dụng chủ đề này.",
+    "options": [
+      {
+        "id": "f016ea77-c626-51b8-bdb2-b760a72db320",
+        "content": "Mảng liên tiếp lưu các phần tử cùng kiểu trong vùng nhớ liền nhau.",
+        "isCorrect": true
+      },
+      {
+        "id": "d01fd91c-fe2b-5335-b80d-cf480593d45e",
+        "content": "Mọi phép duyệt đều có độ phức tạp O(1).",
+        "isCorrect": false
+      },
+      {
+        "id": "4bffa9a3-711b-5030-8bfd-7b83f892eafe",
+        "content": "Có thể bỏ điều kiện dừng mà vẫn đảm bảo thuật toán kết thúc.",
+        "isCorrect": false
+      },
+      {
+        "id": "9cc26730-89db-5dda-8278-ead0ffaeda9a",
+        "content": "Kết quả không phụ thuộc vào thứ tự hay dữ liệu đầu vào.",
+        "isCorrect": false
+      }
+    ],
+    "difficulty": "HARD",
+    "topicName": "Mảng",
+    "tagNames": []
+  },
+  {
+    "id": "2b75702d-d3d2-5c32-8fac-515a6ff166d5",
+    "revisionId": "c758f10f-65ae-530f-a7b4-847cbf74bf60",
+    "key": "c05-ch01-q10",
+    "courseKey": "c05",
+    "chapterKey": "c05-ch01",
+    "createdBy": "ac9fadc2-1955-59e4-984d-26f74bbb4f53",
+    "clientRequestId": "35171593-ca10-50d0-bc38-1943ce605e90",
+    "isPrivate": false,
+    "requestHash": "51de4939cf5ff6c0ac75b915e6504e223a5bdeb28e5d7bafc5c31d61d3e97b2d",
+    "content": "Khi ôn tập mảng, kết luận nào là chính xác? (Câu 10)",
+    "explanation": "Truy cập phần tử theo chỉ số trong mảng thường mất O(1). Đây là đặc điểm cần ghi nhớ khi áp dụng chủ đề này.",
+    "options": [
+      {
+        "id": "3e271c89-f492-5259-8487-46c82f294af6",
+        "content": "Mọi phép duyệt đều có độ phức tạp O(1).",
+        "isCorrect": false
+      },
+      {
+        "id": "d7efdeb0-bfac-5e62-a89e-fe13e28a7652",
+        "content": "Có thể bỏ điều kiện dừng mà vẫn đảm bảo thuật toán kết thúc.",
+        "isCorrect": false
+      },
+      {
+        "id": "687b1978-5101-5fbc-8fbe-6b4a9f089826",
+        "content": "Kết quả không phụ thuộc vào thứ tự hay dữ liệu đầu vào.",
+        "isCorrect": false
+      },
+      {
+        "id": "8097b4f0-fcc1-57c0-ae52-acbbe053aca0",
+        "content": "Truy cập phần tử theo chỉ số trong mảng thường mất O(1).",
+        "isCorrect": true
+      }
+    ],
+    "difficulty": "EASY",
+    "topicName": "Mảng",
+    "tagNames": []
+  },
+  {
+    "id": "eb4008cd-5d91-5ee2-819b-95225f42f978",
+    "revisionId": "ed5f846a-c8f4-559f-ba88-ef3d9410bb7c",
+    "key": "c05-ch01-q11",
+    "courseKey": "c05",
+    "chapterKey": "c05-ch01",
+    "createdBy": "ac9fadc2-1955-59e4-984d-26f74bbb4f53",
+    "clientRequestId": "a13296e6-bab0-5e4b-897e-a3da2e31b137",
+    "isPrivate": false,
+    "requestHash": "77805209ce7057394285f2f4628868a3596af79354566d6a04cd22164a27476b",
+    "content": "Một người học đang giải bài về mảng. Nhận định nào nên được chọn? (Câu 11)",
+    "explanation": "Duyệt toàn bộ N phần tử của mảng mất O(N). Đây là đặc điểm cần ghi nhớ khi áp dụng chủ đề này.",
+    "options": [
+      {
+        "id": "8b6cde97-20c1-596a-84c9-f81b15d5163a",
+        "content": "Có thể bỏ điều kiện dừng mà vẫn đảm bảo thuật toán kết thúc.",
+        "isCorrect": false
+      },
+      {
+        "id": "184bd4e8-5867-5bc9-9ee5-1a4b9e8afbaa",
+        "content": "Kết quả không phụ thuộc vào thứ tự hay dữ liệu đầu vào.",
+        "isCorrect": false
+      },
+      {
+        "id": "a2ef824b-43c4-5d9c-85a7-2fec5f388764",
+        "content": "Duyệt toàn bộ N phần tử của mảng mất O(N).",
+        "isCorrect": true
+      },
+      {
+        "id": "a1c768e8-bddb-5a42-b44a-d67b0e3f2068",
+        "content": "Mọi phép duyệt đều có độ phức tạp O(1).",
+        "isCorrect": false
+      }
+    ],
+    "difficulty": "MEDIUM",
+    "topicName": "Mảng",
+    "tagNames": []
+  },
+  {
+    "id": "ca7c5974-9e6d-5461-9e9c-978c03fb7275",
+    "revisionId": "c447a10c-dab1-5659-b1ef-6b5c117b13dd",
+    "key": "c05-ch01-q12",
+    "courseKey": "c05",
+    "chapterKey": "c05-ch01",
+    "createdBy": "ac9fadc2-1955-59e4-984d-26f74bbb4f53",
+    "clientRequestId": "2e09f1e4-252a-5a0d-9c6b-cfa305fbd98c",
+    "isPrivate": false,
+    "requestHash": "a23b013bef0a0efbebf4317de77e7c1291749b757d656d4799f0383e9af90195",
+    "content": "Đâu là kiến thức đúng khi làm việc với mảng? (Câu 12)",
+    "explanation": "Mảng liên tiếp lưu các phần tử cùng kiểu trong vùng nhớ liền nhau. Đây là đặc điểm cần ghi nhớ khi áp dụng chủ đề này.",
+    "options": [
+      {
+        "id": "71ce35fc-1215-58b9-af89-3bd1a95f437e",
+        "content": "Kết quả không phụ thuộc vào thứ tự hay dữ liệu đầu vào.",
+        "isCorrect": false
+      },
+      {
+        "id": "a0daaa2a-6ae1-5750-bf18-a863ffd4041b",
+        "content": "Mảng liên tiếp lưu các phần tử cùng kiểu trong vùng nhớ liền nhau.",
+        "isCorrect": true
+      },
+      {
+        "id": "4786e38f-e060-5eb0-b775-6b04bed0cdd0",
+        "content": "Mọi phép duyệt đều có độ phức tạp O(1).",
+        "isCorrect": false
+      },
+      {
+        "id": "73068dda-41f7-5008-bf22-315320875502",
+        "content": "Có thể bỏ điều kiện dừng mà vẫn đảm bảo thuật toán kết thúc.",
+        "isCorrect": false
+      }
+    ],
+    "difficulty": "HARD",
+    "topicName": "Mảng",
+    "tagNames": []
+  },
+  {
+    "id": "adad3644-0935-5a15-9120-7d691a26238e",
+    "revisionId": "96f19cab-90e7-51f8-a70e-c12b4a49bf97",
+    "key": "c05-ch01-q13",
+    "courseKey": "c05",
+    "chapterKey": "c05-ch01",
+    "createdBy": "ac9fadc2-1955-59e4-984d-26f74bbb4f53",
+    "clientRequestId": "844e8c2c-0028-5212-b2ca-2709506029f4",
+    "isPrivate": false,
+    "requestHash": "e69b5ae8d7a2b9f8b04ce806888e57ccbe86d0da65e4b1e7cdc3a65e53470a12",
+    "content": "Phát biểu nào mô tả đúng về mảng? (Câu 13)",
+    "explanation": "Truy cập phần tử theo chỉ số trong mảng thường mất O(1). Đây là đặc điểm cần ghi nhớ khi áp dụng chủ đề này.",
+    "options": [
+      {
+        "id": "5c4e6569-5881-5602-a8c5-7e6140b63534",
+        "content": "Truy cập phần tử theo chỉ số trong mảng thường mất O(1).",
+        "isCorrect": true
+      },
+      {
+        "id": "555c311d-79f9-5d49-bba0-cf3a4f345f2f",
+        "content": "Mọi phép duyệt đều có độ phức tạp O(1).",
+        "isCorrect": false
+      },
+      {
+        "id": "239ea32a-daf8-54be-a856-1e4a1ffac00d",
+        "content": "Có thể bỏ điều kiện dừng mà vẫn đảm bảo thuật toán kết thúc.",
+        "isCorrect": false
+      },
+      {
+        "id": "03f4fae7-ef76-544f-98c7-cdff75b66223",
+        "content": "Kết quả không phụ thuộc vào thứ tự hay dữ liệu đầu vào.",
+        "isCorrect": false
+      }
+    ],
+    "difficulty": "EASY",
+    "topicName": "Mảng",
+    "tagNames": []
+  },
+  {
+    "id": "262b647f-c28a-5db9-a0f8-a33de9f44dd7",
+    "revisionId": "a1b8f5d5-3728-57b6-8d1b-bb07fdb1f265",
+    "key": "c05-ch01-q14",
+    "courseKey": "c05",
+    "chapterKey": "c05-ch01",
+    "createdBy": "ac9fadc2-1955-59e4-984d-26f74bbb4f53",
+    "clientRequestId": "66c1022d-98d3-53b2-b432-01a98372919a",
+    "isPrivate": false,
+    "requestHash": "4216ab18ae4384b94cf2fd6d39cb9ce5ca847daadb04ab473e90fab1581a0839",
+    "content": "Khi ôn tập mảng, kết luận nào là chính xác? (Câu 14)",
+    "explanation": "Duyệt toàn bộ N phần tử của mảng mất O(N). Đây là đặc điểm cần ghi nhớ khi áp dụng chủ đề này.",
+    "options": [
+      {
+        "id": "0b6ebcf0-9758-5ef0-86c1-dc9936b4f7cd",
+        "content": "Mọi phép duyệt đều có độ phức tạp O(1).",
+        "isCorrect": false
+      },
+      {
+        "id": "3d04af92-93cd-50db-bbc5-8c3ca0371b5a",
+        "content": "Có thể bỏ điều kiện dừng mà vẫn đảm bảo thuật toán kết thúc.",
+        "isCorrect": false
+      },
+      {
+        "id": "bddfe7cb-07fc-5e5f-872a-b20ebddcd479",
+        "content": "Kết quả không phụ thuộc vào thứ tự hay dữ liệu đầu vào.",
+        "isCorrect": false
+      },
+      {
+        "id": "e14cb23d-1926-5d77-b183-cd068bb1c049",
+        "content": "Duyệt toàn bộ N phần tử của mảng mất O(N).",
+        "isCorrect": true
+      }
+    ],
+    "difficulty": "MEDIUM",
+    "topicName": "Mảng",
+    "tagNames": []
+  },
+  {
+    "id": "2b5b4a9d-3b2a-5ebc-92ef-5561282cbf19",
+    "revisionId": "3f81bab4-c75e-5a35-9665-74954eb61f14",
+    "key": "c05-ch01-q15",
+    "courseKey": "c05",
+    "chapterKey": "c05-ch01",
+    "createdBy": "ac9fadc2-1955-59e4-984d-26f74bbb4f53",
+    "clientRequestId": "cded50ca-db4d-5f7f-a38c-737866288823",
+    "isPrivate": false,
+    "requestHash": "4c0264e5092701bf6fef60edf07fc738699163648f00f946904ece954e99366e",
+    "content": "Một người học đang giải bài về mảng. Nhận định nào nên được chọn? (Câu 15)",
+    "explanation": "Mảng liên tiếp lưu các phần tử cùng kiểu trong vùng nhớ liền nhau. Đây là đặc điểm cần ghi nhớ khi áp dụng chủ đề này.",
+    "options": [
+      {
+        "id": "c6bc6cb5-16f7-5fee-a18b-96a5eb679190",
+        "content": "Có thể bỏ điều kiện dừng mà vẫn đảm bảo thuật toán kết thúc.",
+        "isCorrect": false
+      },
+      {
+        "id": "6aaefe9c-abff-5290-b13d-be82d0c82128",
+        "content": "Kết quả không phụ thuộc vào thứ tự hay dữ liệu đầu vào.",
+        "isCorrect": false
+      },
+      {
+        "id": "190f51d6-3952-564a-a24a-55dd5776deec",
+        "content": "Mảng liên tiếp lưu các phần tử cùng kiểu trong vùng nhớ liền nhau.",
+        "isCorrect": true
+      },
+      {
+        "id": "aa3a995c-0e4d-5f35-8f7e-cdbb377ea5dc",
+        "content": "Mọi phép duyệt đều có độ phức tạp O(1).",
+        "isCorrect": false
+      }
+    ],
+    "difficulty": "HARD",
+    "topicName": "Mảng",
+    "tagNames": []
+  },
+  {
+    "id": "ca7dd05d-964c-551b-9f12-95bb2cfd2582",
+    "revisionId": "34a991ac-3710-5b99-bf51-c8861729e9bc",
+    "key": "c05-ch01-q16",
+    "courseKey": "c05",
+    "chapterKey": "c05-ch01",
+    "createdBy": "ac9fadc2-1955-59e4-984d-26f74bbb4f53",
+    "clientRequestId": "e786acae-5dcd-5202-80f2-c35f99bfd5cb",
+    "isPrivate": false,
+    "requestHash": "e6e107ebfb198a7edafc57820bf03eb2f3799b6b13f94b5121fd76d69a0da54e",
+    "content": "Đâu là kiến thức đúng khi làm việc với mảng? (Câu 16)",
+    "explanation": "Truy cập phần tử theo chỉ số trong mảng thường mất O(1). Đây là đặc điểm cần ghi nhớ khi áp dụng chủ đề này.",
+    "options": [
+      {
+        "id": "b9d2c55c-6b5e-5583-8c6d-130499c2abb2",
+        "content": "Kết quả không phụ thuộc vào thứ tự hay dữ liệu đầu vào.",
+        "isCorrect": false
+      },
+      {
+        "id": "18999607-e809-5178-8b92-9d791f42ace4",
+        "content": "Truy cập phần tử theo chỉ số trong mảng thường mất O(1).",
+        "isCorrect": true
+      },
+      {
+        "id": "fde2d059-e065-541f-a400-fce894585976",
+        "content": "Mọi phép duyệt đều có độ phức tạp O(1).",
+        "isCorrect": false
+      },
+      {
+        "id": "a70d128b-7b6a-59b8-bafb-fda6c308b6d7",
+        "content": "Có thể bỏ điều kiện dừng mà vẫn đảm bảo thuật toán kết thúc.",
+        "isCorrect": false
+      }
+    ],
+    "difficulty": "EASY",
+    "topicName": "Mảng",
+    "tagNames": []
+  },
+  {
+    "id": "5fbe0f08-8f55-5870-821c-3c8ffbda4402",
+    "revisionId": "e7dee3bc-0023-5b58-a596-d4dd54a7474a",
+    "key": "c05-ch01-q17",
+    "courseKey": "c05",
+    "chapterKey": "c05-ch01",
+    "createdBy": "ac9fadc2-1955-59e4-984d-26f74bbb4f53",
+    "clientRequestId": "e91c53b3-0506-53a3-b1bf-a414b02c503d",
+    "isPrivate": false,
+    "requestHash": "65b3eb9fe96a43788ca9e97e1da515db19dd4f86be1f45f67cb19a35d2918b09",
+    "content": "Phát biểu nào mô tả đúng về mảng? (Câu 17)",
+    "explanation": "Duyệt toàn bộ N phần tử của mảng mất O(N). Đây là đặc điểm cần ghi nhớ khi áp dụng chủ đề này.",
+    "options": [
+      {
+        "id": "2e0bad43-b5e0-5687-bafe-c9b0fe17cfe0",
+        "content": "Duyệt toàn bộ N phần tử của mảng mất O(N).",
+        "isCorrect": true
+      },
+      {
+        "id": "400c73a5-1e22-5cba-b58c-2116f0ddc7f8",
+        "content": "Mọi phép duyệt đều có độ phức tạp O(1).",
+        "isCorrect": false
+      },
+      {
+        "id": "60cae2c6-5e97-5c95-832e-88f72bbb9713",
+        "content": "Có thể bỏ điều kiện dừng mà vẫn đảm bảo thuật toán kết thúc.",
+        "isCorrect": false
+      },
+      {
+        "id": "65c78550-1f3b-5b70-a6b1-a7fbd38af561",
+        "content": "Kết quả không phụ thuộc vào thứ tự hay dữ liệu đầu vào.",
+        "isCorrect": false
+      }
+    ],
+    "difficulty": "MEDIUM",
+    "topicName": "Mảng",
+    "tagNames": []
+  },
+  {
+    "id": "5c7ad095-4728-5f0e-9fdb-c2264d82a2d1",
+    "revisionId": "e42dc17f-0002-55db-b928-78db2918c480",
+    "key": "c05-ch01-q18",
+    "courseKey": "c05",
+    "chapterKey": "c05-ch01",
+    "createdBy": "ac9fadc2-1955-59e4-984d-26f74bbb4f53",
+    "clientRequestId": "7fb2297d-d684-586e-8ba9-46daedc13089",
+    "isPrivate": false,
+    "requestHash": "557a2dde923467b114cf0ba10e76748d43cc42934a156069e39eb97c136419fd",
+    "content": "Khi ôn tập mảng, kết luận nào là chính xác? (Câu 18)",
+    "explanation": "Mảng liên tiếp lưu các phần tử cùng kiểu trong vùng nhớ liền nhau. Đây là đặc điểm cần ghi nhớ khi áp dụng chủ đề này.",
+    "options": [
+      {
+        "id": "e9c0af64-fee1-5531-be6d-26d33a1319e2",
+        "content": "Mọi phép duyệt đều có độ phức tạp O(1).",
+        "isCorrect": false
+      },
+      {
+        "id": "d6c6512c-6d5e-5790-abbf-3d1e8164b0e1",
+        "content": "Có thể bỏ điều kiện dừng mà vẫn đảm bảo thuật toán kết thúc.",
+        "isCorrect": false
+      },
+      {
+        "id": "4dab9709-8cab-5608-82e3-173863310d5d",
+        "content": "Kết quả không phụ thuộc vào thứ tự hay dữ liệu đầu vào.",
+        "isCorrect": false
+      },
+      {
+        "id": "ac30d2d0-4f63-5b2a-8131-ae6406a59c3b",
+        "content": "Mảng liên tiếp lưu các phần tử cùng kiểu trong vùng nhớ liền nhau.",
+        "isCorrect": true
+      }
+    ],
+    "difficulty": "HARD",
+    "topicName": "Mảng",
+    "tagNames": []
+  },
+  {
+    "id": "988fc602-dd93-565a-9715-c9cfbeed91ee",
+    "revisionId": "456f6b29-1ba5-58d0-836e-e9c945f48cfc",
+    "key": "c05-ch01-q19",
+    "courseKey": "c05",
+    "chapterKey": "c05-ch01",
+    "createdBy": "ac9fadc2-1955-59e4-984d-26f74bbb4f53",
+    "clientRequestId": "ce9dd725-5fb2-5f7c-a6a9-0f41dabed88a",
+    "isPrivate": false,
+    "requestHash": "80b33c76d76f33c349a7aa82eee007e2cdeafa84c7d377a5ba3df31c5a0ac103",
+    "content": "Một người học đang giải bài về mảng. Nhận định nào nên được chọn? (Câu 19)",
+    "explanation": "Truy cập phần tử theo chỉ số trong mảng thường mất O(1). Đây là đặc điểm cần ghi nhớ khi áp dụng chủ đề này.",
+    "options": [
+      {
+        "id": "0c50868d-6612-5b10-9fda-ee72f9147740",
+        "content": "Có thể bỏ điều kiện dừng mà vẫn đảm bảo thuật toán kết thúc.",
+        "isCorrect": false
+      },
+      {
+        "id": "94d77cdd-296a-542c-8f2c-5541545b4193",
+        "content": "Kết quả không phụ thuộc vào thứ tự hay dữ liệu đầu vào.",
+        "isCorrect": false
+      },
+      {
+        "id": "004f4c9c-6cfa-5bd7-bec8-cdc5218e6158",
+        "content": "Truy cập phần tử theo chỉ số trong mảng thường mất O(1).",
+        "isCorrect": true
+      },
+      {
+        "id": "0ecc667c-970c-5412-98be-77c6d7dd397e",
+        "content": "Mọi phép duyệt đều có độ phức tạp O(1).",
+        "isCorrect": false
+      }
+    ],
+    "difficulty": "EASY",
+    "topicName": "Mảng",
+    "tagNames": []
+  },
+  {
+    "id": "b0417cb2-5f45-5de0-bff1-9ff51f7f7892",
+    "revisionId": "7cc23d87-65e9-53fe-b53c-f3f345f846a4",
+    "key": "c05-ch01-q20",
+    "courseKey": "c05",
+    "chapterKey": "c05-ch01",
+    "createdBy": "ac9fadc2-1955-59e4-984d-26f74bbb4f53",
+    "clientRequestId": "b17de25c-c9df-5816-a733-d9d3c2528bf2",
+    "isPrivate": false,
+    "requestHash": "3f972ae148dc11f36dd1f1ecca1d9043334bac8db9ff76f689dd6ec6ee3704ca",
+    "content": "Đâu là kiến thức đúng khi làm việc với mảng? (Câu 20)",
+    "explanation": "Duyệt toàn bộ N phần tử của mảng mất O(N). Đây là đặc điểm cần ghi nhớ khi áp dụng chủ đề này.",
+    "options": [
+      {
+        "id": "e8a495d0-0f43-50e0-b103-42c9670563aa",
+        "content": "Kết quả không phụ thuộc vào thứ tự hay dữ liệu đầu vào.",
+        "isCorrect": false
+      },
+      {
+        "id": "2779f8cc-2df1-5b56-a575-3277da447c40",
+        "content": "Duyệt toàn bộ N phần tử của mảng mất O(N).",
+        "isCorrect": true
+      },
+      {
+        "id": "bcd2ea26-fc91-53c4-9ae1-f89512ca697d",
+        "content": "Mọi phép duyệt đều có độ phức tạp O(1).",
+        "isCorrect": false
+      },
+      {
+        "id": "8b7eae68-79d8-5bad-aaaf-782bff1798e3",
+        "content": "Có thể bỏ điều kiện dừng mà vẫn đảm bảo thuật toán kết thúc.",
+        "isCorrect": false
+      }
+    ],
+    "difficulty": "MEDIUM",
+    "topicName": "Mảng",
+    "tagNames": []
+  },
+  {
+    "id": "e461d0a0-d670-5f84-ac86-c82b972c8469",
+    "revisionId": "ef68338e-533f-545a-ad09-60a19425361a",
+    "key": "c05-ch01-q21",
+    "courseKey": "c05",
+    "chapterKey": "c05-ch01",
+    "createdBy": "ac9fadc2-1955-59e4-984d-26f74bbb4f53",
+    "clientRequestId": "9fc42a01-bddc-5e9b-8efe-cc73dc10b517",
+    "isPrivate": false,
+    "requestHash": "0fd95cbe40d0f9eb0b2cf7f783a8179522a7d1e81fc8f98109d100bdcb43b90e",
+    "content": "Phát biểu nào mô tả đúng về mảng? (Câu 21)",
+    "explanation": "Mảng liên tiếp lưu các phần tử cùng kiểu trong vùng nhớ liền nhau. Đây là đặc điểm cần ghi nhớ khi áp dụng chủ đề này.",
+    "options": [
+      {
+        "id": "f1ba84a9-e1bd-5439-8057-384b0cfdef44",
+        "content": "Mảng liên tiếp lưu các phần tử cùng kiểu trong vùng nhớ liền nhau.",
+        "isCorrect": true
+      },
+      {
+        "id": "9380eece-7245-568f-9030-d31bc7c7bdbb",
+        "content": "Mọi phép duyệt đều có độ phức tạp O(1).",
+        "isCorrect": false
+      },
+      {
+        "id": "8f71a5ed-731e-56cd-8f57-0c1b2a53b47f",
+        "content": "Có thể bỏ điều kiện dừng mà vẫn đảm bảo thuật toán kết thúc.",
+        "isCorrect": false
+      },
+      {
+        "id": "812ee53b-c945-5024-8f83-8e7509f9de41",
+        "content": "Kết quả không phụ thuộc vào thứ tự hay dữ liệu đầu vào.",
+        "isCorrect": false
+      }
+    ],
+    "difficulty": "HARD",
+    "topicName": "Mảng",
+    "tagNames": []
+  },
+  {
+    "id": "007bbcfb-92af-5533-a1bb-40b6e472d5d4",
+    "revisionId": "9b892e06-88e0-54c1-a178-b2e0434eeb96",
+    "key": "c05-ch01-q22",
+    "courseKey": "c05",
+    "chapterKey": "c05-ch01",
+    "createdBy": "ac9fadc2-1955-59e4-984d-26f74bbb4f53",
+    "clientRequestId": "480c90ec-1052-5634-be99-61061e7c8d9e",
+    "isPrivate": false,
+    "requestHash": "94ac23ba3f08677816072fbd85e90f685fcccc703c6d3c683c0358538b29e558",
+    "content": "Khi ôn tập mảng, kết luận nào là chính xác? (Câu 22)",
+    "explanation": "Truy cập phần tử theo chỉ số trong mảng thường mất O(1). Đây là đặc điểm cần ghi nhớ khi áp dụng chủ đề này.",
+    "options": [
+      {
+        "id": "88c63eeb-24bc-5218-b51b-505434563657",
+        "content": "Mọi phép duyệt đều có độ phức tạp O(1).",
+        "isCorrect": false
+      },
+      {
+        "id": "40296a2f-9ad7-5a7c-83e0-394cb9621305",
+        "content": "Có thể bỏ điều kiện dừng mà vẫn đảm bảo thuật toán kết thúc.",
+        "isCorrect": false
+      },
+      {
+        "id": "c0c0c675-ef97-58ef-854e-fe316d7d342f",
+        "content": "Kết quả không phụ thuộc vào thứ tự hay dữ liệu đầu vào.",
+        "isCorrect": false
+      },
+      {
+        "id": "a8bbb5b3-fb15-58f2-a8ef-1beae88fe448",
+        "content": "Truy cập phần tử theo chỉ số trong mảng thường mất O(1).",
+        "isCorrect": true
+      }
+    ],
+    "difficulty": "EASY",
+    "topicName": "Mảng",
+    "tagNames": []
+  },
+  {
+    "id": "899e9898-d879-599a-97ca-edb2c4a36a46",
+    "revisionId": "6f333df1-1b53-542b-b37a-36b7af3cc6c6",
+    "key": "c05-ch01-q23",
+    "courseKey": "c05",
+    "chapterKey": "c05-ch01",
+    "createdBy": "ac9fadc2-1955-59e4-984d-26f74bbb4f53",
+    "clientRequestId": "a4573f0e-8288-5539-abe8-18de4a3e5612",
+    "isPrivate": false,
+    "requestHash": "2ed40513f47ed1c596c9d00d88e0fa605496d4db92c4fb4ca49ccb8cf2644b2b",
+    "content": "Một người học đang giải bài về mảng. Nhận định nào nên được chọn? (Câu 23)",
+    "explanation": "Duyệt toàn bộ N phần tử của mảng mất O(N). Đây là đặc điểm cần ghi nhớ khi áp dụng chủ đề này.",
+    "options": [
+      {
+        "id": "c0c6ee5d-bf20-54c1-949e-7218e1f4e144",
+        "content": "Có thể bỏ điều kiện dừng mà vẫn đảm bảo thuật toán kết thúc.",
+        "isCorrect": false
+      },
+      {
+        "id": "07499f7a-36bd-5154-a9d6-de3923a30f1d",
+        "content": "Kết quả không phụ thuộc vào thứ tự hay dữ liệu đầu vào.",
+        "isCorrect": false
+      },
+      {
+        "id": "272ac150-bfaa-52ad-8e63-f356e62e8b53",
+        "content": "Duyệt toàn bộ N phần tử của mảng mất O(N).",
+        "isCorrect": true
+      },
+      {
+        "id": "9fe8e212-daa3-5764-a94c-2cc539ddb506",
+        "content": "Mọi phép duyệt đều có độ phức tạp O(1).",
+        "isCorrect": false
+      }
+    ],
+    "difficulty": "MEDIUM",
+    "topicName": "Mảng",
+    "tagNames": []
+  },
+  {
+    "id": "98341acb-6884-584d-a047-43969596b006",
+    "revisionId": "0115357c-d757-505e-a4dd-979ab84354e5",
+    "key": "c05-ch01-q24",
+    "courseKey": "c05",
+    "chapterKey": "c05-ch01",
+    "createdBy": "ac9fadc2-1955-59e4-984d-26f74bbb4f53",
+    "clientRequestId": "b012d77f-5633-54d8-a6eb-8354c6ea3a7d",
+    "isPrivate": false,
+    "requestHash": "1e546a7f90e72d276cd17e4e9a3f12d52969f9725398e168b69c84b250a5dffb",
+    "content": "Đâu là kiến thức đúng khi làm việc với mảng? (Câu 24)",
+    "explanation": "Mảng liên tiếp lưu các phần tử cùng kiểu trong vùng nhớ liền nhau. Đây là đặc điểm cần ghi nhớ khi áp dụng chủ đề này.",
+    "options": [
+      {
+        "id": "26dbc5ec-2c2f-5d58-9869-f98947e7bb54",
+        "content": "Kết quả không phụ thuộc vào thứ tự hay dữ liệu đầu vào.",
+        "isCorrect": false
+      },
+      {
+        "id": "e5553b00-1070-56d7-918d-c6cb9c7a87dc",
+        "content": "Mảng liên tiếp lưu các phần tử cùng kiểu trong vùng nhớ liền nhau.",
+        "isCorrect": true
+      },
+      {
+        "id": "19c14eb1-69de-515b-a0c7-9fee23b54882",
+        "content": "Mọi phép duyệt đều có độ phức tạp O(1).",
+        "isCorrect": false
+      },
+      {
+        "id": "b9dc6ef2-df7d-53f7-a98c-dc9df2a5ef70",
+        "content": "Có thể bỏ điều kiện dừng mà vẫn đảm bảo thuật toán kết thúc.",
+        "isCorrect": false
+      }
+    ],
+    "difficulty": "HARD",
+    "topicName": "Mảng",
+    "tagNames": []
+  },
+  {
+    "id": "fd7d4aba-a0c0-5a2e-b0ab-d58ec62ca6ff",
+    "revisionId": "391e5efc-bc8d-5e5c-915c-3868ab048560",
+    "key": "c05-ch02-q01",
+    "courseKey": "c05",
+    "chapterKey": "c05-ch02",
+    "createdBy": "ac9fadc2-1955-59e4-984d-26f74bbb4f53",
+    "clientRequestId": "717ba48e-a22a-560f-ac0a-d682deca1abc",
+    "isPrivate": false,
+    "requestHash": "d2e13319e45d517e98e84dcbd9914198960e04f3d9d89e616dd55e68cf184254",
+    "content": "Phát biểu nào mô tả đúng về sắp xếp? (Câu 01)",
+    "explanation": "Merge Sort có độ phức tạp O(N log N) trong trường hợp xấu nhất. Đây là đặc điểm cần ghi nhớ khi áp dụng chủ đề này.",
+    "options": [
+      {
+        "id": "21d2c5ef-fb70-504a-93e3-21068eccfddd",
+        "content": "Merge Sort có độ phức tạp O(N log N) trong trường hợp xấu nhất.",
+        "isCorrect": true
+      },
+      {
+        "id": "e5332b1d-5dfa-5ac5-b926-686d82fa9b6b",
+        "content": "Mọi phép duyệt đều có độ phức tạp O(1).",
+        "isCorrect": false
+      },
+      {
+        "id": "9d4f1bf0-a061-5005-a019-6784157cd4f0",
+        "content": "Có thể bỏ điều kiện dừng mà vẫn đảm bảo thuật toán kết thúc.",
+        "isCorrect": false
+      },
+      {
+        "id": "64c3b57f-889f-502b-bd8a-1513dd02998f",
+        "content": "Kết quả không phụ thuộc vào thứ tự hay dữ liệu đầu vào.",
+        "isCorrect": false
+      }
+    ],
+    "difficulty": "EASY",
+    "topicName": "Sắp xếp",
+    "tagNames": []
+  },
+  {
+    "id": "28d74b56-1a36-5501-a44c-2499ec18b4e7",
+    "revisionId": "8790a964-cbdc-59e8-b380-6d439b26210e",
+    "key": "c05-ch02-q02",
+    "courseKey": "c05",
+    "chapterKey": "c05-ch02",
+    "createdBy": "ac9fadc2-1955-59e4-984d-26f74bbb4f53",
+    "clientRequestId": "78d77d08-d1b5-5aa1-8766-993f662ddd16",
+    "isPrivate": false,
+    "requestHash": "69cd268324eb6c9ca3b71b5cbe84f98d247c8a5ee20496ff0704b371d65ba7c5",
+    "content": "Khi ôn tập sắp xếp, kết luận nào là chính xác? (Câu 02)",
+    "explanation": "Sắp xếp ổn định giữ nguyên thứ tự tương đối của các phần tử bằng nhau. Đây là đặc điểm cần ghi nhớ khi áp dụng chủ đề này.",
+    "options": [
+      {
+        "id": "93aed324-dbad-50ba-a2a9-7e789512d0e5",
+        "content": "Mọi phép duyệt đều có độ phức tạp O(1).",
+        "isCorrect": false
+      },
+      {
+        "id": "54e692ca-f4cb-5008-9edd-02ef8d4a94ff",
+        "content": "Có thể bỏ điều kiện dừng mà vẫn đảm bảo thuật toán kết thúc.",
+        "isCorrect": false
+      },
+      {
+        "id": "e47049d4-e82c-509d-8451-a5f62a950fed",
+        "content": "Kết quả không phụ thuộc vào thứ tự hay dữ liệu đầu vào.",
+        "isCorrect": false
+      },
+      {
+        "id": "ed59f424-eae9-5484-aea6-8c517560dbbb",
+        "content": "Sắp xếp ổn định giữ nguyên thứ tự tương đối của các phần tử bằng nhau.",
+        "isCorrect": true
+      }
+    ],
+    "difficulty": "MEDIUM",
+    "topicName": "Sắp xếp",
+    "tagNames": []
+  },
+  {
+    "id": "c31bb5a4-be16-5185-b9b0-e641e54da170",
+    "revisionId": "de1a9492-b9aa-5e71-b0b8-5141cdfc0343",
+    "key": "c05-ch02-q03",
+    "courseKey": "c05",
+    "chapterKey": "c05-ch02",
+    "createdBy": "ac9fadc2-1955-59e4-984d-26f74bbb4f53",
+    "clientRequestId": "d834a216-9a24-503d-a21b-9a95fc91e464",
+    "isPrivate": false,
+    "requestHash": "a1ff053fe7b5505ea3dd7fb66b54397cb9855510d6a8c090131a4b00026ca0a7",
+    "content": "Một người học đang giải bài về sắp xếp. Nhận định nào nên được chọn? (Câu 03)",
+    "explanation": "Binary Search chỉ áp dụng trực tiếp khi dữ liệu đã được sắp xếp. Đây là đặc điểm cần ghi nhớ khi áp dụng chủ đề này.",
+    "options": [
+      {
+        "id": "cf0ce4d0-aa0e-51d2-b7b3-0c2291f2db64",
+        "content": "Có thể bỏ điều kiện dừng mà vẫn đảm bảo thuật toán kết thúc.",
+        "isCorrect": false
+      },
+      {
+        "id": "41fca390-0d1d-5ef3-9ea7-394272b97402",
+        "content": "Kết quả không phụ thuộc vào thứ tự hay dữ liệu đầu vào.",
+        "isCorrect": false
+      },
+      {
+        "id": "95addd8b-0514-51dd-820f-a2e04028e6f0",
+        "content": "Binary Search chỉ áp dụng trực tiếp khi dữ liệu đã được sắp xếp.",
+        "isCorrect": true
+      },
+      {
+        "id": "bd68b89e-2f1e-50f3-b86f-04b64b03c6a9",
+        "content": "Mọi phép duyệt đều có độ phức tạp O(1).",
+        "isCorrect": false
+      }
+    ],
+    "difficulty": "HARD",
+    "topicName": "Sắp xếp",
+    "tagNames": []
+  },
+  {
+    "id": "a4222fbd-136c-5c8f-a60d-538601949262",
+    "revisionId": "2aac3c23-06e8-5f72-9150-cf79519d7fed",
+    "key": "c05-ch02-q04",
+    "courseKey": "c05",
+    "chapterKey": "c05-ch02",
+    "createdBy": "ac9fadc2-1955-59e4-984d-26f74bbb4f53",
+    "clientRequestId": "33dc96bf-303e-5b57-ae5c-89414a395863",
+    "isPrivate": false,
+    "requestHash": "703eed91f62d35b97708d582c98bcedacb72b6f2fc4865fb07ae3260bab3a869",
+    "content": "Đâu là kiến thức đúng khi làm việc với sắp xếp? (Câu 04)",
+    "explanation": "Merge Sort có độ phức tạp O(N log N) trong trường hợp xấu nhất. Đây là đặc điểm cần ghi nhớ khi áp dụng chủ đề này.",
+    "options": [
+      {
+        "id": "d8864314-e79a-5b07-bf3a-38fb9ade2172",
+        "content": "Kết quả không phụ thuộc vào thứ tự hay dữ liệu đầu vào.",
+        "isCorrect": false
+      },
+      {
+        "id": "6cc770eb-7ff4-564a-8de5-5be617fa1df7",
+        "content": "Merge Sort có độ phức tạp O(N log N) trong trường hợp xấu nhất.",
+        "isCorrect": true
+      },
+      {
+        "id": "35226128-062f-5121-bd55-e6849dcf0d10",
+        "content": "Mọi phép duyệt đều có độ phức tạp O(1).",
+        "isCorrect": false
+      },
+      {
+        "id": "9aecb1d0-c130-56dc-913d-edd8a3964f91",
+        "content": "Có thể bỏ điều kiện dừng mà vẫn đảm bảo thuật toán kết thúc.",
+        "isCorrect": false
+      }
+    ],
+    "difficulty": "EASY",
+    "topicName": "Sắp xếp",
+    "tagNames": []
+  },
+  {
+    "id": "d34a345e-437a-5765-9cb6-5d0d0b40beee",
+    "revisionId": "449f5692-5b3f-5174-94db-65e3d7db1f53",
+    "key": "c05-ch02-q05",
+    "courseKey": "c05",
+    "chapterKey": "c05-ch02",
+    "createdBy": "ac9fadc2-1955-59e4-984d-26f74bbb4f53",
+    "clientRequestId": "eb0467e2-9852-59b8-a184-f88fe081a58d",
+    "isPrivate": false,
+    "requestHash": "0a1a56e4a713e13128de221f823b03c64fcd9593c04461e783b10119305ea47f",
+    "content": "Phát biểu nào mô tả đúng về sắp xếp? (Câu 05)",
+    "explanation": "Sắp xếp ổn định giữ nguyên thứ tự tương đối của các phần tử bằng nhau. Đây là đặc điểm cần ghi nhớ khi áp dụng chủ đề này.",
+    "options": [
+      {
+        "id": "9949a9f5-85cc-5616-a346-1d54831adc6d",
+        "content": "Sắp xếp ổn định giữ nguyên thứ tự tương đối của các phần tử bằng nhau.",
+        "isCorrect": true
+      },
+      {
+        "id": "4142832e-c93e-5c27-88e0-b67269f3fd6f",
+        "content": "Mọi phép duyệt đều có độ phức tạp O(1).",
+        "isCorrect": false
+      },
+      {
+        "id": "b31cec89-e8fb-5779-b8d7-64002f17aaaa",
+        "content": "Có thể bỏ điều kiện dừng mà vẫn đảm bảo thuật toán kết thúc.",
+        "isCorrect": false
+      },
+      {
+        "id": "390e2a0c-6e21-5ac8-96b4-3053deed0b46",
+        "content": "Kết quả không phụ thuộc vào thứ tự hay dữ liệu đầu vào.",
+        "isCorrect": false
+      }
+    ],
+    "difficulty": "MEDIUM",
+    "topicName": "Sắp xếp",
+    "tagNames": []
+  },
+  {
+    "id": "276513d2-5b89-5877-9622-13905b81bbae",
+    "revisionId": "5b37cd0d-a74e-546e-b06e-7ac0926d5173",
+    "key": "c05-ch02-q06",
+    "courseKey": "c05",
+    "chapterKey": "c05-ch02",
+    "createdBy": "ac9fadc2-1955-59e4-984d-26f74bbb4f53",
+    "clientRequestId": "0249408f-5a40-5371-a6a4-4f0594d2424b",
+    "isPrivate": false,
+    "requestHash": "5e587988f133769d595730d958c9526823df999846f1fc9476051fff45483dd6",
+    "content": "Khi ôn tập sắp xếp, kết luận nào là chính xác? (Câu 06)",
+    "explanation": "Binary Search chỉ áp dụng trực tiếp khi dữ liệu đã được sắp xếp. Đây là đặc điểm cần ghi nhớ khi áp dụng chủ đề này.",
+    "options": [
+      {
+        "id": "a716d1da-d3e0-5097-996d-c75832d97187",
+        "content": "Mọi phép duyệt đều có độ phức tạp O(1).",
+        "isCorrect": false
+      },
+      {
+        "id": "348b48ff-2b6d-5a00-93e2-b080e48e9751",
+        "content": "Có thể bỏ điều kiện dừng mà vẫn đảm bảo thuật toán kết thúc.",
+        "isCorrect": false
+      },
+      {
+        "id": "38c7f607-db9a-563c-8b91-395655f0f660",
+        "content": "Kết quả không phụ thuộc vào thứ tự hay dữ liệu đầu vào.",
+        "isCorrect": false
+      },
+      {
+        "id": "922e088b-03b0-5dff-965c-e83ec5a0f227",
+        "content": "Binary Search chỉ áp dụng trực tiếp khi dữ liệu đã được sắp xếp.",
+        "isCorrect": true
+      }
+    ],
+    "difficulty": "HARD",
+    "topicName": "Sắp xếp",
+    "tagNames": []
+  },
+  {
+    "id": "f75a7b93-042a-51f9-8934-bc0a7a083972",
+    "revisionId": "fb0cf536-9ae4-5cc8-8d45-b91684a973cb",
+    "key": "c05-ch02-q07",
+    "courseKey": "c05",
+    "chapterKey": "c05-ch02",
+    "createdBy": "ac9fadc2-1955-59e4-984d-26f74bbb4f53",
+    "clientRequestId": "95c2caac-da62-5e26-a83f-60802b229eea",
+    "isPrivate": false,
+    "requestHash": "7812feee0497604aa6ca6acd0e0cc83781d08333ab77614243795704fe6068a6",
+    "content": "Một người học đang giải bài về sắp xếp. Nhận định nào nên được chọn? (Câu 07)",
+    "explanation": "Merge Sort có độ phức tạp O(N log N) trong trường hợp xấu nhất. Đây là đặc điểm cần ghi nhớ khi áp dụng chủ đề này.",
+    "options": [
+      {
+        "id": "523173e1-9b62-5dd9-964e-5edd86487ce4",
+        "content": "Có thể bỏ điều kiện dừng mà vẫn đảm bảo thuật toán kết thúc.",
+        "isCorrect": false
+      },
+      {
+        "id": "ca9ab41d-de04-5f97-9f68-b539980c2fb0",
+        "content": "Kết quả không phụ thuộc vào thứ tự hay dữ liệu đầu vào.",
+        "isCorrect": false
+      },
+      {
+        "id": "dc09decf-34bc-52ff-9d4b-694042c5e386",
+        "content": "Merge Sort có độ phức tạp O(N log N) trong trường hợp xấu nhất.",
+        "isCorrect": true
+      },
+      {
+        "id": "56dc08fe-e1b7-5742-90de-aca908b2d482",
+        "content": "Mọi phép duyệt đều có độ phức tạp O(1).",
+        "isCorrect": false
+      }
+    ],
+    "difficulty": "EASY",
+    "topicName": "Sắp xếp",
+    "tagNames": []
+  },
+  {
+    "id": "2bc8d467-95fc-572d-93ae-af3045b45cff",
+    "revisionId": "b688fffa-5ba1-5fb6-9150-b3c2fae3e0c0",
+    "key": "c05-ch02-q08",
+    "courseKey": "c05",
+    "chapterKey": "c05-ch02",
+    "createdBy": "ac9fadc2-1955-59e4-984d-26f74bbb4f53",
+    "clientRequestId": "a501dc3e-ae87-582a-a366-114105e2c691",
+    "isPrivate": false,
+    "requestHash": "178577571a9c80a2cb027fdfba2cd1b581e5230bdce36ed24659aedabd11687f",
+    "content": "Đâu là kiến thức đúng khi làm việc với sắp xếp? (Câu 08)",
+    "explanation": "Sắp xếp ổn định giữ nguyên thứ tự tương đối của các phần tử bằng nhau. Đây là đặc điểm cần ghi nhớ khi áp dụng chủ đề này.",
+    "options": [
+      {
+        "id": "26b2a94f-b90c-509f-9716-9c51d0f67ca0",
+        "content": "Kết quả không phụ thuộc vào thứ tự hay dữ liệu đầu vào.",
+        "isCorrect": false
+      },
+      {
+        "id": "9e825cc8-f9f7-5e25-a23c-e472dfb6caf0",
+        "content": "Sắp xếp ổn định giữ nguyên thứ tự tương đối của các phần tử bằng nhau.",
+        "isCorrect": true
+      },
+      {
+        "id": "c713bd7c-37ab-56c0-a731-80ac66cb7bec",
+        "content": "Mọi phép duyệt đều có độ phức tạp O(1).",
+        "isCorrect": false
+      },
+      {
+        "id": "3a3492ee-70af-5b5b-bcfe-dc1cd10a65d4",
+        "content": "Có thể bỏ điều kiện dừng mà vẫn đảm bảo thuật toán kết thúc.",
+        "isCorrect": false
+      }
+    ],
+    "difficulty": "MEDIUM",
+    "topicName": "Sắp xếp",
+    "tagNames": []
+  },
+  {
+    "id": "d1389e21-c6af-5e46-b1f9-e773c9d9a10f",
+    "revisionId": "291ff331-ffe0-5677-b399-f29b3ff94a95",
+    "key": "c05-ch02-q09",
+    "courseKey": "c05",
+    "chapterKey": "c05-ch02",
+    "createdBy": "ac9fadc2-1955-59e4-984d-26f74bbb4f53",
+    "clientRequestId": "d83b9683-010d-5c9f-a27f-3d5231ae99b7",
+    "isPrivate": false,
+    "requestHash": "fd659299a5521cb0af527b285375733a98846a169d88d77deb69d60d30e8b89a",
+    "content": "Phát biểu nào mô tả đúng về sắp xếp? (Câu 09)",
+    "explanation": "Binary Search chỉ áp dụng trực tiếp khi dữ liệu đã được sắp xếp. Đây là đặc điểm cần ghi nhớ khi áp dụng chủ đề này.",
+    "options": [
+      {
+        "id": "419353c3-e1b4-55ff-aa4e-55b8a02ae51f",
+        "content": "Binary Search chỉ áp dụng trực tiếp khi dữ liệu đã được sắp xếp.",
+        "isCorrect": true
+      },
+      {
+        "id": "35594c70-25b5-5671-9ec7-8a553379db59",
+        "content": "Mọi phép duyệt đều có độ phức tạp O(1).",
+        "isCorrect": false
+      },
+      {
+        "id": "9b36f062-e82f-5bdb-92ea-14f44e8996ca",
+        "content": "Có thể bỏ điều kiện dừng mà vẫn đảm bảo thuật toán kết thúc.",
+        "isCorrect": false
+      },
+      {
+        "id": "a3a69af7-79a7-52b0-83d4-e2072d4a2b25",
+        "content": "Kết quả không phụ thuộc vào thứ tự hay dữ liệu đầu vào.",
+        "isCorrect": false
+      }
+    ],
+    "difficulty": "HARD",
+    "topicName": "Sắp xếp",
+    "tagNames": []
+  },
+  {
+    "id": "f502cb4e-4939-571d-979c-dbb883e0a526",
+    "revisionId": "fd4ee006-3053-500a-810a-d7d009669ffc",
+    "key": "c05-ch02-q10",
+    "courseKey": "c05",
+    "chapterKey": "c05-ch02",
+    "createdBy": "ac9fadc2-1955-59e4-984d-26f74bbb4f53",
+    "clientRequestId": "c0cfd410-639a-5703-938e-41d161d0b8cc",
+    "isPrivate": false,
+    "requestHash": "2ebe23c081f65b09565e07f885058c96452b98dccb59a0b50594d1f2868d9454",
+    "content": "Khi ôn tập sắp xếp, kết luận nào là chính xác? (Câu 10)",
+    "explanation": "Merge Sort có độ phức tạp O(N log N) trong trường hợp xấu nhất. Đây là đặc điểm cần ghi nhớ khi áp dụng chủ đề này.",
+    "options": [
+      {
+        "id": "f4f4509b-1057-5c6c-9af5-7f5a220426b4",
+        "content": "Mọi phép duyệt đều có độ phức tạp O(1).",
+        "isCorrect": false
+      },
+      {
+        "id": "e45a884c-08f8-5d21-99fd-06fc4f996c8b",
+        "content": "Có thể bỏ điều kiện dừng mà vẫn đảm bảo thuật toán kết thúc.",
+        "isCorrect": false
+      },
+      {
+        "id": "0f3b0aa9-a5ca-5f87-bd34-0a3d74c02228",
+        "content": "Kết quả không phụ thuộc vào thứ tự hay dữ liệu đầu vào.",
+        "isCorrect": false
+      },
+      {
+        "id": "b54b321b-de3b-5394-8188-182fe87c5265",
+        "content": "Merge Sort có độ phức tạp O(N log N) trong trường hợp xấu nhất.",
+        "isCorrect": true
+      }
+    ],
+    "difficulty": "EASY",
+    "topicName": "Sắp xếp",
+    "tagNames": []
+  },
+  {
+    "id": "644d8f65-62d0-59b5-a20f-d39c6c936a18",
+    "revisionId": "ca33519f-c66a-5be4-b938-72e5c8d1d13a",
+    "key": "c05-ch02-q11",
+    "courseKey": "c05",
+    "chapterKey": "c05-ch02",
+    "createdBy": "ac9fadc2-1955-59e4-984d-26f74bbb4f53",
+    "clientRequestId": "ba21ec42-242b-55e6-b686-b1b88c0cab50",
+    "isPrivate": false,
+    "requestHash": "478f6224c92a92c69db79a6d6bce07908571dbb909e8792168fee779f52c1694",
+    "content": "Một người học đang giải bài về sắp xếp. Nhận định nào nên được chọn? (Câu 11)",
+    "explanation": "Sắp xếp ổn định giữ nguyên thứ tự tương đối của các phần tử bằng nhau. Đây là đặc điểm cần ghi nhớ khi áp dụng chủ đề này.",
+    "options": [
+      {
+        "id": "eb47a0ca-9ffe-5eb9-af78-a487dc107e67",
+        "content": "Có thể bỏ điều kiện dừng mà vẫn đảm bảo thuật toán kết thúc.",
+        "isCorrect": false
+      },
+      {
+        "id": "7c2349d6-9bf3-5a3d-9072-fd38959b5673",
+        "content": "Kết quả không phụ thuộc vào thứ tự hay dữ liệu đầu vào.",
+        "isCorrect": false
+      },
+      {
+        "id": "ef17d795-ee74-5f73-bee9-b3fac2814074",
+        "content": "Sắp xếp ổn định giữ nguyên thứ tự tương đối của các phần tử bằng nhau.",
+        "isCorrect": true
+      },
+      {
+        "id": "ccf9b019-0721-587f-b633-70bc6754f674",
+        "content": "Mọi phép duyệt đều có độ phức tạp O(1).",
+        "isCorrect": false
+      }
+    ],
+    "difficulty": "MEDIUM",
+    "topicName": "Sắp xếp",
+    "tagNames": []
+  },
+  {
+    "id": "9ec64e5d-1f96-54c3-89fb-2c8cf19d6c08",
+    "revisionId": "4702a0ed-1fbd-578b-9683-7ade563ab0ff",
+    "key": "c05-ch02-q12",
+    "courseKey": "c05",
+    "chapterKey": "c05-ch02",
+    "createdBy": "ac9fadc2-1955-59e4-984d-26f74bbb4f53",
+    "clientRequestId": "7309e238-8e20-5932-aea4-526bd4ff5814",
+    "isPrivate": false,
+    "requestHash": "420ddb93019582ec68d817da5dfc1dfc9a761b5b3e1879c4e8364fc3be7714ce",
+    "content": "Đâu là kiến thức đúng khi làm việc với sắp xếp? (Câu 12)",
+    "explanation": "Binary Search chỉ áp dụng trực tiếp khi dữ liệu đã được sắp xếp. Đây là đặc điểm cần ghi nhớ khi áp dụng chủ đề này.",
+    "options": [
+      {
+        "id": "22e36c9f-4680-5bb6-9699-3eb3511c7b48",
+        "content": "Kết quả không phụ thuộc vào thứ tự hay dữ liệu đầu vào.",
+        "isCorrect": false
+      },
+      {
+        "id": "a72eb674-42d9-51a7-aed4-ace4b1d82459",
+        "content": "Binary Search chỉ áp dụng trực tiếp khi dữ liệu đã được sắp xếp.",
+        "isCorrect": true
+      },
+      {
+        "id": "428abac5-6809-56c3-b0c2-af0beb4acdf2",
+        "content": "Mọi phép duyệt đều có độ phức tạp O(1).",
+        "isCorrect": false
+      },
+      {
+        "id": "f2a1151e-7a6f-524e-ba28-cf260f158ebf",
+        "content": "Có thể bỏ điều kiện dừng mà vẫn đảm bảo thuật toán kết thúc.",
+        "isCorrect": false
+      }
+    ],
+    "difficulty": "HARD",
+    "topicName": "Sắp xếp",
+    "tagNames": []
+  },
+  {
+    "id": "574ff64f-8a8b-54ee-8820-91df50cfbf1e",
+    "revisionId": "7becba2b-6e89-5f63-b02f-0b451dc356e8",
+    "key": "c05-ch02-q13",
+    "courseKey": "c05",
+    "chapterKey": "c05-ch02",
+    "createdBy": "ac9fadc2-1955-59e4-984d-26f74bbb4f53",
+    "clientRequestId": "df875379-044d-5809-97b3-f705ed23adf8",
+    "isPrivate": false,
+    "requestHash": "5b4f289c9f002bb40152b9d19084883a44eb10e96b463f9f9e7010087d3a07af",
+    "content": "Phát biểu nào mô tả đúng về sắp xếp? (Câu 13)",
+    "explanation": "Merge Sort có độ phức tạp O(N log N) trong trường hợp xấu nhất. Đây là đặc điểm cần ghi nhớ khi áp dụng chủ đề này.",
+    "options": [
+      {
+        "id": "53f94c13-5b13-50c3-b31c-3c9aca23de4d",
+        "content": "Merge Sort có độ phức tạp O(N log N) trong trường hợp xấu nhất.",
+        "isCorrect": true
+      },
+      {
+        "id": "29f07ead-af15-5957-ac67-22d52f563e5e",
+        "content": "Mọi phép duyệt đều có độ phức tạp O(1).",
+        "isCorrect": false
+      },
+      {
+        "id": "bfa27a7b-25d1-50a6-a7b3-f275c584c8c3",
+        "content": "Có thể bỏ điều kiện dừng mà vẫn đảm bảo thuật toán kết thúc.",
+        "isCorrect": false
+      },
+      {
+        "id": "2e0c44fd-91a0-5f07-8a0b-85b46412c1d9",
+        "content": "Kết quả không phụ thuộc vào thứ tự hay dữ liệu đầu vào.",
+        "isCorrect": false
+      }
+    ],
+    "difficulty": "EASY",
+    "topicName": "Sắp xếp",
+    "tagNames": []
+  },
+  {
+    "id": "e472067c-91f6-52c8-b8d3-43af2c4c0606",
+    "revisionId": "f644516f-6fab-5deb-a7af-7daa339d4b54",
+    "key": "c05-ch02-q14",
+    "courseKey": "c05",
+    "chapterKey": "c05-ch02",
+    "createdBy": "ac9fadc2-1955-59e4-984d-26f74bbb4f53",
+    "clientRequestId": "a179bc50-8a99-564a-ad1a-3727b7213eda",
+    "isPrivate": false,
+    "requestHash": "6bfc98b4b82ba97b3af70aa4174d07ec3e6cb32116a289e627622c21e7fb4d03",
+    "content": "Khi ôn tập sắp xếp, kết luận nào là chính xác? (Câu 14)",
+    "explanation": "Sắp xếp ổn định giữ nguyên thứ tự tương đối của các phần tử bằng nhau. Đây là đặc điểm cần ghi nhớ khi áp dụng chủ đề này.",
+    "options": [
+      {
+        "id": "64083858-d943-5f33-aeae-3a8fe0084b43",
+        "content": "Mọi phép duyệt đều có độ phức tạp O(1).",
+        "isCorrect": false
+      },
+      {
+        "id": "b7a78fd3-6087-56b0-9020-c25243631c46",
+        "content": "Có thể bỏ điều kiện dừng mà vẫn đảm bảo thuật toán kết thúc.",
+        "isCorrect": false
+      },
+      {
+        "id": "90c5ada7-2549-5c7d-8846-208180dda30c",
+        "content": "Kết quả không phụ thuộc vào thứ tự hay dữ liệu đầu vào.",
+        "isCorrect": false
+      },
+      {
+        "id": "224b6430-2618-56a4-827f-da2022ad1716",
+        "content": "Sắp xếp ổn định giữ nguyên thứ tự tương đối của các phần tử bằng nhau.",
+        "isCorrect": true
+      }
+    ],
+    "difficulty": "MEDIUM",
+    "topicName": "Sắp xếp",
+    "tagNames": []
+  },
+  {
+    "id": "6a1ee8c6-1825-57bc-ba62-1fd6b9019722",
+    "revisionId": "4ec63378-1837-507f-ab74-ad95da68fc91",
+    "key": "c05-ch02-q15",
+    "courseKey": "c05",
+    "chapterKey": "c05-ch02",
+    "createdBy": "ac9fadc2-1955-59e4-984d-26f74bbb4f53",
+    "clientRequestId": "eefbe062-ea95-52ba-b409-def9c783a2fc",
+    "isPrivate": false,
+    "requestHash": "2c740967cf8f6863e8dcd69f25ab6d5475fc2ba85b07431e65a62f67341c8dc8",
+    "content": "Một người học đang giải bài về sắp xếp. Nhận định nào nên được chọn? (Câu 15)",
+    "explanation": "Binary Search chỉ áp dụng trực tiếp khi dữ liệu đã được sắp xếp. Đây là đặc điểm cần ghi nhớ khi áp dụng chủ đề này.",
+    "options": [
+      {
+        "id": "7b1f2e65-223f-5509-bf41-d6e967ba1ac3",
+        "content": "Có thể bỏ điều kiện dừng mà vẫn đảm bảo thuật toán kết thúc.",
+        "isCorrect": false
+      },
+      {
+        "id": "76ac0f2d-5eb2-5c14-bcb2-d253b7b4e42b",
+        "content": "Kết quả không phụ thuộc vào thứ tự hay dữ liệu đầu vào.",
+        "isCorrect": false
+      },
+      {
+        "id": "47dfe15f-7357-5106-8353-32c9bc42a418",
+        "content": "Binary Search chỉ áp dụng trực tiếp khi dữ liệu đã được sắp xếp.",
+        "isCorrect": true
+      },
+      {
+        "id": "f612d686-39f4-537d-8bfe-87b701ed6044",
+        "content": "Mọi phép duyệt đều có độ phức tạp O(1).",
+        "isCorrect": false
+      }
+    ],
+    "difficulty": "HARD",
+    "topicName": "Sắp xếp",
+    "tagNames": []
+  },
+  {
+    "id": "0bb0c96a-96ea-5f2b-a779-24b87fbaf46d",
+    "revisionId": "eb7d7328-b3e4-5d0d-ba69-07db86b47b2f",
+    "key": "c05-ch02-q16",
+    "courseKey": "c05",
+    "chapterKey": "c05-ch02",
+    "createdBy": "ac9fadc2-1955-59e4-984d-26f74bbb4f53",
+    "clientRequestId": "fb729535-385f-5783-a395-65be6a5e63f3",
+    "isPrivate": false,
+    "requestHash": "c47d7d98ceb7753b0e4c5f83eefd58bdc3ef8c703743c36f11cf1cec06697c43",
+    "content": "Đâu là kiến thức đúng khi làm việc với sắp xếp? (Câu 16)",
+    "explanation": "Merge Sort có độ phức tạp O(N log N) trong trường hợp xấu nhất. Đây là đặc điểm cần ghi nhớ khi áp dụng chủ đề này.",
+    "options": [
+      {
+        "id": "77c56e19-cf1e-5cb9-b2f5-37d40727b0a3",
+        "content": "Kết quả không phụ thuộc vào thứ tự hay dữ liệu đầu vào.",
+        "isCorrect": false
+      },
+      {
+        "id": "ad24d484-6e1d-53ff-ab7a-851b57a39df5",
+        "content": "Merge Sort có độ phức tạp O(N log N) trong trường hợp xấu nhất.",
+        "isCorrect": true
+      },
+      {
+        "id": "fa7e5d41-38f2-508d-a090-1e4e01ca5e5b",
+        "content": "Mọi phép duyệt đều có độ phức tạp O(1).",
+        "isCorrect": false
+      },
+      {
+        "id": "14df7dc2-b6a6-5d43-8a32-1f53c49a1b26",
+        "content": "Có thể bỏ điều kiện dừng mà vẫn đảm bảo thuật toán kết thúc.",
+        "isCorrect": false
+      }
+    ],
+    "difficulty": "EASY",
+    "topicName": "Sắp xếp",
+    "tagNames": []
+  },
+  {
+    "id": "f5c29a0c-c973-5c9a-a5ea-1ef76f757f4d",
+    "revisionId": "6b8c0287-4f6f-595c-92a6-df536f9ef718",
+    "key": "c05-ch02-q17",
+    "courseKey": "c05",
+    "chapterKey": "c05-ch02",
+    "createdBy": "ac9fadc2-1955-59e4-984d-26f74bbb4f53",
+    "clientRequestId": "d0b94005-704b-50d1-a692-895d161a79eb",
+    "isPrivate": false,
+    "requestHash": "624e4627a5d04c6965647375702deb1755906dfcf35fbaf3dc116f74f8dd1072",
+    "content": "Phát biểu nào mô tả đúng về sắp xếp? (Câu 17)",
+    "explanation": "Sắp xếp ổn định giữ nguyên thứ tự tương đối của các phần tử bằng nhau. Đây là đặc điểm cần ghi nhớ khi áp dụng chủ đề này.",
+    "options": [
+      {
+        "id": "1df7dda2-cadc-5a5b-aebe-40c8e1fa25c7",
+        "content": "Sắp xếp ổn định giữ nguyên thứ tự tương đối của các phần tử bằng nhau.",
+        "isCorrect": true
+      },
+      {
+        "id": "ec7c684e-607a-55f1-8be6-5d5a71f34c5a",
+        "content": "Mọi phép duyệt đều có độ phức tạp O(1).",
+        "isCorrect": false
+      },
+      {
+        "id": "4e978afa-bdba-53f8-bd89-4805fca98541",
+        "content": "Có thể bỏ điều kiện dừng mà vẫn đảm bảo thuật toán kết thúc.",
+        "isCorrect": false
+      },
+      {
+        "id": "70b543d2-ed59-5281-a559-50ab25bd3c81",
+        "content": "Kết quả không phụ thuộc vào thứ tự hay dữ liệu đầu vào.",
+        "isCorrect": false
+      }
+    ],
+    "difficulty": "MEDIUM",
+    "topicName": "Sắp xếp",
+    "tagNames": []
+  },
+  {
+    "id": "0791dbe8-9d3b-547c-934f-aa4254ba5b8c",
+    "revisionId": "bda1c38e-9b3c-5fb8-9fc2-a1a6641c33b9",
+    "key": "c05-ch02-q18",
+    "courseKey": "c05",
+    "chapterKey": "c05-ch02",
+    "createdBy": "ac9fadc2-1955-59e4-984d-26f74bbb4f53",
+    "clientRequestId": "a30fd6f1-88e7-5a09-a4bc-f17d80cdb908",
+    "isPrivate": false,
+    "requestHash": "31964ea8007f4c5175b2916002da9f4bd7712ef906ddfab35e284f9479964aec",
+    "content": "Khi ôn tập sắp xếp, kết luận nào là chính xác? (Câu 18)",
+    "explanation": "Binary Search chỉ áp dụng trực tiếp khi dữ liệu đã được sắp xếp. Đây là đặc điểm cần ghi nhớ khi áp dụng chủ đề này.",
+    "options": [
+      {
+        "id": "f625697e-e69c-59da-8607-daebcca92450",
+        "content": "Mọi phép duyệt đều có độ phức tạp O(1).",
+        "isCorrect": false
+      },
+      {
+        "id": "2794de54-fb9c-560d-b3c7-2dc54d590d0e",
+        "content": "Có thể bỏ điều kiện dừng mà vẫn đảm bảo thuật toán kết thúc.",
+        "isCorrect": false
+      },
+      {
+        "id": "59af2428-0668-5cb3-9641-8e245299cc5d",
+        "content": "Kết quả không phụ thuộc vào thứ tự hay dữ liệu đầu vào.",
+        "isCorrect": false
+      },
+      {
+        "id": "383f398a-90e0-5fae-b24a-938e09a5e52f",
+        "content": "Binary Search chỉ áp dụng trực tiếp khi dữ liệu đã được sắp xếp.",
+        "isCorrect": true
+      }
+    ],
+    "difficulty": "HARD",
+    "topicName": "Sắp xếp",
+    "tagNames": []
+  },
+  {
+    "id": "d79c8010-3683-55e5-9c03-b80601626e13",
+    "revisionId": "c6c295a3-27db-5809-b179-ce19b63e7345",
+    "key": "c05-ch02-q19",
+    "courseKey": "c05",
+    "chapterKey": "c05-ch02",
+    "createdBy": "ac9fadc2-1955-59e4-984d-26f74bbb4f53",
+    "clientRequestId": "f08b44a0-51b1-5d32-b330-153f9f44a2c6",
+    "isPrivate": false,
+    "requestHash": "7f87cbc88034241b0e99e2d3b8dd694c25afc861e9c3ef5e63efbb94705f7d9a",
+    "content": "Một người học đang giải bài về sắp xếp. Nhận định nào nên được chọn? (Câu 19)",
+    "explanation": "Merge Sort có độ phức tạp O(N log N) trong trường hợp xấu nhất. Đây là đặc điểm cần ghi nhớ khi áp dụng chủ đề này.",
+    "options": [
+      {
+        "id": "f3f06885-50ed-544a-8cd7-449cc806d2a1",
+        "content": "Có thể bỏ điều kiện dừng mà vẫn đảm bảo thuật toán kết thúc.",
+        "isCorrect": false
+      },
+      {
+        "id": "e5ff29ae-0690-5d42-8635-bf3bb8af6e19",
+        "content": "Kết quả không phụ thuộc vào thứ tự hay dữ liệu đầu vào.",
+        "isCorrect": false
+      },
+      {
+        "id": "7a212dc2-354c-5113-afbc-d16756aa54fd",
+        "content": "Merge Sort có độ phức tạp O(N log N) trong trường hợp xấu nhất.",
+        "isCorrect": true
+      },
+      {
+        "id": "fbefa4c4-d536-5de6-907c-f1ddfda1d122",
+        "content": "Mọi phép duyệt đều có độ phức tạp O(1).",
+        "isCorrect": false
+      }
+    ],
+    "difficulty": "EASY",
+    "topicName": "Sắp xếp",
+    "tagNames": []
+  },
+  {
+    "id": "846eabfd-2d7e-5b7e-b907-e628da365670",
+    "revisionId": "b9b98458-358f-54b8-afdd-0e2e1cdeeb77",
+    "key": "c05-ch02-q20",
+    "courseKey": "c05",
+    "chapterKey": "c05-ch02",
+    "createdBy": "ac9fadc2-1955-59e4-984d-26f74bbb4f53",
+    "clientRequestId": "eefb7f7e-0fcc-51e1-add3-8c7eaf11cde9",
+    "isPrivate": false,
+    "requestHash": "43f8d01582c0447e35b4496f15754aae98d9a440b4fb7a1c92014bc465d7a58d",
+    "content": "Đâu là kiến thức đúng khi làm việc với sắp xếp? (Câu 20)",
+    "explanation": "Sắp xếp ổn định giữ nguyên thứ tự tương đối của các phần tử bằng nhau. Đây là đặc điểm cần ghi nhớ khi áp dụng chủ đề này.",
+    "options": [
+      {
+        "id": "85cc5898-59cb-5fe3-8c61-85f5c255a3d9",
+        "content": "Kết quả không phụ thuộc vào thứ tự hay dữ liệu đầu vào.",
+        "isCorrect": false
+      },
+      {
+        "id": "2bdd5687-dcf2-5885-a7c3-a9d550a84a4f",
+        "content": "Sắp xếp ổn định giữ nguyên thứ tự tương đối của các phần tử bằng nhau.",
+        "isCorrect": true
+      },
+      {
+        "id": "fb2916ac-0787-5a51-983e-d85235d12225",
+        "content": "Mọi phép duyệt đều có độ phức tạp O(1).",
+        "isCorrect": false
+      },
+      {
+        "id": "222fadd2-ff24-56f1-9b2f-46d59ef3b582",
+        "content": "Có thể bỏ điều kiện dừng mà vẫn đảm bảo thuật toán kết thúc.",
+        "isCorrect": false
+      }
+    ],
+    "difficulty": "MEDIUM",
+    "topicName": "Sắp xếp",
+    "tagNames": []
+  },
+  {
+    "id": "3b8c590f-8ebb-5fa5-8dfb-edfc22909cda",
+    "revisionId": "630a97e1-24b2-5c26-bcea-8404baa329a1",
+    "key": "c05-ch02-q21",
+    "courseKey": "c05",
+    "chapterKey": "c05-ch02",
+    "createdBy": "ac9fadc2-1955-59e4-984d-26f74bbb4f53",
+    "clientRequestId": "5974ffb2-94ea-5892-a7b3-31b56d12f708",
+    "isPrivate": false,
+    "requestHash": "6d3e3e572f819298ecf949effe26dd549956f36e9f4a294c9a2811c19db434f8",
+    "content": "Phát biểu nào mô tả đúng về sắp xếp? (Câu 21)",
+    "explanation": "Binary Search chỉ áp dụng trực tiếp khi dữ liệu đã được sắp xếp. Đây là đặc điểm cần ghi nhớ khi áp dụng chủ đề này.",
+    "options": [
+      {
+        "id": "6dda9c88-2279-5216-a560-ec59a8ef6a09",
+        "content": "Binary Search chỉ áp dụng trực tiếp khi dữ liệu đã được sắp xếp.",
+        "isCorrect": true
+      },
+      {
+        "id": "cc203770-61d7-580d-920c-cee7644de598",
+        "content": "Mọi phép duyệt đều có độ phức tạp O(1).",
+        "isCorrect": false
+      },
+      {
+        "id": "53de33f7-4d95-516c-806d-e0f0346c1fbe",
+        "content": "Có thể bỏ điều kiện dừng mà vẫn đảm bảo thuật toán kết thúc.",
+        "isCorrect": false
+      },
+      {
+        "id": "e20800d7-69d3-541b-889b-eec980ee64c0",
+        "content": "Kết quả không phụ thuộc vào thứ tự hay dữ liệu đầu vào.",
+        "isCorrect": false
+      }
+    ],
+    "difficulty": "HARD",
+    "topicName": "Sắp xếp",
+    "tagNames": []
+  },
+  {
+    "id": "eaf08a48-91e2-5114-baba-eae8a7977679",
+    "revisionId": "255a654e-57f0-53ec-ba7f-f76f30ec00f5",
+    "key": "c05-ch02-q22",
+    "courseKey": "c05",
+    "chapterKey": "c05-ch02",
+    "createdBy": "ac9fadc2-1955-59e4-984d-26f74bbb4f53",
+    "clientRequestId": "8ef720a5-4ea1-5425-a910-c010e003aaf6",
+    "isPrivate": false,
+    "requestHash": "04228895c9112f48a0baf0b0650145494e935330e7885e429462c1336cf823ca",
+    "content": "Khi ôn tập sắp xếp, kết luận nào là chính xác? (Câu 22)",
+    "explanation": "Merge Sort có độ phức tạp O(N log N) trong trường hợp xấu nhất. Đây là đặc điểm cần ghi nhớ khi áp dụng chủ đề này.",
+    "options": [
+      {
+        "id": "4c6bbc39-173e-57ce-aff2-860f1c426cee",
+        "content": "Mọi phép duyệt đều có độ phức tạp O(1).",
+        "isCorrect": false
+      },
+      {
+        "id": "afe49919-888f-59e8-b76a-6d49a70defaa",
+        "content": "Có thể bỏ điều kiện dừng mà vẫn đảm bảo thuật toán kết thúc.",
+        "isCorrect": false
+      },
+      {
+        "id": "1292d84c-89cd-53d9-81ca-0993b960ae04",
+        "content": "Kết quả không phụ thuộc vào thứ tự hay dữ liệu đầu vào.",
+        "isCorrect": false
+      },
+      {
+        "id": "f2dac9eb-8724-5a91-bd00-9827ba5e2131",
+        "content": "Merge Sort có độ phức tạp O(N log N) trong trường hợp xấu nhất.",
+        "isCorrect": true
+      }
+    ],
+    "difficulty": "EASY",
+    "topicName": "Sắp xếp",
+    "tagNames": []
+  },
+  {
+    "id": "60b6c287-327b-58df-b9cd-754b894a514e",
+    "revisionId": "60f2ecfb-dd42-5e7f-8772-f936e4939528",
+    "key": "c05-ch02-q23",
+    "courseKey": "c05",
+    "chapterKey": "c05-ch02",
+    "createdBy": "ac9fadc2-1955-59e4-984d-26f74bbb4f53",
+    "clientRequestId": "52379a07-f766-52b1-ab8f-dffa28310215",
+    "isPrivate": false,
+    "requestHash": "ffe71b133a8f5bb2f0f1eae9ef413885cc8dee7c5ebc79f3231eb983be6cedc9",
+    "content": "Một người học đang giải bài về sắp xếp. Nhận định nào nên được chọn? (Câu 23)",
+    "explanation": "Sắp xếp ổn định giữ nguyên thứ tự tương đối của các phần tử bằng nhau. Đây là đặc điểm cần ghi nhớ khi áp dụng chủ đề này.",
+    "options": [
+      {
+        "id": "f1dfdcaf-3b02-5e3e-9889-1fca27ca2c32",
+        "content": "Có thể bỏ điều kiện dừng mà vẫn đảm bảo thuật toán kết thúc.",
+        "isCorrect": false
+      },
+      {
+        "id": "28b413bd-8cd2-5733-86c7-53cba6b5db6c",
+        "content": "Kết quả không phụ thuộc vào thứ tự hay dữ liệu đầu vào.",
+        "isCorrect": false
+      },
+      {
+        "id": "4ea9974f-c2d1-5825-866b-0205833450ce",
+        "content": "Sắp xếp ổn định giữ nguyên thứ tự tương đối của các phần tử bằng nhau.",
+        "isCorrect": true
+      },
+      {
+        "id": "75f3c472-8b82-53ab-add9-667e4eb3aea9",
+        "content": "Mọi phép duyệt đều có độ phức tạp O(1).",
+        "isCorrect": false
+      }
+    ],
+    "difficulty": "MEDIUM",
+    "topicName": "Sắp xếp",
+    "tagNames": []
+  },
+  {
+    "id": "b67244bf-1675-5457-99d0-11dd337d0b64",
+    "revisionId": "f083eecb-55d0-5974-9329-eaa7dfaeb7fa",
+    "key": "c05-ch02-q24",
+    "courseKey": "c05",
+    "chapterKey": "c05-ch02",
+    "createdBy": "ac9fadc2-1955-59e4-984d-26f74bbb4f53",
+    "clientRequestId": "35053b36-feda-5477-ac57-aa8bf35645bf",
+    "isPrivate": false,
+    "requestHash": "65aff322d99ed9fb93427859861216979e582677d3c8890d185c460ff314cdd0",
+    "content": "Đâu là kiến thức đúng khi làm việc với sắp xếp? (Câu 24)",
+    "explanation": "Binary Search chỉ áp dụng trực tiếp khi dữ liệu đã được sắp xếp. Đây là đặc điểm cần ghi nhớ khi áp dụng chủ đề này.",
+    "options": [
+      {
+        "id": "0dde294c-b6ea-561d-a127-0ae7ad448f4b",
+        "content": "Kết quả không phụ thuộc vào thứ tự hay dữ liệu đầu vào.",
+        "isCorrect": false
+      },
+      {
+        "id": "4e2ea9c0-a8cd-54f1-8964-35c83e1520de",
+        "content": "Binary Search chỉ áp dụng trực tiếp khi dữ liệu đã được sắp xếp.",
+        "isCorrect": true
+      },
+      {
+        "id": "831c8b6d-c16c-5f54-9e45-6b5739b07e98",
+        "content": "Mọi phép duyệt đều có độ phức tạp O(1).",
+        "isCorrect": false
+      },
+      {
+        "id": "7760d312-6771-5668-841a-1909186be06b",
+        "content": "Có thể bỏ điều kiện dừng mà vẫn đảm bảo thuật toán kết thúc.",
+        "isCorrect": false
+      }
+    ],
+    "difficulty": "HARD",
+    "topicName": "Sắp xếp",
+    "tagNames": []
+  },
+  {
+    "id": "594167f5-c026-5c3c-bf24-2640f4bf22b6",
+    "revisionId": "3a869069-bba7-5263-bf00-6d33fb036c12",
+    "key": "c05-ch03-q01",
+    "courseKey": "c05",
+    "chapterKey": "c05-ch03",
+    "createdBy": "ac9fadc2-1955-59e4-984d-26f74bbb4f53",
+    "clientRequestId": "f30b8527-4ff1-5caf-888f-2211b5008bfa",
+    "isPrivate": false,
+    "requestHash": "a986eb19f835917ed7c4322b172958e657eb539d0b9347d78f757ba1c4c90f42",
+    "content": "Phát biểu nào mô tả đúng về chuỗi? (Câu 01)",
+    "explanation": "Chuỗi là dãy ký tự có thứ tự. Đây là đặc điểm cần ghi nhớ khi áp dụng chủ đề này.",
+    "options": [
+      {
+        "id": "096632e6-6622-5689-9bea-6f74913a11ad",
+        "content": "Chuỗi là dãy ký tự có thứ tự.",
+        "isCorrect": true
+      },
+      {
+        "id": "4fbe8e6e-0f41-584d-82c5-58c91cfc6ded",
+        "content": "Mọi phép duyệt đều có độ phức tạp O(1).",
+        "isCorrect": false
+      },
+      {
+        "id": "d73ed4e9-c748-5e81-a1b4-46638b2a1eb5",
+        "content": "Có thể bỏ điều kiện dừng mà vẫn đảm bảo thuật toán kết thúc.",
+        "isCorrect": false
+      },
+      {
+        "id": "d10aba7c-1ad3-52e4-8b7e-de373fe65a8e",
+        "content": "Kết quả không phụ thuộc vào thứ tự hay dữ liệu đầu vào.",
+        "isCorrect": false
+      }
+    ],
+    "difficulty": "EASY",
+    "topicName": "Chuỗi",
+    "tagNames": []
+  },
+  {
+    "id": "797b9ff0-9462-5419-9b51-7fa9cd89db4f",
+    "revisionId": "5008ad5c-ed56-509f-80b3-c27629d9c5b8",
+    "key": "c05-ch03-q02",
+    "courseKey": "c05",
+    "chapterKey": "c05-ch03",
+    "createdBy": "ac9fadc2-1955-59e4-984d-26f74bbb4f53",
+    "clientRequestId": "582b5941-16ba-515b-93f1-5026e3b51c21",
+    "isPrivate": false,
+    "requestHash": "c9a466a3fd3f086e750dfedd27a8a3527a075f2ae8c67446984826f092d1e97e",
+    "content": "Khi ôn tập chuỗi, kết luận nào là chính xác? (Câu 02)",
+    "explanation": "So sánh hai chuỗi theo từ điển xét ký tự từ trái sang phải. Đây là đặc điểm cần ghi nhớ khi áp dụng chủ đề này.",
+    "options": [
+      {
+        "id": "1ce2faf5-d6e9-575e-bb39-76303c88c808",
+        "content": "Mọi phép duyệt đều có độ phức tạp O(1).",
+        "isCorrect": false
+      },
+      {
+        "id": "9a317ce7-7b3e-531b-a069-2905472978b3",
+        "content": "Có thể bỏ điều kiện dừng mà vẫn đảm bảo thuật toán kết thúc.",
+        "isCorrect": false
+      },
+      {
+        "id": "bca2d017-fe6f-5c91-8fad-291b83b05e34",
+        "content": "Kết quả không phụ thuộc vào thứ tự hay dữ liệu đầu vào.",
+        "isCorrect": false
+      },
+      {
+        "id": "53815f6e-efb0-5ee4-8605-0356ad0bd781",
+        "content": "So sánh hai chuỗi theo từ điển xét ký tự từ trái sang phải.",
+        "isCorrect": true
+      }
+    ],
+    "difficulty": "MEDIUM",
+    "topicName": "Chuỗi",
+    "tagNames": []
+  },
+  {
+    "id": "f373ed32-baac-5519-880e-fec6e68bfbd1",
+    "revisionId": "7fed0a6b-f117-5271-9aaa-c1ec3075dffd",
+    "key": "c05-ch03-q03",
+    "courseKey": "c05",
+    "chapterKey": "c05-ch03",
+    "createdBy": "ac9fadc2-1955-59e4-984d-26f74bbb4f53",
+    "clientRequestId": "c889f0f0-d362-5af6-ad83-a73f6908e861",
+    "isPrivate": false,
+    "requestHash": "524ae1717af2e0c984a7e4c1c8ca437ae206e465586fe582309b16bf4f711716",
+    "content": "Một người học đang giải bài về chuỗi. Nhận định nào nên được chọn? (Câu 03)",
+    "explanation": "Khi đảo chuỗi, thứ tự các ký tự được đổi ngược hoàn toàn. Đây là đặc điểm cần ghi nhớ khi áp dụng chủ đề này.",
+    "options": [
+      {
+        "id": "62831525-f53e-58de-aeef-dc756df4f279",
+        "content": "Có thể bỏ điều kiện dừng mà vẫn đảm bảo thuật toán kết thúc.",
+        "isCorrect": false
+      },
+      {
+        "id": "563fc6e1-9410-5cd1-8a16-014382d58a9e",
+        "content": "Kết quả không phụ thuộc vào thứ tự hay dữ liệu đầu vào.",
+        "isCorrect": false
+      },
+      {
+        "id": "da9891bd-c632-586e-8165-c306697f79cb",
+        "content": "Khi đảo chuỗi, thứ tự các ký tự được đổi ngược hoàn toàn.",
+        "isCorrect": true
+      },
+      {
+        "id": "0a6bc8b3-268c-56e8-b5c3-6a7aaa29c594",
+        "content": "Mọi phép duyệt đều có độ phức tạp O(1).",
+        "isCorrect": false
+      }
+    ],
+    "difficulty": "HARD",
+    "topicName": "Chuỗi",
+    "tagNames": []
+  },
+  {
+    "id": "82e83353-bcb1-5a79-b3d8-71e6668c1fdd",
+    "revisionId": "89dd046a-7233-5879-952b-9b5337addac8",
+    "key": "c05-ch03-q04",
+    "courseKey": "c05",
+    "chapterKey": "c05-ch03",
+    "createdBy": "ac9fadc2-1955-59e4-984d-26f74bbb4f53",
+    "clientRequestId": "bc8ea751-c075-52d5-a491-fdece824b189",
+    "isPrivate": false,
+    "requestHash": "3ee560d8c6d17b3259533adac206ecd79fe68c6b6ce7f81ff48fd84203aea3a6",
+    "content": "Đâu là kiến thức đúng khi làm việc với chuỗi? (Câu 04)",
+    "explanation": "Chuỗi là dãy ký tự có thứ tự. Đây là đặc điểm cần ghi nhớ khi áp dụng chủ đề này.",
+    "options": [
+      {
+        "id": "f0e8637c-7e21-5752-a522-dcf7695380e9",
+        "content": "Kết quả không phụ thuộc vào thứ tự hay dữ liệu đầu vào.",
+        "isCorrect": false
+      },
+      {
+        "id": "685568ab-b950-541c-812e-d17f2b7b07f2",
+        "content": "Chuỗi là dãy ký tự có thứ tự.",
+        "isCorrect": true
+      },
+      {
+        "id": "d6a5dcc6-ec61-5c83-ae82-d03cc8ae5e3f",
+        "content": "Mọi phép duyệt đều có độ phức tạp O(1).",
+        "isCorrect": false
+      },
+      {
+        "id": "2c90b358-f2eb-5d61-9602-30875c8f1287",
+        "content": "Có thể bỏ điều kiện dừng mà vẫn đảm bảo thuật toán kết thúc.",
+        "isCorrect": false
+      }
+    ],
+    "difficulty": "EASY",
+    "topicName": "Chuỗi",
+    "tagNames": []
+  },
+  {
+    "id": "d6c8eac9-d8a2-52cc-8154-f68b3abda065",
+    "revisionId": "49497206-e6c3-5fb3-b309-2ec82d66943e",
+    "key": "c05-ch03-q05",
+    "courseKey": "c05",
+    "chapterKey": "c05-ch03",
+    "createdBy": "ac9fadc2-1955-59e4-984d-26f74bbb4f53",
+    "clientRequestId": "f373450c-275a-5e30-b1dc-5e668594875e",
+    "isPrivate": false,
+    "requestHash": "052569e7f6f03ab6bc658dc3a5f49396b2ef486cf200fbbfcc7c395605397542",
+    "content": "Phát biểu nào mô tả đúng về chuỗi? (Câu 05)",
+    "explanation": "So sánh hai chuỗi theo từ điển xét ký tự từ trái sang phải. Đây là đặc điểm cần ghi nhớ khi áp dụng chủ đề này.",
+    "options": [
+      {
+        "id": "2a9c6db5-a6ae-5779-8df0-7751041f6350",
+        "content": "So sánh hai chuỗi theo từ điển xét ký tự từ trái sang phải.",
+        "isCorrect": true
+      },
+      {
+        "id": "6c592b61-bd20-56b4-ab28-db6ab950eb4d",
+        "content": "Mọi phép duyệt đều có độ phức tạp O(1).",
+        "isCorrect": false
+      },
+      {
+        "id": "c7462910-3c40-5111-b399-78889b0f039d",
+        "content": "Có thể bỏ điều kiện dừng mà vẫn đảm bảo thuật toán kết thúc.",
+        "isCorrect": false
+      },
+      {
+        "id": "1e2f97fc-daea-5026-9956-ad885c23c7c0",
+        "content": "Kết quả không phụ thuộc vào thứ tự hay dữ liệu đầu vào.",
+        "isCorrect": false
+      }
+    ],
+    "difficulty": "MEDIUM",
+    "topicName": "Chuỗi",
+    "tagNames": []
+  },
+  {
+    "id": "cc91ccb8-5cc6-55f7-adcf-7a75cf19a19f",
+    "revisionId": "3ba47e67-10f8-584e-a639-5243442e903e",
+    "key": "c05-ch03-q06",
+    "courseKey": "c05",
+    "chapterKey": "c05-ch03",
+    "createdBy": "ac9fadc2-1955-59e4-984d-26f74bbb4f53",
+    "clientRequestId": "495abc48-983a-5ecd-a21a-779e845d60b0",
+    "isPrivate": false,
+    "requestHash": "00164ae8b0ccd2f85b541ac359dc83b43455d004d2469d7d35959bb68943142e",
+    "content": "Khi ôn tập chuỗi, kết luận nào là chính xác? (Câu 06)",
+    "explanation": "Khi đảo chuỗi, thứ tự các ký tự được đổi ngược hoàn toàn. Đây là đặc điểm cần ghi nhớ khi áp dụng chủ đề này.",
+    "options": [
+      {
+        "id": "7fcd8c52-97ba-5f3b-8d74-41f6613311ef",
+        "content": "Mọi phép duyệt đều có độ phức tạp O(1).",
+        "isCorrect": false
+      },
+      {
+        "id": "87e0a177-878c-5568-9b22-b1fe71f60d28",
+        "content": "Có thể bỏ điều kiện dừng mà vẫn đảm bảo thuật toán kết thúc.",
+        "isCorrect": false
+      },
+      {
+        "id": "5668678e-1843-5a23-8292-09c3b400b209",
+        "content": "Kết quả không phụ thuộc vào thứ tự hay dữ liệu đầu vào.",
+        "isCorrect": false
+      },
+      {
+        "id": "08c32b27-55ab-539b-bce3-0b9be30cd712",
+        "content": "Khi đảo chuỗi, thứ tự các ký tự được đổi ngược hoàn toàn.",
+        "isCorrect": true
+      }
+    ],
+    "difficulty": "HARD",
+    "topicName": "Chuỗi",
+    "tagNames": []
+  },
+  {
+    "id": "b50d1399-554e-57fa-9578-7a4e7a7f2124",
+    "revisionId": "531d85c7-03db-52e6-b617-ac8a76a0b6e5",
+    "key": "c05-ch03-q07",
+    "courseKey": "c05",
+    "chapterKey": "c05-ch03",
+    "createdBy": "ac9fadc2-1955-59e4-984d-26f74bbb4f53",
+    "clientRequestId": "f0acc476-51b7-5920-b158-be98327caeef",
+    "isPrivate": false,
+    "requestHash": "531538a4c1dc2a15ca507ec88428668ed1623ea1602336fac99eda9a9c3d5aa5",
+    "content": "Một người học đang giải bài về chuỗi. Nhận định nào nên được chọn? (Câu 07)",
+    "explanation": "Chuỗi là dãy ký tự có thứ tự. Đây là đặc điểm cần ghi nhớ khi áp dụng chủ đề này.",
+    "options": [
+      {
+        "id": "63e4dbf1-4134-50b0-965b-f9dfaaad603b",
+        "content": "Có thể bỏ điều kiện dừng mà vẫn đảm bảo thuật toán kết thúc.",
+        "isCorrect": false
+      },
+      {
+        "id": "a4cc2f0c-05f0-5b40-988e-a01dffcc5e5a",
+        "content": "Kết quả không phụ thuộc vào thứ tự hay dữ liệu đầu vào.",
+        "isCorrect": false
+      },
+      {
+        "id": "8a57542f-082e-5493-b76b-5ef17e877a8c",
+        "content": "Chuỗi là dãy ký tự có thứ tự.",
+        "isCorrect": true
+      },
+      {
+        "id": "56c09902-81a1-5f68-968e-05ba7b48afc3",
+        "content": "Mọi phép duyệt đều có độ phức tạp O(1).",
+        "isCorrect": false
+      }
+    ],
+    "difficulty": "EASY",
+    "topicName": "Chuỗi",
+    "tagNames": []
+  },
+  {
+    "id": "8d081827-6b4c-5158-9c2c-dd41f41dd98d",
+    "revisionId": "d7b09008-91a4-55e3-87a8-9b0d18f03e43",
+    "key": "c05-ch03-q08",
+    "courseKey": "c05",
+    "chapterKey": "c05-ch03",
+    "createdBy": "ac9fadc2-1955-59e4-984d-26f74bbb4f53",
+    "clientRequestId": "b21479ce-5911-57e7-b16f-014f221b5bc7",
+    "isPrivate": false,
+    "requestHash": "e8304fcebdc3aaef89206a7065e443e8caf7156450bc2a848f5971ac8b390814",
+    "content": "Đâu là kiến thức đúng khi làm việc với chuỗi? (Câu 08)",
+    "explanation": "So sánh hai chuỗi theo từ điển xét ký tự từ trái sang phải. Đây là đặc điểm cần ghi nhớ khi áp dụng chủ đề này.",
+    "options": [
+      {
+        "id": "f75fd3eb-98d1-5e56-8389-97932bf22c7b",
+        "content": "Kết quả không phụ thuộc vào thứ tự hay dữ liệu đầu vào.",
+        "isCorrect": false
+      },
+      {
+        "id": "19003775-0412-5c0e-9b8b-f3fff0e5b146",
+        "content": "So sánh hai chuỗi theo từ điển xét ký tự từ trái sang phải.",
+        "isCorrect": true
+      },
+      {
+        "id": "b56fad8f-6366-5261-96ed-b617fadfa108",
+        "content": "Mọi phép duyệt đều có độ phức tạp O(1).",
+        "isCorrect": false
+      },
+      {
+        "id": "3e704ad8-0772-5d13-bafd-a0f56712ec90",
+        "content": "Có thể bỏ điều kiện dừng mà vẫn đảm bảo thuật toán kết thúc.",
+        "isCorrect": false
+      }
+    ],
+    "difficulty": "MEDIUM",
+    "topicName": "Chuỗi",
+    "tagNames": []
+  },
+  {
+    "id": "c267a051-bb09-5d6a-a6b2-9b28c8c998d3",
+    "revisionId": "afc91d46-7555-583e-a849-01e7a0a62edc",
+    "key": "c05-ch03-q09",
+    "courseKey": "c05",
+    "chapterKey": "c05-ch03",
+    "createdBy": "ac9fadc2-1955-59e4-984d-26f74bbb4f53",
+    "clientRequestId": "24e38c1d-3617-5695-83cc-fa2aed8f69c7",
+    "isPrivate": false,
+    "requestHash": "32919802354d229866537fb0aa66e1f319c29aa4bed3db124142143c59585f5a",
+    "content": "Phát biểu nào mô tả đúng về chuỗi? (Câu 09)",
+    "explanation": "Khi đảo chuỗi, thứ tự các ký tự được đổi ngược hoàn toàn. Đây là đặc điểm cần ghi nhớ khi áp dụng chủ đề này.",
+    "options": [
+      {
+        "id": "db7e5831-ad5f-58da-a89c-112b03642781",
+        "content": "Khi đảo chuỗi, thứ tự các ký tự được đổi ngược hoàn toàn.",
+        "isCorrect": true
+      },
+      {
+        "id": "1de3db08-6013-5d79-906b-3e7ea24b868d",
+        "content": "Mọi phép duyệt đều có độ phức tạp O(1).",
+        "isCorrect": false
+      },
+      {
+        "id": "739e5eb2-e936-5294-bf59-14f1d022af77",
+        "content": "Có thể bỏ điều kiện dừng mà vẫn đảm bảo thuật toán kết thúc.",
+        "isCorrect": false
+      },
+      {
+        "id": "a3c89e15-92af-5da0-875e-11b7e2e222cc",
+        "content": "Kết quả không phụ thuộc vào thứ tự hay dữ liệu đầu vào.",
+        "isCorrect": false
+      }
+    ],
+    "difficulty": "HARD",
+    "topicName": "Chuỗi",
+    "tagNames": []
+  },
+  {
+    "id": "c14747c4-8e7a-5aa2-8938-bb15e89c913f",
+    "revisionId": "dddc5d6a-f5f6-5881-aa34-85989ffe79e1",
+    "key": "c05-ch03-q10",
+    "courseKey": "c05",
+    "chapterKey": "c05-ch03",
+    "createdBy": "ac9fadc2-1955-59e4-984d-26f74bbb4f53",
+    "clientRequestId": "27c793f3-992d-5ac0-ad82-4e9a7df59968",
+    "isPrivate": false,
+    "requestHash": "73672afda08815e99ec6e5ae1215b70c6931d1a95268ee06f10cb694a84deedb",
+    "content": "Khi ôn tập chuỗi, kết luận nào là chính xác? (Câu 10)",
+    "explanation": "Chuỗi là dãy ký tự có thứ tự. Đây là đặc điểm cần ghi nhớ khi áp dụng chủ đề này.",
+    "options": [
+      {
+        "id": "dc175fca-4db6-55c0-a637-d58da3c1459d",
+        "content": "Mọi phép duyệt đều có độ phức tạp O(1).",
+        "isCorrect": false
+      },
+      {
+        "id": "45182bb4-0511-5745-9a23-77fd99214987",
+        "content": "Có thể bỏ điều kiện dừng mà vẫn đảm bảo thuật toán kết thúc.",
+        "isCorrect": false
+      },
+      {
+        "id": "cc0bb196-0134-57eb-b2c5-3d36de2f27d4",
+        "content": "Kết quả không phụ thuộc vào thứ tự hay dữ liệu đầu vào.",
+        "isCorrect": false
+      },
+      {
+        "id": "b16c18ae-6c5b-56f4-82e6-1b8a7e2639dc",
+        "content": "Chuỗi là dãy ký tự có thứ tự.",
+        "isCorrect": true
+      }
+    ],
+    "difficulty": "EASY",
+    "topicName": "Chuỗi",
+    "tagNames": []
+  },
+  {
+    "id": "651558ca-99aa-5d98-b44a-b66956d04650",
+    "revisionId": "ee5a66b0-6bc9-51b9-8a66-d73d957daadb",
+    "key": "c05-ch03-q11",
+    "courseKey": "c05",
+    "chapterKey": "c05-ch03",
+    "createdBy": "ac9fadc2-1955-59e4-984d-26f74bbb4f53",
+    "clientRequestId": "fb4217dd-3afd-5bc7-ba50-d65790f06fa8",
+    "isPrivate": false,
+    "requestHash": "b9e5c0afa1a6e3030dcf4fb6613c56e58f14c6bb448e5c25a82fc713176215be",
+    "content": "Một người học đang giải bài về chuỗi. Nhận định nào nên được chọn? (Câu 11)",
+    "explanation": "So sánh hai chuỗi theo từ điển xét ký tự từ trái sang phải. Đây là đặc điểm cần ghi nhớ khi áp dụng chủ đề này.",
+    "options": [
+      {
+        "id": "dbf83239-1307-51a5-819f-e7c538e13fb0",
+        "content": "Có thể bỏ điều kiện dừng mà vẫn đảm bảo thuật toán kết thúc.",
+        "isCorrect": false
+      },
+      {
+        "id": "52341f6b-ae0b-53d1-b0b1-6950c3967bae",
+        "content": "Kết quả không phụ thuộc vào thứ tự hay dữ liệu đầu vào.",
+        "isCorrect": false
+      },
+      {
+        "id": "4122685a-6605-5864-8205-a8bc3203d746",
+        "content": "So sánh hai chuỗi theo từ điển xét ký tự từ trái sang phải.",
+        "isCorrect": true
+      },
+      {
+        "id": "39421f38-062f-5e7c-8880-ac1c01483b17",
+        "content": "Mọi phép duyệt đều có độ phức tạp O(1).",
+        "isCorrect": false
+      }
+    ],
+    "difficulty": "MEDIUM",
+    "topicName": "Chuỗi",
+    "tagNames": []
+  },
+  {
+    "id": "e4ae0453-a5cb-5309-b930-e6f5bd088895",
+    "revisionId": "1602d0f0-f2a1-526a-bfd1-93429358ef20",
+    "key": "c05-ch03-q12",
+    "courseKey": "c05",
+    "chapterKey": "c05-ch03",
+    "createdBy": "ac9fadc2-1955-59e4-984d-26f74bbb4f53",
+    "clientRequestId": "110b43f0-a4c6-5667-9146-dca7ce804cff",
+    "isPrivate": false,
+    "requestHash": "dbfe328b5a02b26b35f73ba67db669ddf75234946ebfd050fca328b8309d6921",
+    "content": "Đâu là kiến thức đúng khi làm việc với chuỗi? (Câu 12)",
+    "explanation": "Khi đảo chuỗi, thứ tự các ký tự được đổi ngược hoàn toàn. Đây là đặc điểm cần ghi nhớ khi áp dụng chủ đề này.",
+    "options": [
+      {
+        "id": "bacb4dbe-55b8-576b-9bb2-d3e4d7fc33ea",
+        "content": "Kết quả không phụ thuộc vào thứ tự hay dữ liệu đầu vào.",
+        "isCorrect": false
+      },
+      {
+        "id": "5fde497a-3c36-5d44-9519-9b1a3272af7f",
+        "content": "Khi đảo chuỗi, thứ tự các ký tự được đổi ngược hoàn toàn.",
+        "isCorrect": true
+      },
+      {
+        "id": "8280cab2-c4a6-5f2b-86d2-02bf4588e849",
+        "content": "Mọi phép duyệt đều có độ phức tạp O(1).",
+        "isCorrect": false
+      },
+      {
+        "id": "34d47acb-bc11-55f1-8e38-05b39c717c5c",
+        "content": "Có thể bỏ điều kiện dừng mà vẫn đảm bảo thuật toán kết thúc.",
+        "isCorrect": false
+      }
+    ],
+    "difficulty": "HARD",
+    "topicName": "Chuỗi",
+    "tagNames": []
+  },
+  {
+    "id": "74ebe166-aec1-5d59-84c8-504e65ef43ee",
+    "revisionId": "b1899d94-6b23-5845-ae3f-be39ca2f2339",
+    "key": "c05-ch03-q13",
+    "courseKey": "c05",
+    "chapterKey": "c05-ch03",
+    "createdBy": "ac9fadc2-1955-59e4-984d-26f74bbb4f53",
+    "clientRequestId": "1f5c6ae0-5748-5c6d-9bf0-60b026c478ce",
+    "isPrivate": false,
+    "requestHash": "0bacf07674d06e8b20390095ac0c43dd5347b9ed0e9cc4dc7d457d3415b1fe68",
+    "content": "Phát biểu nào mô tả đúng về chuỗi? (Câu 13)",
+    "explanation": "Chuỗi là dãy ký tự có thứ tự. Đây là đặc điểm cần ghi nhớ khi áp dụng chủ đề này.",
+    "options": [
+      {
+        "id": "97febf36-0b09-512e-86af-879aa0d02559",
+        "content": "Chuỗi là dãy ký tự có thứ tự.",
+        "isCorrect": true
+      },
+      {
+        "id": "22bbd43f-7205-56c6-aeb5-28ff634b52dd",
+        "content": "Mọi phép duyệt đều có độ phức tạp O(1).",
+        "isCorrect": false
+      },
+      {
+        "id": "330ffac6-1b7f-5c59-98fc-c28cbdb05016",
+        "content": "Có thể bỏ điều kiện dừng mà vẫn đảm bảo thuật toán kết thúc.",
+        "isCorrect": false
+      },
+      {
+        "id": "9d914880-4a76-5798-b877-6a424c38315e",
+        "content": "Kết quả không phụ thuộc vào thứ tự hay dữ liệu đầu vào.",
+        "isCorrect": false
+      }
+    ],
+    "difficulty": "EASY",
+    "topicName": "Chuỗi",
+    "tagNames": []
+  },
+  {
+    "id": "840c9f10-fd3d-558c-a96b-d6c53de60b3e",
+    "revisionId": "f895402e-4e54-57eb-a900-fffac88bd707",
+    "key": "c05-ch03-q14",
+    "courseKey": "c05",
+    "chapterKey": "c05-ch03",
+    "createdBy": "ac9fadc2-1955-59e4-984d-26f74bbb4f53",
+    "clientRequestId": "f9cd02e4-ae76-552f-8a75-1a2c694f2208",
+    "isPrivate": false,
+    "requestHash": "42e7594691be5fae9e9189f36c1118c64c56cb269e6cbca310ed669c5e7cce99",
+    "content": "Khi ôn tập chuỗi, kết luận nào là chính xác? (Câu 14)",
+    "explanation": "So sánh hai chuỗi theo từ điển xét ký tự từ trái sang phải. Đây là đặc điểm cần ghi nhớ khi áp dụng chủ đề này.",
+    "options": [
+      {
+        "id": "cc3296af-60c9-5eca-aa0e-4e7265adeeb5",
+        "content": "Mọi phép duyệt đều có độ phức tạp O(1).",
+        "isCorrect": false
+      },
+      {
+        "id": "fa203c71-2bab-53aa-bb0f-368d22b4a721",
+        "content": "Có thể bỏ điều kiện dừng mà vẫn đảm bảo thuật toán kết thúc.",
+        "isCorrect": false
+      },
+      {
+        "id": "da441759-32e7-58da-a6f3-1c56cfc84404",
+        "content": "Kết quả không phụ thuộc vào thứ tự hay dữ liệu đầu vào.",
+        "isCorrect": false
+      },
+      {
+        "id": "d5831f43-2638-535f-b58a-e96737eb1687",
+        "content": "So sánh hai chuỗi theo từ điển xét ký tự từ trái sang phải.",
+        "isCorrect": true
+      }
+    ],
+    "difficulty": "MEDIUM",
+    "topicName": "Chuỗi",
+    "tagNames": []
+  },
+  {
+    "id": "e741ba6d-ebf1-5386-adec-99abe6cf7a3f",
+    "revisionId": "585961bc-8cfc-5f93-88c2-51bca3a9b768",
+    "key": "c05-ch03-q15",
+    "courseKey": "c05",
+    "chapterKey": "c05-ch03",
+    "createdBy": "ac9fadc2-1955-59e4-984d-26f74bbb4f53",
+    "clientRequestId": "d1aefb7c-2d9a-5ffb-aa66-430ca213945c",
+    "isPrivate": false,
+    "requestHash": "03de11e0b234571103fd56298668d4cd507d4ee731744287952d8a10d53af1bb",
+    "content": "Một người học đang giải bài về chuỗi. Nhận định nào nên được chọn? (Câu 15)",
+    "explanation": "Khi đảo chuỗi, thứ tự các ký tự được đổi ngược hoàn toàn. Đây là đặc điểm cần ghi nhớ khi áp dụng chủ đề này.",
+    "options": [
+      {
+        "id": "037e6f00-8f20-5c91-80ea-41f4b899fb8d",
+        "content": "Có thể bỏ điều kiện dừng mà vẫn đảm bảo thuật toán kết thúc.",
+        "isCorrect": false
+      },
+      {
+        "id": "04cce9f2-31a7-5632-8577-7eb54fc11052",
+        "content": "Kết quả không phụ thuộc vào thứ tự hay dữ liệu đầu vào.",
+        "isCorrect": false
+      },
+      {
+        "id": "e0e3e82a-e7f9-5f60-8571-84747db9025c",
+        "content": "Khi đảo chuỗi, thứ tự các ký tự được đổi ngược hoàn toàn.",
+        "isCorrect": true
+      },
+      {
+        "id": "ff81a588-ea6f-582d-b1c4-5c5fc1eb887b",
+        "content": "Mọi phép duyệt đều có độ phức tạp O(1).",
+        "isCorrect": false
+      }
+    ],
+    "difficulty": "HARD",
+    "topicName": "Chuỗi",
+    "tagNames": []
+  },
+  {
+    "id": "ebfd492d-745b-5a0a-9b51-b8b7fdb5a9b8",
+    "revisionId": "98b7bab9-e485-531f-877b-42fbf99e7666",
+    "key": "c05-ch03-q16",
+    "courseKey": "c05",
+    "chapterKey": "c05-ch03",
+    "createdBy": "ac9fadc2-1955-59e4-984d-26f74bbb4f53",
+    "clientRequestId": "8fabaa4e-488e-58b9-abd3-4c3bee961edf",
+    "isPrivate": false,
+    "requestHash": "fba208d1a2eab0a7f96df9e0878e3d02e938d081666619e102d8d9f3b50148ba",
+    "content": "Đâu là kiến thức đúng khi làm việc với chuỗi? (Câu 16)",
+    "explanation": "Chuỗi là dãy ký tự có thứ tự. Đây là đặc điểm cần ghi nhớ khi áp dụng chủ đề này.",
+    "options": [
+      {
+        "id": "8c863b4c-e7c3-523c-bbd6-548fb36701a2",
+        "content": "Kết quả không phụ thuộc vào thứ tự hay dữ liệu đầu vào.",
+        "isCorrect": false
+      },
+      {
+        "id": "5a6a2e06-3d0e-5f5a-9912-9d9b31ff2124",
+        "content": "Chuỗi là dãy ký tự có thứ tự.",
+        "isCorrect": true
+      },
+      {
+        "id": "9c2c949d-af45-56f6-8da8-ea09864e0102",
+        "content": "Mọi phép duyệt đều có độ phức tạp O(1).",
+        "isCorrect": false
+      },
+      {
+        "id": "23cd4483-66d7-5c4e-9735-1680027147e0",
+        "content": "Có thể bỏ điều kiện dừng mà vẫn đảm bảo thuật toán kết thúc.",
+        "isCorrect": false
+      }
+    ],
+    "difficulty": "EASY",
+    "topicName": "Chuỗi",
+    "tagNames": []
+  },
+  {
+    "id": "b4a4395f-59ad-5c21-a375-e7b7380bb99f",
+    "revisionId": "e230f3c8-826e-5d68-9c8d-de0779dfba16",
+    "key": "c05-ch03-q17",
+    "courseKey": "c05",
+    "chapterKey": "c05-ch03",
+    "createdBy": "ac9fadc2-1955-59e4-984d-26f74bbb4f53",
+    "clientRequestId": "40b923e5-e894-5161-9b0d-df9ec18a75a4",
+    "isPrivate": false,
+    "requestHash": "ee56117b83e6c2f96c436041f1be028a2449d5bbb29df6e5fe2cd5386341254c",
+    "content": "Phát biểu nào mô tả đúng về chuỗi? (Câu 17)",
+    "explanation": "So sánh hai chuỗi theo từ điển xét ký tự từ trái sang phải. Đây là đặc điểm cần ghi nhớ khi áp dụng chủ đề này.",
+    "options": [
+      {
+        "id": "69c24c54-5567-5b74-908f-576e1369fb3f",
+        "content": "So sánh hai chuỗi theo từ điển xét ký tự từ trái sang phải.",
+        "isCorrect": true
+      },
+      {
+        "id": "d0b1b3a3-43a0-5c5e-85a0-5a89753305d0",
+        "content": "Mọi phép duyệt đều có độ phức tạp O(1).",
+        "isCorrect": false
+      },
+      {
+        "id": "cd00ebcd-e00a-5eed-8966-4a3f7b97b7e5",
+        "content": "Có thể bỏ điều kiện dừng mà vẫn đảm bảo thuật toán kết thúc.",
+        "isCorrect": false
+      },
+      {
+        "id": "e10e8636-ad98-5c04-8d6c-c230ca5870fd",
+        "content": "Kết quả không phụ thuộc vào thứ tự hay dữ liệu đầu vào.",
+        "isCorrect": false
+      }
+    ],
+    "difficulty": "MEDIUM",
+    "topicName": "Chuỗi",
+    "tagNames": []
+  },
+  {
+    "id": "7dd85baf-2c9c-544f-8d06-5e1bbeb87c10",
+    "revisionId": "556b652c-60dc-59fa-85d9-db17962f7ce3",
+    "key": "c05-ch03-q18",
+    "courseKey": "c05",
+    "chapterKey": "c05-ch03",
+    "createdBy": "ac9fadc2-1955-59e4-984d-26f74bbb4f53",
+    "clientRequestId": "8e00bee0-9351-5ff3-b857-a2448128ba01",
+    "isPrivate": false,
+    "requestHash": "cad34c44cbb2671edd03864cff9a20062ccd275bd499b2422505fa9b26d72c31",
+    "content": "Khi ôn tập chuỗi, kết luận nào là chính xác? (Câu 18)",
+    "explanation": "Khi đảo chuỗi, thứ tự các ký tự được đổi ngược hoàn toàn. Đây là đặc điểm cần ghi nhớ khi áp dụng chủ đề này.",
+    "options": [
+      {
+        "id": "59df08fa-9ab9-5626-8c98-c117e7a21ccd",
+        "content": "Mọi phép duyệt đều có độ phức tạp O(1).",
+        "isCorrect": false
+      },
+      {
+        "id": "b352c5f0-8668-5195-8ff9-6036a2a1c6d9",
+        "content": "Có thể bỏ điều kiện dừng mà vẫn đảm bảo thuật toán kết thúc.",
+        "isCorrect": false
+      },
+      {
+        "id": "35e776a1-6470-5da7-99f9-954ae08aa889",
+        "content": "Kết quả không phụ thuộc vào thứ tự hay dữ liệu đầu vào.",
+        "isCorrect": false
+      },
+      {
+        "id": "7a4ad846-3eee-548a-819b-53bac2fed276",
+        "content": "Khi đảo chuỗi, thứ tự các ký tự được đổi ngược hoàn toàn.",
+        "isCorrect": true
+      }
+    ],
+    "difficulty": "HARD",
+    "topicName": "Chuỗi",
+    "tagNames": []
+  },
+  {
+    "id": "6ae6b001-114e-5516-8021-ed32bc0371c6",
+    "revisionId": "be875108-3ae5-58ef-8a03-419d8ed40427",
+    "key": "c05-ch03-q19",
+    "courseKey": "c05",
+    "chapterKey": "c05-ch03",
+    "createdBy": "ac9fadc2-1955-59e4-984d-26f74bbb4f53",
+    "clientRequestId": "d50f37ab-827c-5985-9f83-f237f5690f6a",
+    "isPrivate": false,
+    "requestHash": "6bee672061c1d87e7a5ca97115a085ee7753c552d30c8e479ac485bc6df266c9",
+    "content": "Một người học đang giải bài về chuỗi. Nhận định nào nên được chọn? (Câu 19)",
+    "explanation": "Chuỗi là dãy ký tự có thứ tự. Đây là đặc điểm cần ghi nhớ khi áp dụng chủ đề này.",
+    "options": [
+      {
+        "id": "009b4ca1-0147-5005-bf63-9e7234269a16",
+        "content": "Có thể bỏ điều kiện dừng mà vẫn đảm bảo thuật toán kết thúc.",
+        "isCorrect": false
+      },
+      {
+        "id": "3069f511-8f9b-5eec-848b-e666d30afc46",
+        "content": "Kết quả không phụ thuộc vào thứ tự hay dữ liệu đầu vào.",
+        "isCorrect": false
+      },
+      {
+        "id": "4c0ce70f-9ba4-5fe2-941f-2f356c4ddea1",
+        "content": "Chuỗi là dãy ký tự có thứ tự.",
+        "isCorrect": true
+      },
+      {
+        "id": "b008f9c3-eb37-5f32-b9eb-9112aab2dbd6",
+        "content": "Mọi phép duyệt đều có độ phức tạp O(1).",
+        "isCorrect": false
+      }
+    ],
+    "difficulty": "EASY",
+    "topicName": "Chuỗi",
+    "tagNames": []
+  },
+  {
+    "id": "d9b40bd7-384d-5fda-870c-fa015c004ab4",
+    "revisionId": "cc2db371-68d7-5f06-aeae-6dd66233a334",
+    "key": "c05-ch03-q20",
+    "courseKey": "c05",
+    "chapterKey": "c05-ch03",
+    "createdBy": "ac9fadc2-1955-59e4-984d-26f74bbb4f53",
+    "clientRequestId": "5cc9cb5e-c352-500d-9e82-3ecda7c87852",
+    "isPrivate": false,
+    "requestHash": "b00a02b517739f3196033525c6e3540e4162b643d843df9f9084a450be8eaea3",
+    "content": "Đâu là kiến thức đúng khi làm việc với chuỗi? (Câu 20)",
+    "explanation": "So sánh hai chuỗi theo từ điển xét ký tự từ trái sang phải. Đây là đặc điểm cần ghi nhớ khi áp dụng chủ đề này.",
+    "options": [
+      {
+        "id": "e282cfb2-b81e-521e-98ba-b140c9c19a54",
+        "content": "Kết quả không phụ thuộc vào thứ tự hay dữ liệu đầu vào.",
+        "isCorrect": false
+      },
+      {
+        "id": "018cce85-1492-508d-b68c-791444297477",
+        "content": "So sánh hai chuỗi theo từ điển xét ký tự từ trái sang phải.",
+        "isCorrect": true
+      },
+      {
+        "id": "1aa61568-8336-5a75-a656-43a77d6b7093",
+        "content": "Mọi phép duyệt đều có độ phức tạp O(1).",
+        "isCorrect": false
+      },
+      {
+        "id": "d8b62339-b263-51dc-b945-88600e8f2470",
+        "content": "Có thể bỏ điều kiện dừng mà vẫn đảm bảo thuật toán kết thúc.",
+        "isCorrect": false
+      }
+    ],
+    "difficulty": "MEDIUM",
+    "topicName": "Chuỗi",
+    "tagNames": []
+  },
+  {
+    "id": "c95311de-23df-5352-b175-83d31f4b03cf",
+    "revisionId": "77ebcc58-2a08-5903-838d-be0c2195f630",
+    "key": "c05-ch03-q21",
+    "courseKey": "c05",
+    "chapterKey": "c05-ch03",
+    "createdBy": "ac9fadc2-1955-59e4-984d-26f74bbb4f53",
+    "clientRequestId": "ce6d2678-bc31-579f-8cf9-e484e55a9d1a",
+    "isPrivate": false,
+    "requestHash": "c0c4870a471f562df2b0c32f6a2657c2ba2ee80ab3cc29ff34c49762bbf2c606",
+    "content": "Phát biểu nào mô tả đúng về chuỗi? (Câu 21)",
+    "explanation": "Khi đảo chuỗi, thứ tự các ký tự được đổi ngược hoàn toàn. Đây là đặc điểm cần ghi nhớ khi áp dụng chủ đề này.",
+    "options": [
+      {
+        "id": "e5017286-7f54-5175-b9ec-7a1e3c312eb6",
+        "content": "Khi đảo chuỗi, thứ tự các ký tự được đổi ngược hoàn toàn.",
+        "isCorrect": true
+      },
+      {
+        "id": "375a3c4e-f82c-5c46-87d3-b9f874e06e02",
+        "content": "Mọi phép duyệt đều có độ phức tạp O(1).",
+        "isCorrect": false
+      },
+      {
+        "id": "6e66c65a-945c-5072-b4fd-dfe4912297db",
+        "content": "Có thể bỏ điều kiện dừng mà vẫn đảm bảo thuật toán kết thúc.",
+        "isCorrect": false
+      },
+      {
+        "id": "87d255ca-8234-5928-9cc4-4f4113e9dc5a",
+        "content": "Kết quả không phụ thuộc vào thứ tự hay dữ liệu đầu vào.",
+        "isCorrect": false
+      }
+    ],
+    "difficulty": "HARD",
+    "topicName": "Chuỗi",
+    "tagNames": []
+  },
+  {
+    "id": "a150a650-4444-57a1-9693-01f06030b298",
+    "revisionId": "d116da5e-bc9a-5c65-9699-5b68c7eb66ef",
+    "key": "c05-ch03-q22",
+    "courseKey": "c05",
+    "chapterKey": "c05-ch03",
+    "createdBy": "ac9fadc2-1955-59e4-984d-26f74bbb4f53",
+    "clientRequestId": "9f920b15-4b2e-5525-bab0-e20f9f63235d",
+    "isPrivate": false,
+    "requestHash": "acbc817b3c6ca45f75f0f8588ec31336317ec672c121da287d1596487c65a17a",
+    "content": "Khi ôn tập chuỗi, kết luận nào là chính xác? (Câu 22)",
+    "explanation": "Chuỗi là dãy ký tự có thứ tự. Đây là đặc điểm cần ghi nhớ khi áp dụng chủ đề này.",
+    "options": [
+      {
+        "id": "b589b73a-0ed4-5a53-b5ee-822561357179",
+        "content": "Mọi phép duyệt đều có độ phức tạp O(1).",
+        "isCorrect": false
+      },
+      {
+        "id": "086ef01c-ec4a-5506-91db-187b67f7c9bb",
+        "content": "Có thể bỏ điều kiện dừng mà vẫn đảm bảo thuật toán kết thúc.",
+        "isCorrect": false
+      },
+      {
+        "id": "04c0ad4f-64a0-523a-9ff0-57e668f831be",
+        "content": "Kết quả không phụ thuộc vào thứ tự hay dữ liệu đầu vào.",
+        "isCorrect": false
+      },
+      {
+        "id": "9c4bd03c-7685-580e-a3d8-b13cec7a2159",
+        "content": "Chuỗi là dãy ký tự có thứ tự.",
+        "isCorrect": true
+      }
+    ],
+    "difficulty": "EASY",
+    "topicName": "Chuỗi",
+    "tagNames": []
+  },
+  {
+    "id": "992faafa-c048-544c-8aee-60da6c89d184",
+    "revisionId": "3de46ceb-2107-5ea6-8cbb-af2f9f3fbbe8",
+    "key": "c05-ch03-q23",
+    "courseKey": "c05",
+    "chapterKey": "c05-ch03",
+    "createdBy": "ac9fadc2-1955-59e4-984d-26f74bbb4f53",
+    "clientRequestId": "4e1c667b-9094-5bca-bb0d-24908ce51027",
+    "isPrivate": false,
+    "requestHash": "4376490cf94cfdcea1faba8fb2fbf8d16a275193b8dc260631ec32e969b9edeb",
+    "content": "Một người học đang giải bài về chuỗi. Nhận định nào nên được chọn? (Câu 23)",
+    "explanation": "So sánh hai chuỗi theo từ điển xét ký tự từ trái sang phải. Đây là đặc điểm cần ghi nhớ khi áp dụng chủ đề này.",
+    "options": [
+      {
+        "id": "15ca920c-605c-5053-b6b3-0d8706100403",
+        "content": "Có thể bỏ điều kiện dừng mà vẫn đảm bảo thuật toán kết thúc.",
+        "isCorrect": false
+      },
+      {
+        "id": "fec1a47d-374f-5306-aceb-4c7dd1af1fd4",
+        "content": "Kết quả không phụ thuộc vào thứ tự hay dữ liệu đầu vào.",
+        "isCorrect": false
+      },
+      {
+        "id": "05108022-9809-591a-adf7-3150eb9dcb11",
+        "content": "So sánh hai chuỗi theo từ điển xét ký tự từ trái sang phải.",
+        "isCorrect": true
+      },
+      {
+        "id": "1d3f8ec9-834f-56f2-b3c2-4c4ce2fa78b3",
+        "content": "Mọi phép duyệt đều có độ phức tạp O(1).",
+        "isCorrect": false
+      }
+    ],
+    "difficulty": "MEDIUM",
+    "topicName": "Chuỗi",
+    "tagNames": []
+  },
+  {
+    "id": "ad627973-c298-56f4-88e9-d4c4626396cc",
+    "revisionId": "643d3154-f821-5659-b593-91e706af1fb1",
+    "key": "c05-ch03-q24",
+    "courseKey": "c05",
+    "chapterKey": "c05-ch03",
+    "createdBy": "ac9fadc2-1955-59e4-984d-26f74bbb4f53",
+    "clientRequestId": "a8b5ed77-676f-5999-9a07-78cb51ce4100",
+    "isPrivate": false,
+    "requestHash": "f8c7ec47abb5464a81713615f82bbc39ba876e8aad5e8368fcce3e82d48a356f",
+    "content": "Đâu là kiến thức đúng khi làm việc với chuỗi? (Câu 24)",
+    "explanation": "Khi đảo chuỗi, thứ tự các ký tự được đổi ngược hoàn toàn. Đây là đặc điểm cần ghi nhớ khi áp dụng chủ đề này.",
+    "options": [
+      {
+        "id": "34de2436-0342-5ffd-ab34-96210b3d7a67",
+        "content": "Kết quả không phụ thuộc vào thứ tự hay dữ liệu đầu vào.",
+        "isCorrect": false
+      },
+      {
+        "id": "28c2c9c4-2daf-5ce6-ab4b-7458e311e7db",
+        "content": "Khi đảo chuỗi, thứ tự các ký tự được đổi ngược hoàn toàn.",
+        "isCorrect": true
+      },
+      {
+        "id": "8216fe8f-e1ca-506f-ace1-bdcc67f0b21c",
+        "content": "Mọi phép duyệt đều có độ phức tạp O(1).",
+        "isCorrect": false
+      },
+      {
+        "id": "f84b256d-42b0-5cd2-b59e-654ecc8cdddd",
+        "content": "Có thể bỏ điều kiện dừng mà vẫn đảm bảo thuật toán kết thúc.",
+        "isCorrect": false
+      }
+    ],
+    "difficulty": "HARD",
+    "topicName": "Chuỗi",
+    "tagNames": []
+  },
+  {
+    "id": "c12617da-45e6-5ed4-bd7b-55b675e3afc8",
+    "revisionId": "6ef1a857-a77c-5666-b897-34cbf2483cf8",
+    "key": "c05-ch04-q01",
+    "courseKey": "c05",
+    "chapterKey": "c05-ch04",
+    "createdBy": "ac9fadc2-1955-59e4-984d-26f74bbb4f53",
+    "clientRequestId": "10640628-8562-5ec2-8f50-5b9c742af479",
+    "isPrivate": false,
+    "requestHash": "fa7410abbadb9c636ef166e5983a50c3e0cd998522289107c0acb694d98c579d",
+    "content": "Phát biểu nào mô tả đúng về oop? (Câu 01)",
+    "explanation": "Đóng gói gom dữ liệu và hành vi liên quan vào một kiểu đối tượng. Đây là đặc điểm cần ghi nhớ khi áp dụng chủ đề này.",
+    "options": [
+      {
+        "id": "2916d5e4-ea93-5e15-95f8-55e75c6cc1ca",
+        "content": "Đóng gói gom dữ liệu và hành vi liên quan vào một kiểu đối tượng.",
+        "isCorrect": true
+      },
+      {
+        "id": "307cc953-3aee-5bc9-bf8d-d7144d7082f6",
+        "content": "Mọi phép duyệt đều có độ phức tạp O(1).",
+        "isCorrect": false
+      },
+      {
+        "id": "9d21a91b-402e-53e0-ab1c-07e5b8b97cb3",
+        "content": "Có thể bỏ điều kiện dừng mà vẫn đảm bảo thuật toán kết thúc.",
+        "isCorrect": false
+      },
+      {
+        "id": "13b61aa7-8d63-55bb-9e34-adc612801028",
+        "content": "Kết quả không phụ thuộc vào thứ tự hay dữ liệu đầu vào.",
+        "isCorrect": false
+      }
+    ],
+    "difficulty": "EASY",
+    "topicName": "OOP",
+    "tagNames": []
+  },
+  {
+    "id": "55e9454e-a935-5118-82a0-f8e1b1eb6ced",
+    "revisionId": "1a8df1b7-94fe-562b-ad40-b141e4f0aacb",
+    "key": "c05-ch04-q02",
+    "courseKey": "c05",
+    "chapterKey": "c05-ch04",
+    "createdBy": "ac9fadc2-1955-59e4-984d-26f74bbb4f53",
+    "clientRequestId": "d1f3cb12-e75b-5cf4-9163-3cdb7648b01d",
+    "isPrivate": false,
+    "requestHash": "49c06408903f1f61f46b1513351580f25f2681e37ebfd5803d1fb56b80e2067f",
+    "content": "Khi ôn tập oop, kết luận nào là chính xác? (Câu 02)",
+    "explanation": "Tính đa hình cho phép cùng lời gọi có hành vi khác nhau theo kiểu thực tế. Đây là đặc điểm cần ghi nhớ khi áp dụng chủ đề này.",
+    "options": [
+      {
+        "id": "65e6208a-2fac-5794-827a-e4ad3cf4c1fc",
+        "content": "Mọi phép duyệt đều có độ phức tạp O(1).",
+        "isCorrect": false
+      },
+      {
+        "id": "b5ddd0a1-ec57-5938-9fb0-11bd536395f8",
+        "content": "Có thể bỏ điều kiện dừng mà vẫn đảm bảo thuật toán kết thúc.",
+        "isCorrect": false
+      },
+      {
+        "id": "1744e87c-0351-5f21-92b8-af32a01ff93c",
+        "content": "Kết quả không phụ thuộc vào thứ tự hay dữ liệu đầu vào.",
+        "isCorrect": false
+      },
+      {
+        "id": "38513930-669e-59d9-b961-a1bdf8500acf",
+        "content": "Tính đa hình cho phép cùng lời gọi có hành vi khác nhau theo kiểu thực tế.",
+        "isCorrect": true
+      }
+    ],
+    "difficulty": "MEDIUM",
+    "topicName": "OOP",
+    "tagNames": []
+  },
+  {
+    "id": "2e037722-ac58-58a8-a969-fbdcc2a8eae6",
+    "revisionId": "0e30fcb4-f71c-5276-892e-c2d25a9dce36",
+    "key": "c05-ch04-q03",
+    "courseKey": "c05",
+    "chapterKey": "c05-ch04",
+    "createdBy": "ac9fadc2-1955-59e4-984d-26f74bbb4f53",
+    "clientRequestId": "9ef05df5-c2b6-5970-873c-022113f3f46e",
+    "isPrivate": false,
+    "requestHash": "388061266543e2300a80239a0f2d6c1a9ccf9cbbb26e0a8a30e6e916ea208657",
+    "content": "Một người học đang giải bài về oop. Nhận định nào nên được chọn? (Câu 03)",
+    "explanation": "Constructor được dùng để khởi tạo trạng thái ban đầu của đối tượng. Đây là đặc điểm cần ghi nhớ khi áp dụng chủ đề này.",
+    "options": [
+      {
+        "id": "4c2cfb73-6f36-5c78-8c40-375373bed15a",
+        "content": "Có thể bỏ điều kiện dừng mà vẫn đảm bảo thuật toán kết thúc.",
+        "isCorrect": false
+      },
+      {
+        "id": "34a437fd-f5d8-5e3f-86bc-522af0823dd5",
+        "content": "Kết quả không phụ thuộc vào thứ tự hay dữ liệu đầu vào.",
+        "isCorrect": false
+      },
+      {
+        "id": "3b479668-b96d-5a35-9593-aed7f7236991",
+        "content": "Constructor được dùng để khởi tạo trạng thái ban đầu của đối tượng.",
+        "isCorrect": true
+      },
+      {
+        "id": "d8f84121-f156-5bc9-8455-bf7ce1c95604",
+        "content": "Mọi phép duyệt đều có độ phức tạp O(1).",
+        "isCorrect": false
+      }
+    ],
+    "difficulty": "HARD",
+    "topicName": "OOP",
+    "tagNames": []
+  },
+  {
+    "id": "19c4342a-0d70-521a-99d9-98b08e2b8e2d",
+    "revisionId": "1f7c9f6d-7848-502d-9710-de041caf048d",
+    "key": "c05-ch04-q04",
+    "courseKey": "c05",
+    "chapterKey": "c05-ch04",
+    "createdBy": "ac9fadc2-1955-59e4-984d-26f74bbb4f53",
+    "clientRequestId": "8baa007a-bfc4-5876-b893-93a16ea732c2",
+    "isPrivate": false,
+    "requestHash": "68ac66f3aaa6760cb8079ac7f1b09b663e7baab300274f24b40dc79429941660",
+    "content": "Đâu là kiến thức đúng khi làm việc với oop? (Câu 04)",
+    "explanation": "Đóng gói gom dữ liệu và hành vi liên quan vào một kiểu đối tượng. Đây là đặc điểm cần ghi nhớ khi áp dụng chủ đề này.",
+    "options": [
+      {
+        "id": "01602d7c-7904-5dcb-9aa5-f58de02d75df",
+        "content": "Kết quả không phụ thuộc vào thứ tự hay dữ liệu đầu vào.",
+        "isCorrect": false
+      },
+      {
+        "id": "2ca63a9a-9d35-51bf-8c93-8cd0e35978e4",
+        "content": "Đóng gói gom dữ liệu và hành vi liên quan vào một kiểu đối tượng.",
+        "isCorrect": true
+      },
+      {
+        "id": "5c09d167-e1db-5dc1-a7f7-f764d188568b",
+        "content": "Mọi phép duyệt đều có độ phức tạp O(1).",
+        "isCorrect": false
+      },
+      {
+        "id": "26cff38c-1592-5da7-adfa-a14ad4581d5c",
+        "content": "Có thể bỏ điều kiện dừng mà vẫn đảm bảo thuật toán kết thúc.",
+        "isCorrect": false
+      }
+    ],
+    "difficulty": "EASY",
+    "topicName": "OOP",
+    "tagNames": []
+  },
+  {
+    "id": "9eb646db-8d1b-5f03-b40b-4e37bc742af2",
+    "revisionId": "ef1f3c77-9d05-5e76-bd75-8d256e023cca",
+    "key": "c05-ch04-q05",
+    "courseKey": "c05",
+    "chapterKey": "c05-ch04",
+    "createdBy": "ac9fadc2-1955-59e4-984d-26f74bbb4f53",
+    "clientRequestId": "880080c8-ed0e-5638-87c6-a7e8f511411c",
+    "isPrivate": false,
+    "requestHash": "e6c9e416affa3e0d1a54b82bb37ae1006e9c43745df68e50d7e29ee3e22bcc1d",
+    "content": "Phát biểu nào mô tả đúng về oop? (Câu 05)",
+    "explanation": "Tính đa hình cho phép cùng lời gọi có hành vi khác nhau theo kiểu thực tế. Đây là đặc điểm cần ghi nhớ khi áp dụng chủ đề này.",
+    "options": [
+      {
+        "id": "e88b1110-32a0-5c1f-afd4-95ab7551251e",
+        "content": "Tính đa hình cho phép cùng lời gọi có hành vi khác nhau theo kiểu thực tế.",
+        "isCorrect": true
+      },
+      {
+        "id": "4e55570b-d6e3-5bbb-9ed5-cc4d2e10fdeb",
+        "content": "Mọi phép duyệt đều có độ phức tạp O(1).",
+        "isCorrect": false
+      },
+      {
+        "id": "420663f0-4a70-5cdb-b142-246288ab316d",
+        "content": "Có thể bỏ điều kiện dừng mà vẫn đảm bảo thuật toán kết thúc.",
+        "isCorrect": false
+      },
+      {
+        "id": "bf6e6569-6ad7-5c5b-8f66-1bd5b7896e98",
+        "content": "Kết quả không phụ thuộc vào thứ tự hay dữ liệu đầu vào.",
+        "isCorrect": false
+      }
+    ],
+    "difficulty": "MEDIUM",
+    "topicName": "OOP",
+    "tagNames": []
+  },
+  {
+    "id": "dbb2f168-0419-5fba-af87-ec82ac2f6af0",
+    "revisionId": "14ba9ae4-b919-5c10-80e4-96c1ec6ea7cf",
+    "key": "c05-ch04-q06",
+    "courseKey": "c05",
+    "chapterKey": "c05-ch04",
+    "createdBy": "ac9fadc2-1955-59e4-984d-26f74bbb4f53",
+    "clientRequestId": "4189d587-49e5-5328-98c1-a2701ed2ed0d",
+    "isPrivate": false,
+    "requestHash": "c65bd4d529db0f4acefc4bff82e8e7d5d6a4df129d63f81e3e3d71ab73917fc9",
+    "content": "Khi ôn tập oop, kết luận nào là chính xác? (Câu 06)",
+    "explanation": "Constructor được dùng để khởi tạo trạng thái ban đầu của đối tượng. Đây là đặc điểm cần ghi nhớ khi áp dụng chủ đề này.",
+    "options": [
+      {
+        "id": "577c5caf-44e0-53d8-9f51-e05c99542725",
+        "content": "Mọi phép duyệt đều có độ phức tạp O(1).",
+        "isCorrect": false
+      },
+      {
+        "id": "d17347c5-0fa4-5f69-866f-e38226c8565a",
+        "content": "Có thể bỏ điều kiện dừng mà vẫn đảm bảo thuật toán kết thúc.",
+        "isCorrect": false
+      },
+      {
+        "id": "0d458623-d7fd-509a-bd40-0cd1df5538c5",
+        "content": "Kết quả không phụ thuộc vào thứ tự hay dữ liệu đầu vào.",
+        "isCorrect": false
+      },
+      {
+        "id": "a5d39208-4572-5080-a366-c02987abe910",
+        "content": "Constructor được dùng để khởi tạo trạng thái ban đầu của đối tượng.",
+        "isCorrect": true
+      }
+    ],
+    "difficulty": "HARD",
+    "topicName": "OOP",
+    "tagNames": []
+  },
+  {
+    "id": "db3f1b97-b159-52a2-86c5-a339016ab782",
+    "revisionId": "da816753-607b-5ad7-9423-6aea6aeb6ea7",
+    "key": "c05-ch04-q07",
+    "courseKey": "c05",
+    "chapterKey": "c05-ch04",
+    "createdBy": "ac9fadc2-1955-59e4-984d-26f74bbb4f53",
+    "clientRequestId": "6fcc40ee-a6f7-5b98-906a-560834b35660",
+    "isPrivate": false,
+    "requestHash": "04591e86dcf5842a0ccce6888c62d12fdfc9183b8d9f9ef792e6ed49dc39b61a",
+    "content": "Một người học đang giải bài về oop. Nhận định nào nên được chọn? (Câu 07)",
+    "explanation": "Đóng gói gom dữ liệu và hành vi liên quan vào một kiểu đối tượng. Đây là đặc điểm cần ghi nhớ khi áp dụng chủ đề này.",
+    "options": [
+      {
+        "id": "b39eeab3-8213-5355-a5d8-e3594325354d",
+        "content": "Có thể bỏ điều kiện dừng mà vẫn đảm bảo thuật toán kết thúc.",
+        "isCorrect": false
+      },
+      {
+        "id": "9ca9be07-2a5c-572b-8f76-651a8af39eda",
+        "content": "Kết quả không phụ thuộc vào thứ tự hay dữ liệu đầu vào.",
+        "isCorrect": false
+      },
+      {
+        "id": "b98a142a-bd64-5444-90e9-42a4128ef29f",
+        "content": "Đóng gói gom dữ liệu và hành vi liên quan vào một kiểu đối tượng.",
+        "isCorrect": true
+      },
+      {
+        "id": "f7eb49c1-07b3-5123-bbf8-d4dfebac2156",
+        "content": "Mọi phép duyệt đều có độ phức tạp O(1).",
+        "isCorrect": false
+      }
+    ],
+    "difficulty": "EASY",
+    "topicName": "OOP",
+    "tagNames": []
+  },
+  {
+    "id": "880e9cd9-e2b7-5f1b-ba04-d38d836587ad",
+    "revisionId": "70a5c073-988d-5068-8c74-f1fc8d9cd6d5",
+    "key": "c05-ch04-q08",
+    "courseKey": "c05",
+    "chapterKey": "c05-ch04",
+    "createdBy": "ac9fadc2-1955-59e4-984d-26f74bbb4f53",
+    "clientRequestId": "7990f8aa-e8d1-5ee4-9925-64e984513c26",
+    "isPrivate": false,
+    "requestHash": "b370da2f59dc1df1152ee8d16ab50bb54bcdd2c9b0198b5402de84f906f52e33",
+    "content": "Đâu là kiến thức đúng khi làm việc với oop? (Câu 08)",
+    "explanation": "Tính đa hình cho phép cùng lời gọi có hành vi khác nhau theo kiểu thực tế. Đây là đặc điểm cần ghi nhớ khi áp dụng chủ đề này.",
+    "options": [
+      {
+        "id": "37f2130b-1544-585b-b7b3-f58982cdc107",
+        "content": "Kết quả không phụ thuộc vào thứ tự hay dữ liệu đầu vào.",
+        "isCorrect": false
+      },
+      {
+        "id": "babe7ae6-f387-5629-a9f6-bd5366493b96",
+        "content": "Tính đa hình cho phép cùng lời gọi có hành vi khác nhau theo kiểu thực tế.",
+        "isCorrect": true
+      },
+      {
+        "id": "af4e5c3f-1cb0-5cac-a6a1-05c7f0717f67",
+        "content": "Mọi phép duyệt đều có độ phức tạp O(1).",
+        "isCorrect": false
+      },
+      {
+        "id": "916b282c-16a0-5332-94b0-4bfab4c0454f",
+        "content": "Có thể bỏ điều kiện dừng mà vẫn đảm bảo thuật toán kết thúc.",
+        "isCorrect": false
+      }
+    ],
+    "difficulty": "MEDIUM",
+    "topicName": "OOP",
+    "tagNames": []
+  },
+  {
+    "id": "2d37258c-a0fe-5322-bb41-bb4895a2cf8b",
+    "revisionId": "cacd899b-7134-5b6c-ae00-2071d5c11e2c",
+    "key": "c05-ch04-q09",
+    "courseKey": "c05",
+    "chapterKey": "c05-ch04",
+    "createdBy": "ac9fadc2-1955-59e4-984d-26f74bbb4f53",
+    "clientRequestId": "cd1c7e71-21c2-5903-8ea1-76c692737999",
+    "isPrivate": false,
+    "requestHash": "de99c21f307750203bec8862b18ccbbc59831e512fa7b38d4b4a4035632acf53",
+    "content": "Phát biểu nào mô tả đúng về oop? (Câu 09)",
+    "explanation": "Constructor được dùng để khởi tạo trạng thái ban đầu của đối tượng. Đây là đặc điểm cần ghi nhớ khi áp dụng chủ đề này.",
+    "options": [
+      {
+        "id": "2b113465-a5ee-5bf2-839d-ae582c8cbe5f",
+        "content": "Constructor được dùng để khởi tạo trạng thái ban đầu của đối tượng.",
+        "isCorrect": true
+      },
+      {
+        "id": "3b6bb4f5-cab2-5273-82a3-e545d5b7f77f",
+        "content": "Mọi phép duyệt đều có độ phức tạp O(1).",
+        "isCorrect": false
+      },
+      {
+        "id": "5addaac4-ace3-5e1f-b91e-2c8d32a303bf",
+        "content": "Có thể bỏ điều kiện dừng mà vẫn đảm bảo thuật toán kết thúc.",
+        "isCorrect": false
+      },
+      {
+        "id": "6721d6ab-484e-58b9-a695-f9271a5c8c20",
+        "content": "Kết quả không phụ thuộc vào thứ tự hay dữ liệu đầu vào.",
+        "isCorrect": false
+      }
+    ],
+    "difficulty": "HARD",
+    "topicName": "OOP",
+    "tagNames": []
+  },
+  {
+    "id": "f48d9cc8-167b-5317-9daf-a5be64a09631",
+    "revisionId": "842e06b7-aabe-5118-b38f-6fffe06300a5",
+    "key": "c05-ch04-q10",
+    "courseKey": "c05",
+    "chapterKey": "c05-ch04",
+    "createdBy": "ac9fadc2-1955-59e4-984d-26f74bbb4f53",
+    "clientRequestId": "506ad64c-db4d-562e-b1e0-6b63c2ec1675",
+    "isPrivate": false,
+    "requestHash": "0db248c096abb562a24789bb10c872510b991140f24c3b6ff0b3e6479d28a0a6",
+    "content": "Khi ôn tập oop, kết luận nào là chính xác? (Câu 10)",
+    "explanation": "Đóng gói gom dữ liệu và hành vi liên quan vào một kiểu đối tượng. Đây là đặc điểm cần ghi nhớ khi áp dụng chủ đề này.",
+    "options": [
+      {
+        "id": "446f6527-13af-5669-8a78-ed2f6c1dc4e1",
+        "content": "Mọi phép duyệt đều có độ phức tạp O(1).",
+        "isCorrect": false
+      },
+      {
+        "id": "1f4b5d74-8ba5-5797-875e-f9e955e4bc7d",
+        "content": "Có thể bỏ điều kiện dừng mà vẫn đảm bảo thuật toán kết thúc.",
+        "isCorrect": false
+      },
+      {
+        "id": "58d43666-af7f-553f-a8f2-7ba18c953c1f",
+        "content": "Kết quả không phụ thuộc vào thứ tự hay dữ liệu đầu vào.",
+        "isCorrect": false
+      },
+      {
+        "id": "05dece5f-ca5a-5b64-863b-c99b5caedb12",
+        "content": "Đóng gói gom dữ liệu và hành vi liên quan vào một kiểu đối tượng.",
+        "isCorrect": true
+      }
+    ],
+    "difficulty": "EASY",
+    "topicName": "OOP",
+    "tagNames": []
+  },
+  {
+    "id": "e928e636-207a-5ca2-8bf9-4ffe29d40396",
+    "revisionId": "55c2c61a-833e-5cb0-be96-36b47ddd187a",
+    "key": "c05-ch04-q11",
+    "courseKey": "c05",
+    "chapterKey": "c05-ch04",
+    "createdBy": "ac9fadc2-1955-59e4-984d-26f74bbb4f53",
+    "clientRequestId": "e10fd558-abef-5a89-ae80-00ecf7a8462d",
+    "isPrivate": false,
+    "requestHash": "9d2d11895e04e5369f7b0ebb5b9b33208a9a029742c4587af9bf3c07a6ddc4a3",
+    "content": "Một người học đang giải bài về oop. Nhận định nào nên được chọn? (Câu 11)",
+    "explanation": "Tính đa hình cho phép cùng lời gọi có hành vi khác nhau theo kiểu thực tế. Đây là đặc điểm cần ghi nhớ khi áp dụng chủ đề này.",
+    "options": [
+      {
+        "id": "e12e7b23-8736-5dad-8df8-cb29777e750a",
+        "content": "Có thể bỏ điều kiện dừng mà vẫn đảm bảo thuật toán kết thúc.",
+        "isCorrect": false
+      },
+      {
+        "id": "ee7963d4-107d-54b3-befb-0d67f468cd81",
+        "content": "Kết quả không phụ thuộc vào thứ tự hay dữ liệu đầu vào.",
+        "isCorrect": false
+      },
+      {
+        "id": "0c35281e-ce91-5c91-8ebd-e0f5f428a35c",
+        "content": "Tính đa hình cho phép cùng lời gọi có hành vi khác nhau theo kiểu thực tế.",
+        "isCorrect": true
+      },
+      {
+        "id": "ab84f569-bda5-52a6-8793-161dd5baba95",
+        "content": "Mọi phép duyệt đều có độ phức tạp O(1).",
+        "isCorrect": false
+      }
+    ],
+    "difficulty": "MEDIUM",
+    "topicName": "OOP",
+    "tagNames": []
+  },
+  {
+    "id": "68b307c4-6458-5437-8182-0a38cc66a7cf",
+    "revisionId": "e8584685-df21-5367-8628-acaefc1ff67d",
+    "key": "c05-ch04-q12",
+    "courseKey": "c05",
+    "chapterKey": "c05-ch04",
+    "createdBy": "ac9fadc2-1955-59e4-984d-26f74bbb4f53",
+    "clientRequestId": "9c73a724-7d60-5bfb-9a3e-dfe5b90147db",
+    "isPrivate": false,
+    "requestHash": "ff50b2f3112dc96a3862100b6f98af6d5f850377349507337ee5efb55312cb4d",
+    "content": "Đâu là kiến thức đúng khi làm việc với oop? (Câu 12)",
+    "explanation": "Constructor được dùng để khởi tạo trạng thái ban đầu của đối tượng. Đây là đặc điểm cần ghi nhớ khi áp dụng chủ đề này.",
+    "options": [
+      {
+        "id": "0ed561ce-64f1-5e4d-b179-d39f9181eee3",
+        "content": "Kết quả không phụ thuộc vào thứ tự hay dữ liệu đầu vào.",
+        "isCorrect": false
+      },
+      {
+        "id": "3f07b640-457d-571c-9e8f-6cc13c998005",
+        "content": "Constructor được dùng để khởi tạo trạng thái ban đầu của đối tượng.",
+        "isCorrect": true
+      },
+      {
+        "id": "fb4d44b2-09b6-5f59-bff4-bd2226ec3c07",
+        "content": "Mọi phép duyệt đều có độ phức tạp O(1).",
+        "isCorrect": false
+      },
+      {
+        "id": "4d8dfa25-250a-56f3-8675-ce34338865ac",
+        "content": "Có thể bỏ điều kiện dừng mà vẫn đảm bảo thuật toán kết thúc.",
+        "isCorrect": false
+      }
+    ],
+    "difficulty": "HARD",
+    "topicName": "OOP",
+    "tagNames": []
+  },
+  {
+    "id": "259ad7cc-844a-5a19-87d0-eaa43ba3f266",
+    "revisionId": "fa944fb1-2696-5951-a944-1bc0b7479d50",
+    "key": "c05-ch04-q13",
+    "courseKey": "c05",
+    "chapterKey": "c05-ch04",
+    "createdBy": "ac9fadc2-1955-59e4-984d-26f74bbb4f53",
+    "clientRequestId": "bdc9051f-4916-5778-a1ca-d1f62106d861",
+    "isPrivate": false,
+    "requestHash": "8fe71384409489b94fbe710acb83b8de9b9e8488a209776ef74f918bacf81589",
+    "content": "Phát biểu nào mô tả đúng về oop? (Câu 13)",
+    "explanation": "Đóng gói gom dữ liệu và hành vi liên quan vào một kiểu đối tượng. Đây là đặc điểm cần ghi nhớ khi áp dụng chủ đề này.",
+    "options": [
+      {
+        "id": "ad5d74dc-5496-5a06-9bf1-62e47a8483c5",
+        "content": "Đóng gói gom dữ liệu và hành vi liên quan vào một kiểu đối tượng.",
+        "isCorrect": true
+      },
+      {
+        "id": "bfef08f7-a4f4-5bd5-8339-e19da9cd7bac",
+        "content": "Mọi phép duyệt đều có độ phức tạp O(1).",
+        "isCorrect": false
+      },
+      {
+        "id": "db465613-f991-517c-9d58-c3312ef97821",
+        "content": "Có thể bỏ điều kiện dừng mà vẫn đảm bảo thuật toán kết thúc.",
+        "isCorrect": false
+      },
+      {
+        "id": "6cc26a21-ae2b-5659-a25d-c1b4c65e653f",
+        "content": "Kết quả không phụ thuộc vào thứ tự hay dữ liệu đầu vào.",
+        "isCorrect": false
+      }
+    ],
+    "difficulty": "EASY",
+    "topicName": "OOP",
+    "tagNames": []
+  },
+  {
+    "id": "1c2b8294-e752-5597-b7c2-5bb2f3e3218f",
+    "revisionId": "83356745-2d38-5754-bea2-c228acf7f66c",
+    "key": "c05-ch04-q14",
+    "courseKey": "c05",
+    "chapterKey": "c05-ch04",
+    "createdBy": "ac9fadc2-1955-59e4-984d-26f74bbb4f53",
+    "clientRequestId": "9727f342-35e0-54c7-9f34-d559f45f1e02",
+    "isPrivate": false,
+    "requestHash": "d9b146d476e45a5b25e8bde566884508cafeb6d1e8ad59839e49eb87d21f228e",
+    "content": "Khi ôn tập oop, kết luận nào là chính xác? (Câu 14)",
+    "explanation": "Tính đa hình cho phép cùng lời gọi có hành vi khác nhau theo kiểu thực tế. Đây là đặc điểm cần ghi nhớ khi áp dụng chủ đề này.",
+    "options": [
+      {
+        "id": "12a0b55c-09b4-5471-8a25-095921953dc8",
+        "content": "Mọi phép duyệt đều có độ phức tạp O(1).",
+        "isCorrect": false
+      },
+      {
+        "id": "1b3dedff-08e8-5c78-b07e-60b42e0d1c83",
+        "content": "Có thể bỏ điều kiện dừng mà vẫn đảm bảo thuật toán kết thúc.",
+        "isCorrect": false
+      },
+      {
+        "id": "41335778-0f98-5880-843c-0f6d85ac4fd2",
+        "content": "Kết quả không phụ thuộc vào thứ tự hay dữ liệu đầu vào.",
+        "isCorrect": false
+      },
+      {
+        "id": "6a8fccba-4cbd-5389-bd18-f743276b913e",
+        "content": "Tính đa hình cho phép cùng lời gọi có hành vi khác nhau theo kiểu thực tế.",
+        "isCorrect": true
+      }
+    ],
+    "difficulty": "MEDIUM",
+    "topicName": "OOP",
+    "tagNames": []
+  },
+  {
+    "id": "ec2f5fef-b76f-512b-9516-013fbd8097d1",
+    "revisionId": "1e84d2f4-4d25-5c20-b0e3-828062f35ae6",
+    "key": "c05-ch04-q15",
+    "courseKey": "c05",
+    "chapterKey": "c05-ch04",
+    "createdBy": "ac9fadc2-1955-59e4-984d-26f74bbb4f53",
+    "clientRequestId": "d88c52ca-b8e0-583d-99a5-d75cd98c7e91",
+    "isPrivate": false,
+    "requestHash": "41e6d194a07f51e005c98f5d672389802f2402b33216bfad3e934057a7297c60",
+    "content": "Một người học đang giải bài về oop. Nhận định nào nên được chọn? (Câu 15)",
+    "explanation": "Constructor được dùng để khởi tạo trạng thái ban đầu của đối tượng. Đây là đặc điểm cần ghi nhớ khi áp dụng chủ đề này.",
+    "options": [
+      {
+        "id": "cc9dd903-acf0-56d5-9b91-b64826bef3eb",
+        "content": "Có thể bỏ điều kiện dừng mà vẫn đảm bảo thuật toán kết thúc.",
+        "isCorrect": false
+      },
+      {
+        "id": "d4dad129-bbf0-5148-9e14-f43bede67065",
+        "content": "Kết quả không phụ thuộc vào thứ tự hay dữ liệu đầu vào.",
+        "isCorrect": false
+      },
+      {
+        "id": "9006802e-8c7d-5e3e-b886-ee22c3f80883",
+        "content": "Constructor được dùng để khởi tạo trạng thái ban đầu của đối tượng.",
+        "isCorrect": true
+      },
+      {
+        "id": "5604541f-6c25-520b-9941-93e696c92a39",
+        "content": "Mọi phép duyệt đều có độ phức tạp O(1).",
+        "isCorrect": false
+      }
+    ],
+    "difficulty": "HARD",
+    "topicName": "OOP",
+    "tagNames": []
+  },
+  {
+    "id": "1502060f-387b-56ef-a97b-68ce7fbb0801",
+    "revisionId": "cbd16b70-e3c1-5358-90b2-59c243c6d57f",
+    "key": "c05-ch04-q16",
+    "courseKey": "c05",
+    "chapterKey": "c05-ch04",
+    "createdBy": "ac9fadc2-1955-59e4-984d-26f74bbb4f53",
+    "clientRequestId": "1b73fdef-efe8-59ff-ac75-2df4210e0fcf",
+    "isPrivate": false,
+    "requestHash": "e987d5795104405ccde99c3da96984dbfda073615ee83514801d51f840c2f364",
+    "content": "Đâu là kiến thức đúng khi làm việc với oop? (Câu 16)",
+    "explanation": "Đóng gói gom dữ liệu và hành vi liên quan vào một kiểu đối tượng. Đây là đặc điểm cần ghi nhớ khi áp dụng chủ đề này.",
+    "options": [
+      {
+        "id": "e56717ec-9b22-54d7-94f3-320c67728b63",
+        "content": "Kết quả không phụ thuộc vào thứ tự hay dữ liệu đầu vào.",
+        "isCorrect": false
+      },
+      {
+        "id": "bbde7bf9-ee20-5edf-b28e-a5240c6122e8",
+        "content": "Đóng gói gom dữ liệu và hành vi liên quan vào một kiểu đối tượng.",
+        "isCorrect": true
+      },
+      {
+        "id": "9a25e105-063f-589c-bfe7-e9b2ce4270e3",
+        "content": "Mọi phép duyệt đều có độ phức tạp O(1).",
+        "isCorrect": false
+      },
+      {
+        "id": "2b7e54de-f2a3-5ebd-bacb-0cbc812c5ca9",
+        "content": "Có thể bỏ điều kiện dừng mà vẫn đảm bảo thuật toán kết thúc.",
+        "isCorrect": false
+      }
+    ],
+    "difficulty": "EASY",
+    "topicName": "OOP",
+    "tagNames": []
+  },
+  {
+    "id": "3d01e992-392b-5613-bcb4-f70a5208e5db",
+    "revisionId": "841d865c-d13f-5a9a-b460-4bfab4dc837b",
+    "key": "c05-ch04-q17",
+    "courseKey": "c05",
+    "chapterKey": "c05-ch04",
+    "createdBy": "ac9fadc2-1955-59e4-984d-26f74bbb4f53",
+    "clientRequestId": "86423bb8-39ec-5346-b481-165041cdd672",
+    "isPrivate": false,
+    "requestHash": "9564f52d11da109682b4d96312618f78a2ea4db3e735e42e45c9eb5bf159dc22",
+    "content": "Phát biểu nào mô tả đúng về oop? (Câu 17)",
+    "explanation": "Tính đa hình cho phép cùng lời gọi có hành vi khác nhau theo kiểu thực tế. Đây là đặc điểm cần ghi nhớ khi áp dụng chủ đề này.",
+    "options": [
+      {
+        "id": "b62a768b-7f45-5684-9ae1-124877cf3396",
+        "content": "Tính đa hình cho phép cùng lời gọi có hành vi khác nhau theo kiểu thực tế.",
+        "isCorrect": true
+      },
+      {
+        "id": "68453d24-7734-5c2b-be18-e04f75e56ee9",
+        "content": "Mọi phép duyệt đều có độ phức tạp O(1).",
+        "isCorrect": false
+      },
+      {
+        "id": "0f6c6f43-e248-5360-b815-cdff8f7d4d81",
+        "content": "Có thể bỏ điều kiện dừng mà vẫn đảm bảo thuật toán kết thúc.",
+        "isCorrect": false
+      },
+      {
+        "id": "be1b627a-3126-51f7-9c43-b757260b4896",
+        "content": "Kết quả không phụ thuộc vào thứ tự hay dữ liệu đầu vào.",
+        "isCorrect": false
+      }
+    ],
+    "difficulty": "MEDIUM",
+    "topicName": "OOP",
+    "tagNames": []
+  },
+  {
+    "id": "5ec15fbd-899e-51ef-89b0-e95c48d4d973",
+    "revisionId": "e1189c0e-c535-5a1c-befc-f724fa2dff98",
+    "key": "c05-ch04-q18",
+    "courseKey": "c05",
+    "chapterKey": "c05-ch04",
+    "createdBy": "ac9fadc2-1955-59e4-984d-26f74bbb4f53",
+    "clientRequestId": "a8df60cb-903c-5603-8040-e20d61c88b33",
+    "isPrivate": false,
+    "requestHash": "42636d0a078c144d95e924eb1212fe61b9bd6b94081a2cc6acc3684ba46b0790",
+    "content": "Khi ôn tập oop, kết luận nào là chính xác? (Câu 18)",
+    "explanation": "Constructor được dùng để khởi tạo trạng thái ban đầu của đối tượng. Đây là đặc điểm cần ghi nhớ khi áp dụng chủ đề này.",
+    "options": [
+      {
+        "id": "3d84cf61-6c6b-5349-af67-ccc91db09925",
+        "content": "Mọi phép duyệt đều có độ phức tạp O(1).",
+        "isCorrect": false
+      },
+      {
+        "id": "f2a99613-5e1c-5ed5-b3a3-8e52e3d0edac",
+        "content": "Có thể bỏ điều kiện dừng mà vẫn đảm bảo thuật toán kết thúc.",
+        "isCorrect": false
+      },
+      {
+        "id": "685d6176-3819-57e5-8593-c07c033c98e2",
+        "content": "Kết quả không phụ thuộc vào thứ tự hay dữ liệu đầu vào.",
+        "isCorrect": false
+      },
+      {
+        "id": "10591657-f66b-5b45-84ff-bc12b7fcd6e0",
+        "content": "Constructor được dùng để khởi tạo trạng thái ban đầu của đối tượng.",
+        "isCorrect": true
+      }
+    ],
+    "difficulty": "HARD",
+    "topicName": "OOP",
+    "tagNames": []
+  },
+  {
+    "id": "e3f07d64-db5c-5fd4-81f5-b1b1b085b623",
+    "revisionId": "8455c636-134a-53dd-b92a-8b29431d3ad8",
+    "key": "c05-ch04-q19",
+    "courseKey": "c05",
+    "chapterKey": "c05-ch04",
+    "createdBy": "ac9fadc2-1955-59e4-984d-26f74bbb4f53",
+    "clientRequestId": "bc22e15b-7f74-5bbb-9970-d2baf2ba3fa7",
+    "isPrivate": false,
+    "requestHash": "2f7fd601e8581de1fd389ad414b77a6b1ef72a1cdbd1e098ad807c3caddb219b",
+    "content": "Một người học đang giải bài về oop. Nhận định nào nên được chọn? (Câu 19)",
+    "explanation": "Đóng gói gom dữ liệu và hành vi liên quan vào một kiểu đối tượng. Đây là đặc điểm cần ghi nhớ khi áp dụng chủ đề này.",
+    "options": [
+      {
+        "id": "3433e24a-e2fa-5fcb-a619-5effeaaecb7b",
+        "content": "Có thể bỏ điều kiện dừng mà vẫn đảm bảo thuật toán kết thúc.",
+        "isCorrect": false
+      },
+      {
+        "id": "75f1c045-de59-5b4d-930a-5f716e5c3341",
+        "content": "Kết quả không phụ thuộc vào thứ tự hay dữ liệu đầu vào.",
+        "isCorrect": false
+      },
+      {
+        "id": "38330340-3974-5101-8fb5-9e96f3c6f85d",
+        "content": "Đóng gói gom dữ liệu và hành vi liên quan vào một kiểu đối tượng.",
+        "isCorrect": true
+      },
+      {
+        "id": "ef6f7224-bdf2-574c-ad40-0927cacecd54",
+        "content": "Mọi phép duyệt đều có độ phức tạp O(1).",
+        "isCorrect": false
+      }
+    ],
+    "difficulty": "EASY",
+    "topicName": "OOP",
+    "tagNames": []
+  },
+  {
+    "id": "7029a09b-b410-5c25-b799-6960cac4ade0",
+    "revisionId": "bb45cf83-ce09-513b-890c-869a48a20116",
+    "key": "c05-ch04-q20",
+    "courseKey": "c05",
+    "chapterKey": "c05-ch04",
+    "createdBy": "ac9fadc2-1955-59e4-984d-26f74bbb4f53",
+    "clientRequestId": "1a34c91a-e340-53f2-928c-02b98fe0df52",
+    "isPrivate": false,
+    "requestHash": "c4e41ba46a5fa6f0beba4178c317170fc243cde873f9db89d4644373b4ce02f7",
+    "content": "Đâu là kiến thức đúng khi làm việc với oop? (Câu 20)",
+    "explanation": "Tính đa hình cho phép cùng lời gọi có hành vi khác nhau theo kiểu thực tế. Đây là đặc điểm cần ghi nhớ khi áp dụng chủ đề này.",
+    "options": [
+      {
+        "id": "660a0a3b-6750-5981-8a05-ecc97562a932",
+        "content": "Kết quả không phụ thuộc vào thứ tự hay dữ liệu đầu vào.",
+        "isCorrect": false
+      },
+      {
+        "id": "7d5ac04c-94f9-5ab8-baeb-9361e0acb276",
+        "content": "Tính đa hình cho phép cùng lời gọi có hành vi khác nhau theo kiểu thực tế.",
+        "isCorrect": true
+      },
+      {
+        "id": "efd83e0a-41c6-580b-86b4-d6491e947ced",
+        "content": "Mọi phép duyệt đều có độ phức tạp O(1).",
+        "isCorrect": false
+      },
+      {
+        "id": "3f8f3216-3609-5471-bd76-09992a3cfd0d",
+        "content": "Có thể bỏ điều kiện dừng mà vẫn đảm bảo thuật toán kết thúc.",
+        "isCorrect": false
+      }
+    ],
+    "difficulty": "MEDIUM",
+    "topicName": "OOP",
+    "tagNames": []
+  },
+  {
+    "id": "3fb0d6e2-aef2-5710-9e33-963502753e91",
+    "revisionId": "36825e87-36bc-5e88-8463-69b0474a0beb",
+    "key": "c05-ch04-q21",
+    "courseKey": "c05",
+    "chapterKey": "c05-ch04",
+    "createdBy": "ac9fadc2-1955-59e4-984d-26f74bbb4f53",
+    "clientRequestId": "c410abe4-a50c-59fd-b84f-ab3247eb2acc",
+    "isPrivate": false,
+    "requestHash": "8082437e6bd5f9080bb61b5a94a4857610752c03480564067cf2a10d722187c2",
+    "content": "Phát biểu nào mô tả đúng về oop? (Câu 21)",
+    "explanation": "Constructor được dùng để khởi tạo trạng thái ban đầu của đối tượng. Đây là đặc điểm cần ghi nhớ khi áp dụng chủ đề này.",
+    "options": [
+      {
+        "id": "60dd84d4-b3ed-59aa-9fec-cec9a1ae3a73",
+        "content": "Constructor được dùng để khởi tạo trạng thái ban đầu của đối tượng.",
+        "isCorrect": true
+      },
+      {
+        "id": "78152325-60b4-5afb-966f-ae0c8e005078",
+        "content": "Mọi phép duyệt đều có độ phức tạp O(1).",
+        "isCorrect": false
+      },
+      {
+        "id": "bcfb9563-d46a-5115-8a32-438d56dc8fb1",
+        "content": "Có thể bỏ điều kiện dừng mà vẫn đảm bảo thuật toán kết thúc.",
+        "isCorrect": false
+      },
+      {
+        "id": "5c486dc5-562e-502a-9da5-31951bc30bb0",
+        "content": "Kết quả không phụ thuộc vào thứ tự hay dữ liệu đầu vào.",
+        "isCorrect": false
+      }
+    ],
+    "difficulty": "HARD",
+    "topicName": "OOP",
+    "tagNames": []
+  },
+  {
+    "id": "f65b4744-7340-5ecf-93c6-102d83f7006a",
+    "revisionId": "382b6adb-a16e-5503-8fef-ff333a1da9e2",
+    "key": "c05-ch04-q22",
+    "courseKey": "c05",
+    "chapterKey": "c05-ch04",
+    "createdBy": "ac9fadc2-1955-59e4-984d-26f74bbb4f53",
+    "clientRequestId": "53ee5eca-b10e-58fc-8315-460a422f4517",
+    "isPrivate": false,
+    "requestHash": "55c7c06831768c7fd30eb64a608c72e52bc3784e03cc7c14b1d312ca94e53691",
+    "content": "Khi ôn tập oop, kết luận nào là chính xác? (Câu 22)",
+    "explanation": "Đóng gói gom dữ liệu và hành vi liên quan vào một kiểu đối tượng. Đây là đặc điểm cần ghi nhớ khi áp dụng chủ đề này.",
+    "options": [
+      {
+        "id": "0271c79b-115f-5531-8d1a-6ae8a81fe246",
+        "content": "Mọi phép duyệt đều có độ phức tạp O(1).",
+        "isCorrect": false
+      },
+      {
+        "id": "d7b8a28b-d09b-5aaa-8f9d-8193ad72a30d",
+        "content": "Có thể bỏ điều kiện dừng mà vẫn đảm bảo thuật toán kết thúc.",
+        "isCorrect": false
+      },
+      {
+        "id": "5034583c-fee1-51f2-b042-397effeeda8d",
+        "content": "Kết quả không phụ thuộc vào thứ tự hay dữ liệu đầu vào.",
+        "isCorrect": false
+      },
+      {
+        "id": "0b4dac80-2372-52d5-989b-1efea89e46f5",
+        "content": "Đóng gói gom dữ liệu và hành vi liên quan vào một kiểu đối tượng.",
+        "isCorrect": true
+      }
+    ],
+    "difficulty": "EASY",
+    "topicName": "OOP",
+    "tagNames": []
+  },
+  {
+    "id": "195335f1-965d-53de-9d1f-3326f73e75f8",
+    "revisionId": "f858a6ee-e5ce-522a-ba1d-6e500897a42d",
+    "key": "c05-ch04-q23",
+    "courseKey": "c05",
+    "chapterKey": "c05-ch04",
+    "createdBy": "ac9fadc2-1955-59e4-984d-26f74bbb4f53",
+    "clientRequestId": "4214d149-1c08-5558-891e-3cec70c1add8",
+    "isPrivate": false,
+    "requestHash": "ffa28919d619f91b95a1d30856b07710a33bab71e4ae17417e616bb38ef4f93c",
+    "content": "Một người học đang giải bài về oop. Nhận định nào nên được chọn? (Câu 23)",
+    "explanation": "Tính đa hình cho phép cùng lời gọi có hành vi khác nhau theo kiểu thực tế. Đây là đặc điểm cần ghi nhớ khi áp dụng chủ đề này.",
+    "options": [
+      {
+        "id": "c183f851-2a7f-5cd6-8c90-b73883df26d5",
+        "content": "Có thể bỏ điều kiện dừng mà vẫn đảm bảo thuật toán kết thúc.",
+        "isCorrect": false
+      },
+      {
+        "id": "7bf291d1-ee92-5eab-b4a9-d3210a9cc556",
+        "content": "Kết quả không phụ thuộc vào thứ tự hay dữ liệu đầu vào.",
+        "isCorrect": false
+      },
+      {
+        "id": "124319d3-97ad-5471-8f96-c5318769c662",
+        "content": "Tính đa hình cho phép cùng lời gọi có hành vi khác nhau theo kiểu thực tế.",
+        "isCorrect": true
+      },
+      {
+        "id": "572ffa26-982e-598f-a7bb-8b6ced54542a",
+        "content": "Mọi phép duyệt đều có độ phức tạp O(1).",
+        "isCorrect": false
+      }
+    ],
+    "difficulty": "MEDIUM",
+    "topicName": "OOP",
+    "tagNames": []
+  },
+  {
+    "id": "2759c114-af91-5b61-a37b-f8d9794e6739",
+    "revisionId": "90da0212-240b-5f5a-af72-08d6c161f602",
+    "key": "c05-ch04-q24",
+    "courseKey": "c05",
+    "chapterKey": "c05-ch04",
+    "createdBy": "ac9fadc2-1955-59e4-984d-26f74bbb4f53",
+    "clientRequestId": "e054d910-3f36-5bb1-b2be-7ff6db3fc3a8",
+    "isPrivate": false,
+    "requestHash": "a29afcd3c4837115390a095da49a9855d00e59ad845892b33387c2affd98ff05",
+    "content": "Đâu là kiến thức đúng khi làm việc với oop? (Câu 24)",
+    "explanation": "Constructor được dùng để khởi tạo trạng thái ban đầu của đối tượng. Đây là đặc điểm cần ghi nhớ khi áp dụng chủ đề này.",
+    "options": [
+      {
+        "id": "0a35c0ad-670e-59b0-896e-1256447fdd91",
+        "content": "Kết quả không phụ thuộc vào thứ tự hay dữ liệu đầu vào.",
+        "isCorrect": false
+      },
+      {
+        "id": "cc7092a2-d480-56a4-ba3b-482a6da50e11",
+        "content": "Constructor được dùng để khởi tạo trạng thái ban đầu của đối tượng.",
+        "isCorrect": true
+      },
+      {
+        "id": "c039a761-a290-51e2-a849-fddd8cf26999",
+        "content": "Mọi phép duyệt đều có độ phức tạp O(1).",
+        "isCorrect": false
+      },
+      {
+        "id": "4ebf2899-29c3-5c00-8fcb-41159ce2901a",
+        "content": "Có thể bỏ điều kiện dừng mà vẫn đảm bảo thuật toán kết thúc.",
+        "isCorrect": false
+      }
+    ],
+    "difficulty": "HARD",
+    "topicName": "OOP",
+    "tagNames": []
+  },
+  {
+    "id": "3300ba3a-fc6d-57eb-8992-1c9215af7937",
+    "revisionId": "fc466485-b0fc-5a78-910b-9a5f3462e7e7",
+    "key": "c05-ch05-q01",
+    "courseKey": "c05",
+    "chapterKey": "c05-ch05",
+    "createdBy": "ac9fadc2-1955-59e4-984d-26f74bbb4f53",
+    "clientRequestId": "7b55c62d-a535-5424-85c8-6c8a2e7c5e23",
+    "isPrivate": false,
+    "requestHash": "d2c8e3b619da8a6b798eaa158af74f66a9001fb62c51f431a3bacf0f53703a4c",
+    "content": "Phát biểu nào mô tả đúng về đồ thị? (Câu 01)",
+    "explanation": "BFS dùng hàng đợi và tìm đường đi ít cạnh nhất trong đồ thị không trọng số. Đây là đặc điểm cần ghi nhớ khi áp dụng chủ đề này.",
+    "options": [
+      {
+        "id": "a739710a-aae1-5b10-8505-f36bbf19aa1f",
+        "content": "BFS dùng hàng đợi và tìm đường đi ít cạnh nhất trong đồ thị không trọng số.",
+        "isCorrect": true
+      },
+      {
+        "id": "d00d93d0-a6db-5730-9b70-708eb6e618ce",
+        "content": "Mọi phép duyệt đều có độ phức tạp O(1).",
+        "isCorrect": false
+      },
+      {
+        "id": "2d526e10-e6f0-540e-ac47-a3f8b4e94fc5",
+        "content": "Có thể bỏ điều kiện dừng mà vẫn đảm bảo thuật toán kết thúc.",
+        "isCorrect": false
+      },
+      {
+        "id": "76f0ffde-47ec-5f16-a96f-a8bc6c09f384",
+        "content": "Kết quả không phụ thuộc vào thứ tự hay dữ liệu đầu vào.",
+        "isCorrect": false
+      }
+    ],
+    "difficulty": "EASY",
+    "topicName": "Đồ thị",
+    "tagNames": []
+  },
+  {
+    "id": "358ff4fa-3402-5b51-bce2-a5767faa2205",
+    "revisionId": "84d7eb0e-7e0c-524b-b083-49062a90618f",
+    "key": "c05-ch05-q02",
+    "courseKey": "c05",
+    "chapterKey": "c05-ch05",
+    "createdBy": "ac9fadc2-1955-59e4-984d-26f74bbb4f53",
+    "clientRequestId": "5217e6fa-cebf-5bdf-9730-94540790bfbd",
+    "isPrivate": false,
+    "requestHash": "19bac45c52213251b87fa53563ee63400e96af1b4a80eec90265dfc4c85dd0c1",
+    "content": "Khi ôn tập đồ thị, kết luận nào là chính xác? (Câu 02)",
+    "explanation": "DFS có thể được cài đặt bằng đệ quy hoặc ngăn xếp. Đây là đặc điểm cần ghi nhớ khi áp dụng chủ đề này.",
+    "options": [
+      {
+        "id": "e9c0d89b-3c66-5bbd-be8a-bf182be2018c",
+        "content": "Mọi phép duyệt đều có độ phức tạp O(1).",
+        "isCorrect": false
+      },
+      {
+        "id": "e1a74b65-be7d-5d52-808e-100126b8baf1",
+        "content": "Có thể bỏ điều kiện dừng mà vẫn đảm bảo thuật toán kết thúc.",
+        "isCorrect": false
+      },
+      {
+        "id": "5778e25b-3e8c-5fa4-bcef-d884cca5408a",
+        "content": "Kết quả không phụ thuộc vào thứ tự hay dữ liệu đầu vào.",
+        "isCorrect": false
+      },
+      {
+        "id": "020ebeed-81d5-5f63-8238-5e889685b84e",
+        "content": "DFS có thể được cài đặt bằng đệ quy hoặc ngăn xếp.",
+        "isCorrect": true
+      }
+    ],
+    "difficulty": "MEDIUM",
+    "topicName": "Đồ thị",
+    "tagNames": []
+  },
+  {
+    "id": "bb06ece2-8a8d-5868-a05d-032b8fc542a7",
+    "revisionId": "57dc045f-60a1-5c30-8795-5c169cdf2584",
+    "key": "c05-ch05-q03",
+    "courseKey": "c05",
+    "chapterKey": "c05-ch05",
+    "createdBy": "ac9fadc2-1955-59e4-984d-26f74bbb4f53",
+    "clientRequestId": "559bfc5d-8478-5dec-8a83-7cab41ebc048",
+    "isPrivate": false,
+    "requestHash": "85d59f55226f6f824350eff534a2a97a9937a71fa4566a18ecbcefe0bfdac7b2",
+    "content": "Một người học đang giải bài về đồ thị. Nhận định nào nên được chọn? (Câu 03)",
+    "explanation": "Danh sách kề phù hợp với đồ thị thưa. Đây là đặc điểm cần ghi nhớ khi áp dụng chủ đề này.",
+    "options": [
+      {
+        "id": "7744bbbf-c7d8-5ff1-a87f-662694a69059",
+        "content": "Có thể bỏ điều kiện dừng mà vẫn đảm bảo thuật toán kết thúc.",
+        "isCorrect": false
+      },
+      {
+        "id": "d3898df7-ff9b-543b-b17c-a013e2be2081",
+        "content": "Kết quả không phụ thuộc vào thứ tự hay dữ liệu đầu vào.",
+        "isCorrect": false
+      },
+      {
+        "id": "068f6668-af42-50ee-804f-96d392d64ac5",
+        "content": "Danh sách kề phù hợp với đồ thị thưa.",
+        "isCorrect": true
+      },
+      {
+        "id": "5fdaca78-3e70-5158-95df-927562b32d08",
+        "content": "Mọi phép duyệt đều có độ phức tạp O(1).",
+        "isCorrect": false
+      }
+    ],
+    "difficulty": "HARD",
+    "topicName": "Đồ thị",
+    "tagNames": []
+  },
+  {
+    "id": "9e2eaa95-a1ba-5ef3-b62f-48ed2b4b539b",
+    "revisionId": "5360d1d0-4d67-594f-b1fa-47a6c593c953",
+    "key": "c05-ch05-q04",
+    "courseKey": "c05",
+    "chapterKey": "c05-ch05",
+    "createdBy": "ac9fadc2-1955-59e4-984d-26f74bbb4f53",
+    "clientRequestId": "299cddf4-0384-5f76-8714-528a91db261f",
+    "isPrivate": false,
+    "requestHash": "2c0ac1157c9bae8fb2e3999f109a1fa2fe0cfaab4e95fdd2ba6724b99948b416",
+    "content": "Đâu là kiến thức đúng khi làm việc với đồ thị? (Câu 04)",
+    "explanation": "BFS dùng hàng đợi và tìm đường đi ít cạnh nhất trong đồ thị không trọng số. Đây là đặc điểm cần ghi nhớ khi áp dụng chủ đề này.",
+    "options": [
+      {
+        "id": "a01b122c-2077-5859-a380-f0f88753b6f6",
+        "content": "Kết quả không phụ thuộc vào thứ tự hay dữ liệu đầu vào.",
+        "isCorrect": false
+      },
+      {
+        "id": "e8468d38-48d8-5d98-b6fa-ab96f8625d70",
+        "content": "BFS dùng hàng đợi và tìm đường đi ít cạnh nhất trong đồ thị không trọng số.",
+        "isCorrect": true
+      },
+      {
+        "id": "c5051484-cdf8-5759-bcf8-e12e82fe8dcc",
+        "content": "Mọi phép duyệt đều có độ phức tạp O(1).",
+        "isCorrect": false
+      },
+      {
+        "id": "f60825b1-4c42-513f-97f8-fc12904ead83",
+        "content": "Có thể bỏ điều kiện dừng mà vẫn đảm bảo thuật toán kết thúc.",
+        "isCorrect": false
+      }
+    ],
+    "difficulty": "EASY",
+    "topicName": "Đồ thị",
+    "tagNames": []
+  },
+  {
+    "id": "fe962069-4287-528d-a1e0-197a7a5002ba",
+    "revisionId": "d5a169a4-de17-5080-aeef-0bde9f37681e",
+    "key": "c05-ch05-q05",
+    "courseKey": "c05",
+    "chapterKey": "c05-ch05",
+    "createdBy": "ac9fadc2-1955-59e4-984d-26f74bbb4f53",
+    "clientRequestId": "7b5e3fee-fe3b-50d3-9f78-027cc45fe3c4",
+    "isPrivate": false,
+    "requestHash": "d3bf826306fba49b27b8782686c9567a7abe3168e9deecf09c617a1a4c6326b1",
+    "content": "Phát biểu nào mô tả đúng về đồ thị? (Câu 05)",
+    "explanation": "DFS có thể được cài đặt bằng đệ quy hoặc ngăn xếp. Đây là đặc điểm cần ghi nhớ khi áp dụng chủ đề này.",
+    "options": [
+      {
+        "id": "db192642-9f85-5030-8ba6-40d84fc47dd5",
+        "content": "DFS có thể được cài đặt bằng đệ quy hoặc ngăn xếp.",
+        "isCorrect": true
+      },
+      {
+        "id": "ecfff4af-1f16-5234-adcb-672b7a99986c",
+        "content": "Mọi phép duyệt đều có độ phức tạp O(1).",
+        "isCorrect": false
+      },
+      {
+        "id": "c2fa4d0c-f35b-5477-9a97-61e49f6cfb69",
+        "content": "Có thể bỏ điều kiện dừng mà vẫn đảm bảo thuật toán kết thúc.",
+        "isCorrect": false
+      },
+      {
+        "id": "d50a91de-be04-55ad-b269-565ae29bed9a",
+        "content": "Kết quả không phụ thuộc vào thứ tự hay dữ liệu đầu vào.",
+        "isCorrect": false
+      }
+    ],
+    "difficulty": "MEDIUM",
+    "topicName": "Đồ thị",
+    "tagNames": []
+  },
+  {
+    "id": "2725fceb-ade9-551b-8b5e-01b6fdf00dcd",
+    "revisionId": "321640e5-0728-5ae9-839b-c473e78d7afe",
+    "key": "c05-ch05-q06",
+    "courseKey": "c05",
+    "chapterKey": "c05-ch05",
+    "createdBy": "ac9fadc2-1955-59e4-984d-26f74bbb4f53",
+    "clientRequestId": "1574650b-2795-53c4-8f2f-1a79fddde8d6",
+    "isPrivate": false,
+    "requestHash": "6872bb6b884597e274e826b6c2c59cd3a950a740f2109cde0b6b4598e5d6ef0c",
+    "content": "Khi ôn tập đồ thị, kết luận nào là chính xác? (Câu 06)",
+    "explanation": "Danh sách kề phù hợp với đồ thị thưa. Đây là đặc điểm cần ghi nhớ khi áp dụng chủ đề này.",
+    "options": [
+      {
+        "id": "127824f2-2c24-5a3f-9bf7-d3e4c25b2fb2",
+        "content": "Mọi phép duyệt đều có độ phức tạp O(1).",
+        "isCorrect": false
+      },
+      {
+        "id": "c6f42a7a-8a18-5e9c-bcb3-846d9bebcc9c",
+        "content": "Có thể bỏ điều kiện dừng mà vẫn đảm bảo thuật toán kết thúc.",
+        "isCorrect": false
+      },
+      {
+        "id": "bc0bc58f-d66c-5b58-b1cc-c10b64157a31",
+        "content": "Kết quả không phụ thuộc vào thứ tự hay dữ liệu đầu vào.",
+        "isCorrect": false
+      },
+      {
+        "id": "7bac8539-539f-5202-9180-266d6d9f11c6",
+        "content": "Danh sách kề phù hợp với đồ thị thưa.",
+        "isCorrect": true
+      }
+    ],
+    "difficulty": "HARD",
+    "topicName": "Đồ thị",
+    "tagNames": []
+  },
+  {
+    "id": "34d3496a-7622-5526-a87d-62cdc8d8c630",
+    "revisionId": "7f6a87bc-17ed-5fca-81ff-db2bdb07c369",
+    "key": "c05-ch05-q07",
+    "courseKey": "c05",
+    "chapterKey": "c05-ch05",
+    "createdBy": "ac9fadc2-1955-59e4-984d-26f74bbb4f53",
+    "clientRequestId": "b9701038-1ce8-53b4-b79c-56633c44b39b",
+    "isPrivate": false,
+    "requestHash": "5f106dfe52310cf0f296570cd72322655957ffac4ade8e0772d9d958f2cba787",
+    "content": "Một người học đang giải bài về đồ thị. Nhận định nào nên được chọn? (Câu 07)",
+    "explanation": "BFS dùng hàng đợi và tìm đường đi ít cạnh nhất trong đồ thị không trọng số. Đây là đặc điểm cần ghi nhớ khi áp dụng chủ đề này.",
+    "options": [
+      {
+        "id": "d5d68513-a421-5d97-b35a-a0d4ea759a07",
+        "content": "Có thể bỏ điều kiện dừng mà vẫn đảm bảo thuật toán kết thúc.",
+        "isCorrect": false
+      },
+      {
+        "id": "422f65f3-be47-52a9-b137-44c1f92cfc24",
+        "content": "Kết quả không phụ thuộc vào thứ tự hay dữ liệu đầu vào.",
+        "isCorrect": false
+      },
+      {
+        "id": "b5939535-a42d-5081-93de-586fd53dfa1f",
+        "content": "BFS dùng hàng đợi và tìm đường đi ít cạnh nhất trong đồ thị không trọng số.",
+        "isCorrect": true
+      },
+      {
+        "id": "966b4f75-d939-5ac4-a80f-645bac7453b7",
+        "content": "Mọi phép duyệt đều có độ phức tạp O(1).",
+        "isCorrect": false
+      }
+    ],
+    "difficulty": "EASY",
+    "topicName": "Đồ thị",
+    "tagNames": []
+  },
+  {
+    "id": "0487581d-092a-5f47-a9a6-d386e1aa5bef",
+    "revisionId": "2de4946b-7200-555e-83d4-0767ea1f919a",
+    "key": "c05-ch05-q08",
+    "courseKey": "c05",
+    "chapterKey": "c05-ch05",
+    "createdBy": "ac9fadc2-1955-59e4-984d-26f74bbb4f53",
+    "clientRequestId": "7d6d6abd-eea7-5ee2-93c5-58dc87ae9a8e",
+    "isPrivate": false,
+    "requestHash": "33f9dced3330fe433037f60ef6b9fe93acb70a8a54fc85924f078ec9b919e59e",
+    "content": "Đâu là kiến thức đúng khi làm việc với đồ thị? (Câu 08)",
+    "explanation": "DFS có thể được cài đặt bằng đệ quy hoặc ngăn xếp. Đây là đặc điểm cần ghi nhớ khi áp dụng chủ đề này.",
+    "options": [
+      {
+        "id": "8ba0d76d-ea60-55cc-aa6a-48df2566bc6e",
+        "content": "Kết quả không phụ thuộc vào thứ tự hay dữ liệu đầu vào.",
+        "isCorrect": false
+      },
+      {
+        "id": "f7b5ed7f-eabd-5661-a74f-df453bf1a255",
+        "content": "DFS có thể được cài đặt bằng đệ quy hoặc ngăn xếp.",
+        "isCorrect": true
+      },
+      {
+        "id": "7b58182c-ff44-5e80-88f7-17ac4309fc6c",
+        "content": "Mọi phép duyệt đều có độ phức tạp O(1).",
+        "isCorrect": false
+      },
+      {
+        "id": "865afb80-0323-5539-ae4c-720af5cdf5bb",
+        "content": "Có thể bỏ điều kiện dừng mà vẫn đảm bảo thuật toán kết thúc.",
+        "isCorrect": false
+      }
+    ],
+    "difficulty": "MEDIUM",
+    "topicName": "Đồ thị",
+    "tagNames": []
+  },
+  {
+    "id": "7e565c58-5dfc-582b-9ac7-f9f265b4c476",
+    "revisionId": "c0bcba8f-db35-5df0-877b-a4e921337392",
+    "key": "c05-ch05-q09",
+    "courseKey": "c05",
+    "chapterKey": "c05-ch05",
+    "createdBy": "ac9fadc2-1955-59e4-984d-26f74bbb4f53",
+    "clientRequestId": "cb97ce3a-e0ea-561d-a05a-3d0d0aeca564",
+    "isPrivate": false,
+    "requestHash": "e28fd6dab8ca337e57bfa89868e91c615514e0d936322f6b748f5ca8f9194c37",
+    "content": "Phát biểu nào mô tả đúng về đồ thị? (Câu 09)",
+    "explanation": "Danh sách kề phù hợp với đồ thị thưa. Đây là đặc điểm cần ghi nhớ khi áp dụng chủ đề này.",
+    "options": [
+      {
+        "id": "b8b98f33-1f8b-5cd6-970a-9403f830b19a",
+        "content": "Danh sách kề phù hợp với đồ thị thưa.",
+        "isCorrect": true
+      },
+      {
+        "id": "823d929a-4fb5-5e7c-9abe-5e78f7aa6dbc",
+        "content": "Mọi phép duyệt đều có độ phức tạp O(1).",
+        "isCorrect": false
+      },
+      {
+        "id": "8384344a-3894-596e-957b-0a94e24e37ff",
+        "content": "Có thể bỏ điều kiện dừng mà vẫn đảm bảo thuật toán kết thúc.",
+        "isCorrect": false
+      },
+      {
+        "id": "d94b8a13-cf61-5547-ab74-6cb807238877",
+        "content": "Kết quả không phụ thuộc vào thứ tự hay dữ liệu đầu vào.",
+        "isCorrect": false
+      }
+    ],
+    "difficulty": "HARD",
+    "topicName": "Đồ thị",
+    "tagNames": []
+  },
+  {
+    "id": "f2c267b4-e76b-5da0-83d1-92b37d6d8214",
+    "revisionId": "495d1903-1cd2-5144-8e1c-23df0c920148",
+    "key": "c05-ch05-q10",
+    "courseKey": "c05",
+    "chapterKey": "c05-ch05",
+    "createdBy": "ac9fadc2-1955-59e4-984d-26f74bbb4f53",
+    "clientRequestId": "9edbaa0a-1d64-5149-9955-658f97228b27",
+    "isPrivate": false,
+    "requestHash": "6a19d021bc2a946c1deb210dae4962b0972aa348f477b61a398b4c30c23bbc48",
+    "content": "Khi ôn tập đồ thị, kết luận nào là chính xác? (Câu 10)",
+    "explanation": "BFS dùng hàng đợi và tìm đường đi ít cạnh nhất trong đồ thị không trọng số. Đây là đặc điểm cần ghi nhớ khi áp dụng chủ đề này.",
+    "options": [
+      {
+        "id": "7df56a7c-d64b-5d33-830f-f0f9f9d81136",
+        "content": "Mọi phép duyệt đều có độ phức tạp O(1).",
+        "isCorrect": false
+      },
+      {
+        "id": "7007da4c-c7d0-5197-a766-26da545fa10e",
+        "content": "Có thể bỏ điều kiện dừng mà vẫn đảm bảo thuật toán kết thúc.",
+        "isCorrect": false
+      },
+      {
+        "id": "47456f5c-a281-5ac8-97af-1fa93df8107f",
+        "content": "Kết quả không phụ thuộc vào thứ tự hay dữ liệu đầu vào.",
+        "isCorrect": false
+      },
+      {
+        "id": "29065959-84bb-5f89-a4d1-5999017faed1",
+        "content": "BFS dùng hàng đợi và tìm đường đi ít cạnh nhất trong đồ thị không trọng số.",
+        "isCorrect": true
+      }
+    ],
+    "difficulty": "EASY",
+    "topicName": "Đồ thị",
+    "tagNames": []
+  },
+  {
+    "id": "0c3c2334-84d2-5f04-86b1-e6b2095d32b3",
+    "revisionId": "b5cb44c8-728a-556b-af8f-83f7154a57d8",
+    "key": "c05-ch05-q11",
+    "courseKey": "c05",
+    "chapterKey": "c05-ch05",
+    "createdBy": "ac9fadc2-1955-59e4-984d-26f74bbb4f53",
+    "clientRequestId": "5a8f1bc8-9611-58eb-9631-db646714c491",
+    "isPrivate": false,
+    "requestHash": "23d388849d9a3ab39ce477528cb3baaf83a2dad54eaa017569cfe75e5d0ff8eb",
+    "content": "Một người học đang giải bài về đồ thị. Nhận định nào nên được chọn? (Câu 11)",
+    "explanation": "DFS có thể được cài đặt bằng đệ quy hoặc ngăn xếp. Đây là đặc điểm cần ghi nhớ khi áp dụng chủ đề này.",
+    "options": [
+      {
+        "id": "15bb1c37-2c99-5cfd-b0b5-aadf9af10e7f",
+        "content": "Có thể bỏ điều kiện dừng mà vẫn đảm bảo thuật toán kết thúc.",
+        "isCorrect": false
+      },
+      {
+        "id": "7a2a9a75-d9f9-5e8e-92aa-f989b8e63603",
+        "content": "Kết quả không phụ thuộc vào thứ tự hay dữ liệu đầu vào.",
+        "isCorrect": false
+      },
+      {
+        "id": "e4776e41-134e-5c56-83a1-7cd7d14d15d3",
+        "content": "DFS có thể được cài đặt bằng đệ quy hoặc ngăn xếp.",
+        "isCorrect": true
+      },
+      {
+        "id": "89b32454-df6b-50a5-91b5-43e31c3a148e",
+        "content": "Mọi phép duyệt đều có độ phức tạp O(1).",
+        "isCorrect": false
+      }
+    ],
+    "difficulty": "MEDIUM",
+    "topicName": "Đồ thị",
+    "tagNames": []
+  },
+  {
+    "id": "c068b969-81cb-50bc-bfbb-793ba7324bb3",
+    "revisionId": "6e7b70cb-287d-54cf-98c8-70a59f495004",
+    "key": "c05-ch05-q12",
+    "courseKey": "c05",
+    "chapterKey": "c05-ch05",
+    "createdBy": "ac9fadc2-1955-59e4-984d-26f74bbb4f53",
+    "clientRequestId": "a9e6318c-91bc-5dfb-9906-edfd9f8c2c97",
+    "isPrivate": false,
+    "requestHash": "8faf68cdb47e1fd0cc1da378c0bf3fb16a1ad2347ad765b16d0857cc7a11e454",
+    "content": "Đâu là kiến thức đúng khi làm việc với đồ thị? (Câu 12)",
+    "explanation": "Danh sách kề phù hợp với đồ thị thưa. Đây là đặc điểm cần ghi nhớ khi áp dụng chủ đề này.",
+    "options": [
+      {
+        "id": "f7982166-d570-5c84-a133-b17d3e552300",
+        "content": "Kết quả không phụ thuộc vào thứ tự hay dữ liệu đầu vào.",
+        "isCorrect": false
+      },
+      {
+        "id": "7d7f243a-cb82-5ddc-bf1a-a5559af0441f",
+        "content": "Danh sách kề phù hợp với đồ thị thưa.",
+        "isCorrect": true
+      },
+      {
+        "id": "d7820b30-f789-5d42-84ae-70653089d49a",
+        "content": "Mọi phép duyệt đều có độ phức tạp O(1).",
+        "isCorrect": false
+      },
+      {
+        "id": "75122315-12fd-5292-9950-63d9b765d0ff",
+        "content": "Có thể bỏ điều kiện dừng mà vẫn đảm bảo thuật toán kết thúc.",
+        "isCorrect": false
+      }
+    ],
+    "difficulty": "HARD",
+    "topicName": "Đồ thị",
+    "tagNames": []
+  },
+  {
+    "id": "ac0650b7-fc8e-55b9-b4ed-73d17e6921bc",
+    "revisionId": "5cad9cd6-e390-534e-b761-f388a60fc21a",
+    "key": "c05-ch05-q13",
+    "courseKey": "c05",
+    "chapterKey": "c05-ch05",
+    "createdBy": "ac9fadc2-1955-59e4-984d-26f74bbb4f53",
+    "clientRequestId": "9c4e6278-e84a-5b73-9429-1b62ded2d410",
+    "isPrivate": false,
+    "requestHash": "58f61402e0569f9c5de42a357abbc337fc0a76347fe7e082cbbc18c93bba82f1",
+    "content": "Phát biểu nào mô tả đúng về đồ thị? (Câu 13)",
+    "explanation": "BFS dùng hàng đợi và tìm đường đi ít cạnh nhất trong đồ thị không trọng số. Đây là đặc điểm cần ghi nhớ khi áp dụng chủ đề này.",
+    "options": [
+      {
+        "id": "17d27367-8683-56b3-9d3d-22b97bb9ff23",
+        "content": "BFS dùng hàng đợi và tìm đường đi ít cạnh nhất trong đồ thị không trọng số.",
+        "isCorrect": true
+      },
+      {
+        "id": "29c5e27f-fcff-5723-b1de-d165c432a711",
+        "content": "Mọi phép duyệt đều có độ phức tạp O(1).",
+        "isCorrect": false
+      },
+      {
+        "id": "ed256dd1-fbca-5045-9c32-f9ec973add21",
+        "content": "Có thể bỏ điều kiện dừng mà vẫn đảm bảo thuật toán kết thúc.",
+        "isCorrect": false
+      },
+      {
+        "id": "99ce9048-23e4-53b5-9949-fe5de80de6a6",
+        "content": "Kết quả không phụ thuộc vào thứ tự hay dữ liệu đầu vào.",
+        "isCorrect": false
+      }
+    ],
+    "difficulty": "EASY",
+    "topicName": "Đồ thị",
+    "tagNames": []
+  },
+  {
+    "id": "c67cf8bf-f67f-5c01-8709-a52a15fb4054",
+    "revisionId": "e9940027-0b06-565b-80db-1f4924841c59",
+    "key": "c05-ch05-q14",
+    "courseKey": "c05",
+    "chapterKey": "c05-ch05",
+    "createdBy": "ac9fadc2-1955-59e4-984d-26f74bbb4f53",
+    "clientRequestId": "e4656a24-7559-5180-9746-596635d2c341",
+    "isPrivate": false,
+    "requestHash": "aaa19b6d0d4a86c2522fd66829f9cdabb46ae1671260a25441269c230af3cab8",
+    "content": "Khi ôn tập đồ thị, kết luận nào là chính xác? (Câu 14)",
+    "explanation": "DFS có thể được cài đặt bằng đệ quy hoặc ngăn xếp. Đây là đặc điểm cần ghi nhớ khi áp dụng chủ đề này.",
+    "options": [
+      {
+        "id": "b8ed9e23-5c35-5fa1-bd34-a10b1153ffb9",
+        "content": "Mọi phép duyệt đều có độ phức tạp O(1).",
+        "isCorrect": false
+      },
+      {
+        "id": "db1486cc-00b6-5a45-aa8b-1af0fa9c2feb",
+        "content": "Có thể bỏ điều kiện dừng mà vẫn đảm bảo thuật toán kết thúc.",
+        "isCorrect": false
+      },
+      {
+        "id": "019ea88f-77b3-5bba-accd-476c0c9e8cea",
+        "content": "Kết quả không phụ thuộc vào thứ tự hay dữ liệu đầu vào.",
+        "isCorrect": false
+      },
+      {
+        "id": "5879a16a-edfc-5398-b80e-ef51ded58a23",
+        "content": "DFS có thể được cài đặt bằng đệ quy hoặc ngăn xếp.",
+        "isCorrect": true
+      }
+    ],
+    "difficulty": "MEDIUM",
+    "topicName": "Đồ thị",
+    "tagNames": []
+  },
+  {
+    "id": "c8511797-632c-5277-a502-e61fe52366a2",
+    "revisionId": "07265095-8c9f-5f85-beb6-03244fb94b18",
+    "key": "c05-ch05-q15",
+    "courseKey": "c05",
+    "chapterKey": "c05-ch05",
+    "createdBy": "ac9fadc2-1955-59e4-984d-26f74bbb4f53",
+    "clientRequestId": "fa8b2220-a38a-5cd3-9d6e-cd716a2527c1",
+    "isPrivate": false,
+    "requestHash": "4980b8e78651071a3c9ee075c4445e31acc36898796a8c8f317dddb723333ea5",
+    "content": "Một người học đang giải bài về đồ thị. Nhận định nào nên được chọn? (Câu 15)",
+    "explanation": "Danh sách kề phù hợp với đồ thị thưa. Đây là đặc điểm cần ghi nhớ khi áp dụng chủ đề này.",
+    "options": [
+      {
+        "id": "393b1d90-05d1-568b-869c-8d328116ee54",
+        "content": "Có thể bỏ điều kiện dừng mà vẫn đảm bảo thuật toán kết thúc.",
+        "isCorrect": false
+      },
+      {
+        "id": "72e73d0e-1d0a-51d0-b10a-6a78af440cc8",
+        "content": "Kết quả không phụ thuộc vào thứ tự hay dữ liệu đầu vào.",
+        "isCorrect": false
+      },
+      {
+        "id": "9c4bce15-e7f6-5e72-a027-ae0c2c884d44",
+        "content": "Danh sách kề phù hợp với đồ thị thưa.",
+        "isCorrect": true
+      },
+      {
+        "id": "37fc8571-ecae-55f4-a25a-4e7384af49a6",
+        "content": "Mọi phép duyệt đều có độ phức tạp O(1).",
+        "isCorrect": false
+      }
+    ],
+    "difficulty": "HARD",
+    "topicName": "Đồ thị",
+    "tagNames": []
+  },
+  {
+    "id": "3e3e1976-0101-51f1-8cde-30434c15f327",
+    "revisionId": "ac4aca04-c475-57de-a922-749497bc1ffe",
+    "key": "c05-ch05-q16",
+    "courseKey": "c05",
+    "chapterKey": "c05-ch05",
+    "createdBy": "ac9fadc2-1955-59e4-984d-26f74bbb4f53",
+    "clientRequestId": "edd2666d-6313-5a98-842d-55b57ebebaca",
+    "isPrivate": false,
+    "requestHash": "0946aff123b510898cde2b4fdfd36aebbd8bed82f27fa758a3a7b2769d1d66dc",
+    "content": "Đâu là kiến thức đúng khi làm việc với đồ thị? (Câu 16)",
+    "explanation": "BFS dùng hàng đợi và tìm đường đi ít cạnh nhất trong đồ thị không trọng số. Đây là đặc điểm cần ghi nhớ khi áp dụng chủ đề này.",
+    "options": [
+      {
+        "id": "e2d01e8d-fc9a-5982-a037-f24eafacef4d",
+        "content": "Kết quả không phụ thuộc vào thứ tự hay dữ liệu đầu vào.",
+        "isCorrect": false
+      },
+      {
+        "id": "c93a7bd1-e703-5387-a2b2-d61e8aac9ec7",
+        "content": "BFS dùng hàng đợi và tìm đường đi ít cạnh nhất trong đồ thị không trọng số.",
+        "isCorrect": true
+      },
+      {
+        "id": "88259b0d-1d94-586d-8df6-29252f34f3ed",
+        "content": "Mọi phép duyệt đều có độ phức tạp O(1).",
+        "isCorrect": false
+      },
+      {
+        "id": "ca268f0a-5c21-5755-86d2-56ac31a652ab",
+        "content": "Có thể bỏ điều kiện dừng mà vẫn đảm bảo thuật toán kết thúc.",
+        "isCorrect": false
+      }
+    ],
+    "difficulty": "EASY",
+    "topicName": "Đồ thị",
+    "tagNames": []
+  },
+  {
+    "id": "f1ec56fb-9373-5517-9354-b37e1e09a3ec",
+    "revisionId": "c2c916c1-e1c2-5400-a789-b0a63f2fd590",
+    "key": "c05-ch05-q17",
+    "courseKey": "c05",
+    "chapterKey": "c05-ch05",
+    "createdBy": "ac9fadc2-1955-59e4-984d-26f74bbb4f53",
+    "clientRequestId": "b37271dc-f6f7-5889-919d-6140d14ec273",
+    "isPrivate": false,
+    "requestHash": "c664fd1c0dc87acc27d3db355835fa4ff4b5d715712a31403a49fd513f54a273",
+    "content": "Phát biểu nào mô tả đúng về đồ thị? (Câu 17)",
+    "explanation": "DFS có thể được cài đặt bằng đệ quy hoặc ngăn xếp. Đây là đặc điểm cần ghi nhớ khi áp dụng chủ đề này.",
+    "options": [
+      {
+        "id": "f72997e2-b916-5b2f-8ffe-8c8457438630",
+        "content": "DFS có thể được cài đặt bằng đệ quy hoặc ngăn xếp.",
+        "isCorrect": true
+      },
+      {
+        "id": "a909e88c-29c7-53d8-9608-425463a4b3ba",
+        "content": "Mọi phép duyệt đều có độ phức tạp O(1).",
+        "isCorrect": false
+      },
+      {
+        "id": "46f62d5d-6b75-5519-8ac1-152d16ccbe63",
+        "content": "Có thể bỏ điều kiện dừng mà vẫn đảm bảo thuật toán kết thúc.",
+        "isCorrect": false
+      },
+      {
+        "id": "a33efd7b-6f3a-5b3f-a0e6-d721d37df589",
+        "content": "Kết quả không phụ thuộc vào thứ tự hay dữ liệu đầu vào.",
+        "isCorrect": false
+      }
+    ],
+    "difficulty": "MEDIUM",
+    "topicName": "Đồ thị",
+    "tagNames": []
+  },
+  {
+    "id": "d8e9af89-b0ee-5c51-b587-3c82872aaf68",
+    "revisionId": "89520933-4e7c-56dc-aeb9-387acc4be1a4",
+    "key": "c05-ch05-q18",
+    "courseKey": "c05",
+    "chapterKey": "c05-ch05",
+    "createdBy": "ac9fadc2-1955-59e4-984d-26f74bbb4f53",
+    "clientRequestId": "2c0b1be1-b421-55ac-9cc0-c28bada0a18c",
+    "isPrivate": false,
+    "requestHash": "9e0f6a6c1564ea7c588049317403c617d02ba58516ed63c5b8ac6181547186b4",
+    "content": "Khi ôn tập đồ thị, kết luận nào là chính xác? (Câu 18)",
+    "explanation": "Danh sách kề phù hợp với đồ thị thưa. Đây là đặc điểm cần ghi nhớ khi áp dụng chủ đề này.",
+    "options": [
+      {
+        "id": "6d01840f-2982-5dfe-8481-247f3b34bb1c",
+        "content": "Mọi phép duyệt đều có độ phức tạp O(1).",
+        "isCorrect": false
+      },
+      {
+        "id": "4ebb33c3-55a1-5115-96ba-c5de6e9e1765",
+        "content": "Có thể bỏ điều kiện dừng mà vẫn đảm bảo thuật toán kết thúc.",
+        "isCorrect": false
+      },
+      {
+        "id": "64e83a13-7e57-5296-bfe2-798c187630f6",
+        "content": "Kết quả không phụ thuộc vào thứ tự hay dữ liệu đầu vào.",
+        "isCorrect": false
+      },
+      {
+        "id": "3749c40e-4ecd-5900-81ad-2d9ea61fe12e",
+        "content": "Danh sách kề phù hợp với đồ thị thưa.",
+        "isCorrect": true
+      }
+    ],
+    "difficulty": "HARD",
+    "topicName": "Đồ thị",
+    "tagNames": []
+  },
+  {
+    "id": "b397879b-f628-5b82-ab6a-af761b62222e",
+    "revisionId": "a4dea827-1192-5d24-a386-8b95a1cc48bb",
+    "key": "c05-ch05-q19",
+    "courseKey": "c05",
+    "chapterKey": "c05-ch05",
+    "createdBy": "ac9fadc2-1955-59e4-984d-26f74bbb4f53",
+    "clientRequestId": "f466a232-47f4-50f1-b857-7be1910e1f46",
+    "isPrivate": false,
+    "requestHash": "54668f0b424c5776fa524df1dfdb933069e7fa68fd8dbb93e758e3e53ec8ca0c",
+    "content": "Một người học đang giải bài về đồ thị. Nhận định nào nên được chọn? (Câu 19)",
+    "explanation": "BFS dùng hàng đợi và tìm đường đi ít cạnh nhất trong đồ thị không trọng số. Đây là đặc điểm cần ghi nhớ khi áp dụng chủ đề này.",
+    "options": [
+      {
+        "id": "517f1275-2573-551b-9dff-2280cb6d680c",
+        "content": "Có thể bỏ điều kiện dừng mà vẫn đảm bảo thuật toán kết thúc.",
+        "isCorrect": false
+      },
+      {
+        "id": "d4069678-098f-5d5a-a38a-40357eee5e4b",
+        "content": "Kết quả không phụ thuộc vào thứ tự hay dữ liệu đầu vào.",
+        "isCorrect": false
+      },
+      {
+        "id": "0100c596-4f34-5945-a5c7-bd3699bd5e02",
+        "content": "BFS dùng hàng đợi và tìm đường đi ít cạnh nhất trong đồ thị không trọng số.",
+        "isCorrect": true
+      },
+      {
+        "id": "e6f01f19-3b83-5475-bf0c-0330571eb696",
+        "content": "Mọi phép duyệt đều có độ phức tạp O(1).",
+        "isCorrect": false
+      }
+    ],
+    "difficulty": "EASY",
+    "topicName": "Đồ thị",
+    "tagNames": []
+  },
+  {
+    "id": "273b6efc-610f-535a-a8d7-10dcec89a5c7",
+    "revisionId": "3095f475-2b46-5e51-ba9b-79f6ac8041ff",
+    "key": "c05-ch05-q20",
+    "courseKey": "c05",
+    "chapterKey": "c05-ch05",
+    "createdBy": "ac9fadc2-1955-59e4-984d-26f74bbb4f53",
+    "clientRequestId": "9cdeb118-b20b-51c1-8274-8810b3bebea8",
+    "isPrivate": false,
+    "requestHash": "7a18b817c7e8ed077e1f19c4121191a27c11ed0999d6dda38a1ede1571b5e00b",
+    "content": "Đâu là kiến thức đúng khi làm việc với đồ thị? (Câu 20)",
+    "explanation": "DFS có thể được cài đặt bằng đệ quy hoặc ngăn xếp. Đây là đặc điểm cần ghi nhớ khi áp dụng chủ đề này.",
+    "options": [
+      {
+        "id": "5acec6c5-1b2b-54f6-9cea-c7e9d9834291",
+        "content": "Kết quả không phụ thuộc vào thứ tự hay dữ liệu đầu vào.",
+        "isCorrect": false
+      },
+      {
+        "id": "dcdfe337-7ced-5ae6-9bbc-806c676a9b28",
+        "content": "DFS có thể được cài đặt bằng đệ quy hoặc ngăn xếp.",
+        "isCorrect": true
+      },
+      {
+        "id": "0f5e983b-e323-5397-b301-8da00ab43b76",
+        "content": "Mọi phép duyệt đều có độ phức tạp O(1).",
+        "isCorrect": false
+      },
+      {
+        "id": "3af675f1-e78a-5c44-9ac0-96640e1ea737",
+        "content": "Có thể bỏ điều kiện dừng mà vẫn đảm bảo thuật toán kết thúc.",
+        "isCorrect": false
+      }
+    ],
+    "difficulty": "MEDIUM",
+    "topicName": "Đồ thị",
+    "tagNames": []
+  },
+  {
+    "id": "26d41503-b43b-5124-9ccb-d13638be2a20",
+    "revisionId": "53893d1d-958a-5513-b748-66f11d5d108e",
+    "key": "c05-ch05-q21",
+    "courseKey": "c05",
+    "chapterKey": "c05-ch05",
+    "createdBy": "ac9fadc2-1955-59e4-984d-26f74bbb4f53",
+    "clientRequestId": "7411058c-bf4c-58a3-aba7-6aef2f114dd5",
+    "isPrivate": false,
+    "requestHash": "af09371f4ac31c3e43eda63368c664836faebc1f23caa58c6f908f5cc551c616",
+    "content": "Phát biểu nào mô tả đúng về đồ thị? (Câu 21)",
+    "explanation": "Danh sách kề phù hợp với đồ thị thưa. Đây là đặc điểm cần ghi nhớ khi áp dụng chủ đề này.",
+    "options": [
+      {
+        "id": "01bff609-65f9-5185-8476-9efafa5337bb",
+        "content": "Danh sách kề phù hợp với đồ thị thưa.",
+        "isCorrect": true
+      },
+      {
+        "id": "680f234d-8621-5f86-9746-87253094123c",
+        "content": "Mọi phép duyệt đều có độ phức tạp O(1).",
+        "isCorrect": false
+      },
+      {
+        "id": "702d8617-a118-55a2-ad6e-4f2509c6deae",
+        "content": "Có thể bỏ điều kiện dừng mà vẫn đảm bảo thuật toán kết thúc.",
+        "isCorrect": false
+      },
+      {
+        "id": "880b889b-e41f-5fb9-8907-c576a2e5953b",
+        "content": "Kết quả không phụ thuộc vào thứ tự hay dữ liệu đầu vào.",
+        "isCorrect": false
+      }
+    ],
+    "difficulty": "HARD",
+    "topicName": "Đồ thị",
+    "tagNames": []
+  },
+  {
+    "id": "bed3f296-ad38-59c2-8e0f-8649dd08146f",
+    "revisionId": "bc3aab8a-ae41-55f3-a14d-c6ff439955f5",
+    "key": "c05-ch05-q22",
+    "courseKey": "c05",
+    "chapterKey": "c05-ch05",
+    "createdBy": "ac9fadc2-1955-59e4-984d-26f74bbb4f53",
+    "clientRequestId": "8e3259d0-5f4a-5322-8320-591b2dcefbd1",
+    "isPrivate": false,
+    "requestHash": "7222753cd89641997d2cbec86d912d51a4f7b5e26f3cbef304916ccaa162b95c",
+    "content": "Khi ôn tập đồ thị, kết luận nào là chính xác? (Câu 22)",
+    "explanation": "BFS dùng hàng đợi và tìm đường đi ít cạnh nhất trong đồ thị không trọng số. Đây là đặc điểm cần ghi nhớ khi áp dụng chủ đề này.",
+    "options": [
+      {
+        "id": "4e1d2b65-2d19-5127-8246-eb05374118e4",
+        "content": "Mọi phép duyệt đều có độ phức tạp O(1).",
+        "isCorrect": false
+      },
+      {
+        "id": "ec0e6bdb-0a6b-5f6f-9cbc-66e76ed9d600",
+        "content": "Có thể bỏ điều kiện dừng mà vẫn đảm bảo thuật toán kết thúc.",
+        "isCorrect": false
+      },
+      {
+        "id": "f9d311d8-4164-5711-a001-35b549ecb0fb",
+        "content": "Kết quả không phụ thuộc vào thứ tự hay dữ liệu đầu vào.",
+        "isCorrect": false
+      },
+      {
+        "id": "1f41be65-83a9-5a29-bb82-e571e3d1e278",
+        "content": "BFS dùng hàng đợi và tìm đường đi ít cạnh nhất trong đồ thị không trọng số.",
+        "isCorrect": true
+      }
+    ],
+    "difficulty": "EASY",
+    "topicName": "Đồ thị",
+    "tagNames": []
+  },
+  {
+    "id": "9e686d11-c27f-5333-ac0f-3af223cc4a5f",
+    "revisionId": "532be556-f0f5-5d0b-a34b-59c99d9a0d84",
+    "key": "c05-ch05-q23",
+    "courseKey": "c05",
+    "chapterKey": "c05-ch05",
+    "createdBy": "ac9fadc2-1955-59e4-984d-26f74bbb4f53",
+    "clientRequestId": "70c7f031-0f8f-50ef-8d29-56e6643896d9",
+    "isPrivate": false,
+    "requestHash": "055a0076b503330d534fd88d1c46da5282a6fc03080a95b2ea0b4d70c381e7e9",
+    "content": "Một người học đang giải bài về đồ thị. Nhận định nào nên được chọn? (Câu 23)",
+    "explanation": "DFS có thể được cài đặt bằng đệ quy hoặc ngăn xếp. Đây là đặc điểm cần ghi nhớ khi áp dụng chủ đề này.",
+    "options": [
+      {
+        "id": "c4408c06-c626-5e45-a85f-0985cfb39b0f",
+        "content": "Có thể bỏ điều kiện dừng mà vẫn đảm bảo thuật toán kết thúc.",
+        "isCorrect": false
+      },
+      {
+        "id": "90352fb3-191f-5595-8a68-2a9d262b14f2",
+        "content": "Kết quả không phụ thuộc vào thứ tự hay dữ liệu đầu vào.",
+        "isCorrect": false
+      },
+      {
+        "id": "7e24aca5-2f06-5ef0-affd-96edf2f4f3fa",
+        "content": "DFS có thể được cài đặt bằng đệ quy hoặc ngăn xếp.",
+        "isCorrect": true
+      },
+      {
+        "id": "e9e3ebb3-4837-5826-b772-59f3f144968e",
+        "content": "Mọi phép duyệt đều có độ phức tạp O(1).",
+        "isCorrect": false
+      }
+    ],
+    "difficulty": "MEDIUM",
+    "topicName": "Đồ thị",
+    "tagNames": []
+  },
+  {
+    "id": "a0348f9b-3f58-5881-814b-7dcbc2b1a69c",
+    "revisionId": "b771df57-d969-5222-91b5-335a33ab1da6",
+    "key": "c05-ch05-q24",
+    "courseKey": "c05",
+    "chapterKey": "c05-ch05",
+    "createdBy": "ac9fadc2-1955-59e4-984d-26f74bbb4f53",
+    "clientRequestId": "9de1fc9b-fe46-5e8d-a7b6-65f5bb4f6bb8",
+    "isPrivate": false,
+    "requestHash": "a188a73e3888b3c54e3c755c6f320d034f41ff20f1772315cf582f3a54a614a2",
+    "content": "Đâu là kiến thức đúng khi làm việc với đồ thị? (Câu 24)",
+    "explanation": "Danh sách kề phù hợp với đồ thị thưa. Đây là đặc điểm cần ghi nhớ khi áp dụng chủ đề này.",
+    "options": [
+      {
+        "id": "a6fffdd4-5c14-5a41-99c4-2917b18b15a8",
+        "content": "Kết quả không phụ thuộc vào thứ tự hay dữ liệu đầu vào.",
+        "isCorrect": false
+      },
+      {
+        "id": "3a34f83f-f075-5ec5-8b92-b3c3f392a410",
+        "content": "Danh sách kề phù hợp với đồ thị thưa.",
+        "isCorrect": true
+      },
+      {
+        "id": "3f87995d-2f5d-5d97-83d0-820fa6040fab",
+        "content": "Mọi phép duyệt đều có độ phức tạp O(1).",
+        "isCorrect": false
+      },
+      {
+        "id": "c407a752-72cf-5a04-a30a-34a052fcbab1",
+        "content": "Có thể bỏ điều kiện dừng mà vẫn đảm bảo thuật toán kết thúc.",
+        "isCorrect": false
+      }
+    ],
+    "difficulty": "HARD",
+    "topicName": "Đồ thị",
+    "tagNames": []
+  }
+]

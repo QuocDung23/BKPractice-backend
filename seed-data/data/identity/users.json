@@ -1,0 +1,23 @@
+[
+  {
+    "id": "53f2b1ff-d45d-5344-8026-a49efb8e6084",
+    "studentId": "123220167",
+    "displayName": "Ngọc Trần",
+    "email": "123220167@sv1.dut.udn.vn",
+    "role": "STUDENT"
+  },
+  {
+    "id": "c7599b7a-6a41-5f64-bb0d-c94f33edd30c",
+    "studentId": "123220111",
+    "displayName": "Trần Gia Huy",
+    "email": "123220111@sv1.dut.udn.vn",
+    "role": "STUDENT"
+  },
+  {
+    "id": "ac9fadc2-1955-59e4-984d-26f74bbb4f53",
+    "studentId": null,
+    "displayName": "Thầy Quốc Dũng",
+    "email": "dungproqt3333@gmail.com",
+    "role": "LECTURER"
+  }
+]

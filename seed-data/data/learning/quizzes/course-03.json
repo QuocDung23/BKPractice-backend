@@ -1,0 +1,1652 @@
+[
+  {
+    "id": "841e5918-b642-51e4-83c0-c2587caceaf9",
+    "revisionId": "45770666-6536-50aa-b480-6ef2d93c50d6",
+    "key": "c03-ch01-quiz01",
+    "chapterKey": "c03-ch01",
+    "title": "Chương 1: Mảng — Quiz 1",
+    "description": "Bài kiểm tra 10 câu về mảng.",
+    "createdBy": "ac9fadc2-1955-59e4-984d-26f74bbb4f53",
+    "clientRequestId": "ba6a2e0a-daa6-58ce-8c31-cf561c41fea8",
+    "requestHash": "e88e7cc7dfc6b22d432cfb873ade481f0f533497dcbd5ac4f0e2e032d424023b",
+    "status": "PUBLISHED",
+    "publishedAt": "2026-11-21T00:00:00.000Z",
+    "questions": [
+      {
+        "questionId": "3e0e5474-a99b-5111-93b9-5add49ab3c31",
+        "questionRevisionId": "b98f7d3e-1fa1-5cc8-8232-2fe7c1e7cf97",
+        "displayOrder": 0
+      },
+      {
+        "questionId": "d21e8177-8b59-5b4a-8851-98ea848ee493",
+        "questionRevisionId": "8836c15a-07cf-5a42-ab72-33939cda2aa4",
+        "displayOrder": 1
+      },
+      {
+        "questionId": "856c7df0-47fe-592c-b4cc-1f3e7fe5dfaa",
+        "questionRevisionId": "ddf94910-c5d3-53e2-81ae-56a6f26a39c5",
+        "displayOrder": 2
+      },
+      {
+        "questionId": "be706017-c94a-5403-854b-7761810c3d87",
+        "questionRevisionId": "ddfc9775-7661-579b-8f18-a7419100489c",
+        "displayOrder": 3
+      },
+      {
+        "questionId": "171cee92-5ec8-5fc4-80a5-31ebbeb4c184",
+        "questionRevisionId": "81f238d9-97d5-5c33-8576-5dccf12ce43d",
+        "displayOrder": 4
+      },
+      {
+        "questionId": "d04e7872-4546-5383-8057-bee70f6964bf",
+        "questionRevisionId": "ad8f1610-2314-5801-a5e9-33226c66a020",
+        "displayOrder": 5
+      },
+      {
+        "questionId": "3c95d2bf-febd-56d0-aeb4-3586bc16f725",
+        "questionRevisionId": "dd3ed54e-e89a-5ab6-aa11-0e69505e22fb",
+        "displayOrder": 6
+      },
+      {
+        "questionId": "6961c960-8e09-5ce3-9924-7dcd12697de5",
+        "questionRevisionId": "f5377ae5-2662-5f96-ae4c-4e4d0a0f891a",
+        "displayOrder": 7
+      },
+      {
+        "questionId": "bf531fa8-a8f5-5020-8f15-043545e4a011",
+        "questionRevisionId": "e078ed41-7bf1-5a59-a994-b648ca05a36d",
+        "displayOrder": 8
+      },
+      {
+        "questionId": "e979787b-d095-5617-a52c-14c1adc34535",
+        "questionRevisionId": "8757072c-ea7a-54ce-bd80-f9199410f62d",
+        "displayOrder": 9
+      }
+    ],
+    "displayOrder": 0
+  },
+  {
+    "id": "f8ae114e-4a31-5c1d-bc8e-6d811c5fc230",
+    "revisionId": "f23f8801-1982-5354-8db1-fa85cf32c0eb",
+    "key": "c03-ch01-quiz02",
+    "chapterKey": "c03-ch01",
+    "title": "Chương 1: Mảng — Quiz 2",
+    "description": "Bài kiểm tra 10 câu về mảng.",
+    "createdBy": "ac9fadc2-1955-59e4-984d-26f74bbb4f53",
+    "clientRequestId": "a4234d38-b81c-569f-9854-32c306efae87",
+    "requestHash": "612aa543701f055a329c92c749b32a58148eadf7805bf989e55fce8eb01cbcb0",
+    "status": "PUBLISHED",
+    "publishedAt": "2026-11-21T00:00:00.000Z",
+    "questions": [
+      {
+        "questionId": "be706017-c94a-5403-854b-7761810c3d87",
+        "questionRevisionId": "ddfc9775-7661-579b-8f18-a7419100489c",
+        "displayOrder": 0
+      },
+      {
+        "questionId": "171cee92-5ec8-5fc4-80a5-31ebbeb4c184",
+        "questionRevisionId": "81f238d9-97d5-5c33-8576-5dccf12ce43d",
+        "displayOrder": 1
+      },
+      {
+        "questionId": "d04e7872-4546-5383-8057-bee70f6964bf",
+        "questionRevisionId": "ad8f1610-2314-5801-a5e9-33226c66a020",
+        "displayOrder": 2
+      },
+      {
+        "questionId": "3c95d2bf-febd-56d0-aeb4-3586bc16f725",
+        "questionRevisionId": "dd3ed54e-e89a-5ab6-aa11-0e69505e22fb",
+        "displayOrder": 3
+      },
+      {
+        "questionId": "6961c960-8e09-5ce3-9924-7dcd12697de5",
+        "questionRevisionId": "f5377ae5-2662-5f96-ae4c-4e4d0a0f891a",
+        "displayOrder": 4
+      },
+      {
+        "questionId": "bf531fa8-a8f5-5020-8f15-043545e4a011",
+        "questionRevisionId": "e078ed41-7bf1-5a59-a994-b648ca05a36d",
+        "displayOrder": 5
+      },
+      {
+        "questionId": "e979787b-d095-5617-a52c-14c1adc34535",
+        "questionRevisionId": "8757072c-ea7a-54ce-bd80-f9199410f62d",
+        "displayOrder": 6
+      },
+      {
+        "questionId": "14787e82-26d2-5422-bb1e-0c099db259a6",
+        "questionRevisionId": "26773723-dc60-5d94-949f-cd475ba616f1",
+        "displayOrder": 7
+      },
+      {
+        "questionId": "90bdafd5-9991-5fbf-92a5-2ff049010810",
+        "questionRevisionId": "030d68a8-249a-5bc7-83e0-cb56f76ec606",
+        "displayOrder": 8
+      },
+      {
+        "questionId": "7655a260-8918-5754-a68c-4237f57b18ad",
+        "questionRevisionId": "051c3b69-d15c-596d-bb60-df4252b48957",
+        "displayOrder": 9
+      }
+    ],
+    "displayOrder": 1
+  },
+  {
+    "id": "68617ccc-08ab-54d6-9a3c-36dfa8a80b60",
+    "revisionId": "3dd5fac8-5245-5920-945d-328e9beecf37",
+    "key": "c03-ch01-quiz03",
+    "chapterKey": "c03-ch01",
+    "title": "Chương 1: Mảng — Quiz 3",
+    "description": "Bài kiểm tra 10 câu về mảng.",
+    "createdBy": "ac9fadc2-1955-59e4-984d-26f74bbb4f53",
+    "clientRequestId": "8a4aa1c6-c8f2-5f62-8925-5d623504d922",
+    "requestHash": "a0bc37c5299523f61f7a89d917e37ea6a2f070929117ba564c770f0501301159",
+    "status": "PUBLISHED",
+    "publishedAt": "2026-11-21T00:00:00.000Z",
+    "questions": [
+      {
+        "questionId": "3c95d2bf-febd-56d0-aeb4-3586bc16f725",
+        "questionRevisionId": "dd3ed54e-e89a-5ab6-aa11-0e69505e22fb",
+        "displayOrder": 0
+      },
+      {
+        "questionId": "6961c960-8e09-5ce3-9924-7dcd12697de5",
+        "questionRevisionId": "f5377ae5-2662-5f96-ae4c-4e4d0a0f891a",
+        "displayOrder": 1
+      },
+      {
+        "questionId": "bf531fa8-a8f5-5020-8f15-043545e4a011",
+        "questionRevisionId": "e078ed41-7bf1-5a59-a994-b648ca05a36d",
+        "displayOrder": 2
+      },
+      {
+        "questionId": "e979787b-d095-5617-a52c-14c1adc34535",
+        "questionRevisionId": "8757072c-ea7a-54ce-bd80-f9199410f62d",
+        "displayOrder": 3
+      },
+      {
+        "questionId": "14787e82-26d2-5422-bb1e-0c099db259a6",
+        "questionRevisionId": "26773723-dc60-5d94-949f-cd475ba616f1",
+        "displayOrder": 4
+      },
+      {
+        "questionId": "90bdafd5-9991-5fbf-92a5-2ff049010810",
+        "questionRevisionId": "030d68a8-249a-5bc7-83e0-cb56f76ec606",
+        "displayOrder": 5
+      },
+      {
+        "questionId": "7655a260-8918-5754-a68c-4237f57b18ad",
+        "questionRevisionId": "051c3b69-d15c-596d-bb60-df4252b48957",
+        "displayOrder": 6
+      },
+      {
+        "questionId": "e02c15c1-f13e-569b-a212-aeaf9c66096a",
+        "questionRevisionId": "9c273ca2-5cea-56bb-bae4-6d8c1638cbc4",
+        "displayOrder": 7
+      },
+      {
+        "questionId": "35fbcf85-5d74-5fdd-ac71-1bcd39315858",
+        "questionRevisionId": "32f88a98-39ed-5702-b970-f744b7cf2f0f",
+        "displayOrder": 8
+      },
+      {
+        "questionId": "89ef84cd-fef2-5820-8045-42c17ddb1ade",
+        "questionRevisionId": "99bf46fb-3868-522b-bfa3-e8396178d9bc",
+        "displayOrder": 9
+      }
+    ],
+    "displayOrder": 2
+  },
+  {
+    "id": "6c80cf5b-5974-58af-87ea-b82856d8741e",
+    "revisionId": "7f2bff59-52e7-507e-8b61-d43e168e5948",
+    "key": "c03-ch01-quiz04",
+    "chapterKey": "c03-ch01",
+    "title": "Chương 1: Mảng — Quiz 4",
+    "description": "Bài kiểm tra 10 câu về mảng.",
+    "createdBy": "ac9fadc2-1955-59e4-984d-26f74bbb4f53",
+    "clientRequestId": "ec6f2421-6c23-504b-9502-6f9b1b292336",
+    "requestHash": "19240201686e4c3c5d66ca6ec9bb585cf55e34a54f2f3c9aca2deda904d67ee8",
+    "status": "PUBLISHED",
+    "publishedAt": "2026-11-21T00:00:00.000Z",
+    "questions": [
+      {
+        "questionId": "e979787b-d095-5617-a52c-14c1adc34535",
+        "questionRevisionId": "8757072c-ea7a-54ce-bd80-f9199410f62d",
+        "displayOrder": 0
+      },
+      {
+        "questionId": "14787e82-26d2-5422-bb1e-0c099db259a6",
+        "questionRevisionId": "26773723-dc60-5d94-949f-cd475ba616f1",
+        "displayOrder": 1
+      },
+      {
+        "questionId": "90bdafd5-9991-5fbf-92a5-2ff049010810",
+        "questionRevisionId": "030d68a8-249a-5bc7-83e0-cb56f76ec606",
+        "displayOrder": 2
+      },
+      {
+        "questionId": "7655a260-8918-5754-a68c-4237f57b18ad",
+        "questionRevisionId": "051c3b69-d15c-596d-bb60-df4252b48957",
+        "displayOrder": 3
+      },
+      {
+        "questionId": "e02c15c1-f13e-569b-a212-aeaf9c66096a",
+        "questionRevisionId": "9c273ca2-5cea-56bb-bae4-6d8c1638cbc4",
+        "displayOrder": 4
+      },
+      {
+        "questionId": "35fbcf85-5d74-5fdd-ac71-1bcd39315858",
+        "questionRevisionId": "32f88a98-39ed-5702-b970-f744b7cf2f0f",
+        "displayOrder": 5
+      },
+      {
+        "questionId": "89ef84cd-fef2-5820-8045-42c17ddb1ade",
+        "questionRevisionId": "99bf46fb-3868-522b-bfa3-e8396178d9bc",
+        "displayOrder": 6
+      },
+      {
+        "questionId": "6ca9bc93-7cdc-587e-a846-4017f22dc19e",
+        "questionRevisionId": "c5f79580-18cc-50f5-871e-cdf9514225f1",
+        "displayOrder": 7
+      },
+      {
+        "questionId": "2fc6fbda-2f3b-5262-8893-c43a04a0ff23",
+        "questionRevisionId": "4bebc0fd-88d8-55f4-b978-025dc266cc28",
+        "displayOrder": 8
+      },
+      {
+        "questionId": "0a58d386-89da-5acc-9897-6e140651ca4c",
+        "questionRevisionId": "bd8d4cf9-280c-5ac0-9417-e3f605663568",
+        "displayOrder": 9
+      }
+    ],
+    "displayOrder": 3
+  },
+  {
+    "id": "2e991bde-4968-5011-8285-7b72acbf240a",
+    "revisionId": "693dd219-8856-579a-aa1a-f87255671d8c",
+    "key": "c03-ch01-quiz05",
+    "chapterKey": "c03-ch01",
+    "title": "Chương 1: Mảng — Quiz 5",
+    "description": "Bài kiểm tra 10 câu về mảng.",
+    "createdBy": "ac9fadc2-1955-59e4-984d-26f74bbb4f53",
+    "clientRequestId": "e9783e28-6864-592f-b4b4-15f2e757b6fa",
+    "requestHash": "b92750301cf2a75327dcedda308daa7ee7b0880b47c649888975be144e0fa0ba",
+    "status": "PUBLISHED",
+    "publishedAt": "2026-11-21T00:00:00.000Z",
+    "questions": [
+      {
+        "questionId": "7655a260-8918-5754-a68c-4237f57b18ad",
+        "questionRevisionId": "051c3b69-d15c-596d-bb60-df4252b48957",
+        "displayOrder": 0
+      },
+      {
+        "questionId": "e02c15c1-f13e-569b-a212-aeaf9c66096a",
+        "questionRevisionId": "9c273ca2-5cea-56bb-bae4-6d8c1638cbc4",
+        "displayOrder": 1
+      },
+      {
+        "questionId": "35fbcf85-5d74-5fdd-ac71-1bcd39315858",
+        "questionRevisionId": "32f88a98-39ed-5702-b970-f744b7cf2f0f",
+        "displayOrder": 2
+      },
+      {
+        "questionId": "89ef84cd-fef2-5820-8045-42c17ddb1ade",
+        "questionRevisionId": "99bf46fb-3868-522b-bfa3-e8396178d9bc",
+        "displayOrder": 3
+      },
+      {
+        "questionId": "6ca9bc93-7cdc-587e-a846-4017f22dc19e",
+        "questionRevisionId": "c5f79580-18cc-50f5-871e-cdf9514225f1",
+        "displayOrder": 4
+      },
+      {
+        "questionId": "2fc6fbda-2f3b-5262-8893-c43a04a0ff23",
+        "questionRevisionId": "4bebc0fd-88d8-55f4-b978-025dc266cc28",
+        "displayOrder": 5
+      },
+      {
+        "questionId": "0a58d386-89da-5acc-9897-6e140651ca4c",
+        "questionRevisionId": "bd8d4cf9-280c-5ac0-9417-e3f605663568",
+        "displayOrder": 6
+      },
+      {
+        "questionId": "aef53e4b-d6c0-54f5-88a1-75d7d776cf76",
+        "questionRevisionId": "d01c26e4-5c3e-5bf7-bc34-15f88bdee83e",
+        "displayOrder": 7
+      },
+      {
+        "questionId": "afb81dce-b30d-5e6d-923d-4b8c190ea285",
+        "questionRevisionId": "a4c13f80-822c-5422-ba56-9a4eeee35609",
+        "displayOrder": 8
+      },
+      {
+        "questionId": "86550730-9ca3-57bf-a569-27bc0796dc36",
+        "questionRevisionId": "69bcf7a7-1ff3-598c-821f-1a3b13f8fb03",
+        "displayOrder": 9
+      }
+    ],
+    "displayOrder": 4
+  },
+  {
+    "id": "e492080e-23aa-5cb8-8054-3aeac7a0b6b6",
+    "revisionId": "86537752-e4ce-51c8-afd9-3f654afe6d48",
+    "key": "c03-ch02-quiz01",
+    "chapterKey": "c03-ch02",
+    "title": "Chương 2: Sắp xếp — Quiz 1",
+    "description": "Bài kiểm tra 10 câu về sắp xếp.",
+    "createdBy": "ac9fadc2-1955-59e4-984d-26f74bbb4f53",
+    "clientRequestId": "9cc5f20e-982b-54ec-a2a5-4c755992c79b",
+    "requestHash": "02641474fcb4fc073bdba3dae85845a2e9b0a683439d97f069e91b1c9ad335cc",
+    "status": "PUBLISHED",
+    "publishedAt": "2026-11-21T00:00:00.000Z",
+    "questions": [
+      {
+        "questionId": "d3924da6-84ea-5fcb-b06e-8cc923c06dff",
+        "questionRevisionId": "5578161e-a3b6-5331-8907-aadd659ae2dc",
+        "displayOrder": 0
+      },
+      {
+        "questionId": "b9182e6a-6a34-5387-9f4d-afa6459c0365",
+        "questionRevisionId": "c98fd1f2-6545-5ed9-8358-50423d38262e",
+        "displayOrder": 1
+      },
+      {
+        "questionId": "58ca244b-aa06-5881-8ccd-2138b6954a40",
+        "questionRevisionId": "7a870f25-a162-59ef-a70f-ea876a7e9ffc",
+        "displayOrder": 2
+      },
+      {
+        "questionId": "5e8828db-d219-59ea-9f00-8aaad9e598d0",
+        "questionRevisionId": "8243090a-9401-5852-a734-e78c3d14e50a",
+        "displayOrder": 3
+      },
+      {
+        "questionId": "811f8d60-d59f-5679-8ae6-27bd9ab10188",
+        "questionRevisionId": "83badc24-ec96-5d65-b6dd-9503d08a979e",
+        "displayOrder": 4
+      },
+      {
+        "questionId": "4ab6e9e6-67ed-5cb1-896c-04f11b8fca8e",
+        "questionRevisionId": "8cafd836-e389-5cc0-b0f3-e4c59b871a67",
+        "displayOrder": 5
+      },
+      {
+        "questionId": "033c1eb8-5fef-5e9e-8490-6e915f376f96",
+        "questionRevisionId": "297dc9b6-3bd4-5c28-a3a3-3bd5637af519",
+        "displayOrder": 6
+      },
+      {
+        "questionId": "aefe1cf1-5039-5b91-bbcb-a4b37929d067",
+        "questionRevisionId": "78f7b59d-9c4d-53cf-87fa-7bdaddea028f",
+        "displayOrder": 7
+      },
+      {
+        "questionId": "492ba947-da79-53e4-92dd-f1db14cf9ade",
+        "questionRevisionId": "181caecb-7269-5249-8b78-b9ec69e61273",
+        "displayOrder": 8
+      },
+      {
+        "questionId": "af3fcdba-d367-5468-aaf6-a1d6765deb62",
+        "questionRevisionId": "26fb5d85-11ec-5259-a6a1-5f5b6f15ce39",
+        "displayOrder": 9
+      }
+    ],
+    "displayOrder": 0
+  },
+  {
+    "id": "58384608-e1c3-5231-b9b8-d4b3d849ddc3",
+    "revisionId": "4b52ee08-8a13-5ae0-8642-17d463d7fd49",
+    "key": "c03-ch02-quiz02",
+    "chapterKey": "c03-ch02",
+    "title": "Chương 2: Sắp xếp — Quiz 2",
+    "description": "Bài kiểm tra 10 câu về sắp xếp.",
+    "createdBy": "ac9fadc2-1955-59e4-984d-26f74bbb4f53",
+    "clientRequestId": "0b9ff5a4-55b7-5069-a870-ab5cd763bd2b",
+    "requestHash": "a91cb10658cb977c2cec9416bcdc1174eaf8815fa4080c832e114fcab73f5f98",
+    "status": "PUBLISHED",
+    "publishedAt": "2026-11-21T00:00:00.000Z",
+    "questions": [
+      {
+        "questionId": "5e8828db-d219-59ea-9f00-8aaad9e598d0",
+        "questionRevisionId": "8243090a-9401-5852-a734-e78c3d14e50a",
+        "displayOrder": 0
+      },
+      {
+        "questionId": "811f8d60-d59f-5679-8ae6-27bd9ab10188",
+        "questionRevisionId": "83badc24-ec96-5d65-b6dd-9503d08a979e",
+        "displayOrder": 1
+      },
+      {
+        "questionId": "4ab6e9e6-67ed-5cb1-896c-04f11b8fca8e",
+        "questionRevisionId": "8cafd836-e389-5cc0-b0f3-e4c59b871a67",
+        "displayOrder": 2
+      },
+      {
+        "questionId": "033c1eb8-5fef-5e9e-8490-6e915f376f96",
+        "questionRevisionId": "297dc9b6-3bd4-5c28-a3a3-3bd5637af519",
+        "displayOrder": 3
+      },
+      {
+        "questionId": "aefe1cf1-5039-5b91-bbcb-a4b37929d067",
+        "questionRevisionId": "78f7b59d-9c4d-53cf-87fa-7bdaddea028f",
+        "displayOrder": 4
+      },
+      {
+        "questionId": "492ba947-da79-53e4-92dd-f1db14cf9ade",
+        "questionRevisionId": "181caecb-7269-5249-8b78-b9ec69e61273",
+        "displayOrder": 5
+      },
+      {
+        "questionId": "af3fcdba-d367-5468-aaf6-a1d6765deb62",
+        "questionRevisionId": "26fb5d85-11ec-5259-a6a1-5f5b6f15ce39",
+        "displayOrder": 6
+      },
+      {
+        "questionId": "707a009f-5c17-5a13-baca-4de0156f8829",
+        "questionRevisionId": "c0d40f4a-6415-5225-9ad3-6f5b39508c58",
+        "displayOrder": 7
+      },
+      {
+        "questionId": "49902489-a534-57e2-a531-7e411576229e",
+        "questionRevisionId": "87eb3552-8dd8-56e6-834b-5e6ba752c0c2",
+        "displayOrder": 8
+      },
+      {
+        "questionId": "010aa349-ab88-54b2-a005-c35f5538c33d",
+        "questionRevisionId": "66094f8e-5af4-5a5b-8ec7-06f2da828331",
+        "displayOrder": 9
+      }
+    ],
+    "displayOrder": 1
+  },
+  {
+    "id": "b52d7796-c997-5deb-971c-ab9b977d8097",
+    "revisionId": "de53f73d-7138-50a2-a1a3-0e575e1c2e77",
+    "key": "c03-ch02-quiz03",
+    "chapterKey": "c03-ch02",
+    "title": "Chương 2: Sắp xếp — Quiz 3",
+    "description": "Bài kiểm tra 10 câu về sắp xếp.",
+    "createdBy": "ac9fadc2-1955-59e4-984d-26f74bbb4f53",
+    "clientRequestId": "242e857c-e11b-5cde-8ab2-17a1b6291fe4",
+    "requestHash": "057ef8892f47f0b7cb6b34fe5991be2d1ba7980a290acaf1dd3e4f39a9858f20",
+    "status": "PUBLISHED",
+    "publishedAt": "2026-11-21T00:00:00.000Z",
+    "questions": [
+      {
+        "questionId": "033c1eb8-5fef-5e9e-8490-6e915f376f96",
+        "questionRevisionId": "297dc9b6-3bd4-5c28-a3a3-3bd5637af519",
+        "displayOrder": 0
+      },
+      {
+        "questionId": "aefe1cf1-5039-5b91-bbcb-a4b37929d067",
+        "questionRevisionId": "78f7b59d-9c4d-53cf-87fa-7bdaddea028f",
+        "displayOrder": 1
+      },
+      {
+        "questionId": "492ba947-da79-53e4-92dd-f1db14cf9ade",
+        "questionRevisionId": "181caecb-7269-5249-8b78-b9ec69e61273",
+        "displayOrder": 2
+      },
+      {
+        "questionId": "af3fcdba-d367-5468-aaf6-a1d6765deb62",
+        "questionRevisionId": "26fb5d85-11ec-5259-a6a1-5f5b6f15ce39",
+        "displayOrder": 3
+      },
+      {
+        "questionId": "707a009f-5c17-5a13-baca-4de0156f8829",
+        "questionRevisionId": "c0d40f4a-6415-5225-9ad3-6f5b39508c58",
+        "displayOrder": 4
+      },
+      {
+        "questionId": "49902489-a534-57e2-a531-7e411576229e",
+        "questionRevisionId": "87eb3552-8dd8-56e6-834b-5e6ba752c0c2",
+        "displayOrder": 5
+      },
+      {
+        "questionId": "010aa349-ab88-54b2-a005-c35f5538c33d",
+        "questionRevisionId": "66094f8e-5af4-5a5b-8ec7-06f2da828331",
+        "displayOrder": 6
+      },
+      {
+        "questionId": "072c88cf-3dc2-5fff-a594-663aaf26e04e",
+        "questionRevisionId": "02518c4b-a3c1-5d84-9c46-bb216307b0cf",
+        "displayOrder": 7
+      },
+      {
+        "questionId": "897055b9-ef63-5aa4-b66d-cfb280c9f689",
+        "questionRevisionId": "22de3f7c-67e4-5558-a523-70b4090621e3",
+        "displayOrder": 8
+      },
+      {
+        "questionId": "b131a05e-3e6e-5b85-b505-ff5025d93b0f",
+        "questionRevisionId": "b9d02946-10c3-5a77-a084-b8393e41f20a",
+        "displayOrder": 9
+      }
+    ],
+    "displayOrder": 2
+  },
+  {
+    "id": "6445001c-da71-5321-8d69-14e5c19f9209",
+    "revisionId": "df595c6f-72bd-57e6-8b92-079acfa5779a",
+    "key": "c03-ch02-quiz04",
+    "chapterKey": "c03-ch02",
+    "title": "Chương 2: Sắp xếp — Quiz 4",
+    "description": "Bài kiểm tra 10 câu về sắp xếp.",
+    "createdBy": "ac9fadc2-1955-59e4-984d-26f74bbb4f53",
+    "clientRequestId": "c1829b64-c55d-576f-b0df-d30a1feddb8d",
+    "requestHash": "92dcbe00d37ec1271ac1e1068107ec8e322b301ee2d56594cb5c0ecc8a282506",
+    "status": "PUBLISHED",
+    "publishedAt": "2026-11-21T00:00:00.000Z",
+    "questions": [
+      {
+        "questionId": "af3fcdba-d367-5468-aaf6-a1d6765deb62",
+        "questionRevisionId": "26fb5d85-11ec-5259-a6a1-5f5b6f15ce39",
+        "displayOrder": 0
+      },
+      {
+        "questionId": "707a009f-5c17-5a13-baca-4de0156f8829",
+        "questionRevisionId": "c0d40f4a-6415-5225-9ad3-6f5b39508c58",
+        "displayOrder": 1
+      },
+      {
+        "questionId": "49902489-a534-57e2-a531-7e411576229e",
+        "questionRevisionId": "87eb3552-8dd8-56e6-834b-5e6ba752c0c2",
+        "displayOrder": 2
+      },
+      {
+        "questionId": "010aa349-ab88-54b2-a005-c35f5538c33d",
+        "questionRevisionId": "66094f8e-5af4-5a5b-8ec7-06f2da828331",
+        "displayOrder": 3
+      },
+      {
+        "questionId": "072c88cf-3dc2-5fff-a594-663aaf26e04e",
+        "questionRevisionId": "02518c4b-a3c1-5d84-9c46-bb216307b0cf",
+        "displayOrder": 4
+      },
+      {
+        "questionId": "897055b9-ef63-5aa4-b66d-cfb280c9f689",
+        "questionRevisionId": "22de3f7c-67e4-5558-a523-70b4090621e3",
+        "displayOrder": 5
+      },
+      {
+        "questionId": "b131a05e-3e6e-5b85-b505-ff5025d93b0f",
+        "questionRevisionId": "b9d02946-10c3-5a77-a084-b8393e41f20a",
+        "displayOrder": 6
+      },
+      {
+        "questionId": "ce11de75-deb6-5f78-8165-73ab4fe26fb8",
+        "questionRevisionId": "b0d42cb4-7376-5940-8342-9817cfae1209",
+        "displayOrder": 7
+      },
+      {
+        "questionId": "5718edba-0e73-5d13-82d8-fde5214461aa",
+        "questionRevisionId": "f87a4f9c-acc9-52b8-960c-d780df371cf9",
+        "displayOrder": 8
+      },
+      {
+        "questionId": "d5b26c7c-c4da-5ee0-9c6e-92f1890631cd",
+        "questionRevisionId": "1dadb68f-5051-5bf0-b3ba-aef4838e9416",
+        "displayOrder": 9
+      }
+    ],
+    "displayOrder": 3
+  },
+  {
+    "id": "5509a7ed-c158-5676-a7fc-fd682da0094f",
+    "revisionId": "849ec322-2502-5d24-a25c-3e337e803e6a",
+    "key": "c03-ch02-quiz05",
+    "chapterKey": "c03-ch02",
+    "title": "Chương 2: Sắp xếp — Quiz 5",
+    "description": "Bài kiểm tra 10 câu về sắp xếp.",
+    "createdBy": "ac9fadc2-1955-59e4-984d-26f74bbb4f53",
+    "clientRequestId": "c10c8c68-2c49-5127-a39f-7e9df58943ca",
+    "requestHash": "4febd86880171f0ee4f8f7b8874eef51374ff2bcee59eacb4cc73e277a338486",
+    "status": "PUBLISHED",
+    "publishedAt": "2026-11-21T00:00:00.000Z",
+    "questions": [
+      {
+        "questionId": "010aa349-ab88-54b2-a005-c35f5538c33d",
+        "questionRevisionId": "66094f8e-5af4-5a5b-8ec7-06f2da828331",
+        "displayOrder": 0
+      },
+      {
+        "questionId": "072c88cf-3dc2-5fff-a594-663aaf26e04e",
+        "questionRevisionId": "02518c4b-a3c1-5d84-9c46-bb216307b0cf",
+        "displayOrder": 1
+      },
+      {
+        "questionId": "897055b9-ef63-5aa4-b66d-cfb280c9f689",
+        "questionRevisionId": "22de3f7c-67e4-5558-a523-70b4090621e3",
+        "displayOrder": 2
+      },
+      {
+        "questionId": "b131a05e-3e6e-5b85-b505-ff5025d93b0f",
+        "questionRevisionId": "b9d02946-10c3-5a77-a084-b8393e41f20a",
+        "displayOrder": 3
+      },
+      {
+        "questionId": "ce11de75-deb6-5f78-8165-73ab4fe26fb8",
+        "questionRevisionId": "b0d42cb4-7376-5940-8342-9817cfae1209",
+        "displayOrder": 4
+      },
+      {
+        "questionId": "5718edba-0e73-5d13-82d8-fde5214461aa",
+        "questionRevisionId": "f87a4f9c-acc9-52b8-960c-d780df371cf9",
+        "displayOrder": 5
+      },
+      {
+        "questionId": "d5b26c7c-c4da-5ee0-9c6e-92f1890631cd",
+        "questionRevisionId": "1dadb68f-5051-5bf0-b3ba-aef4838e9416",
+        "displayOrder": 6
+      },
+      {
+        "questionId": "024fbe8f-acb6-55a9-8d30-839f259565e5",
+        "questionRevisionId": "deed3d0d-3ce5-525e-ba45-280cb98d6bd2",
+        "displayOrder": 7
+      },
+      {
+        "questionId": "5fe6eebc-497e-5fdd-8c54-a8fa910efeb7",
+        "questionRevisionId": "94c5116e-ea08-546f-87db-a597ce5d34ad",
+        "displayOrder": 8
+      },
+      {
+        "questionId": "a80f30b6-45b2-53c7-a05d-b926a37295d4",
+        "questionRevisionId": "b59b9a49-704c-58d8-870e-08d4f87c40b7",
+        "displayOrder": 9
+      }
+    ],
+    "displayOrder": 4
+  },
+  {
+    "id": "541f3fa1-a2bd-579d-8f9b-2e0dcc9b0738",
+    "revisionId": "7b6998f4-e40f-5fcd-a1d6-0c6f68034699",
+    "key": "c03-ch03-quiz01",
+    "chapterKey": "c03-ch03",
+    "title": "Chương 3: Chuỗi — Quiz 1",
+    "description": "Bài kiểm tra 10 câu về chuỗi.",
+    "createdBy": "ac9fadc2-1955-59e4-984d-26f74bbb4f53",
+    "clientRequestId": "81a9f14d-8674-51a6-ad85-36f1dbb53850",
+    "requestHash": "3da017b2b8f0bb35bccb802dc7449f8f8a0407b21b2cb38f277f4f467bb7d9d6",
+    "status": "PUBLISHED",
+    "publishedAt": "2026-11-21T00:00:00.000Z",
+    "questions": [
+      {
+        "questionId": "603c4102-0514-58fc-8608-c35339487280",
+        "questionRevisionId": "0f151fcb-f8bf-5316-b4c8-23c9bdd15056",
+        "displayOrder": 0
+      },
+      {
+        "questionId": "f43bd838-92ba-51ac-8f1e-ed01a61b9578",
+        "questionRevisionId": "82793d97-eb0b-50ca-a9c5-e6aa7652f364",
+        "displayOrder": 1
+      },
+      {
+        "questionId": "10eecbdc-c6bd-58f0-822f-c7ac23adcdd8",
+        "questionRevisionId": "4917e72a-be9e-54db-97ba-ab730c487c60",
+        "displayOrder": 2
+      },
+      {
+        "questionId": "b81ed25f-2985-5788-b48e-e2b95c798145",
+        "questionRevisionId": "1ec86ca3-329d-514e-97ea-7ac88b97019c",
+        "displayOrder": 3
+      },
+      {
+        "questionId": "db064089-38ff-52cc-bb0e-548e1ad49d81",
+        "questionRevisionId": "f9758660-b5cf-5417-8a1c-1c01acdd5ca4",
+        "displayOrder": 4
+      },
+      {
+        "questionId": "a2d5b732-1db4-5071-a27d-37bc8d5e6853",
+        "questionRevisionId": "6e82489b-5c9e-53eb-adc5-a56c72a75737",
+        "displayOrder": 5
+      },
+      {
+        "questionId": "b9f67980-d6a1-50cb-82b1-d3d94341d773",
+        "questionRevisionId": "12326246-525d-529a-8a3c-4db5959713a7",
+        "displayOrder": 6
+      },
+      {
+        "questionId": "4bd9382f-f149-51f4-badc-73731c426af7",
+        "questionRevisionId": "3094748b-a719-5f9c-b91a-f252809b136a",
+        "displayOrder": 7
+      },
+      {
+        "questionId": "436239bf-b392-567e-b329-c19b52e35635",
+        "questionRevisionId": "31fe1b29-bd56-5a90-9bc6-4926ecf6f643",
+        "displayOrder": 8
+      },
+      {
+        "questionId": "743bc680-061a-54f3-a6d5-723fec3300c9",
+        "questionRevisionId": "6651506d-68e3-5230-8bd6-a800d2de9287",
+        "displayOrder": 9
+      }
+    ],
+    "displayOrder": 0
+  },
+  {
+    "id": "7e62164d-4837-51f7-944d-11e6861f6bb7",
+    "revisionId": "d2503e9f-ea21-5aed-993c-807318020b0e",
+    "key": "c03-ch03-quiz02",
+    "chapterKey": "c03-ch03",
+    "title": "Chương 3: Chuỗi — Quiz 2",
+    "description": "Bài kiểm tra 10 câu về chuỗi.",
+    "createdBy": "ac9fadc2-1955-59e4-984d-26f74bbb4f53",
+    "clientRequestId": "6e10e62a-5aa8-55af-b234-fa48e767341b",
+    "requestHash": "4733ec9dc6ab083461a805756a88047e1acd095af3724b2b393e92619769a2ad",
+    "status": "PUBLISHED",
+    "publishedAt": "2026-11-21T00:00:00.000Z",
+    "questions": [
+      {
+        "questionId": "b81ed25f-2985-5788-b48e-e2b95c798145",
+        "questionRevisionId": "1ec86ca3-329d-514e-97ea-7ac88b97019c",
+        "displayOrder": 0
+      },
+      {
+        "questionId": "db064089-38ff-52cc-bb0e-548e1ad49d81",
+        "questionRevisionId": "f9758660-b5cf-5417-8a1c-1c01acdd5ca4",
+        "displayOrder": 1
+      },
+      {
+        "questionId": "a2d5b732-1db4-5071-a27d-37bc8d5e6853",
+        "questionRevisionId": "6e82489b-5c9e-53eb-adc5-a56c72a75737",
+        "displayOrder": 2
+      },
+      {
+        "questionId": "b9f67980-d6a1-50cb-82b1-d3d94341d773",
+        "questionRevisionId": "12326246-525d-529a-8a3c-4db5959713a7",
+        "displayOrder": 3
+      },
+      {
+        "questionId": "4bd9382f-f149-51f4-badc-73731c426af7",
+        "questionRevisionId": "3094748b-a719-5f9c-b91a-f252809b136a",
+        "displayOrder": 4
+      },
+      {
+        "questionId": "436239bf-b392-567e-b329-c19b52e35635",
+        "questionRevisionId": "31fe1b29-bd56-5a90-9bc6-4926ecf6f643",
+        "displayOrder": 5
+      },
+      {
+        "questionId": "743bc680-061a-54f3-a6d5-723fec3300c9",
+        "questionRevisionId": "6651506d-68e3-5230-8bd6-a800d2de9287",
+        "displayOrder": 6
+      },
+      {
+        "questionId": "5e7b40b2-5bd6-5a05-90fc-05872cadc94c",
+        "questionRevisionId": "9b632b23-0e52-52e8-893d-5a8f58d515b9",
+        "displayOrder": 7
+      },
+      {
+        "questionId": "b2a39714-b5d5-5bb5-b9ac-9de85b5d5f5a",
+        "questionRevisionId": "8d606ef6-551b-5cec-99e5-584399e2b3f8",
+        "displayOrder": 8
+      },
+      {
+        "questionId": "f0ab2119-48cf-5050-81f2-99a8e2569d58",
+        "questionRevisionId": "f9dca2b4-6261-5f29-afa1-d80b63344904",
+        "displayOrder": 9
+      }
+    ],
+    "displayOrder": 1
+  },
+  {
+    "id": "7fe1a505-9cc5-5967-9a1e-5c5ebcef72df",
+    "revisionId": "a0d0c7c0-ab9e-51dd-9b01-784ce8ccc0b1",
+    "key": "c03-ch03-quiz03",
+    "chapterKey": "c03-ch03",
+    "title": "Chương 3: Chuỗi — Quiz 3",
+    "description": "Bài kiểm tra 10 câu về chuỗi.",
+    "createdBy": "ac9fadc2-1955-59e4-984d-26f74bbb4f53",
+    "clientRequestId": "1568d8e0-7d57-56b9-9cde-08caadcccbbe",
+    "requestHash": "6fee5c6275a241e85f20ac07dfa1d78d32637cff60773d9382dd3a0086970972",
+    "status": "PUBLISHED",
+    "publishedAt": "2026-11-21T00:00:00.000Z",
+    "questions": [
+      {
+        "questionId": "b9f67980-d6a1-50cb-82b1-d3d94341d773",
+        "questionRevisionId": "12326246-525d-529a-8a3c-4db5959713a7",
+        "displayOrder": 0
+      },
+      {
+        "questionId": "4bd9382f-f149-51f4-badc-73731c426af7",
+        "questionRevisionId": "3094748b-a719-5f9c-b91a-f252809b136a",
+        "displayOrder": 1
+      },
+      {
+        "questionId": "436239bf-b392-567e-b329-c19b52e35635",
+        "questionRevisionId": "31fe1b29-bd56-5a90-9bc6-4926ecf6f643",
+        "displayOrder": 2
+      },
+      {
+        "questionId": "743bc680-061a-54f3-a6d5-723fec3300c9",
+        "questionRevisionId": "6651506d-68e3-5230-8bd6-a800d2de9287",
+        "displayOrder": 3
+      },
+      {
+        "questionId": "5e7b40b2-5bd6-5a05-90fc-05872cadc94c",
+        "questionRevisionId": "9b632b23-0e52-52e8-893d-5a8f58d515b9",
+        "displayOrder": 4
+      },
+      {
+        "questionId": "b2a39714-b5d5-5bb5-b9ac-9de85b5d5f5a",
+        "questionRevisionId": "8d606ef6-551b-5cec-99e5-584399e2b3f8",
+        "displayOrder": 5
+      },
+      {
+        "questionId": "f0ab2119-48cf-5050-81f2-99a8e2569d58",
+        "questionRevisionId": "f9dca2b4-6261-5f29-afa1-d80b63344904",
+        "displayOrder": 6
+      },
+      {
+        "questionId": "447f3b66-9ca8-5fc0-84e3-6b82b195dbe6",
+        "questionRevisionId": "6b10cd3d-700e-562e-8327-460b4a8de409",
+        "displayOrder": 7
+      },
+      {
+        "questionId": "8fe6dd18-d7ed-5d5b-a982-dd2692c50e2c",
+        "questionRevisionId": "0c58295f-9842-5b39-a7b1-7a9c364ab3cd",
+        "displayOrder": 8
+      },
+      {
+        "questionId": "b93f2603-c48a-5127-a131-ba8b7c5606d1",
+        "questionRevisionId": "1fa04fff-4ee1-5e71-83fa-961fc2f93f74",
+        "displayOrder": 9
+      }
+    ],
+    "displayOrder": 2
+  },
+  {
+    "id": "f5694fec-10f2-5dec-8ac1-0e63511f50db",
+    "revisionId": "41483d50-a510-559e-bc2f-6ffce7c4a9ed",
+    "key": "c03-ch03-quiz04",
+    "chapterKey": "c03-ch03",
+    "title": "Chương 3: Chuỗi — Quiz 4",
+    "description": "Bài kiểm tra 10 câu về chuỗi.",
+    "createdBy": "ac9fadc2-1955-59e4-984d-26f74bbb4f53",
+    "clientRequestId": "533bc46b-53e1-547a-aba9-eb3c0a4298ed",
+    "requestHash": "740b5df51b0cb29ed19b0922948db954b2980415e755bbf21d02b92579cc8d56",
+    "status": "PUBLISHED",
+    "publishedAt": "2026-11-21T00:00:00.000Z",
+    "questions": [
+      {
+        "questionId": "743bc680-061a-54f3-a6d5-723fec3300c9",
+        "questionRevisionId": "6651506d-68e3-5230-8bd6-a800d2de9287",
+        "displayOrder": 0
+      },
+      {
+        "questionId": "5e7b40b2-5bd6-5a05-90fc-05872cadc94c",
+        "questionRevisionId": "9b632b23-0e52-52e8-893d-5a8f58d515b9",
+        "displayOrder": 1
+      },
+      {
+        "questionId": "b2a39714-b5d5-5bb5-b9ac-9de85b5d5f5a",
+        "questionRevisionId": "8d606ef6-551b-5cec-99e5-584399e2b3f8",
+        "displayOrder": 2
+      },
+      {
+        "questionId": "f0ab2119-48cf-5050-81f2-99a8e2569d58",
+        "questionRevisionId": "f9dca2b4-6261-5f29-afa1-d80b63344904",
+        "displayOrder": 3
+      },
+      {
+        "questionId": "447f3b66-9ca8-5fc0-84e3-6b82b195dbe6",
+        "questionRevisionId": "6b10cd3d-700e-562e-8327-460b4a8de409",
+        "displayOrder": 4
+      },
+      {
+        "questionId": "8fe6dd18-d7ed-5d5b-a982-dd2692c50e2c",
+        "questionRevisionId": "0c58295f-9842-5b39-a7b1-7a9c364ab3cd",
+        "displayOrder": 5
+      },
+      {
+        "questionId": "b93f2603-c48a-5127-a131-ba8b7c5606d1",
+        "questionRevisionId": "1fa04fff-4ee1-5e71-83fa-961fc2f93f74",
+        "displayOrder": 6
+      },
+      {
+        "questionId": "e9e1bb15-34e4-5c00-b12e-7819ca72e48b",
+        "questionRevisionId": "2cf41e50-7f1e-5d25-befb-2e4557a0f654",
+        "displayOrder": 7
+      },
+      {
+        "questionId": "8e93ee1b-22f7-58f2-a323-d3da7da9755a",
+        "questionRevisionId": "eb1a484d-4380-5e2f-9693-d3de31b94818",
+        "displayOrder": 8
+      },
+      {
+        "questionId": "1938f2ed-6e8a-5650-b917-6bb9c72db1ac",
+        "questionRevisionId": "204fc47a-6c64-5dfa-8215-e15a1b8a1aee",
+        "displayOrder": 9
+      }
+    ],
+    "displayOrder": 3
+  },
+  {
+    "id": "0434e261-5f80-521a-b210-707312f5e336",
+    "revisionId": "e49819ea-8c43-5b04-9abe-1f73a54b368b",
+    "key": "c03-ch03-quiz05",
+    "chapterKey": "c03-ch03",
+    "title": "Chương 3: Chuỗi — Quiz 5",
+    "description": "Bài kiểm tra 10 câu về chuỗi.",
+    "createdBy": "ac9fadc2-1955-59e4-984d-26f74bbb4f53",
+    "clientRequestId": "7c7504dd-92d5-5a27-9242-b861657a7806",
+    "requestHash": "d561a3771573037a91b494a25dc728b224167a814114152e4d03428bc216a969",
+    "status": "PUBLISHED",
+    "publishedAt": "2026-11-21T00:00:00.000Z",
+    "questions": [
+      {
+        "questionId": "f0ab2119-48cf-5050-81f2-99a8e2569d58",
+        "questionRevisionId": "f9dca2b4-6261-5f29-afa1-d80b63344904",
+        "displayOrder": 0
+      },
+      {
+        "questionId": "447f3b66-9ca8-5fc0-84e3-6b82b195dbe6",
+        "questionRevisionId": "6b10cd3d-700e-562e-8327-460b4a8de409",
+        "displayOrder": 1
+      },
+      {
+        "questionId": "8fe6dd18-d7ed-5d5b-a982-dd2692c50e2c",
+        "questionRevisionId": "0c58295f-9842-5b39-a7b1-7a9c364ab3cd",
+        "displayOrder": 2
+      },
+      {
+        "questionId": "b93f2603-c48a-5127-a131-ba8b7c5606d1",
+        "questionRevisionId": "1fa04fff-4ee1-5e71-83fa-961fc2f93f74",
+        "displayOrder": 3
+      },
+      {
+        "questionId": "e9e1bb15-34e4-5c00-b12e-7819ca72e48b",
+        "questionRevisionId": "2cf41e50-7f1e-5d25-befb-2e4557a0f654",
+        "displayOrder": 4
+      },
+      {
+        "questionId": "8e93ee1b-22f7-58f2-a323-d3da7da9755a",
+        "questionRevisionId": "eb1a484d-4380-5e2f-9693-d3de31b94818",
+        "displayOrder": 5
+      },
+      {
+        "questionId": "1938f2ed-6e8a-5650-b917-6bb9c72db1ac",
+        "questionRevisionId": "204fc47a-6c64-5dfa-8215-e15a1b8a1aee",
+        "displayOrder": 6
+      },
+      {
+        "questionId": "487cef7a-0ce2-5ece-845e-c6fefb4c83c0",
+        "questionRevisionId": "2774fc3e-90a9-5780-bb1b-7f29062f2287",
+        "displayOrder": 7
+      },
+      {
+        "questionId": "d775eb72-4253-50a1-af25-a42108a0c033",
+        "questionRevisionId": "d6f10cb7-6c6d-5312-81f8-d80c1705133a",
+        "displayOrder": 8
+      },
+      {
+        "questionId": "cb02527e-84ad-5a82-a825-b591a2b2bb8a",
+        "questionRevisionId": "9572bd94-12bb-53e6-bd9d-2889d1364160",
+        "displayOrder": 9
+      }
+    ],
+    "displayOrder": 4
+  },
+  {
+    "id": "7db560bb-8269-5390-9e3d-651d6fb02ce0",
+    "revisionId": "161449cb-ddf1-5ba0-bdc8-f34a5c52f8c9",
+    "key": "c03-ch04-quiz01",
+    "chapterKey": "c03-ch04",
+    "title": "Chương 4: OOP — Quiz 1",
+    "description": "Bài kiểm tra 10 câu về oop.",
+    "createdBy": "ac9fadc2-1955-59e4-984d-26f74bbb4f53",
+    "clientRequestId": "0c42fee5-a465-5f2e-a62a-5efdc498655c",
+    "requestHash": "4c532818764533bd9c2dca0be4e721e117b2fe15fc10e7f6219c0117da73c4ed",
+    "status": "PUBLISHED",
+    "publishedAt": "2026-11-21T00:00:00.000Z",
+    "questions": [
+      {
+        "questionId": "532df7ee-daca-5962-a7a8-1ca6ff5ecac0",
+        "questionRevisionId": "7d45dcc2-f412-531d-a711-fc44eb87c547",
+        "displayOrder": 0
+      },
+      {
+        "questionId": "4c664e9d-6207-5d49-9e57-bfef4d08ce9e",
+        "questionRevisionId": "fc307a45-1254-5c6f-af08-a4ef8630cf4f",
+        "displayOrder": 1
+      },
+      {
+        "questionId": "b9f5ab4a-9155-5ced-a78e-58fed5872519",
+        "questionRevisionId": "96444945-0f4f-5bdf-915c-59e7eb038812",
+        "displayOrder": 2
+      },
+      {
+        "questionId": "c289fa34-d57d-539c-9088-9533c44bda9e",
+        "questionRevisionId": "81eddc94-bb1c-5465-978d-511f30a63978",
+        "displayOrder": 3
+      },
+      {
+        "questionId": "ed265d11-d645-5372-afa7-17591e3b9a58",
+        "questionRevisionId": "8fd68e1f-ae92-56df-b3a8-3d17c37bc9a0",
+        "displayOrder": 4
+      },
+      {
+        "questionId": "fe95272c-69e6-5bfb-97fe-356748e405b1",
+        "questionRevisionId": "30cd6373-f8a9-5ad4-bb42-2a856321e0a5",
+        "displayOrder": 5
+      },
+      {
+        "questionId": "e1b4ecf6-6170-52ad-827b-1fbe5332140f",
+        "questionRevisionId": "9694e59f-ea2e-54e3-8c6d-148d3780f8e6",
+        "displayOrder": 6
+      },
+      {
+        "questionId": "a6cee034-b1eb-5a95-9ae0-75d3b4da738f",
+        "questionRevisionId": "7fbe138c-6f9e-5cd3-a7d2-6b3f66fa2181",
+        "displayOrder": 7
+      },
+      {
+        "questionId": "0035c5f9-3e23-54e0-89bc-b552de77ac74",
+        "questionRevisionId": "661aae27-3547-5105-8328-9da324452b85",
+        "displayOrder": 8
+      },
+      {
+        "questionId": "5004e014-8523-5490-9917-6515e32bbb83",
+        "questionRevisionId": "f6050b4a-3cab-5419-8f2e-6cc94f7906e3",
+        "displayOrder": 9
+      }
+    ],
+    "displayOrder": 0
+  },
+  {
+    "id": "989065b9-318f-5919-94eb-b2df56eb9f9b",
+    "revisionId": "cdd23daa-422d-5b3d-ad0c-46d0105fc0ea",
+    "key": "c03-ch04-quiz02",
+    "chapterKey": "c03-ch04",
+    "title": "Chương 4: OOP — Quiz 2",
+    "description": "Bài kiểm tra 10 câu về oop.",
+    "createdBy": "ac9fadc2-1955-59e4-984d-26f74bbb4f53",
+    "clientRequestId": "66159875-51a4-5175-b843-794498fda921",
+    "requestHash": "36150c54cccd881816e9fd9f49551c23b914932cca57e35c9df75b27d83c3f92",
+    "status": "PUBLISHED",
+    "publishedAt": "2026-11-21T00:00:00.000Z",
+    "questions": [
+      {
+        "questionId": "c289fa34-d57d-539c-9088-9533c44bda9e",
+        "questionRevisionId": "81eddc94-bb1c-5465-978d-511f30a63978",
+        "displayOrder": 0
+      },
+      {
+        "questionId": "ed265d11-d645-5372-afa7-17591e3b9a58",
+        "questionRevisionId": "8fd68e1f-ae92-56df-b3a8-3d17c37bc9a0",
+        "displayOrder": 1
+      },
+      {
+        "questionId": "fe95272c-69e6-5bfb-97fe-356748e405b1",
+        "questionRevisionId": "30cd6373-f8a9-5ad4-bb42-2a856321e0a5",
+        "displayOrder": 2
+      },
+      {
+        "questionId": "e1b4ecf6-6170-52ad-827b-1fbe5332140f",
+        "questionRevisionId": "9694e59f-ea2e-54e3-8c6d-148d3780f8e6",
+        "displayOrder": 3
+      },
+      {
+        "questionId": "a6cee034-b1eb-5a95-9ae0-75d3b4da738f",
+        "questionRevisionId": "7fbe138c-6f9e-5cd3-a7d2-6b3f66fa2181",
+        "displayOrder": 4
+      },
+      {
+        "questionId": "0035c5f9-3e23-54e0-89bc-b552de77ac74",
+        "questionRevisionId": "661aae27-3547-5105-8328-9da324452b85",
+        "displayOrder": 5
+      },
+      {
+        "questionId": "5004e014-8523-5490-9917-6515e32bbb83",
+        "questionRevisionId": "f6050b4a-3cab-5419-8f2e-6cc94f7906e3",
+        "displayOrder": 6
+      },
+      {
+        "questionId": "1085a4ca-dbb5-5820-9eaf-36fac9c143f7",
+        "questionRevisionId": "7ad5dd05-dff3-5730-acef-3eaef7f1423d",
+        "displayOrder": 7
+      },
+      {
+        "questionId": "55260ebd-13d1-5b7f-9739-d3eddfda2bff",
+        "questionRevisionId": "0624e3d3-9f13-55a5-b568-b13da3a37b2b",
+        "displayOrder": 8
+      },
+      {
+        "questionId": "bae9b037-eaec-5c67-b54d-063b611382bc",
+        "questionRevisionId": "adb9ae0c-9fa6-51a3-bc91-85459e285049",
+        "displayOrder": 9
+      }
+    ],
+    "displayOrder": 1
+  },
+  {
+    "id": "4fd9e361-c82a-555d-bd3e-eb66db7e9c46",
+    "revisionId": "42893ef4-c306-5d66-aa5b-bfed817da83f",
+    "key": "c03-ch04-quiz03",
+    "chapterKey": "c03-ch04",
+    "title": "Chương 4: OOP — Quiz 3",
+    "description": "Bài kiểm tra 10 câu về oop.",
+    "createdBy": "ac9fadc2-1955-59e4-984d-26f74bbb4f53",
+    "clientRequestId": "0335346a-fb22-5faf-8918-269a91edcc0a",
+    "requestHash": "6bfb8e484bcbf94c505d4b3d213978bcc856ec03ae8fbcd63717a5405273c531",
+    "status": "PUBLISHED",
+    "publishedAt": "2026-11-21T00:00:00.000Z",
+    "questions": [
+      {
+        "questionId": "e1b4ecf6-6170-52ad-827b-1fbe5332140f",
+        "questionRevisionId": "9694e59f-ea2e-54e3-8c6d-148d3780f8e6",
+        "displayOrder": 0
+      },
+      {
+        "questionId": "a6cee034-b1eb-5a95-9ae0-75d3b4da738f",
+        "questionRevisionId": "7fbe138c-6f9e-5cd3-a7d2-6b3f66fa2181",
+        "displayOrder": 1
+      },
+      {
+        "questionId": "0035c5f9-3e23-54e0-89bc-b552de77ac74",
+        "questionRevisionId": "661aae27-3547-5105-8328-9da324452b85",
+        "displayOrder": 2
+      },
+      {
+        "questionId": "5004e014-8523-5490-9917-6515e32bbb83",
+        "questionRevisionId": "f6050b4a-3cab-5419-8f2e-6cc94f7906e3",
+        "displayOrder": 3
+      },
+      {
+        "questionId": "1085a4ca-dbb5-5820-9eaf-36fac9c143f7",
+        "questionRevisionId": "7ad5dd05-dff3-5730-acef-3eaef7f1423d",
+        "displayOrder": 4
+      },
+      {
+        "questionId": "55260ebd-13d1-5b7f-9739-d3eddfda2bff",
+        "questionRevisionId": "0624e3d3-9f13-55a5-b568-b13da3a37b2b",
+        "displayOrder": 5
+      },
+      {
+        "questionId": "bae9b037-eaec-5c67-b54d-063b611382bc",
+        "questionRevisionId": "adb9ae0c-9fa6-51a3-bc91-85459e285049",
+        "displayOrder": 6
+      },
+      {
+        "questionId": "aa0691ca-417f-583e-a7af-47e2a833e940",
+        "questionRevisionId": "870d5be9-6bda-5ac5-9a9d-f7b629a595a8",
+        "displayOrder": 7
+      },
+      {
+        "questionId": "1f1c9b3e-4da1-5a96-a5ec-4270a4ef1a42",
+        "questionRevisionId": "faea29ad-1510-56cc-8e60-e90465ac8a3a",
+        "displayOrder": 8
+      },
+      {
+        "questionId": "5d00dfa9-46f2-54de-9bed-7a24ea7fb955",
+        "questionRevisionId": "a4f58774-9c94-549a-ab29-97dcd2ce7b8e",
+        "displayOrder": 9
+      }
+    ],
+    "displayOrder": 2
+  },
+  {
+    "id": "16e1c216-6744-51e3-aa5f-01fb1e0f1baa",
+    "revisionId": "c6867100-576c-5ee7-8fd9-488c401c8f83",
+    "key": "c03-ch04-quiz04",
+    "chapterKey": "c03-ch04",
+    "title": "Chương 4: OOP — Quiz 4",
+    "description": "Bài kiểm tra 10 câu về oop.",
+    "createdBy": "ac9fadc2-1955-59e4-984d-26f74bbb4f53",
+    "clientRequestId": "993c2701-3391-5bcc-a027-cb1f3a3b7c86",
+    "requestHash": "aa7fa13d7f3a6a3bc5af67677d1d0b1077478d0ee089375c07e6efb496f62c6b",
+    "status": "PUBLISHED",
+    "publishedAt": "2026-11-21T00:00:00.000Z",
+    "questions": [
+      {
+        "questionId": "5004e014-8523-5490-9917-6515e32bbb83",
+        "questionRevisionId": "f6050b4a-3cab-5419-8f2e-6cc94f7906e3",
+        "displayOrder": 0
+      },
+      {
+        "questionId": "1085a4ca-dbb5-5820-9eaf-36fac9c143f7",
+        "questionRevisionId": "7ad5dd05-dff3-5730-acef-3eaef7f1423d",
+        "displayOrder": 1
+      },
+      {
+        "questionId": "55260ebd-13d1-5b7f-9739-d3eddfda2bff",
+        "questionRevisionId": "0624e3d3-9f13-55a5-b568-b13da3a37b2b",
+        "displayOrder": 2
+      },
+      {
+        "questionId": "bae9b037-eaec-5c67-b54d-063b611382bc",
+        "questionRevisionId": "adb9ae0c-9fa6-51a3-bc91-85459e285049",
+        "displayOrder": 3
+      },
+      {
+        "questionId": "aa0691ca-417f-583e-a7af-47e2a833e940",
+        "questionRevisionId": "870d5be9-6bda-5ac5-9a9d-f7b629a595a8",
+        "displayOrder": 4
+      },
+      {
+        "questionId": "1f1c9b3e-4da1-5a96-a5ec-4270a4ef1a42",
+        "questionRevisionId": "faea29ad-1510-56cc-8e60-e90465ac8a3a",
+        "displayOrder": 5
+      },
+      {
+        "questionId": "5d00dfa9-46f2-54de-9bed-7a24ea7fb955",
+        "questionRevisionId": "a4f58774-9c94-549a-ab29-97dcd2ce7b8e",
+        "displayOrder": 6
+      },
+      {
+        "questionId": "eea3550f-0cfe-52d4-b001-5e678df7566f",
+        "questionRevisionId": "75b2e758-0f75-59ad-aeba-91fa29cfc12c",
+        "displayOrder": 7
+      },
+      {
+        "questionId": "70686435-6b4d-551f-918c-2333af133f85",
+        "questionRevisionId": "350d4268-6ce0-53c8-983a-c559bc775d84",
+        "displayOrder": 8
+      },
+      {
+        "questionId": "48b32e66-8d43-5b96-892a-4c6f973456bc",
+        "questionRevisionId": "57428c74-2f30-5c2c-bfe6-76fb6ef0beb5",
+        "displayOrder": 9
+      }
+    ],
+    "displayOrder": 3
+  },
+  {
+    "id": "ad308306-0563-5ab4-ab30-f20434c31dee",
+    "revisionId": "67cdf963-4ebc-5cf9-9923-ffa207f6e596",
+    "key": "c03-ch04-quiz05",
+    "chapterKey": "c03-ch04",
+    "title": "Chương 4: OOP — Quiz 5",
+    "description": "Bài kiểm tra 10 câu về oop.",
+    "createdBy": "ac9fadc2-1955-59e4-984d-26f74bbb4f53",
+    "clientRequestId": "f25611fa-311b-55c4-9ff4-3e3d7ed66ba8",
+    "requestHash": "de9f57488eeb3f55d1c0fa21655046749d0aa90839f7099e7f18a5f19b18fe70",
+    "status": "PUBLISHED",
+    "publishedAt": "2026-11-21T00:00:00.000Z",
+    "questions": [
+      {
+        "questionId": "bae9b037-eaec-5c67-b54d-063b611382bc",
+        "questionRevisionId": "adb9ae0c-9fa6-51a3-bc91-85459e285049",
+        "displayOrder": 0
+      },
+      {
+        "questionId": "aa0691ca-417f-583e-a7af-47e2a833e940",
+        "questionRevisionId": "870d5be9-6bda-5ac5-9a9d-f7b629a595a8",
+        "displayOrder": 1
+      },
+      {
+        "questionId": "1f1c9b3e-4da1-5a96-a5ec-4270a4ef1a42",
+        "questionRevisionId": "faea29ad-1510-56cc-8e60-e90465ac8a3a",
+        "displayOrder": 2
+      },
+      {
+        "questionId": "5d00dfa9-46f2-54de-9bed-7a24ea7fb955",
+        "questionRevisionId": "a4f58774-9c94-549a-ab29-97dcd2ce7b8e",
+        "displayOrder": 3
+      },
+      {
+        "questionId": "eea3550f-0cfe-52d4-b001-5e678df7566f",
+        "questionRevisionId": "75b2e758-0f75-59ad-aeba-91fa29cfc12c",
+        "displayOrder": 4
+      },
+      {
+        "questionId": "70686435-6b4d-551f-918c-2333af133f85",
+        "questionRevisionId": "350d4268-6ce0-53c8-983a-c559bc775d84",
+        "displayOrder": 5
+      },
+      {
+        "questionId": "48b32e66-8d43-5b96-892a-4c6f973456bc",
+        "questionRevisionId": "57428c74-2f30-5c2c-bfe6-76fb6ef0beb5",
+        "displayOrder": 6
+      },
+      {
+        "questionId": "b3ee5849-ed8c-58ee-a719-0d71cbf2bda6",
+        "questionRevisionId": "17624911-3afb-506e-85d8-d10d89c59f97",
+        "displayOrder": 7
+      },
+      {
+        "questionId": "59d5d7f5-79ff-571e-9502-1b178c3d39bf",
+        "questionRevisionId": "99a0a095-a088-5276-a636-52e6b06bf2f8",
+        "displayOrder": 8
+      },
+      {
+        "questionId": "6e3280ed-7cdc-59cf-9b01-8e13e8f98aac",
+        "questionRevisionId": "0fb759ec-22f7-5269-9ed0-cf8e8b570868",
+        "displayOrder": 9
+      }
+    ],
+    "displayOrder": 4
+  },
+  {
+    "id": "e523b0f0-1d67-5495-82ac-d74893d8616b",
+    "revisionId": "2b61f2bc-d894-53bf-9092-b949d9d12022",
+    "key": "c03-ch05-quiz01",
+    "chapterKey": "c03-ch05",
+    "title": "Chương 5: Đồ thị — Quiz 1",
+    "description": "Bài kiểm tra 10 câu về đồ thị.",
+    "createdBy": "ac9fadc2-1955-59e4-984d-26f74bbb4f53",
+    "clientRequestId": "d7d88c15-61ec-5d82-b728-242657ac679f",
+    "requestHash": "bf0a402a0d35755b1551eed0e3f3c8f92e0a545f488718671ce9f57ef84ebc61",
+    "status": "PUBLISHED",
+    "publishedAt": "2026-11-21T00:00:00.000Z",
+    "questions": [
+      {
+        "questionId": "2ff25a6f-0d60-5bb1-a82f-3fb567857251",
+        "questionRevisionId": "31133a0f-ba6e-58f6-a5d1-6148a1c308ef",
+        "displayOrder": 0
+      },
+      {
+        "questionId": "7524d944-3278-5190-bf1e-2f417e028e11",
+        "questionRevisionId": "383c1dcf-ca82-5d8b-8657-806e63c52407",
+        "displayOrder": 1
+      },
+      {
+        "questionId": "602242e5-5a9f-5d4a-ac08-097af3a3a1f5",
+        "questionRevisionId": "37f5bb86-c080-5e39-a198-f0f508d579f1",
+        "displayOrder": 2
+      },
+      {
+        "questionId": "d9351363-1b72-5dcc-b6ca-ee4ffdf89a0c",
+        "questionRevisionId": "d9f55d30-443f-5ce8-8d8e-6487da9466aa",
+        "displayOrder": 3
+      },
+      {
+        "questionId": "100f749b-8fa2-55fb-8eb8-8cf47c768612",
+        "questionRevisionId": "f67e3eba-5360-5e65-a033-f809e47ae7bc",
+        "displayOrder": 4
+      },
+      {
+        "questionId": "d0e28cb3-64d5-5b5b-a758-39fd8c8ff9b9",
+        "questionRevisionId": "b774ef4b-3f5b-5945-aef2-9669418d2c93",
+        "displayOrder": 5
+      },
+      {
+        "questionId": "ce888d76-18e8-516f-a9d3-57dab5c5fefc",
+        "questionRevisionId": "f418423a-aec5-534f-9383-b67bb2a63811",
+        "displayOrder": 6
+      },
+      {
+        "questionId": "b215af6b-7657-5f2a-9df2-d6da492dab17",
+        "questionRevisionId": "f41303e5-78b1-586c-9be8-1a5ec42a1db4",
+        "displayOrder": 7
+      },
+      {
+        "questionId": "9890bd0f-9dab-5aae-9fa9-3acde32104b5",
+        "questionRevisionId": "1f11a073-ec0d-516a-9d73-1836aec29cf7",
+        "displayOrder": 8
+      },
+      {
+        "questionId": "1a0f7859-753a-5ffa-988b-85a51d2ade39",
+        "questionRevisionId": "db27b380-fae7-5443-9523-ed1c5689b1eb",
+        "displayOrder": 9
+      }
+    ],
+    "displayOrder": 0
+  },
+  {
+    "id": "519bcac5-4c84-52c6-b782-75bd560e0d90",
+    "revisionId": "54a56e34-7805-5dec-a8bc-375d44e70c70",
+    "key": "c03-ch05-quiz02",
+    "chapterKey": "c03-ch05",
+    "title": "Chương 5: Đồ thị — Quiz 2",
+    "description": "Bài kiểm tra 10 câu về đồ thị.",
+    "createdBy": "ac9fadc2-1955-59e4-984d-26f74bbb4f53",
+    "clientRequestId": "ff4ce9f3-a3bc-598c-b6e2-a982217f2b51",
+    "requestHash": "06ec2200a9795403d12cc675145a8c2bab1cb47ce7519418f679ed30db5b89f2",
+    "status": "PUBLISHED",
+    "publishedAt": "2026-11-21T00:00:00.000Z",
+    "questions": [
+      {
+        "questionId": "d9351363-1b72-5dcc-b6ca-ee4ffdf89a0c",
+        "questionRevisionId": "d9f55d30-443f-5ce8-8d8e-6487da9466aa",
+        "displayOrder": 0
+      },
+      {
+        "questionId": "100f749b-8fa2-55fb-8eb8-8cf47c768612",
+        "questionRevisionId": "f67e3eba-5360-5e65-a033-f809e47ae7bc",
+        "displayOrder": 1
+      },
+      {
+        "questionId": "d0e28cb3-64d5-5b5b-a758-39fd8c8ff9b9",
+        "questionRevisionId": "b774ef4b-3f5b-5945-aef2-9669418d2c93",
+        "displayOrder": 2
+      },
+      {
+        "questionId": "ce888d76-18e8-516f-a9d3-57dab5c5fefc",
+        "questionRevisionId": "f418423a-aec5-534f-9383-b67bb2a63811",
+        "displayOrder": 3
+      },
+      {
+        "questionId": "b215af6b-7657-5f2a-9df2-d6da492dab17",
+        "questionRevisionId": "f41303e5-78b1-586c-9be8-1a5ec42a1db4",
+        "displayOrder": 4
+      },
+      {
+        "questionId": "9890bd0f-9dab-5aae-9fa9-3acde32104b5",
+        "questionRevisionId": "1f11a073-ec0d-516a-9d73-1836aec29cf7",
+        "displayOrder": 5
+      },
+      {
+        "questionId": "1a0f7859-753a-5ffa-988b-85a51d2ade39",
+        "questionRevisionId": "db27b380-fae7-5443-9523-ed1c5689b1eb",
+        "displayOrder": 6
+      },
+      {
+        "questionId": "245cd0f5-9820-5e18-9e24-bfd6d750a960",
+        "questionRevisionId": "6d680747-cfa0-5d99-9ecd-2cb728b1a3de",
+        "displayOrder": 7
+      },
+      {
+        "questionId": "c2790a62-1429-5227-9f6f-3e5bc30abca9",
+        "questionRevisionId": "04165c5c-cc57-5158-b251-20d198650c61",
+        "displayOrder": 8
+      },
+      {
+        "questionId": "71e2de55-8f77-5e2c-a792-e3bba44bfc9c",
+        "questionRevisionId": "6c909982-37db-5618-b58c-67b236ab9c40",
+        "displayOrder": 9
+      }
+    ],
+    "displayOrder": 1
+  },
+  {
+    "id": "edc260d2-672b-5674-af8e-873cf972d8bf",
+    "revisionId": "cf3fb6a5-c888-57b3-b9d0-2c55d76c953f",
+    "key": "c03-ch05-quiz03",
+    "chapterKey": "c03-ch05",
+    "title": "Chương 5: Đồ thị — Quiz 3",
+    "description": "Bài kiểm tra 10 câu về đồ thị.",
+    "createdBy": "ac9fadc2-1955-59e4-984d-26f74bbb4f53",
+    "clientRequestId": "8854b00d-638e-5490-8007-61fc675b86fd",
+    "requestHash": "41c7a0955647a239c3e26c36cea64207a2cb789f62de16d4c61ae07e3331870d",
+    "status": "PUBLISHED",
+    "publishedAt": "2026-11-21T00:00:00.000Z",
+    "questions": [
+      {
+        "questionId": "ce888d76-18e8-516f-a9d3-57dab5c5fefc",
+        "questionRevisionId": "f418423a-aec5-534f-9383-b67bb2a63811",
+        "displayOrder": 0
+      },
+      {
+        "questionId": "b215af6b-7657-5f2a-9df2-d6da492dab17",
+        "questionRevisionId": "f41303e5-78b1-586c-9be8-1a5ec42a1db4",
+        "displayOrder": 1
+      },
+      {
+        "questionId": "9890bd0f-9dab-5aae-9fa9-3acde32104b5",
+        "questionRevisionId": "1f11a073-ec0d-516a-9d73-1836aec29cf7",
+        "displayOrder": 2
+      },
+      {
+        "questionId": "1a0f7859-753a-5ffa-988b-85a51d2ade39",
+        "questionRevisionId": "db27b380-fae7-5443-9523-ed1c5689b1eb",
+        "displayOrder": 3
+      },
+      {
+        "questionId": "245cd0f5-9820-5e18-9e24-bfd6d750a960",
+        "questionRevisionId": "6d680747-cfa0-5d99-9ecd-2cb728b1a3de",
+        "displayOrder": 4
+      },
+      {
+        "questionId": "c2790a62-1429-5227-9f6f-3e5bc30abca9",
+        "questionRevisionId": "04165c5c-cc57-5158-b251-20d198650c61",
+        "displayOrder": 5
+      },
+      {
+        "questionId": "71e2de55-8f77-5e2c-a792-e3bba44bfc9c",
+        "questionRevisionId": "6c909982-37db-5618-b58c-67b236ab9c40",
+        "displayOrder": 6
+      },
+      {
+        "questionId": "3f5b8b63-3bf5-5234-872a-2a96d93d7940",
+        "questionRevisionId": "33d4a489-e729-5938-b39f-4a105c9b2f7b",
+        "displayOrder": 7
+      },
+      {
+        "questionId": "8f2f8b7d-749b-5acf-9f7a-f1e5aa8a5113",
+        "questionRevisionId": "e909a46c-2b54-5831-b821-7232ac69ddc8",
+        "displayOrder": 8
+      },
+      {
+        "questionId": "d1cbd116-29b7-5e45-ac10-80e6e5deabea",
+        "questionRevisionId": "2290e23a-b24f-5a8c-b526-ffefe2450692",
+        "displayOrder": 9
+      }
+    ],
+    "displayOrder": 2
+  },
+  {
+    "id": "202f8e9e-ea25-5db4-91c8-a0c1b2f7f6fb",
+    "revisionId": "bf512778-755b-5f0e-8458-c76f62532fcf",
+    "key": "c03-ch05-quiz04",
+    "chapterKey": "c03-ch05",
+    "title": "Chương 5: Đồ thị — Quiz 4",
+    "description": "Bài kiểm tra 10 câu về đồ thị.",
+    "createdBy": "ac9fadc2-1955-59e4-984d-26f74bbb4f53",
+    "clientRequestId": "9fd59de9-8aea-56ee-b2c0-42ec63d4ce5b",
+    "requestHash": "6451ddc38afa5eefd8ba5bf031251be925d896d3b0ac1801224682afdf7a6193",
+    "status": "PUBLISHED",
+    "publishedAt": "2026-11-21T00:00:00.000Z",
+    "questions": [
+      {
+        "questionId": "1a0f7859-753a-5ffa-988b-85a51d2ade39",
+        "questionRevisionId": "db27b380-fae7-5443-9523-ed1c5689b1eb",
+        "displayOrder": 0
+      },
+      {
+        "questionId": "245cd0f5-9820-5e18-9e24-bfd6d750a960",
+        "questionRevisionId": "6d680747-cfa0-5d99-9ecd-2cb728b1a3de",
+        "displayOrder": 1
+      },
+      {
+        "questionId": "c2790a62-1429-5227-9f6f-3e5bc30abca9",
+        "questionRevisionId": "04165c5c-cc57-5158-b251-20d198650c61",
+        "displayOrder": 2
+      },
+      {
+        "questionId": "71e2de55-8f77-5e2c-a792-e3bba44bfc9c",
+        "questionRevisionId": "6c909982-37db-5618-b58c-67b236ab9c40",
+        "displayOrder": 3
+      },
+      {
+        "questionId": "3f5b8b63-3bf5-5234-872a-2a96d93d7940",
+        "questionRevisionId": "33d4a489-e729-5938-b39f-4a105c9b2f7b",
+        "displayOrder": 4
+      },
+      {
+        "questionId": "8f2f8b7d-749b-5acf-9f7a-f1e5aa8a5113",
+        "questionRevisionId": "e909a46c-2b54-5831-b821-7232ac69ddc8",
+        "displayOrder": 5
+      },
+      {
+        "questionId": "d1cbd116-29b7-5e45-ac10-80e6e5deabea",
+        "questionRevisionId": "2290e23a-b24f-5a8c-b526-ffefe2450692",
+        "displayOrder": 6
+      },
+      {
+        "questionId": "18ae4484-4fec-5ec6-a159-51d80da5289d",
+        "questionRevisionId": "2149e4fc-4a55-5793-a153-9dfd0ca0246c",
+        "displayOrder": 7
+      },
+      {
+        "questionId": "741597ea-44e6-57c9-be41-779795b463a9",
+        "questionRevisionId": "fb00c030-5cdf-55fe-8dea-785f33c7fb98",
+        "displayOrder": 8
+      },
+      {
+        "questionId": "c405f901-c126-5c33-936d-71ebd820ee3a",
+        "questionRevisionId": "1894e752-a5a8-55d2-9939-60dd15e994b4",
+        "displayOrder": 9
+      }
+    ],
+    "displayOrder": 3
+  },
+  {
+    "id": "9a5e3e72-3f5b-519e-bc85-cd41938a5d93",
+    "revisionId": "1827f335-2c0b-5d89-9392-ad274c0f28d3",
+    "key": "c03-ch05-quiz05",
+    "chapterKey": "c03-ch05",
+    "title": "Chương 5: Đồ thị — Quiz 5",
+    "description": "Bài kiểm tra 10 câu về đồ thị.",
+    "createdBy": "ac9fadc2-1955-59e4-984d-26f74bbb4f53",
+    "clientRequestId": "2d8027a6-ea6b-50d9-86af-78b6a6c7ff7b",
+    "requestHash": "d29cbad06c66e6165fde6b46bd2bd6b935f2dac60849dcd1a9254c17833cebab",
+    "status": "PUBLISHED",
+    "publishedAt": "2026-11-21T00:00:00.000Z",
+    "questions": [
+      {
+        "questionId": "71e2de55-8f77-5e2c-a792-e3bba44bfc9c",
+        "questionRevisionId": "6c909982-37db-5618-b58c-67b236ab9c40",
+        "displayOrder": 0
+      },
+      {
+        "questionId": "3f5b8b63-3bf5-5234-872a-2a96d93d7940",
+        "questionRevisionId": "33d4a489-e729-5938-b39f-4a105c9b2f7b",
+        "displayOrder": 1
+      },
+      {
+        "questionId": "8f2f8b7d-749b-5acf-9f7a-f1e5aa8a5113",
+        "questionRevisionId": "e909a46c-2b54-5831-b821-7232ac69ddc8",
+        "displayOrder": 2
+      },
+      {
+        "questionId": "d1cbd116-29b7-5e45-ac10-80e6e5deabea",
+        "questionRevisionId": "2290e23a-b24f-5a8c-b526-ffefe2450692",
+        "displayOrder": 3
+      },
+      {
+        "questionId": "18ae4484-4fec-5ec6-a159-51d80da5289d",
+        "questionRevisionId": "2149e4fc-4a55-5793-a153-9dfd0ca0246c",
+        "displayOrder": 4
+      },
+      {
+        "questionId": "741597ea-44e6-57c9-be41-779795b463a9",
+        "questionRevisionId": "fb00c030-5cdf-55fe-8dea-785f33c7fb98",
+        "displayOrder": 5
+      },
+      {
+        "questionId": "c405f901-c126-5c33-936d-71ebd820ee3a",
+        "questionRevisionId": "1894e752-a5a8-55d2-9939-60dd15e994b4",
+        "displayOrder": 6
+      },
+      {
+        "questionId": "dc598b98-ef03-55f9-bd92-9b7e3f765fce",
+        "questionRevisionId": "470b726c-d2f5-542b-a8d1-27a046debc1e",
+        "displayOrder": 7
+      },
+      {
+        "questionId": "a8f868c5-8efe-5696-8042-6efa094be59b",
+        "questionRevisionId": "ba295f43-5812-5f7b-b3a9-1966aa421ca5",
+        "displayOrder": 8
+      },
+      {
+        "questionId": "9c02c0a2-3ca5-5f5a-875d-1dd10e2ca342",
+        "questionRevisionId": "4a253a08-fcbd-5c93-b511-19f4c5733318",
+        "displayOrder": 9
+      }
+    ],
+    "displayOrder": 4
+  }
+]

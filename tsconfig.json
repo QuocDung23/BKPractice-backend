@@ -44,6 +44,12 @@
       "@/modules/quizzes/*": ["apps/learning-service/src/modules/quizzes/*"]
     }
   },
-  "include": ["apps/**/*.ts", "libs/**/*.ts", "test/**/*.ts", "jest.config.ts"],
+  "include": [
+    "apps/**/*.ts",
+    "libs/**/*.ts",
+    "test/**/*.ts",
+    "seed-data/scripts/**/*.ts",
+    "jest.config.ts"
+  ],
   "exclude": ["node_modules", "dist", "coverage"]
 }

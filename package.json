@@ -32,7 +32,7 @@
     "build:submission": "nest build submission-service",
     "build:judge": "nest build judge-service",
     "build:community": "nest build community-service",
-    "lint": "eslint \"{apps,libs,test}/**/*.ts\"",
+    "lint": "eslint \"{apps,libs,test}/**/*.ts\" \"seed-data/scripts/**/*.ts\"",
     "lint:fix": "pnpm lint --fix",
     "typecheck": "tsc --noEmit -p tsconfig.json",
     "format": "prettier --write .",
@@ -60,7 +60,10 @@
     "migration:revert:community": "node --env-file=.env -r ts-node/register -r tsconfig-paths/register ./node_modules/typeorm/cli.js -d apps/community-service/src/database/data-source.ts migration:revert",
     "commitlint": "commitlint --from HEAD~1 --to HEAD",
     "seed:identity:rbac": "node --env-file=.env -r ts-node/register -r tsconfig-paths/register apps/identity-service/src/database/seed-rbac.ts",
-    "seed:learning:taxonomy": "node --env-file=.env -r ts-node/register -r tsconfig-paths/register apps/learning-service/src/database/seed-taxonomy.ts"
+    "seed:learning:taxonomy": "node --env-file=.env -r ts-node/register -r tsconfig-paths/register apps/learning-service/src/database/seed-taxonomy.ts",
+    "seed:demo:identity": "node --env-file=.env -r ts-node/register -r tsconfig-paths/register seed-data/scripts/identity/seed.ts",
+    "seed:demo:learning": "node --env-file=.env -r ts-node/register -r tsconfig-paths/register seed-data/scripts/learning/seed.ts",
+    "seed:demo": "node --env-file=.env -r ts-node/register -r tsconfig-paths/register seed-data/scripts/seed-all.ts"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.1156.0",
