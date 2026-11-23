@@ -1,5 +1,8 @@
+import { randomUUID } from 'node:crypto';
 import type { AddressInfo } from 'node:net';
 
+import { RemoveDemoTaggedProblems1700000012500 } from '@learning/database/migrations/1700000012500-RemoveDemoTaggedProblems';
+import { RemoveDemoProblems1700000013000 } from '@learning/database/migrations/1700000013000-RemoveDemoProblems';
 import { ValidationPipe } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import type { NestExpressApplication } from '@nestjs/platform-express';
@@ -107,6 +110,228 @@ describeIntegration('CoursesModule wiring (real PostgreSQL)', () => {
   };
 
   const list = (value: unknown) => value as Array<Record<string, unknown>>;
+
+  it('removes only DEMO-prefixed problems while keeping published courses viable', async () => {
+    const migration = new RemoveDemoProblems1700000013000();
+    const courseId = randomUUID();
+    const chapterId = randomUUID();
+    const demoId = randomUUID();
+    const draftDemoId = randomUUID();
+    const regularId = randomUUID();
+    const quizId = randomUUID();
+    const revisionId = randomUUID();
+    const slug = `remove-demo-${courseId}`;
+    const runner = dataSource.createQueryRunner();
+
+    await runner.startTransaction();
+    try {
+      await runner.query(
+        `INSERT INTO courses (id, slug, title, created_by, status)
+         VALUES ($1, $2, 'Migration fixture', $3, 'PUBLISHED')`,
+        [courseId, slug, OWNER_ID],
+      );
+      await runner.query(`INSERT INTO chapters (id, course_id, title) VALUES ($1, $2, 'Chapter')`, [
+        chapterId,
+        courseId,
+      ]);
+      await runner.query(
+        `INSERT INTO problems (id, slug, title, description, problem_type, difficulty, publish_status, created_by)
+         VALUES ($1, $1::uuid::text, '[DEMO] Published', 'Fixture', 'STANDARD', 'EASY', 'PUBLISHED', $4),
+                ($2, $2::uuid::text, E'\t[demo] Draft', 'Fixture', 'STANDARD', 'EASY', 'DRAFT', $4),
+                ($3, $3::uuid::text, 'Bài tập về nhãn [DEMO]', 'Fixture', 'STANDARD', 'EASY', 'PUBLISHED', $4)`,
+        [demoId, draftDemoId, regularId, OWNER_ID],
+      );
+      await runner.query(
+        `INSERT INTO chapter_problems (chapter_id, course_id, problem_id) VALUES ($1, $2, $3)`,
+        [chapterId, courseId, demoId],
+      );
+      await runner.query(
+        `INSERT INTO course_problem_history (course_id, problem_id) VALUES ($1, $2)`,
+        [courseId, demoId],
+      );
+      await runner.query(
+        `INSERT INTO test_cases (problem_id, expected_output) VALUES ($1, '1'), ($2, '1')`,
+        [demoId, regularId],
+      );
+      await runner.query(
+        `INSERT INTO progress (user_id, problem_id, status, solved_at) VALUES ($1, $2, 'SOLVED', now())`,
+        [OTHER_ID, demoId],
+      );
+
+      await runner.query('SAVEPOINT before_demo_cleanup');
+      await expect(migration.up(runner)).rejects.toThrow(slug);
+      await runner.query('ROLLBACK TO SAVEPOINT before_demo_cleanup');
+      expect(await runner.query('SELECT id FROM problems WHERE id = $1', [demoId])).toEqual([
+        { id: demoId },
+      ]);
+
+      await runner.query('SAVEPOINT before_demo_hold');
+      await runner.query(`UPDATE courses SET slug = $1 WHERE id = $2`, [
+        'demo-course-1794753018834',
+        courseId,
+      ]);
+      await migration.up(runner);
+      expect(await runner.query('SELECT status FROM courses WHERE id = $1', [courseId])).toEqual([
+        { status: 'ON_HOLD' },
+      ]);
+      expect(await runner.query('SELECT id FROM problems WHERE id = $1', [demoId])).toEqual([]);
+      await runner.query('ROLLBACK TO SAVEPOINT before_demo_hold');
+
+      await runner.query(
+        `INSERT INTO quizzes (id, created_by, status, published_revision_id, client_request_id, request_hash, created_at, updated_at)
+         VALUES ($1, $2, 'PUBLISHED', $3, $1, 'fixture', now(), now())`,
+        [quizId, OWNER_ID, revisionId],
+      );
+      await runner.query(
+        `INSERT INTO quiz_revisions (id, quiz_id, revision, title, published_at, created_at)
+         VALUES ($1, $2, 1, 'Retained quiz', now(), now())`,
+        [revisionId, quizId],
+      );
+      await runner.query(
+        `INSERT INTO chapter_quizzes (id, chapter_id, quiz_id, display_order) VALUES ($1, $2, $3, 0)`,
+        [randomUUID(), chapterId, quizId],
+      );
+
+      await migration.up(runner);
+      await migration.up(runner);
+
+      expect(
+        await runner.query(`SELECT id FROM problems WHERE id = ANY($1::uuid[])`, [
+          [demoId, draftDemoId, regularId],
+        ]),
+      ).toEqual([{ id: regularId }]);
+      expect(
+        await runner.query('SELECT id FROM chapter_problems WHERE chapter_id = $1', [chapterId]),
+      ).toEqual([]);
+      expect(
+        await runner.query('SELECT problem_id FROM course_problem_history WHERE course_id = $1', [
+          courseId,
+        ]),
+      ).toEqual([]);
+      expect(
+        await runner.query(`SELECT problem_id FROM test_cases WHERE problem_id IN ($1, $2)`, [
+          demoId,
+          regularId,
+        ]),
+      ).toEqual([{ problem_id: regularId }]);
+      expect(await runner.query(`SELECT status FROM courses WHERE id = $1`, [courseId])).toEqual([
+        { status: 'PUBLISHED' },
+      ]);
+      expect(
+        await runner.query('SELECT quiz_id FROM chapter_quizzes WHERE chapter_id = $1', [
+          chapterId,
+        ]),
+      ).toEqual([{ quiz_id: quizId }]);
+      expect(
+        await runner.query(
+          'SELECT problem_id FROM progress WHERE user_id = $1 AND problem_id = $2',
+          [OTHER_ID, demoId],
+        ),
+      ).toEqual([{ problem_id: demoId }]);
+    } finally {
+      await runner.rollbackTransaction();
+      await runner.release();
+    }
+  });
+
+  it('cleans demo markers in titles and slugs along with their foreign-key rows', async () => {
+    const migration = new RemoveDemoTaggedProblems1700000012500();
+    const emptyCourse = randomUUID();
+    const keptCourse = randomUUID();
+    const emptyChapter = randomUUID();
+    const keptChapter = randomUUID();
+    const demoTitle = randomUUID();
+    const demoSlug = randomUUID();
+    const demoPrefix = randomUUID();
+    const regular = randomUUID();
+    const runner = dataSource.createQueryRunner();
+
+    await runner.startTransaction();
+    try {
+      await runner.query(
+        `INSERT INTO courses (id, slug, title, created_by, status)
+         VALUES ($1, $1::uuid::text, 'Empty after cleanup', $3, 'PUBLISHED'),
+                ($2, $2::uuid::text, 'Kept after cleanup', $3, 'PUBLISHED')`,
+        [emptyCourse, keptCourse, OWNER_ID],
+      );
+      await runner.query(
+        `INSERT INTO chapters (id, course_id, title) VALUES ($1, $2, 'Chapter'), ($3, $4, 'Chapter')`,
+        [emptyChapter, emptyCourse, keptChapter, keptCourse],
+      );
+      await runner.query(
+        `INSERT INTO problems (id, slug, title, description, problem_type, difficulty, publish_status, created_by)
+         VALUES ($1, $1::uuid::text, 'Mảng [DEMO]', 'Fixture', 'STANDARD', 'EASY', 'PUBLISHED', $5),
+                ($2, 'cleanup-demo123-' || $2::uuid::text, 'Mảng', 'Fixture', 'STANDARD', 'EASY', 'PUBLISHED', $5),
+                ($3, $3::uuid::text, '[DEMO] Bài duy nhất', 'Fixture', 'STANDARD', 'EASY', 'PUBLISHED', $5),
+                ($4, $4::uuid::text, 'Demonstration về mảng', 'Fixture', 'STANDARD', 'EASY', 'PUBLISHED', $5)`,
+        [demoTitle, demoSlug, demoPrefix, regular, OWNER_ID],
+      );
+      await runner.query(
+        `INSERT INTO chapter_problems (chapter_id, course_id, problem_id, display_order)
+         VALUES ($1, $2, $3, 0), ($4, $5, $6, 0), ($4, $5, $7, 1), ($4, $5, $8, 2)`,
+        [
+          emptyChapter,
+          emptyCourse,
+          demoPrefix,
+          keptChapter,
+          keptCourse,
+          demoTitle,
+          demoSlug,
+          regular,
+        ],
+      );
+      await runner.query(
+        `INSERT INTO course_problem_history (course_id, problem_id)
+         SELECT course_id, problem_id FROM chapter_problems WHERE course_id IN ($1, $2)`,
+        [emptyCourse, keptCourse],
+      );
+      await runner.query(
+        `INSERT INTO test_cases (problem_id, expected_output) VALUES ($1, '1'), ($2, '1'), ($3, '1')`,
+        [demoTitle, demoSlug, regular],
+      );
+
+      await migration.up(runner);
+      await new RemoveDemoProblems1700000013000().up(runner);
+      await migration.up(runner);
+
+      expect(
+        await runner.query('SELECT id FROM problems WHERE id IN ($1, $2, $3, $4)', [
+          demoTitle,
+          demoSlug,
+          demoPrefix,
+          regular,
+        ]),
+      ).toEqual([{ id: regular }]);
+      expect(await runner.query('SELECT status FROM courses WHERE id = $1', [emptyCourse])).toEqual(
+        [{ status: 'ON_HOLD' }],
+      );
+      expect(await runner.query('SELECT status FROM courses WHERE id = $1', [keptCourse])).toEqual([
+        { status: 'PUBLISHED' },
+      ]);
+      expect(
+        await runner.query('SELECT problem_id FROM chapter_problems WHERE course_id IN ($1, $2)', [
+          emptyCourse,
+          keptCourse,
+        ]),
+      ).toEqual([{ problem_id: regular }]);
+      expect(
+        await runner.query(
+          'SELECT problem_id FROM course_problem_history WHERE course_id IN ($1, $2)',
+          [emptyCourse, keptCourse],
+        ),
+      ).toEqual([{ problem_id: regular }]);
+      expect(
+        await runner.query(`SELECT problem_id FROM test_cases WHERE problem_id IN ($1, $2, $3)`, [
+          demoTitle,
+          demoSlug,
+          regular,
+        ]),
+      ).toEqual([{ problem_id: regular }]);
+    } finally {
+      await runner.rollbackTransaction();
+      await runner.release();
+    }
+  });
 
   it('serves the whole course lifecycle against the database', async () => {
     const slug = `wiring-${Date.now()}`;
