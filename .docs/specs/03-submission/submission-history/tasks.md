@@ -81,6 +81,7 @@ $cursorId)`.
 - [x] Xác minh phản hồi chi tiết gồm đủ nhóm trường "Chi tiết" của `spec.md`. Với Submit, "thông báo
       lỗi runtime" không trả nội dung theo quyết định (a); lỗi biên dịch trả `compileOutput`/`error`.
 - [x] Bổ sung kiểm tra dữ liệu cho query: `@IsIn`, `@IsUUID`, `@IsISO8601`, `@IsInt`, `@Min`, `@Max`.
+- [x] Kiểm thử lọc theo `problemId` UUID v5 và từ chối UUID v5 ở `cursorId`.
 - [x] Từ chối khi `cursor` và `cursorId` không xuất hiện cùng nhau, không âm thầm trả trang đầu.
 - [x] Xác minh phản hồi không chứa Test Case, kết quả mong đợi, harness, lệnh biên dịch hay tham số
       sandbox.

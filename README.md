@@ -137,13 +137,15 @@ pnpm seed:identity:rbac
 
 ## Running services
 
-Run everything locally:
+Start Gateway, Identity, Learning, Submission, and Judge for local development:
 
 ```bash
 pnpm dev
 ```
 
-Or run one application:
+Start Community separately with `pnpm dev:community` when you need it.
+
+Or run one of the default applications:
 
 ```bash
 pnpm dev:gateway
@@ -151,7 +153,6 @@ pnpm dev:identity
 pnpm dev:learning
 pnpm dev:submission
 pnpm dev:judge
-pnpm dev:community
 ```
 
 Build/start containers for all applications with the optional Compose profile:

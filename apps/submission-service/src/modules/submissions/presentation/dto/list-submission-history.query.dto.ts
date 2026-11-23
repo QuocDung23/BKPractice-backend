@@ -4,6 +4,7 @@ import {
   MAX_PAGE_SIZE,
 } from '@submission/modules/submissions/application/list-submission-history.use-case';
 import { SubmissionKind } from '@submission/modules/submissions/domain/submission-record';
+import { IsProblemId } from '@submission/presentation/validation/is-problem-id';
 import { Type } from 'class-transformer';
 import { IsIn, IsInt, IsISO8601, IsOptional, IsUUID, Max, Min, ValidateIf } from 'class-validator';
 
@@ -16,7 +17,7 @@ export class ListSubmissionHistoryQueryDto {
 
   @ApiPropertyOptional({ format: 'uuid' })
   @IsOptional()
-  @IsUUID('4')
+  @IsProblemId()
   problemId?: string;
 
   // cursor and cursorId must arrive together: a half cursor is rejected instead of silently

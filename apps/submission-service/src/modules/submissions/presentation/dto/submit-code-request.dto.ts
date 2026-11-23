@@ -1,11 +1,12 @@
 import { SUPPORTED_LANGUAGES } from '@app/contracts';
 import type { SupportedLanguage } from '@app/contracts';
 import { ApiProperty } from '@nestjs/swagger';
-import { IsIn, IsString, IsUUID, MaxLength, MinLength } from 'class-validator';
+import { IsProblemId } from '@submission/presentation/validation/is-problem-id';
+import { IsIn, IsString, MaxLength, MinLength } from 'class-validator';
 
 export class SubmitCodeRequestDto {
   @ApiProperty({ format: 'uuid' })
-  @IsUUID('4')
+  @IsProblemId()
   problemId!: string;
 
   @ApiProperty({ enum: SUPPORTED_LANGUAGES })

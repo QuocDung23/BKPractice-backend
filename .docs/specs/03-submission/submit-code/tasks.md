@@ -95,6 +95,7 @@ thực tế; tích một mục nghĩa là mục đó đã hoàn thành và đã 
 
 - [x] Giữ nguyên route `POST /api/submissions` với mã `202`.
 - [x] Bổ sung `SubmitCodeRequestDto` với `problemId`, `language`, `sourceCode`.
+- [x] Kiểm thử `problemId` UUID v5 từ dữ liệu bài luyện tập seed.
 - [x] Tạo DTO kết quả nộp bài liệt kê tường minh các trường trả về; không tuần tự hoá thẳng entity.
 - [x] Bật `ValidationPipe` với `whitelist: true` và `forbidNonWhitelisted: true` nếu `main.ts` chưa
       có; dùng chung với Run. Đã có sẵn trong `configureHttpApp` (`libs/common/src/bootstrap.ts`).

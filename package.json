@@ -12,7 +12,7 @@
   "scripts": {
     "prepare": "husky",
     "env:setup": "node scripts/setup-env.mjs",
-    "dev": "concurrently -n gateway,identity,learning,submission,judge,community -c blue,green,yellow,magenta,cyan,white \"pnpm dev:gateway\" \"pnpm dev:identity\" \"pnpm dev:learning\" \"pnpm dev:submission\" \"pnpm dev:judge\" \"pnpm dev:community\"",
+    "dev": "concurrently -n gateway,identity,learning,submission,judge -c blue,green,yellow,magenta,cyan \"pnpm dev:gateway\" \"pnpm dev:identity\" \"pnpm dev:learning\" \"pnpm dev:submission\" \"pnpm dev:judge\"",
     "dev:gateway": "nest start api-gateway --watch",
     "dev:identity": "nest start identity-service --watch",
     "dev:learning": "nest start learning-service --watch",
