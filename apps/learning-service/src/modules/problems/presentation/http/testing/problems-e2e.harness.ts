@@ -235,6 +235,10 @@ export class InMemoryProblemRepository implements ProblemRepository {
     this.stored.set(problem.id.value, snapshotOf(problem));
   }
 
+  isUsedByPublishedCourse(_id: string): Promise<boolean> {
+    return Promise.resolve(false);
+  }
+
   async softDelete(id: string, at: Date): Promise<boolean> {
     const snapshot = this.stored.get(id);
 

@@ -561,6 +561,7 @@ function problemRepositoryMock() {
     isSlugAvailable: jest.fn().mockResolvedValue(true),
     save: jest.fn(),
     softDelete: jest.fn(),
+    isUsedByPublishedCourse: jest.fn(),
     restore: jest.fn(),
   };
 }

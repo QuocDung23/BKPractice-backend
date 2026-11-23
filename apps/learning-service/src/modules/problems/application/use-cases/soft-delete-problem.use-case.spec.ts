@@ -1,4 +1,5 @@
 import { ConcurrentModificationError } from '@learning/modules/problems/application/errors/concurrent-modification.error';
+import { ProblemInPublishedCourseError } from '@learning/modules/problems/application/errors/problem-in-published-course.error';
 import { ProblemNotFoundError } from '@learning/modules/problems/application/errors/problem-not-found.error';
 import type { TransactionRunner } from '@learning/modules/problems/application/ports/out/transaction-runner.port.out';
 import type { ProblemAuthorizationService } from '@learning/modules/problems/application/services/problem-authorization.service';
@@ -37,6 +38,21 @@ describe('SoftDeleteProblemUseCase', () => {
     });
     expect(repository.softDelete).toHaveBeenCalledWith(problem.id.value, expect.any(Date));
     expect(transactionRunner.run).toHaveBeenCalledTimes(1);
+  });
+
+  it('rejects deleting a problem that belongs to a published course', async () => {
+    const repository = repositoryMock();
+    const useCase = createUseCase({ repository });
+    const problem = buildProblem();
+
+    problem.publish(TEST_NOW);
+    repository.findById.mockResolvedValue(problem);
+    repository.isUsedByPublishedCourse.mockResolvedValue(true);
+
+    await expect(useCase.execute(PRINCIPAL, problem.id.value)).rejects.toBeInstanceOf(
+      ProblemInPublishedCourseError,
+    );
+    expect(repository.softDelete).not.toHaveBeenCalled();
   });
 
   it('throws when the problem does not exist', async () => {
@@ -139,6 +155,7 @@ function repositoryMock() {
     isSlugAvailable: jest.fn(),
     save: jest.fn(),
     softDelete: jest.fn(),
+    isUsedByPublishedCourse: jest.fn(),
     restore: jest.fn(),
   };
 }

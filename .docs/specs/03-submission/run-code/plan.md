@@ -177,8 +177,8 @@ SUB-001-SR-004 và SUB-003-SR-008: tuần tự hoá thẳng entity sẽ làm l�
 - `sourceCode` — `@IsString()`, `@MinLength(1)`, `@MaxLength(100_000)`.
 - `stdin` — `@IsString()`, `@MaxLength(100_000)`, cho phép chuỗi rỗng. Cần cho phép rỗng vì
   SUB-001-FR-008 nói rõ `stdin` có thể rỗng.
-- `problemId` — `@IsOptional()`, `@IsUUID('4')`, chỉ lưu làm nhãn (SUB-001-FR-005); UUID sai định
-  dạng bị từ chối, UUID không tồn tại vẫn được lưu.
+- `problemId` dùng `@IsOptional()` và `@IsProblemId()` để nhận UUID v4 và v5. ID chỉ được lưu làm
+  nhãn (SUB-001-FR-005). ID sai định dạng bị từ chối. ID hợp lệ vẫn được lưu dù bài không tồn tại.
 
 Chống gán hàng loạt: bật `ValidationPipe` với `whitelist: true` và `forbidNonWhitelisted: true` ở
 `main.ts` nếu chưa có. Đây là điều kiện cần để đạt SUB-001-AC-008 và SUB-001-AC-016; cần kiểm tra

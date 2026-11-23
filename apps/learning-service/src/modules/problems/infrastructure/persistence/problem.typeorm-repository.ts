@@ -295,6 +295,17 @@ export class ProblemTypeOrmRepository implements ProblemRepository {
     await this.syncRelations(manager, problem);
   }
 
+  async isUsedByPublishedCourse(id: string): Promise<boolean> {
+    const rows: unknown[] = await this.transactionContext.getManager().query(
+      `SELECT 1 FROM chapter_problems cp
+         JOIN courses c ON c.id = cp.course_id
+         WHERE cp.problem_id = $1 AND c.status = 'PUBLISHED' AND c.deleted_at IS NULL
+         LIMIT 1`,
+      [id],
+    );
+    return rows.length > 0;
+  }
+
   async softDelete(id: string, at: Date): Promise<boolean> {
     const result = await this.transactionContext
       .requireManager()

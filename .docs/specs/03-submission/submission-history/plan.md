@@ -191,7 +191,7 @@ V1 không snapshot tiêu đề; giá trị `null` là contract được phê duy
 ### Kiểm tra đầu vào
 
 - `kind`: `@IsIn(['RUN', 'SUBMIT'])`, `@IsOptional()`.
-- `problemId`: `@IsUUID('4')`, `@IsOptional()`.
+- `problemId` dùng `@IsProblemId()` cho UUID v4 và v5 và `@IsOptional()`.
 - `cursor`: `@IsISO8601()`, `@IsOptional()`.
 - `cursorId`: `@IsUUID('4')`, `@IsOptional()`.
 - `limit`: `@Type(() => Number)`, `@IsInt()`, `@Min(1)`, `@Max(MAX_PAGE_SIZE)`, `@IsOptional()`.

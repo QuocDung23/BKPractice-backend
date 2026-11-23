@@ -182,8 +182,8 @@ mong đợi, harness hay tham số runtime.
 
 ## DTO / Kiểm tra dữ liệu
 
-`SubmitCodeRequestDto` giữ nguyên ba trường hiện có: `problemId` (`@IsUUID('4')`), `language`
-(`@IsIn(SUPPORTED_LANGUAGES)`), `sourceCode` (`@IsString()`, `MinLength(1)`, `MaxLength(100_000)`).
+`SubmitCodeRequestDto` nhận `problemId` (`@IsProblemId()` cho UUID v4 và v5), `language`
+(`@IsIn(SUPPORTED_LANGUAGES)`) và `sourceCode` (`@IsString()`, `MinLength(1)`, `MaxLength(100_000)`).
 
 Cấu hình `ValidationPipe` với `whitelist: true` và `forbidNonWhitelisted: true` là **bắt buộc** để đạt
 SUB-002-AC-004 và AC-005: `testCases`, `expectedOutput`, `hiddenHarness`, `timeLimitMs`,

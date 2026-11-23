@@ -73,6 +73,7 @@ thực tế; tích một mục nghĩa là mục đó đã hoàn thành và đã 
 
 - [x] Bổ sung `RunCodeRequestDto` với `language`, `sourceCode`, `stdin` (cho phép rỗng), `problemId`
       UUID tuỳ chọn; UUID sai dạng bị từ chối nhưng UUID không tồn tại không cần tra Learning.
+- [x] Kiểm thử `problemId` UUID v5 từ dữ liệu bài luyện tập seed.
 - [x] Tạo DTO kết quả Run liệt kê tường minh các trường trả về; không tuần tự hoá thẳng entity
       TypeORM.
 - [x] Bật `ValidationPipe` với `whitelist: true` và `forbidNonWhitelisted: true` nếu `main.ts` chưa

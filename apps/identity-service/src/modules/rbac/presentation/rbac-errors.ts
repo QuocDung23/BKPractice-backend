@@ -57,6 +57,12 @@ export function describeRbacFailure(error: RbacFailure): DescribedError {
         code: 'RBAC_USER_NOT_FOUND',
         message: 'Không tìm thấy người dùng cần thay đổi vai trò.',
       };
+    case 'last_role':
+      return {
+        status: 409,
+        code: 'RBAC_LAST_ROLE',
+        message: 'Không thể gỡ vai trò cuối cùng của người dùng. Hãy gán vai trò khác trước.',
+      };
     case 'last_admin':
       return {
         status: 409,

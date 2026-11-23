@@ -11,7 +11,7 @@ export type RbacFailureReason = 'not_admin' | 'self_admin' | 'role_unknown' | 'r
 
 export class RbacFailure extends Error {
   constructor(
-    readonly code: 'forbidden' | 'invalid_role' | 'user_not_found' | 'last_admin',
+    readonly code: 'forbidden' | 'invalid_role' | 'user_not_found' | 'last_admin' | 'last_role',
     readonly reason?: RbacFailureReason,
   ) {
     super(code);
@@ -86,4 +86,8 @@ export function evaluatePermission(
   }
   if (resourceAllowed === false) return { allowed: false, reason: 'resource_denied' };
   return { allowed: true, reason: 'allowed' };
+}
+
+export function requireRemainingRole(remainingRoleCount: number): void {
+  if (remainingRoleCount < 1) throw new RbacFailure('last_role');
 }

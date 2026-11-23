@@ -12,6 +12,7 @@ function validate(query: Record<string, string>): Promise<ListSubmissionHistoryQ
 }
 
 const cursorId = 'c98be8f0-6d91-4bef-b0de-06167e1c1ce5';
+const seededProblemId = '52287484-6967-5b6c-b636-1707a3049086';
 
 describe('ListSubmissionHistoryQueryDto', () => {
   it('accepts an empty query and a full query, converting limit to a number', async () => {
@@ -27,10 +28,17 @@ describe('ListSubmissionHistoryQueryDto', () => {
     ).resolves.toMatchObject({ kind: 'SUBMIT', limit: 100 });
   });
 
+  it('accepts a UUID v5 problem filter', async () => {
+    await expect(validate({ problemId: seededProblemId })).resolves.toMatchObject({
+      problemId: seededProblemId,
+    });
+  });
+
   it.each([
     ['a cursor without cursorId', { cursor: '2026-10-27T06:00:00.123456Z' }],
     ['a cursorId without cursor', { cursorId }],
     ['a malformed cursor', { cursor: 'yesterday', cursorId }],
+    ['a UUID v5 cursorId', { cursor: '2026-10-27T06:00:00.123456Z', cursorId: seededProblemId }],
     ['an unknown kind', { kind: 'DRAFT' }],
     ['a malformed problem filter', { problemId: 'abc' }],
     ['a page larger than 100', { limit: '101' }],

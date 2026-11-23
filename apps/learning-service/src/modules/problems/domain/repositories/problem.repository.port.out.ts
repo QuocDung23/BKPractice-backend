@@ -46,6 +46,8 @@ export interface ProblemRepository {
   listManaged(filter: ManagedProblemListFilter): Promise<ProblemPage<Problem>>;
   isSlugAvailable(slug: string, excludeProblemId?: string): Promise<boolean>;
   save(problem: Problem, expectedUpdatedAt?: Date): Promise<void>;
+  /** True nếu Problem còn nằm trong Course đang PUBLISHED (chưa xoá mềm). */
+  isUsedByPublishedCourse(id: string): Promise<boolean>;
   softDelete(id: string, at: Date): Promise<boolean>;
   restore(id: string, at: Date): Promise<boolean>;
 }

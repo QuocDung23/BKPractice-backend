@@ -59,7 +59,7 @@ import {
   type IUpdateQuizDraftPortIn,
 } from '@/modules/quizzes/application/ports/in';
 import type { Principal } from '@/modules/quizzes/domain';
-import { IdempotencyKey } from '@/modules/quizzes/presentation/http/decorators';
+import { IdempotencyKey, idempotencyKeyPipe } from '@/modules/quizzes/presentation/http/decorators';
 import {
   CreateQuizDto,
   EmptyQuizBodyDto,
@@ -135,7 +135,7 @@ export class ManagedQuizzesController {
   @ApiCreatedResponse({ type: ManagedQuizDto })
   createQuizRequest(
     @TrustedPrincipal() p: Principal,
-    @IdempotencyKey(new ParseUUIDPipe()) idempotencyKey: string,
+    @IdempotencyKey(idempotencyKeyPipe()) idempotencyKey: string,
     @Body() body: CreateQuizDto,
   ) {
     return this.createQuiz.execute(p, {
@@ -233,7 +233,7 @@ export class ManagedQuizzesController {
   cloneQuizRequest(
     @TrustedPrincipal() p: Principal,
     @Param('id', ParseUUIDPipe) id: string,
-    @IdempotencyKey(new ParseUUIDPipe()) idempotencyKey: string,
+    @IdempotencyKey(idempotencyKeyPipe()) idempotencyKey: string,
   ) {
     return this.cloneQuiz.execute(p, id.toLowerCase(), idempotencyKey.toLowerCase());
   }

@@ -23,6 +23,12 @@ describe('SubmitCodeRequestDto', () => {
     await expect(validate(validBody)).resolves.toMatchObject(validBody);
   });
 
+  it('accepts a seeded practice problem with a UUID v5', async () => {
+    const payload = { ...validBody, problemId: '79362fb9-18e0-583a-873f-fe78e57158b1' };
+
+    await expect(validate(payload)).resolves.toMatchObject(payload);
+  });
+
   it.each([
     ['owner', { ownerId: crypto.randomUUID() }],
     ['userId', { userId: crypto.randomUUID() }],

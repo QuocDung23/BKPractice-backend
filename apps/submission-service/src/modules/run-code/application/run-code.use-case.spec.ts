@@ -82,6 +82,26 @@ describe('RunCodeUseCase', () => {
     });
   });
 
+  it('still accepts the Run when a fast verdict moved it past PENDING before queueing', async () => {
+    const saved = persisted();
+    const repository = {
+      save: jest.fn().mockResolvedValue(saved),
+      markQueued: jest.fn().mockResolvedValue(null),
+      markFailedToDispatch: jest.fn(),
+    } as unknown as jest.Mocked<SubmissionRepositoryPort>;
+    const judge = { publish: jest.fn().mockResolvedValue(undefined) };
+
+    const result = await new RunCodeUseCase(repository, judge, () => queuedAt).execute({
+      userId: saved.userId,
+      language: 'python',
+      sourceCode: saved.sourceCode,
+      stdin: '',
+    });
+
+    expect(result).toMatchObject({ id: saved.publicId, status: SubmissionStatus.Queued });
+    expect(repository.markFailedToDispatch).not.toHaveBeenCalled();
+  });
+
   it('marks the pending record INTERNAL_ERROR and rethrows when Rabbit publish fails', async () => {
     const saved = persisted();
     const failure = new Error('broker unavailable');
