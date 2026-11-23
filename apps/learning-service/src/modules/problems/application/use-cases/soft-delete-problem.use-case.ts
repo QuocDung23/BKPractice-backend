@@ -1,4 +1,5 @@
 import { ConcurrentModificationError } from '@learning/modules/problems/application/errors/concurrent-modification.error';
+import { ProblemInPublishedCourseError } from '@learning/modules/problems/application/errors/problem-in-published-course.error';
 import { ProblemNotFoundError } from '@learning/modules/problems/application/errors/problem-not-found.error';
 import type { Principal } from '@learning/modules/problems/application/models/principal';
 import type { ISoftDeleteProblemPortIn } from '@learning/modules/problems/application/ports/in/soft-delete-problem.port.in';
@@ -27,6 +28,9 @@ export class SoftDeleteProblemUseCase implements ISoftDeleteProblemPortIn {
     }
 
     this.authorization.requireManaged(principal, 'delete', problem.createdBy.value);
+    if (await this.repository.isUsedByPublishedCourse(id)) {
+      throw new ProblemInPublishedCourseError(id);
+    }
     const now = new Date();
     problem.softDelete(now);
 

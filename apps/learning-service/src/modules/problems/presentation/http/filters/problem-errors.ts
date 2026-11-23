@@ -2,6 +2,7 @@ import type { ApiErrorDetail } from '@app/contracts';
 import { ConcurrentModificationError } from '@learning/modules/problems/application/errors/concurrent-modification.error';
 import { ForbiddenError } from '@learning/modules/problems/application/errors/forbidden.error';
 import { HarnessNotFoundError } from '@learning/modules/problems/application/errors/harness-not-found.error';
+import { ProblemInPublishedCourseError } from '@learning/modules/problems/application/errors/problem-in-published-course.error';
 import { ProblemNotFoundError } from '@learning/modules/problems/application/errors/problem-not-found.error';
 import { PublishNotReadyError } from '@learning/modules/problems/application/errors/publish-not-ready.error';
 import { TestCaseNotFoundError } from '@learning/modules/problems/application/errors/test-case-not-found.error';
@@ -30,6 +31,7 @@ export const PROBLEM_ERROR_CODES = {
   harnessNotFound: 'HARNESS_NOT_FOUND',
   slugAlreadyExists: 'PROBLEM_SLUG_ALREADY_EXISTS',
   concurrentModification: 'PROBLEM_CONCURRENT_MODIFICATION',
+  inPublishedCourse: 'PROBLEM_IN_PUBLISHED_COURSE',
   forbidden: 'PROBLEM_FORBIDDEN',
   notOwner: 'PROBLEM_NOT_OWNER',
   deletedCannotModify: 'PROBLEM_DELETED_CANNOT_MODIFY',
@@ -242,6 +244,14 @@ export function describeProblemError(exception: unknown): ErrorDescriptor | null
     };
   }
   if (exception instanceof InvalidProblemState) return describeInvalidState(exception);
+  if (exception instanceof ProblemInPublishedCourseError) {
+    return {
+      status: 409,
+      code: PROBLEM_ERROR_CODES.inPublishedCourse,
+      message:
+        'Bài tập đang nằm trong khoá học đã xuất bản. Hãy gỡ bài tập khỏi khoá học (hoặc huỷ xuất bản khoá học) trước khi xoá.',
+    };
+  }
   if (exception instanceof ConcurrentModificationError) {
     return {
       status: 409,

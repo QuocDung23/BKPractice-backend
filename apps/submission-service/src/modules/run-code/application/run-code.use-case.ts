@@ -47,15 +47,15 @@ export class RunCodeUseCase {
       throw error;
     }
 
-    const queued = await this.repository.markQueued(saved.id, this.now());
-    if (!queued) throw new Error('Run was no longer pending after judge dispatch');
+    // A fast verdict may already have moved the record past PENDING; the job is still accepted.
+    await this.repository.markQueued(saved.id, this.now());
 
     return {
-      id: queued.publicId,
+      id: saved.publicId,
       kind: SubmissionKind.Run,
       status: SubmissionStatus.Queued,
-      language: queued.language,
-      createdAt: queued.createdAt,
+      language: saved.language,
+      createdAt: saved.createdAt,
     };
   }
 }

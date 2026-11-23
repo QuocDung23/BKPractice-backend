@@ -12,6 +12,7 @@ import {
   requireAdmin,
   requireAnotherAdmin,
   requireAssignableRole,
+  requireRemainingRole,
   requireRevocableRole,
   requireRoleChangeReason,
 } from '@/modules/rbac/domain';
@@ -83,6 +84,7 @@ export class RevokeRoleFromUser {
       if (role === RoleName.Admin && current.roles.includes(RoleName.Admin)) {
         requireAnotherAdmin(await repository.countAdmins());
       }
+      requireRemainingRole(current.roles.filter((r) => r !== role).length);
       await repository.revokeRole(userId, role);
       const result = await loadUserRoles(repository, userId);
       await repository.recordRoleAudit({

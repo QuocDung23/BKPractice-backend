@@ -1,5 +1,5 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
-import { IsNotEmpty, IsOptional, IsString, MaxLength } from 'class-validator';
+import { IsNotEmpty, IsOptional, IsString, Matches, MaxLength } from 'class-validator';
 
 export class CreateCourseRequestDto {
   @ApiProperty({
@@ -10,6 +10,10 @@ export class CreateCourseRequestDto {
   @IsString()
   @IsNotEmpty()
   @MaxLength(220)
+  @Matches(/^[a-z0-9]+(?:-[a-z0-9]+)*$/, {
+    message:
+      'slug chỉ gồm chữ thường a-z, số 0-9 và dấu gạch ngang, không bắt đầu/kết thúc bằng gạch ngang.',
+  })
   slug!: string;
 
   @ApiProperty({ maxLength: 200 })
