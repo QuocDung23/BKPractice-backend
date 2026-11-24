@@ -182,10 +182,25 @@ describe('Authentication use cases', () => {
   });
 
   it.each([
-    { currentPassword: 'wrong-password', newPassword: 'new-password', verify: [false] },
-    { currentPassword: 'old-password', newPassword: 'old-password', verify: [true, true] },
-    { currentPassword: 'old-password', newPassword: 'short', verify: [] },
-  ])('rejects invalid password changes without updating the credential', async (input) => {
+    {
+      currentPassword: 'wrong-password',
+      newPassword: 'new-password',
+      verify: [false],
+      code: 'current_password_incorrect',
+    },
+    {
+      currentPassword: 'old-password',
+      newPassword: 'old-password',
+      verify: [true, true],
+      code: 'new_password_unchanged',
+    },
+    {
+      currentPassword: 'old-password',
+      newPassword: 'short',
+      verify: [],
+      code: 'new_password_invalid_length',
+    },
+  ] as const)('rejects $code without updating the credential', async (input) => {
     const passwords = {
       findPasswordHash: jest.fn().mockResolvedValue('old-hash'),
       changePasswordAndRevokeOtherSessions: jest.fn().mockResolvedValue(true),
@@ -200,7 +215,7 @@ describe('Authentication use cases', () => {
         input.currentPassword,
         input.newPassword,
       ),
-    ).rejects.toBeInstanceOf(AuthFailure);
+    ).rejects.toEqual(new AuthFailure(input.code));
     expect(passwords.changePasswordAndRevokeOtherSessions).not.toHaveBeenCalled();
   });
 
@@ -219,7 +234,7 @@ describe('Authentication use cases', () => {
         'old-password',
         'new-password',
       ),
-    ).rejects.toEqual(new AuthFailure('invalid_credentials'));
+    ).rejects.toEqual(new AuthFailure('password_change_conflict'));
   });
 
   it('signs in the bootstrap Admin through its technical identifier', async () => {

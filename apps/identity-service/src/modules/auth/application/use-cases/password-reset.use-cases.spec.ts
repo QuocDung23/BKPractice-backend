@@ -98,18 +98,18 @@ describe('Password reset use cases', () => {
     store.verifyOtp.mockResolvedValueOnce(null);
     await expect(
       new VerifyPasswordResetOtp(accounts, store).execute(eligible.email, '000000'),
-    ).rejects.toEqual(new PasswordResetFailure('invalid_request'));
+    ).rejects.toEqual(new PasswordResetFailure('invalid_request', 'otp_invalid'));
   });
 
   it('requires a grant and valid password before touching the credential', async () => {
     const reset = new ResetPasswordWithGrant(accounts);
     await expect(reset.execute('token', 'short')).rejects.toEqual(
-      new PasswordResetFailure('invalid_request'),
+      new PasswordResetFailure('invalid_request', 'password_length'),
     );
     expect(accounts.resetPasswordWithGrant).not.toHaveBeenCalled();
     accounts.resetPasswordWithGrant.mockResolvedValueOnce(false);
     await expect(reset.execute('token', 'new-password')).rejects.toEqual(
-      new PasswordResetFailure('invalid_request'),
+      new PasswordResetFailure('invalid_request', 'reset_session_invalid'),
     );
     expect(accounts.resetPasswordWithGrant).toHaveBeenCalledTimes(1);
     await reset.execute('token', 'new-password');

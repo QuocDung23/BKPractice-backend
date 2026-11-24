@@ -6,7 +6,7 @@ import { PasswordResetFailure } from '@/modules/auth/domain';
 
 /**
  * Giữ nguyên tắc không tiết lộ của ID-007: không nói email có tồn tại hay không, OTP sai hay hết hạn.
- * Chỉ lỗi độ dài mật khẩu mới là thông tin an toàn để nêu rõ.
+ * Trình bày riêng bước xác minh OTP và bước dùng phiên đặt lại mật khẩu.
  */
 export function describePasswordResetFailure(error: PasswordResetFailure): {
   status: number;
@@ -29,7 +29,9 @@ export function describePasswordResetFailure(error: PasswordResetFailure): {
     status: 400,
     code: 'PASSWORD_RESET_REQUEST_INVALID',
     message:
-      'Yêu cầu đặt lại mật khẩu không hợp lệ: mã OTP sai hoặc đã hết hạn, hoặc phiên đặt lại đã hết hạn. Hãy yêu cầu mã mới rồi thử lại.',
+      error.reason === 'reset_session_invalid'
+        ? 'Phiên đặt lại mật khẩu không hợp lệ hoặc đã hết hạn. Hãy yêu cầu mã xác minh mới.'
+        : 'Mã xác minh không đúng hoặc đã hết hạn. Hãy kiểm tra lại mã hoặc yêu cầu gửi mã mới.',
   };
 }
 

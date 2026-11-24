@@ -279,6 +279,12 @@ export class AuthController {
     summary: 'Change the current user’s local password and revoke other sessions',
   })
   @ApiResponse({ status: 204 })
+  @ApiResponse({ status: 400, description: 'VALIDATION_FAILED' })
+  @ApiResponse({
+    status: 401,
+    description:
+      'AUTH_SESSION_INVALID, AUTH_CURRENT_PASSWORD_INCORRECT, AUTH_NEW_PASSWORD_INVALID_LENGTH, AUTH_NEW_PASSWORD_UNCHANGED hoặc AUTH_PASSWORD_CHANGE_CONFLICT',
+  })
   async changePassword(@Req() request: Request, @Body() dto: ChangePasswordDto): Promise<void> {
     const clientType = this.clientType(request);
     if (clientType === 'web') this.requireOrigin(request);

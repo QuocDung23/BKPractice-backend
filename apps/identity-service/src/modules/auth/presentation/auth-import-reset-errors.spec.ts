@@ -18,6 +18,19 @@ describe('describePasswordResetFailure (ID-007 giữ không tiết lộ)', () =>
       describePasswordResetFailure(new PasswordResetFailure('dependency_unavailable')),
     ).toMatchObject({ status: 503, code: 'PASSWORD_RESET_UNAVAILABLE' });
   });
+
+  it('hướng dẫn lấy mã mới khi phiên đặt lại mật khẩu không còn hiệu lực', () => {
+    const otp = describePasswordResetFailure(
+      new PasswordResetFailure('invalid_request', 'otp_invalid'),
+    );
+    const session = describePasswordResetFailure(
+      new PasswordResetFailure('invalid_request', 'reset_session_invalid'),
+    );
+    expect(otp).toMatchObject({ status: 400, code: 'PASSWORD_RESET_REQUEST_INVALID' });
+    expect(session).toMatchObject({ status: 400, code: otp.code });
+    expect(otp.message).toMatch(/^Mã xác minh không đúng hoặc đã hết hạn/);
+    expect(session.message).toMatch(/^Phiên đặt lại mật khẩu không hợp lệ hoặc đã hết hạn/);
+  });
 });
 
 describe('describeAccountImportFailure', () => {

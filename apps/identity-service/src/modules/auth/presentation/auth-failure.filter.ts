@@ -12,8 +12,8 @@ interface AuthErrorResponse {
 }
 
 /**
- * Chỉ đăng nhập bằng mật khẩu mới có mã chi tiết (ERR-001 FR-007). Microsoft, refresh và exchange dùng
- * `invalid_credentials` / `invalid_token` nên message cố ý không cho biết tài khoản có tồn tại hay không.
+ * Các mã trạng thái tài khoản thuộc luồng đăng nhập bằng mật khẩu. Các phản hồi của Microsoft và
+ * làm mới phiên giữ thông báo chung về tài khoản. Đổi mật khẩu đã xác thực có mã lỗi riêng.
  */
 export const AUTH_ERROR_RESPONSES: Record<AuthFailureCode, AuthErrorResponse> = {
   account_not_found: {
@@ -58,6 +58,33 @@ export const AUTH_ERROR_RESPONSES: Record<AuthFailureCode, AuthErrorResponse> = 
     status: HttpStatus.UNAUTHORIZED,
     code: 'AUTH_SESSION_INVALID',
     message: 'Phiên đăng nhập không hợp lệ hoặc đã hết hạn. Hãy đăng nhập lại.',
+  },
+  microsoft_login_code_invalid: {
+    status: HttpStatus.UNAUTHORIZED,
+    code: 'AUTH_MICROSOFT_LOGIN_CODE_INVALID',
+    message:
+      'Mã đăng nhập Microsoft đã hết hạn hoặc không hợp lệ. Hãy đăng nhập lại bằng Microsoft.',
+  },
+  current_password_incorrect: {
+    status: HttpStatus.UNAUTHORIZED,
+    code: 'AUTH_CURRENT_PASSWORD_INCORRECT',
+    message: 'Mật khẩu hiện tại không đúng. Vui lòng kiểm tra và nhập lại.',
+  },
+  new_password_invalid_length: {
+    status: HttpStatus.UNAUTHORIZED,
+    code: 'AUTH_NEW_PASSWORD_INVALID_LENGTH',
+    message: 'Mật khẩu mới phải có từ 8 đến 128 ký tự.',
+  },
+  new_password_unchanged: {
+    status: HttpStatus.UNAUTHORIZED,
+    code: 'AUTH_NEW_PASSWORD_UNCHANGED',
+    message: 'Mật khẩu mới phải khác mật khẩu hiện tại.',
+  },
+  password_change_conflict: {
+    status: HttpStatus.UNAUTHORIZED,
+    code: 'AUTH_PASSWORD_CHANGE_CONFLICT',
+    message:
+      'Không xác nhận được thông tin bảo mật để đổi mật khẩu. Hãy đăng nhập lại rồi thử lại.',
   },
   dependency_unavailable: {
     status: HttpStatus.SERVICE_UNAVAILABLE,

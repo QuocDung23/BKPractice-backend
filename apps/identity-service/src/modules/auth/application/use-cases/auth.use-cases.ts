@@ -113,7 +113,7 @@ export class ExchangeMicrosoftLoginCode {
     mobileVerifier?: string,
   ): Promise<{ userId: string } & TokenPair> {
     const grant = await this.flows.takeLoginCode(loginCode);
-    if (!grant) throw new AuthFailure('invalid_token');
+    if (!grant) throw new AuthFailure('microsoft_login_code_invalid');
     if (grant.clientType === 'mobile') {
       const challenge = /^[A-Za-z0-9._~-]{43,128}$/.test(mobileVerifier ?? '')
         ? createHash('sha256').update(mobileVerifier!).digest('base64url')
@@ -123,7 +123,7 @@ export class ExchangeMicrosoftLoginCode {
         challenge.length !== grant.mobileChallenge.length ||
         !timingSafeEqual(Buffer.from(challenge), Buffer.from(grant.mobileChallenge))
       )
-        throw new AuthFailure('invalid_token');
+        throw new AuthFailure('microsoft_login_code_invalid');
     }
     const account = await this.accounts.findById(grant.userId);
     requireActiveAccount(account);
@@ -142,7 +142,7 @@ export class RefreshSession {
   async execute(rawToken: string): Promise<{ userId: string } & TokenPair> {
     const current = await this.tokens.verifyRefresh(rawToken);
     const account = await this.accounts.findById(current.sub);
-    requireActiveAccount(account);
+    requireActiveAccount(account, 'invalid_token');
     const prepared = await this.issuer.prepare(account, current.fid);
     if (!(await this.sessions.rotate(current, rawToken, prepared.record))) {
       throw new AuthFailure('invalid_token');
@@ -209,13 +209,14 @@ export class ChangePassword {
     newPassword: string,
   ): Promise<void> {
     if (newPassword.length < 8 || newPassword.length > 128)
-      throw new AuthFailure('invalid_credentials');
+      throw new AuthFailure('new_password_invalid_length');
 
     const currentHash = await this.passwords.findPasswordHash(userId);
-    if (!currentHash || !(await this.hasher.verify(currentHash, currentPassword)))
-      throw new AuthFailure('invalid_credentials');
+    if (!currentHash) throw new AuthFailure('password_change_conflict');
+    if (!(await this.hasher.verify(currentHash, currentPassword)))
+      throw new AuthFailure('current_password_incorrect');
     if (await this.hasher.verify(currentHash, newPassword))
-      throw new AuthFailure('invalid_credentials');
+      throw new AuthFailure('new_password_unchanged');
 
     const newHash = await this.hasher.hash(newPassword);
     if (
@@ -226,6 +227,6 @@ export class ChangePassword {
         newHash,
       ))
     )
-      throw new AuthFailure('invalid_credentials');
+      throw new AuthFailure('password_change_conflict');
   }
 }

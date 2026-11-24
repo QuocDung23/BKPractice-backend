@@ -45,6 +45,11 @@ describe('AuthFailureFilter', () => {
     ['account_pending', 403, 'AUTH_ACCOUNT_PENDING'],
     ['invalid_credentials', 401, 'AUTH_CREDENTIALS_INVALID'],
     ['invalid_token', 401, 'AUTH_SESSION_INVALID'],
+    ['microsoft_login_code_invalid', 401, 'AUTH_MICROSOFT_LOGIN_CODE_INVALID'],
+    ['current_password_incorrect', 401, 'AUTH_CURRENT_PASSWORD_INCORRECT'],
+    ['new_password_invalid_length', 401, 'AUTH_NEW_PASSWORD_INVALID_LENGTH'],
+    ['new_password_unchanged', 401, 'AUTH_NEW_PASSWORD_UNCHANGED'],
+    ['password_change_conflict', 401, 'AUTH_PASSWORD_CHANGE_CONFLICT'],
     ['dependency_unavailable', 503, 'AUTH_SERVICE_UNAVAILABLE'],
   ] as const)(
     '%s trả %i %s theo định dạng chung (ERR-001 FR-001, FR-007)',
@@ -63,6 +68,15 @@ describe('AuthFailureFilter', () => {
   it('mọi mã lỗi có code riêng, không trùng nhau', () => {
     const codes = Object.values(AUTH_ERROR_RESPONSES).map((item) => item.code);
     expect(new Set(codes).size).toBe(codes.length);
+  });
+
+  it('hướng dẫn nhập lại mật khẩu hiện tại khi đổi mật khẩu bị từ chối', () => {
+    expect(run('current_password_incorrect').body.message).toBe(
+      'Mật khẩu hiện tại không đúng. Vui lòng kiểm tra và nhập lại.',
+    );
+    expect(run('new_password_unchanged').body.message).toBe(
+      'Mật khẩu mới phải khác mật khẩu hiện tại.',
+    );
   });
 
   it('luồng chung (Microsoft, refresh) không nêu tài khoản có tồn tại hay không (FR-008)', () => {

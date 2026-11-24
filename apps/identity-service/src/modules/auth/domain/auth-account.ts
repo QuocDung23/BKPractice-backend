@@ -24,8 +24,11 @@ export interface MicrosoftIdentity {
   username: string;
 }
 
-export function requireActiveAccount(account: AuthAccount | null): asserts account is AuthAccount {
-  if (!account || account.status !== 'ACTIVE') throw new AuthFailure('invalid_credentials');
+export function requireActiveAccount(
+  account: AuthAccount | null,
+  failure: 'invalid_credentials' | 'invalid_token' = 'invalid_credentials',
+): asserts account is AuthAccount {
+  if (!account || account.status !== 'ACTIVE') throw new AuthFailure(failure);
 }
 
 /**
@@ -35,6 +38,11 @@ export function requireActiveAccount(account: AuthAccount | null): asserts accou
 export type AuthFailureCode =
   | 'invalid_credentials'
   | 'invalid_token'
+  | 'microsoft_login_code_invalid'
+  | 'current_password_incorrect'
+  | 'new_password_invalid_length'
+  | 'new_password_unchanged'
+  | 'password_change_conflict'
   | 'dependency_unavailable'
   | 'account_not_found'
   | 'wrong_password'
