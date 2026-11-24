@@ -1,21 +1,26 @@
 import { planCommunity, seedCommunity } from './community/seed';
-import { readDemoUsers, seedIdentity } from './identity/seed';
+import { readDemoLecturers, readDemoStudentIds, seedIdentity } from './identity/seed';
 import { planQuizActivity, seedLearningActivity } from './learning/activity';
 import { readLearningFixtures, seedLearningDatabase } from './learning/seed';
 import { SeedDataError } from './seed-utils';
 import { planSubmissions, seedSubmissions } from './submission/seed';
 
 async function main(): Promise<void> {
-  const users = readDemoUsers();
-  const students = users.filter((user) => user.role === 'STUDENT');
+  const lecturers = readDemoLecturers();
+  const studentIds = readDemoStudentIds();
   const fixtures = readLearningFixtures();
   const now = new Date();
-  const submissions = planSubmissions(students, fixtures.problems, now);
-  const quiz = planQuizActivity(students, fixtures, now);
-  const community = planCommunity(students, fixtures, now);
+  const submissions = planSubmissions(studentIds, fixtures.problems, now);
+  const quiz = planQuizActivity(studentIds, fixtures, now);
+  const community = planCommunity(
+    lecturers.map(({ id }) => id),
+    fixtures,
+    now,
+  );
   const counts = {
-    students: students.length,
-    lecturers: users.length - students.length,
+    studentAccountsCreated: 0,
+    existingTestStudents: studentIds.length,
+    lecturers: lecturers.length,
     courses: fixtures.courses.length,
     chapters: fixtures.courses.reduce((total, course) => total + course.chapters.length, 0),
     problems: fixtures.problems.length,
@@ -38,14 +43,16 @@ async function main(): Promise<void> {
     return;
   }
 
-  await seedIdentity(users);
-  process.stdout.write('Identity demo accounts ready.\n');
+  await seedIdentity(lecturers, studentIds);
+  process.stdout.write('Identity demo lecturer accounts ready.\n');
   await seedLearningDatabase(fixtures);
   process.stdout.write('Learning catalog ready.\n');
-  const { solves, attempted } = await seedSubmissions(submissions);
-  process.stdout.write('Submission history ready.\n');
-  await seedLearningActivity(solves, attempted, quiz);
-  process.stdout.write('Learning progress and quiz history ready.\n');
+  if (studentIds.length > 0) {
+    const { solves, attempted } = await seedSubmissions(submissions);
+    process.stdout.write('Submission history ready.\n');
+    await seedLearningActivity(solves, attempted, quiz);
+    process.stdout.write('Learning progress and quiz history ready.\n');
+  }
   await seedCommunity(community);
   process.stdout.write(`Demo seed complete. Planned records\n${summary}\n`);
 }

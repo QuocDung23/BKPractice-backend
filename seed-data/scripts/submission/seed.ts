@@ -1,7 +1,6 @@
 import { getLeaderboardPeriod } from '@learning/modules/leaderboard/leaderboard';
 import submissionDataSource from '@submission/database/data-source';
 
-import type { DemoUser } from '../identity/seed';
 import type { LearningFixtures } from '../learning/seed';
 import { insertRows, SeedDataError, stableUuid } from '../seed-utils';
 
@@ -62,7 +61,7 @@ export function pythonSolution(problem: Problem): string {
 }
 
 export function planSubmissions(
-  students: DemoUser[],
+  studentIds: string[],
   problems: Problem[],
   now: Date,
 ): DemoSubmission[] {
@@ -71,8 +70,9 @@ export function planSubmissions(
     getLeaderboardPeriod('month', now).from.getTime(),
   );
   const recentDuration = Math.min(DAY_MS, now.getTime() - latestPeriodStart);
-  return students.flatMap((student, index) => {
-    const solved = index > 1 && index % 13 === 0 ? 0 : 16 + ((index * 37) % 100);
+  return studentIds.flatMap((userId) => {
+    const index = Number.parseInt(userId.slice(0, 8), 16);
+    const solved = 16 + ((index * 37) % 100);
     const attempted = 5 + (index % 12);
     const runs = 5 + (index % 9);
     const rows: DemoSubmission[] = [];
@@ -81,8 +81,8 @@ export function planSubmissions(
       // 37 is coprime with the 250 exercises in the checked Learning catalog.
       const problem = problems[(index * 19 + slot * 37) % problems.length]!;
       rows.push({
-        id: stableUuid(`ui-seed:submission:${student.id}:${problem.id}:${status}`),
-        userId: student.id,
+        id: stableUuid(`ui-seed:submission:${userId}:${problem.id}:${status}`),
+        userId,
         problem,
         status,
         resultAt,

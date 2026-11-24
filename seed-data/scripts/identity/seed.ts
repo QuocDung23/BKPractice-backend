@@ -6,51 +6,59 @@ import { resolve } from 'node:path';
 import identityDataSource from '@identity/database/data-source';
 import { seedRbac } from '@identity/database/seed-rbac';
 import * as argon2 from 'argon2';
+import { isUUID } from 'class-validator';
 import { type EntityManager } from 'typeorm';
 
 import { SeedDataError, stableUuid } from '../seed-utils';
 
-export interface DemoUser {
+interface DemoLecturer {
   id: string;
-  studentId: string | null;
+  studentId: null;
   displayName: string;
   email: string;
-  role: 'STUDENT' | 'LECTURER';
+  role: 'LECTURER';
   bio?: string;
 }
 
-function readStudentCount(): number {
-  const count = Number(process.env.SEED_DEMO_STUDENTS ?? '200');
-  if (!Number.isInteger(count) || count < 1 || count > 1000) {
-    throw new SeedDataError('SEED_DEMO_STUDENTS must be an integer from 1 to 1000.');
+export function readDemoStudentIds(value = process.env.SEED_DEMO_STUDENT_IDS): string[] {
+  if (!value?.trim()) return [];
+  const ids = value.split(',').map((id) => id.trim().toLowerCase());
+  if (ids.some((id) => !isUUID(id))) {
+    throw new SeedDataError('SEED_DEMO_STUDENT_IDS must contain existing test student UUIDs.');
   }
-  return count;
+  return [...new Set(ids)];
 }
 
-export function readDemoUsers(studentCount = readStudentCount()): DemoUser[] {
-  const users = JSON.parse(
+export function readDemoLecturers(): DemoLecturer[] {
+  const lecturers = JSON.parse(
     readFileSync(resolve(process.cwd(), 'seed-data/data/identity/users.json'), 'utf8'),
-  ) as DemoUser[];
+  ) as DemoLecturer[];
   if (
-    users.length !== 3 ||
-    users.filter((user) => user.role === 'STUDENT').length !== 2 ||
-    users.filter((user) => user.role === 'LECTURER').length !== 1 ||
-    users.some((user) => !user.id || !user.displayName || !user.email)
+    lecturers.length !== 1 ||
+    lecturers.some(
+      (user) =>
+        user.role !== 'LECTURER' ||
+        user.studentId !== null ||
+        !user.id ||
+        !user.displayName ||
+        !user.email,
+    )
   )
-    throw new SeedDataError('Identity fixture must contain two students and one lecturer.');
+    throw new SeedDataError(
+      'Identity fixture must contain the lecturer who owns the demo catalog.',
+    );
   const surnames = ['Nguyễn', 'Trần', 'Lê', 'Phạm', 'Hoàng', 'Võ', 'Đặng', 'Phan', 'Bùi', 'Đỗ'];
   const middleNames = ['Minh', 'Gia', 'Thanh', 'Khánh', 'Hải', 'Nhật', 'Ngọc'];
   const givenNames = ['An', 'Bảo', 'Chi', 'Duy', 'Giang', 'Hà', 'Huy', 'Linh', 'Nam', 'Vy'];
-  return users.concat(
-    Array.from({ length: studentCount + 12 }, (_, index): DemoUser => {
-      const isLecturer = index >= studentCount;
-      const number = isLecturer ? index - studentCount + 1 : index + 1;
+  return lecturers.concat(
+    Array.from({ length: 12 }, (_, index): DemoLecturer => {
+      const number = index + 1;
       const suffix = String(number).padStart(4, '0');
-      const key = isLecturer ? `lecturer-${suffix}` : `student-${suffix}`;
-      const nameIndex = isLecturer ? number + 39 : number - 1;
+      const key = `lecturer-${suffix}`;
+      const nameIndex = number + 39;
       return {
         id: stableUuid(`ui-seed:identity:${key}`),
-        studentId: isLecturer ? null : `99000${suffix}`,
+        studentId: null,
         displayName: [
           surnames[nameIndex % surnames.length],
           middleNames[Math.floor(nameIndex / surnames.length) % middleNames.length],
@@ -59,29 +67,48 @@ export function readDemoUsers(studentCount = readStudentCount()): DemoUser[] {
           ],
         ].join(' '),
         email: `${key}@bkpractice.example.test`,
-        role: isLecturer ? 'LECTURER' : 'STUDENT',
-        bio: isLecturer
-          ? 'Hồ sơ giảng viên mô phỏng dùng để kiểm thử BKPractice.'
-          : 'Sinh viên mô phỏng đang luyện tập cấu trúc dữ liệu và giải thuật.',
+        role: 'LECTURER',
+        bio: 'Hồ sơ giảng viên mô phỏng dùng để kiểm thử BKPractice.',
       };
     }),
   );
 }
 
-async function seedUsers(
+async function validateExistingStudents(manager: EntityManager, ids: string[]): Promise<void> {
+  if (ids.length === 0) return;
+  const students: { id: string }[] = await manager.query(
+    `SELECT u.id FROM users u
+     WHERE u.id = ANY($1::uuid[]) AND u.status = 'ACTIVE'
+       AND u.deleted_at IS NULL AND u.is_system_account = false
+       AND EXISTS (
+         SELECT 1 FROM user_roles ur JOIN roles r ON r.id = ur.role_id
+         WHERE ur.user_id = u.id AND r.name = 'STUDENT'
+       )`,
+    [ids],
+  );
+  if (students.length !== ids.length) {
+    throw new SeedDataError(
+      'Each selected test student must be an existing, active student account.',
+    );
+  }
+}
+
+async function seedLecturers(
   manager: EntityManager,
-  users: DemoUser[],
+  users: DemoLecturer[],
   password: string,
 ): Promise<void> {
   await seedRbac(manager);
-  const roles: { id: string; name: DemoUser['role'] }[] = await manager.query(
-    'SELECT id, name FROM roles WHERE name::text = ANY($1::text[])',
-    [[...new Set(users.map((user) => user.role))]],
+  const roles: { id: string }[] = await manager.query(
+    "SELECT id FROM roles WHERE name = 'LECTURER'",
   );
-  const roleIds = new Map(roles.map((role) => [role.name, role.id]));
-  if (roleIds.size !== 2) throw new SeedDataError('Identity is missing a required demo role.');
+  const lecturerRoleId = roles[0]?.id;
+  if (!lecturerRoleId) throw new SeedDataError('Identity is missing the demo lecturer role.');
 
   for (const user of users) {
+    if (user.role !== 'LECTURER' || user.studentId !== null) {
+      throw new SeedDataError('The Identity seed supports lecturer accounts only.');
+    }
     const conflicts: {
       id: string;
       student_id: string | null;
@@ -92,9 +119,8 @@ async function seedUsers(
       `SELECT id, student_id, email, status, deleted_at
          FROM users
         WHERE id = $1 OR LOWER(email) = LOWER($2)
-           OR ($3::varchar IS NOT NULL AND student_id = $3)
         FOR UPDATE`,
-      [user.id, user.email, user.studentId],
+      [user.id, user.email],
     );
 
     if (conflicts.length > 1) throw new SeedDataError(`Identity conflict for ${user.email}.`);
@@ -114,8 +140,8 @@ async function seedUsers(
     if (!existing) {
       await manager.query(
         `INSERT INTO users (id, student_id, display_name, email, password_hash, status, is_system_account)
-         VALUES ($1, $2, $3, $4, $5, 'ACTIVE', false)`,
-        [user.id, user.studentId, user.displayName, user.email, await argon2.hash(password)],
+         VALUES ($1, NULL, $2, $3, $4, 'ACTIVE', false)`,
+        [user.id, user.displayName, user.email, await argon2.hash(password)],
       );
     }
 
@@ -125,8 +151,6 @@ async function seedUsers(
       [user.id, user.displayName, user.bio ?? null],
     );
 
-    const expectedRoleId = roleIds.get(user.role);
-    if (!expectedRoleId) throw new SeedDataError(`Missing Identity role ${user.role}.`);
     const assigned: { name: string }[] = await manager.query(
       `SELECT r.name FROM user_roles ur JOIN roles r ON r.id = ur.role_id WHERE ur.user_id = $1`,
       [user.id],
@@ -135,18 +159,24 @@ async function seedUsers(
       throw new SeedDataError(`Unexpected role assignment for ${user.email}.`);
     await manager.query(
       'INSERT INTO user_roles (user_id, role_id) VALUES ($1, $2) ON CONFLICT DO NOTHING',
-      [user.id, expectedRoleId],
+      [user.id, lecturerRoleId],
     );
   }
 }
 
-export async function seedIdentity(users = readDemoUsers()): Promise<number> {
+export async function seedIdentity(
+  users = readDemoLecturers(),
+  studentIds: string[] = [],
+): Promise<number> {
   const password = process.env.ACCOUNT_IMPORT_PASSWORD;
   if (!password || password.length > 128)
     throw new SeedDataError('Set a valid ACCOUNT_IMPORT_PASSWORD in the environment.');
   await identityDataSource.initialize();
   try {
-    await identityDataSource.transaction((manager) => seedUsers(manager, users, password));
+    await identityDataSource.transaction(async (manager) => {
+      await validateExistingStudents(manager, studentIds);
+      await seedLecturers(manager, users, password);
+    });
   } finally {
     await identityDataSource.destroy();
   }
@@ -155,7 +185,7 @@ export async function seedIdentity(users = readDemoUsers()): Promise<number> {
 
 if (require.main === module) {
   void seedIdentity()
-    .then((count) => process.stdout.write(`${count} demo accounts ready.\n`))
+    .then((count) => process.stdout.write(`${count} demo lecturer accounts ready.\n`))
     .catch((error: unknown) => {
       process.stderr.write(
         `${error instanceof SeedDataError ? error.message : 'Identity demo seed failed; check migrations and database configuration.'}\n`,

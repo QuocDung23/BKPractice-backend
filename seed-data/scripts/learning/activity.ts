@@ -1,6 +1,5 @@
 import learningDataSource from '@learning/database/data-source';
 
-import type { DemoUser } from '../identity/seed';
 import { insertRows, SeedDataError, stableUuid } from '../seed-utils';
 import type { DemoAttemptedProblem, DemoSolve } from '../submission/seed';
 
@@ -28,18 +27,19 @@ type QuizAnswerRow = [
 ];
 
 export function planQuizActivity(
-  students: DemoUser[],
+  studentIds: string[],
   fixtures: LearningFixtures,
   now: Date,
 ): { attempts: QuizAttemptRow[]; answers: QuizAnswerRow[] } {
   const questions = new Map(fixtures.questions.map((question) => [question.id, question]));
   const attempts: QuizAttemptRow[] = [];
   const answers: QuizAnswerRow[] = [];
-  for (const [index, student] of students.entries()) {
-    const count = index % 13 === 0 && index > 1 ? 0 : 6 + ((index * 9) % 30);
+  for (const userId of studentIds) {
+    const index = Number.parseInt(userId.slice(0, 8), 16);
+    const count = 6 + ((index * 9) % 30);
     for (let slot = 0; slot < count; slot++) {
       const quiz = fixtures.quizzes[(index * 11 + slot * 37) % fixtures.quizzes.length]!;
-      const attemptId = stableUuid(`ui-seed:quiz-attempt:${student.id}:${quiz.id}`);
+      const attemptId = stableUuid(`ui-seed:quiz-attempt:${userId}:${quiz.id}`);
       const inProgress = slot === 0 && index % 5 === 0;
       const total = quiz.questions.length;
       const correctCount = 3 + ((index * 5 + slot * 3) % (total - 2));
@@ -52,7 +52,7 @@ export function planQuizActivity(
       const finishedAt = new Date(startedAt.getTime() + duration);
       attempts.push([
         attemptId,
-        student.id,
+        userId,
         quiz.id,
         quiz.revisionId,
         inProgress ? 'IN_PROGRESS' : 'FINISHED',

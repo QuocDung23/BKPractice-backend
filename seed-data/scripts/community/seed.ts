@@ -1,6 +1,5 @@
 import communityDataSource from '@community/database/data-source';
 
-import type { DemoUser } from '../identity/seed';
 import type { LearningFixtures } from '../learning/seed';
 import { insertRows, stableUuid } from '../seed-utils';
 
@@ -39,15 +38,15 @@ const comments = [
   'Mình thường viết xuống điều kiện cần giữ sau mỗi vòng lặp để dễ tìm lỗi.',
 ] as const;
 
-export function planCommunity(students: DemoUser[], fixtures: LearningFixtures, now: Date) {
+export function planCommunity(lecturerIds: string[], fixtures: LearningFixtures, now: Date) {
   const posts: unknown[][] = [];
   const replies: unknown[][] = [];
   const reactions: unknown[][] = [];
   const bookmarks: unknown[][] = [];
   const reports: unknown[][] = [];
-  for (const [index, author] of students.entries()) {
-    for (const postIndex of [0, 1]) {
-      const order = index * 2 + postIndex;
+  for (const [index, authorId] of lecturerIds.entries()) {
+    for (let postIndex = 0; postIndex < 30; postIndex++) {
+      const order = index * 30 + postIndex;
       const scope = (['GLOBAL', 'PROBLEM', 'COURSE'] as const)[order % 3]!;
       const problem =
         scope === 'PROBLEM'
@@ -57,11 +56,11 @@ export function planCommunity(students: DemoUser[], fixtures: LearningFixtures, 
         scope === 'COURSE' ? fixtures.courses[(order * 7) % fixtures.courses.length] : undefined;
       const [title, body] = topics[(index + postIndex * 3) % topics.length]!;
       const subject = problem?.title ?? course?.title;
-      const postId = stableUuid(`ui-seed:post:${author.id}:${postIndex}`);
+      const postId = stableUuid(`ui-seed:post:${authorId}:${postIndex}`);
       const postedAt = new Date(now.getTime() - (8 + ((order * 23) % 1_080)) * 3_600_000);
       posts.push([
         postId,
-        author.id,
+        authorId,
         scope,
         `## ${title}${subject ? ` — ${subject}` : ''}\n\n${body}`,
         problem?.id ?? null,
@@ -72,31 +71,31 @@ export function planCommunity(students: DemoUser[], fixtures: LearningFixtures, 
         postedAt,
       ]);
 
-      const participantCount = Math.min(students.length - 1, 6 + (order % 21));
+      const participantCount = Math.min(lecturerIds.length - 1, 6 + (order % 21));
       for (let offset = 1; offset <= participantCount; offset++) {
-        const participant = students[(index + postIndex * 29 + offset) % students.length]!;
-        if (participant.id === author.id) continue;
+        const participantId = lecturerIds[(index + postIndex * 29 + offset) % lecturerIds.length]!;
+        if (participantId === authorId) continue;
         const activityAt = new Date(postedAt.getTime() + offset * 90_000);
         reactions.push([
-          stableUuid(`ui-seed:reaction:${postId}:${participant.id}`),
+          stableUuid(`ui-seed:reaction:${postId}:${participantId}`),
           postId,
-          participant.id,
+          participantId,
           'LIKE',
           activityAt,
         ]);
         if (offset % 3 === 0)
           bookmarks.push([
-            stableUuid(`ui-seed:bookmark:${postId}:${participant.id}`),
+            stableUuid(`ui-seed:bookmark:${postId}:${participantId}`),
             postId,
-            participant.id,
+            participantId,
             activityAt,
           ]);
         if (offset <= 2 + (order % 5)) {
-          const commentId = stableUuid(`ui-seed:comment:${postId}:${participant.id}`);
+          const commentId = stableUuid(`ui-seed:comment:${postId}:${participantId}`);
           replies.push([
             commentId,
             postId,
-            participant.id,
+            participantId,
             null,
             comments[(order + offset) % comments.length],
             false,
@@ -108,7 +107,7 @@ export function planCommunity(students: DemoUser[], fixtures: LearningFixtures, 
             replies.push([
               stableUuid(`ui-seed:reply:${commentId}`),
               postId,
-              author.id,
+              authorId,
               commentId,
               'Cảm ơn bạn. Mình đã bổ sung ca kiểm thử này vào ghi chú.',
               false,
@@ -119,9 +118,9 @@ export function planCommunity(students: DemoUser[], fixtures: LearningFixtures, 
         }
         if (offset === 1 && order % 21 === 0) {
           reports.push([
-            stableUuid(`ui-seed:report:${postId}:${participant.id}`),
+            stableUuid(`ui-seed:report:${postId}:${participantId}`),
             postId,
-            participant.id,
+            participantId,
             'Báo cáo mô phỏng để kiểm tra màn kiểm duyệt.',
             'OPEN',
             activityAt,

@@ -1,20 +1,35 @@
 import { getLeaderboardPeriod } from '@learning/modules/leaderboard/leaderboard';
 
 import { planCommunity } from './community/seed';
-import { readDemoUsers } from './identity/seed';
+import { readDemoLecturers, readDemoStudentIds } from './identity/seed';
 import { planQuizActivity } from './learning/activity';
 import { readLearningFixtures } from './learning/seed';
+import { stableUuid } from './seed-utils';
 import { planSubmissions } from './submission/seed';
 
 describe('linked demo seed fixtures', () => {
   const catalog = readLearningFixtures();
   const now = new Date('2026-11-24T08:15:00.000Z');
-  const students = readDemoUsers(20).filter((user) => user.role === 'STUDENT');
+  const students = Array.from({ length: 22 }, (_, index) => stableUuid(`test-student:${index}`));
+  const lecturers = readDemoLecturers();
 
-  it('keeps stable account IDs and produces one solve per student and problem', () => {
-    const expanded = readDemoUsers(50).filter((user) => user.role === 'STUDENT');
-    expect(expanded.slice(0, students.length)).toEqual(students);
-    expect(new Set(expanded.map((user) => user.studentId)).size).toBe(expanded.length);
+  it('only plans lecturer accounts and requires explicit IDs for student activity', () => {
+    expect(lecturers).toHaveLength(13);
+    expect(
+      lecturers.every(({ role, studentId }) => role === 'LECTURER' && studentId === null),
+    ).toBe(true);
+    expect(new Set(lecturers.map(({ id }) => id)).size).toBe(lecturers.length);
+    expect(readDemoLecturers()).toEqual(lecturers);
+    expect(readDemoStudentIds('')).toEqual([]);
+    expect(planSubmissions([], catalog.problems, now)).toEqual([]);
+    expect(planQuizActivity([], catalog, now)).toEqual({ attempts: [], answers: [] });
+    expect(readDemoStudentIds(`${students[0]}, ${students[0]}, ${students[1]}`)).toEqual(
+      students.slice(0, 2),
+    );
+    expect(() => readDemoStudentIds('221000000')).toThrow('existing test student UUIDs');
+  });
+
+  it('keeps stable fixture IDs and produces one solve per selected student and problem', () => {
     const rows = planSubmissions(students, catalog.problems, now);
     const ids = rows.map((row) => row.id);
     expect(new Set(ids).size).toBe(rows.length);
@@ -23,6 +38,11 @@ describe('linked demo seed fixtures', () => {
         (row) => row.id,
       ),
     ).toEqual(ids);
+    expect(
+      planSubmissions([...students].reverse(), catalog.problems, now)
+        .map((row) => row.id)
+        .sort(),
+    ).toEqual([...ids].sort());
     const accepted = rows.filter((row) => row.status === 'ACCEPTED');
     expect(accepted.length).toBeGreaterThan(1000);
     const days = new Set(accepted.map(({ resultAt }) => resultAt.toISOString().slice(0, 10)));
@@ -77,9 +97,13 @@ describe('linked demo seed fixtures', () => {
   });
 
   it('uses all community scopes with valid references and a single level of replies', () => {
-    const community = planCommunity(students, catalog, now);
+    const community = planCommunity(
+      lecturers.map(({ id }) => id),
+      catalog,
+      now,
+    );
     const posts = new Set(community.posts.map(([id]) => id));
-    expect(community.posts).toHaveLength(students.length * 2);
+    expect(community.posts).toHaveLength(lecturers.length * 30);
     expect(new Set(community.posts.map((row) => row[2]))).toEqual(
       new Set(['GLOBAL', 'COURSE', 'PROBLEM']),
     );
