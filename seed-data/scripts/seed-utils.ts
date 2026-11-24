@@ -6,6 +6,16 @@ const namespace = Buffer.from('cbd1c9f01eb14d639c2e414ce456a502', 'hex');
 
 export class SeedDataError extends Error {}
 
+export function seedStride(size: number): number {
+  for (let step = 37; step > 1; step--) {
+    let a = size;
+    let b = step;
+    while (b) [a, b] = [b, a % b];
+    if (a === 1) return step;
+  }
+  return 1;
+}
+
 export function stableUuid(name: string): string {
   const bytes = createHash('sha1').update(namespace).update(name).digest().subarray(0, 16);
   bytes[6] = (bytes[6]! & 0x0f) | 0x50;

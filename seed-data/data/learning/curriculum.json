@@ -1,0 +1,2163 @@
+[
+  {
+    "slug": "lap-trinh-nhap-mon",
+    "title": "Nhập môn lập trình qua bài tập",
+    "description": "Bắt đầu từ đọc dữ liệu và biểu thức, sau đó luyện rẽ nhánh và vòng lặp. Phù hợp với người mới viết chương trình đầu tiên.",
+    "chapters": [
+      {
+        "slug": "nhap-xuat",
+        "title": "Đọc dữ liệu và tính toán",
+        "topic": "Mảng",
+        "description": "Mục tiêu là đọc đúng số lượng dữ liệu, chọn phép chia phù hợp và in kết quả theo định dạng đề.",
+        "problems": [
+          {
+            "slug": "doi-giay",
+            "title": "Đổi giây sang giờ, phút, giây",
+            "statement": "Một đồng hồ đếm thời gian chạy bằng giây. Hãy tách tổng số giây thành giờ, phút và giây. Số giờ được phép vượt quá 23.",
+            "input": "Một số nguyên t là tổng số giây.",
+            "output": "Ba số nguyên h m s trên một dòng.",
+            "constraints": "0 ≤ t ≤ 10⁹.",
+            "difficulty": "EASY",
+            "solution": "import sys, math, heapq, bisect\nfrom collections import Counter, deque\nD = sys.stdin.read().split()\nt = int(D[0])\nh, rest = divmod(t, 3600)\nm, s = divmod(rest, 60)\nprint(h, m, s)\n",
+            "cases": [
+              ["3661", "1 1 1"],
+              ["0", "0 0 0"],
+              ["3599", "0 59 59"],
+              ["90000", "25 0 0"]
+            ]
+          },
+          {
+            "slug": "dong-goi",
+            "title": "Số hộp giao hàng tối thiểu",
+            "statement": "Kho cần đóng đủ n linh kiện, mỗi hộp chứa tối đa k linh kiện. Hãy tính số hộp ít nhất, kể cả hộp cuối chưa đầy.",
+            "input": "Hai số nguyên n và k.",
+            "output": "Số hộp cần dùng.",
+            "constraints": "0 ≤ n ≤ 10⁹, 1 ≤ k ≤ 10⁹.",
+            "difficulty": "EASY",
+            "solution": "import sys, math, heapq, bisect\nfrom collections import Counter, deque\nD = sys.stdin.read().split()\nn, k = map(int, D)\nprint((n + k - 1) // k)\n",
+            "cases": [
+              ["17 5", "4"],
+              ["0 9", "0"],
+              ["20 4", "5"],
+              ["5 12", "1"]
+            ]
+          },
+          {
+            "slug": "hinh-chu-nhat",
+            "title": "Chu vi và diện tích tấm biển",
+            "statement": "Một tấm biển hình chữ nhật có kích thước a và b. Tính độ dài đường viền rồi tính diện tích mặt biển.",
+            "input": "Hai số nguyên dương a, b.",
+            "output": "In chu vi và diện tích theo đúng thứ tự.",
+            "constraints": "1 ≤ a, b ≤ 10⁹.",
+            "difficulty": "EASY",
+            "solution": "import sys, math, heapq, bisect\nfrom collections import Counter, deque\nD = sys.stdin.read().split()\na, b = map(int, D)\nprint(2 * (a + b), a * b)\n",
+            "cases": [
+              ["4 7", "22 28"],
+              ["1 1", "4 1"],
+              ["1000000000 1000000000", "4000000000 1000000000000000000"],
+              ["99 1", "200 99"]
+            ]
+          },
+          {
+            "slug": "diem-trong-so",
+            "title": "Điểm học phần có trọng số",
+            "statement": "Điểm quá trình chiếm 40%, điểm cuối kỳ chiếm 60%. Tính điểm tổng kết nguyên bằng cách bỏ phần thập phân sau khi tính đủ hai phần.",
+            "input": "Hai số nguyên a, b theo thứ tự quá trình, cuối kỳ.",
+            "output": "Điểm tổng kết sau khi bỏ phần thập phân.",
+            "constraints": "0 ≤ a, b ≤ 100.",
+            "difficulty": "EASY",
+            "solution": "import sys, math, heapq, bisect\nfrom collections import Counter, deque\nD = sys.stdin.read().split()\na, b = map(int, D)\nprint((2 * a + 3 * b) // 5)\n",
+            "cases": [
+              ["75 88", "82"],
+              ["0 0", "0"],
+              ["100 100", "100"],
+              ["99 0", "39"]
+            ]
+          }
+        ],
+        "questions": [
+          {
+            "prompt": "Một hộp chứa tối đa 4 món. Đóng 17 món cần ít nhất bao nhiêu hộp?",
+            "options": ["4", "5", "6", "17"],
+            "correct": 1,
+            "explanation": "Bốn hộp chỉ chứa được 16 món, nên món còn lại cần thêm một hộp."
+          },
+          {
+            "prompt": "Khi tách 3661 giây, số phút hiển thị sau khi lấy phần giờ là bao nhiêu?",
+            "options": ["0", "60", "1", "61"],
+            "correct": 2,
+            "explanation": "Trừ 3600 giây của một giờ, phần dư là 61 giây."
+          },
+          {
+            "prompt": "Với điểm 40 và 90, điểm trung bình theo trọng số 40% và 60% là bao nhiêu?",
+            "options": ["65", "60", "90", "70"],
+            "correct": 3,
+            "explanation": "Kết quả là 40 × 0,4 + 90 × 0,6."
+          }
+        ]
+      },
+      {
+        "slug": "re-nhanh",
+        "title": "Điều kiện và rẽ nhánh",
+        "topic": "Mảng",
+        "description": "Luyện thứ tự xét điều kiện, các mốc bằng nhau và cách trình bày trường hợp biên.",
+        "problems": [
+          {
+            "slug": "nam-nhuan-gregory",
+            "title": "Kiểm tra năm nhuận Gregory",
+            "statement": "Xác định năm có nhuận theo lịch Gregory. Năm chia hết cho 400 là năm nhuận. Năm khác chia hết cho 4 chỉ nhuận khi không chia hết cho 100.",
+            "input": "Một năm nguyên y.",
+            "output": "In YES nếu nhuận, ngược lại NO.",
+            "constraints": "1 ≤ y ≤ 9999.",
+            "difficulty": "EASY",
+            "solution": "import sys, math, heapq, bisect\nfrom collections import Counter, deque\nD = sys.stdin.read().split()\ny = int(D[0])\nprint(\"YES\" if y % 400 == 0 or (y % 4 == 0 and y % 100 != 0) else \"NO\")\n",
+            "cases": [
+              ["2000", "YES"],
+              ["1900", "NO"],
+              ["2024", "YES"],
+              ["2025", "NO"]
+            ]
+          },
+          {
+            "slug": "phan-loai-tam-giac",
+            "title": "Phân loại ba cạnh",
+            "statement": "Hãy xác định ba độ dài có tạo thành tam giác hay không. Nếu có, phân loại đều, cân hoặc thường.",
+            "input": "Ba số nguyên dương a, b, c.",
+            "output": "In INVALID, EQUILATERAL, ISOSCELES hoặc SCALENE.",
+            "constraints": "1 ≤ a, b, c ≤ 10⁹.",
+            "difficulty": "EASY",
+            "solution": "import sys, math, heapq, bisect\nfrom collections import Counter, deque\nD = sys.stdin.read().split()\na, b, c = sorted(map(int, D))\nprint(\"INVALID\" if a+b<=c else \"EQUILATERAL\" if a==c else \"ISOSCELES\" if a==b or b==c else \"SCALENE\")\n",
+            "cases": [
+              ["3 3 3", "EQUILATERAL"],
+              ["2 3 5", "INVALID"],
+              ["4 6 4", "ISOSCELES"],
+              ["3 4 5", "SCALENE"]
+            ]
+          },
+          {
+            "slug": "lich-trung-gio",
+            "title": "Thời lượng giao nhau của hai lịch",
+            "statement": "Hai lịch sử dụng phòng có dạng [bắt đầu, kết thúc). Tính số phút cả hai lịch cùng sử dụng phòng.",
+            "input": "Bốn số nguyên a b c d lần lượt mô tả [a,b) và [c,d).",
+            "output": "Số phút giao nhau.",
+            "constraints": "0 ≤ a ≤ b ≤ 1440, 0 ≤ c ≤ d ≤ 1440.",
+            "difficulty": "EASY",
+            "solution": "import sys, math, heapq, bisect\nfrom collections import Counter, deque\nD = sys.stdin.read().split()\na, b, c, d = map(int, D)\nprint(max(0, min(b,d)-max(a,c)))\n",
+            "cases": [
+              ["120 180 150 225", "30"],
+              ["0 30 30 60", "0"],
+              ["12 18 10 20", "6"],
+              ["42 42 40 50", "0"]
+            ]
+          },
+          {
+            "slug": "gia-nuoc-bac-thang",
+            "title": "Tính tiền nước theo bậc",
+            "statement": "Mười đơn vị nước đầu có giá 5000 đồng mỗi đơn vị. Mười đơn vị tiếp theo có giá 8000 đồng. Phần vượt 20 có giá 12000 đồng mỗi đơn vị. Tính tổng tiền.",
+            "input": "Số nguyên n là lượng nước đã dùng.",
+            "output": "Tổng tiền nguyên đồng.",
+            "constraints": "0 ≤ n ≤ 10⁶.",
+            "difficulty": "MEDIUM",
+            "solution": "import sys, math, heapq, bisect\nfrom collections import Counter, deque\nD = sys.stdin.read().split()\nn = int(D[0])\nprint(min(n,10)*5000 + min(max(0,n-10),10)*8000 + max(0,n-20)*12000)\n",
+            "cases": [
+              ["23", "166000"],
+              ["0", "0"],
+              ["10", "50000"],
+              ["20", "130000"]
+            ]
+          }
+        ],
+        "questions": [
+          {
+            "prompt": "Năm 1900 có nhuận theo lịch Gregory không?",
+            "options": [
+              "Có, vì chia hết cho 4",
+              "Có, vì tận cùng bằng 00",
+              "Không",
+              "Không xác định được"
+            ],
+            "correct": 2,
+            "explanation": "Năm 1900 chia hết cho 100 nhưng không chia hết cho 400."
+          },
+          {
+            "prompt": "Hai khoảng [1,4) và [4,7) giao nhau bao nhiêu đơn vị thời gian?",
+            "options": ["1", "3", "6", "0"],
+            "correct": 3,
+            "explanation": "Khoảng thứ nhất kết thúc đúng lúc khoảng thứ hai bắt đầu."
+          },
+          {
+            "prompt": "Với 12 đơn vị nước, bao nhiêu đơn vị chịu mức giá bậc hai?",
+            "options": ["2", "10", "12", "0"],
+            "correct": 0,
+            "explanation": "10 đơn vị đầu đã dùng hết bậc một, phần còn lại thuộc bậc hai."
+          }
+        ]
+      },
+      {
+        "slug": "vong-lap",
+        "title": "Vòng lặp và số nguyên",
+        "topic": "Đệ quy",
+        "description": "Chuyển một quy tắc lặp thành chương trình. Xác định điều kiện dừng và thử giá trị nhỏ nhất trước.",
+        "problems": [
+          {
+            "slug": "tong-chu-so",
+            "title": "Tổng chữ số của mã đơn hàng",
+            "statement": "Đọc một mã chỉ gồm chữ số và tính tổng các chữ số. Mã có thể bắt đầu bằng số 0.",
+            "input": "Một chuỗi chữ số s.",
+            "output": "Tổng các chữ số.",
+            "constraints": "1 ≤ |s| ≤ 10⁵.",
+            "difficulty": "EASY",
+            "solution": "import sys, math, heapq, bisect\nfrom collections import Counter, deque\nD = sys.stdin.read().split()\nprint(sum(map(int, D[0])))\n",
+            "cases": [
+              ["1020300", "6"],
+              ["0", "0"],
+              ["999999", "54"],
+              ["00000015", "6"]
+            ]
+          },
+          {
+            "slug": "vi-tri-chu-so",
+            "title": "Vị trí chữ số thứ k từ phải",
+            "statement": "Đếm vị trí chữ số từ phải sang trái, bắt đầu từ 1. Tìm chữ số ở vị trí k của mã, tính cả các số 0 ở đầu.",
+            "input": "Chuỗi s và số nguyên k.",
+            "output": "Chữ số cần tìm hoặc -1 nếu vị trí không tồn tại.",
+            "constraints": "1 ≤ |s| ≤ 10⁵, 1 ≤ k ≤ 10⁹.",
+            "difficulty": "EASY",
+            "solution": "import sys, math, heapq, bisect\nfrom collections import Counter, deque\nD = sys.stdin.read().split()\ns, k = D[0], int(D[1])\nprint(s[-k] if k <= len(s) else -1)\n",
+            "cases": [
+              ["09215 3", "2"],
+              ["0 1", "0"],
+              ["0002 4", "0"],
+              ["15 3", "-1"]
+            ]
+          },
+          {
+            "slug": "buoc-collatz",
+            "title": "Đếm bước trong quy tắc Collatz",
+            "statement": "Thay n chẵn bằng n/2, thay n lẻ khác 1 bằng 3n+1. Lặp đến khi n bằng 1 và đếm số lần thay.",
+            "input": "Một số nguyên dương n.",
+            "output": "Số lần thay n.",
+            "constraints": "1 ≤ n ≤ 10⁴; các đầu vào trong bộ chấm chạm 1.",
+            "difficulty": "MEDIUM",
+            "solution": "import sys, math, heapq, bisect\nfrom collections import Counter, deque\nD = sys.stdin.read().split()\nn = int(D[0]); count = 0\nwhile n != 1:\n    n = n//2 if n%2 == 0 else 3*n+1\n    count += 1\nprint(count)\n",
+            "cases": [
+              ["6", "8"],
+              ["1", "0"],
+              ["27", "111"],
+              ["32", "5"]
+            ]
+          },
+          {
+            "slug": "so-khong-giai-thua",
+            "title": "Số chữ số 0 cuối giai thừa",
+            "statement": "Đếm các chữ số 0 liên tiếp ở cuối n!. Ví dụ, 10! = 3628800 có 2 chữ số 0 cuối.",
+            "input": "Một số nguyên không âm n.",
+            "output": "Số chữ số 0 liên tiếp cuối n!.",
+            "constraints": "0 ≤ n ≤ 10⁹.",
+            "difficulty": "MEDIUM",
+            "solution": "import sys, math, heapq, bisect\nfrom collections import Counter, deque\nD = sys.stdin.read().split()\nn = int(D[0]); count = 0\nwhile n:\n    n //= 5\n    count += n\nprint(count)\n",
+            "cases": [
+              ["10", "2"],
+              ["0", "0"],
+              ["25", "6"],
+              ["125", "31"]
+            ]
+          }
+        ],
+        "questions": [
+          {
+            "prompt": "Nếu n ban đầu bằng 1, quy tắc Collatz cần thực hiện bao nhiêu bước?",
+            "options": ["1", "2", "Vô hạn", "0"],
+            "correct": 3,
+            "explanation": "Điều kiện dừng đã đúng ngay lúc bắt đầu."
+          },
+          {
+            "prompt": "Khi đếm số 0 cuối n!, vì sao thường đếm số thừa số 5?",
+            "options": [
+              "Thừa số 2 có nhiều hơn thừa số 5",
+              "Mọi thừa số 5 tự tạo số 0",
+              "Vì n! không chứa thừa số 2",
+              "Vì chỉ cần đếm số lẻ"
+            ],
+            "correct": 0,
+            "explanation": "Mỗi cặp 2 và 5 tạo một thừa số 10. Trong n!, số thừa số 2 không phải yếu tố giới hạn."
+          },
+          {
+            "prompt": "Chữ số thứ 4 từ phải của chuỗi 0007 là chữ số nào?",
+            "options": ["7", "0", "-1", "4"],
+            "correct": 1,
+            "explanation": "Xem chuỗi như văn bản để bảo toàn các số 0 ở đầu."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "slug": "mang-va-tien-to",
+    "title": "Mảng, tổng tiền tố và hai con trỏ",
+    "description": "Tiếp nối phần nhập môn. Học quét mảng, xử lý nhiều truy vấn đoạn và chọn hai con trỏ khi dữ liệu thỏa điều kiện.",
+    "chapters": [
+      {
+        "slug": "quet-mang",
+        "title": "Quét mảng một lượt",
+        "topic": "Mảng",
+        "description": "Luyện ghi nhớ trạng thái đang xử lý, cập nhật cực trị và tính kết quả sau khi duyệt hết.",
+        "problems": [
+          {
+            "slug": "chuoi-tang-lien-tiep",
+            "title": "Đoạn tăng liên tiếp dài nhất",
+            "statement": "Tìm số phần tử tối đa của một đoạn liên tục mà mỗi phần tử lớn hơn phần tử ngay trước nó. Hai giá trị bằng nhau kết thúc đoạn tăng.",
+            "input": "Dòng đầu là n. Dòng sau gồm n số nguyên.",
+            "output": "Độ dài lớn nhất.",
+            "constraints": "1 ≤ n ≤ 2·10⁵, |aᵢ| ≤ 10⁹.",
+            "difficulty": "EASY",
+            "solution": "import sys, math, heapq, bisect\nfrom collections import Counter, deque\nD = sys.stdin.read().split()\na = list(map(int,D[1:])); best = run = 1\nfor left,right in zip(a, a[1:]):\n    run = run+1 if left<right else 1\n    best = max(best,run)\nprint(best)\n",
+            "cases": [
+              ["6\n1 2 2 3 6 1", "3"],
+              ["1\n-5", "1"],
+              ["4\n3 3 3 3", "1"],
+              ["5\n-5 -4 0 1 6", "5"]
+            ]
+          },
+          {
+            "slug": "bien-do-lien-ke",
+            "title": "Mức thay đổi lớn nhất giữa hai ngày",
+            "statement": "Dãy ghi lại giá trị đo hằng ngày. Tính hiệu tuyệt đối lớn nhất giữa hai ngày liên tiếp. Với một ngày, quy ước kết quả bằng 0.",
+            "input": "Dòng đầu là n. Dòng sau gồm n số nguyên.",
+            "output": "Mức thay đổi lớn nhất.",
+            "constraints": "1 ≤ n ≤ 2·10⁵, |aᵢ| ≤ 10⁹.",
+            "difficulty": "EASY",
+            "solution": "import sys, math, heapq, bisect\nfrom collections import Counter, deque\nD = sys.stdin.read().split()\na = list(map(int,D[1:])); print(max((abs(x-y) for x,y in zip(a,a[1:])), default=0))\n",
+            "cases": [
+              ["5\n4 1 9 9 -3", "12"],
+              ["1\n7", "0"],
+              ["2\n-1000000000 1000000000", "2000000000"],
+              ["4\n0 0 0 0", "0"]
+            ]
+          },
+          {
+            "slug": "loi-nhuan-mot-giao-dich",
+            "title": "Một lần mua và một lần bán",
+            "statement": "Với mỗi ngày có một giá, chọn ngày mua trước ngày bán để tối đa lợi nhuận. Có thể bỏ giao dịch và nhận 0.",
+            "input": "Dòng đầu là n. Dòng sau gồm n số nguyên.",
+            "output": "Lợi nhuận lớn nhất.",
+            "constraints": "1 ≤ n ≤ 2·10⁵, 0 ≤ aᵢ ≤ 10⁹.",
+            "difficulty": "MEDIUM",
+            "solution": "import sys, math, heapq, bisect\nfrom collections import Counter, deque\nD = sys.stdin.read().split()\na = list(map(int,D[1:])); low = a[0]; best = 0\nfor value in a[1:]:\n    best = max(best,value-low)\n    low = min(low,value)\nprint(best)\n",
+            "cases": [
+              ["6\n7 1 5 3 6 4", "5"],
+              ["1\n8", "0"],
+              ["5\n9 7 6 4 2", "0"],
+              ["4\n2 5 1 9", "8"]
+            ]
+          },
+          {
+            "slug": "day-con-tong-lon-nhat",
+            "title": "Tổng lớn nhất của đoạn không rỗng",
+            "statement": "Chọn một đoạn liên tiếp gồm ít nhất một phần tử sao cho tổng của đoạn là lớn nhất. Có thể chọn một phần tử.",
+            "input": "Dòng đầu là n. Dòng sau gồm n số nguyên.",
+            "output": "Tổng lớn nhất tìm được.",
+            "constraints": "1 ≤ n ≤ 2·10⁵, |aᵢ| ≤ 10⁹.",
+            "difficulty": "MEDIUM",
+            "solution": "import sys, math, heapq, bisect\nfrom collections import Counter, deque\nD = sys.stdin.read().split()\na = list(map(int,D[1:])); ending = best = a[0]\nfor x in a[1:]:\n    ending = max(x,ending+x)\n    best = max(best,ending)\nprint(best)\n",
+            "cases": [
+              ["8\n-2 1 -3 4 -1 2 1 -5", "6"],
+              ["1\n-8", "-8"],
+              ["4\n-9 -2 -5 -8", "-2"],
+              ["5\n2 -1 4 -6 5", "5"]
+            ]
+          }
+        ],
+        "questions": [
+          {
+            "prompt": "Với dãy 1, 3, 3, 4, đoạn tăng nghiêm ngặt liên tục dài nhất có bao nhiêu phần tử?",
+            "options": ["3", "2", "4", "1"],
+            "correct": 1,
+            "explanation": "Hai số 3 bằng nhau nên đoạn tăng không thể đi qua cặp ấy."
+          },
+          {
+            "prompt": "Khi xét giá bán hôm nay, giá mua thấp nhất phải lấy trong những ngày nào?",
+            "options": [
+              "Những ngày sau hôm nay",
+              "Cả những ngày chưa có giá",
+              "Những ngày trước hôm nay",
+              "Chỉ ngày hôm nay"
+            ],
+            "correct": 2,
+            "explanation": "Điều kiện mua trước bán yêu cầu giá thấp nhất đã gặp trước ngày bán."
+          },
+          {
+            "prompt": "Với dãy toàn âm, tổng lớn nhất của đoạn không rỗng là gì?",
+            "options": [
+              "0",
+              "Giá trị nhỏ nhất trong dãy",
+              "Tổng toàn dãy",
+              "Giá trị lớn nhất trong dãy"
+            ],
+            "correct": 3,
+            "explanation": "Thêm bất kỳ số âm nào vào đoạn cũng giảm tổng."
+          }
+        ]
+      },
+      {
+        "slug": "truy-van-doan",
+        "title": "Tổng tiền tố và mảng hiệu",
+        "topic": "Mảng",
+        "description": "So sánh tính lại từng truy vấn với tiền xử lý một lần. Luyện quy ước vị trí đánh số từ 1.",
+        "problems": [
+          {
+            "slug": "tong-nhieu-doan",
+            "title": "Nhiều truy vấn tổng đoạn",
+            "statement": "Với mỗi truy vấn l r, tính tổng từ phần tử thứ l đến thứ r, gồm hai đầu mút.",
+            "input": "n q, tiếp theo n giá trị và q cặp l r.",
+            "output": "Một tổng trên mỗi dòng truy vấn.",
+            "constraints": "1 ≤ n, q ≤ 2·10⁵; 1 ≤ l ≤ r ≤ n; |aᵢ| ≤ 10⁹.",
+            "difficulty": "EASY",
+            "solution": "import sys, math, heapq, bisect\nfrom collections import Counter, deque\nD = sys.stdin.read().split()\na = list(map(int,D)); n,q = a[:2]; pref=[0]\nfor x in a[2:n+2]: pref.append(pref[-1]+x)\nfor i in range(n+2,n+2+2*q,2):\n    l,r = a[i:i+2]; print(pref[r]-pref[l-1])\n",
+            "cases": [
+              ["5 3\n1 4 -2 8 3\n1 5\n2 3\n4 4", "14\n2\n8"],
+              ["1 1\n-9\n1 1", "-9"],
+              ["3 2\n0 0 0\n1 2\n2 3", "0\n0"],
+              ["5 1\n-2 -3 -4 9 1\n2 5", "3"]
+            ]
+          },
+          {
+            "slug": "dem-am-trong-doan",
+            "title": "Đếm số âm trong nhiều đoạn",
+            "statement": "Mỗi truy vấn yêu cầu cho biết số phần tử âm trong đoạn chỉ định. Số 0 không được tính là số âm.",
+            "input": "n q, n số nguyên, rồi q cặp l r đánh số từ 1.",
+            "output": "Một số đếm cho mỗi truy vấn.",
+            "constraints": "1 ≤ n,q ≤ 2·10⁵, 1 ≤ l ≤ r ≤ n.",
+            "difficulty": "EASY",
+            "solution": "import sys, math, heapq, bisect\nfrom collections import Counter, deque\nD = sys.stdin.read().split()\na = list(map(int,D)); n,q = a[:2]; pref=[0]\nfor x in a[2:n+2]: pref.append(pref[-1]+(x<0))\nfor i in range(n+2,n+2+2*q,2):\n    l,r=a[i:i+2]; print(pref[r]-pref[l-1])\n",
+            "cases": [
+              ["5 2\n-1 0 -4 5 -6\n1 5\n2 4", "3\n1"],
+              ["1 1\n0\n1 1", "0"],
+              ["4 1\n-1 -2 -3 -4\n2 4", "3"],
+              ["4 2\n1 -1 2 0\n1 1\n2 3", "0\n1"]
+            ]
+          },
+          {
+            "slug": "cap-nhat-doan",
+            "title": "Cộng dồn thay đổi nhiều đoạn",
+            "statement": "Một mảng ban đầu toàn 0. Mỗi thao tác cộng v vào tất cả vị trí từ l tới r. Sau khi thực hiện mọi thao tác, in mảng cuối.",
+            "input": "Dòng đầu n q. Tiếp theo q bộ l r v, đánh số vị trí từ 1.",
+            "output": "In n số của mảng cuối.",
+            "constraints": "1 ≤ n,q ≤ 2·10⁵, 1 ≤ l ≤ r ≤ n, |v| ≤ 10⁹.",
+            "difficulty": "MEDIUM",
+            "solution": "import sys, math, heapq, bisect\nfrom collections import Counter, deque\nD = sys.stdin.read().split()\na=list(map(int,D)); n,q=a[:2]; diff=[0]*(n+1)\nfor i in range(2,2+q*3,3):\n    l,r,v=a[i:i+3]; diff[l-1]+=v; diff[r]-=v\nfor i in range(1,n): diff[i]+=diff[i-1]\nprint(*diff[:n])\n",
+            "cases": [
+              ["5 2\n1 3 2\n3 5 -1", "2 2 1 -1 -1"],
+              ["1 1\n1 1 5", "5"],
+              ["4 2\n1 4 3\n1 4 -3", "0 0 0 0"],
+              ["4 2\n2 2 -4\n1 3 10", "10 6 10 0"]
+            ]
+          },
+          {
+            "slug": "dem-doan-tong-k",
+            "title": "Đếm đoạn có tổng đúng k",
+            "statement": "Đếm các đoạn liên tục không rỗng có tổng đúng k. Các đoạn có thể giao nhau và dãy có thể chứa số âm.",
+            "input": "n k, tiếp theo n số nguyên.",
+            "output": "Số đoạn thỏa mãn.",
+            "constraints": "1 ≤ n ≤ 2·10⁵, |aᵢ|,|k| ≤ 10⁹.",
+            "difficulty": "HARD",
+            "solution": "import sys, math, heapq, bisect\nfrom collections import Counter, deque\nD = sys.stdin.read().split()\nn,k,*a=map(int,D); seen={0:1}; pref=answer=0\nfor x in a:\n    pref += x\n    answer += seen.get(pref-k,0)\n    seen[pref]=seen.get(pref,0)+1\nprint(answer)\n",
+            "cases": [
+              ["5 3\n1 2 1 -1 3", "5"],
+              ["1 0\n0", "1"],
+              ["4 0\n0 0 0 0", "10"],
+              ["4 -2\n-2 1 -1 -2", "4"]
+            ]
+          }
+        ],
+        "questions": [
+          {
+            "prompt": "Nếu P[i] là tổng i phần tử đầu, tổng đoạn l đến r bằng gì?",
+            "options": ["P[r] − P[l]", "P[l] + P[r]", "P[r] − P[l−1]", "P[r−1] − P[l−1]"],
+            "correct": 2,
+            "explanation": "Loại phần tử đứng trước l khỏi tổng đến r."
+          },
+          {
+            "prompt": "Với mảng hiệu, thao tác cộng v lên [l,r] cần đánh dấu ở đâu?",
+            "options": [
+              "Cộng ở l và r",
+              "Trừ ở l, cộng ở r",
+              "Chỉ cộng ở r",
+              "Cộng ở l, trừ ở r+1"
+            ],
+            "correct": 3,
+            "explanation": "Tổng dồn bắt đầu có hiệu lực tại l và hết hiệu lực sau r."
+          },
+          {
+            "prompt": "Đếm đoạn có tổng k khi gặp tổng tiền tố S nên tra những tổng tiền tố cũ bằng bao nhiêu?",
+            "options": ["S − k", "S + k", "k − S", "0"],
+            "correct": 0,
+            "explanation": "Hiệu giữa hai tổng tiền tố là tổng của đoạn ở giữa."
+          }
+        ]
+      },
+      {
+        "slug": "hai-con-tro",
+        "title": "Hai con trỏ và cửa sổ trượt",
+        "topic": "Mảng",
+        "description": "Chọn hai con trỏ khi phép dịch biên có quy luật. Tách trường hợp dãy đã sắp xếp và trường hợp dãy số dương.",
+        "problems": [
+          {
+            "slug": "cap-gia-gan-nhat",
+            "title": "Hai giá gần nhau nhất",
+            "statement": "Cho danh sách giá chưa sắp xếp. Tìm chênh lệch nhỏ nhất giữa giá của hai mặt hàng khác vị trí.",
+            "input": "Dòng đầu là n. Dòng sau gồm n số nguyên.",
+            "output": "Chênh lệch nhỏ nhất.",
+            "constraints": "2 ≤ n ≤ 2·10⁵, 0 ≤ aᵢ ≤ 10⁹.",
+            "difficulty": "EASY",
+            "solution": "import sys, math, heapq, bisect\nfrom collections import Counter, deque\nD = sys.stdin.read().split()\na=sorted(map(int,D[1:])); print(min(y-x for x,y in zip(a,a[1:])))\n",
+            "cases": [
+              ["5\n9 1 6 12 3", "2"],
+              ["2\n1 100", "99"],
+              ["4\n2 5 2 7", "0"],
+              ["3\n100 101 99", "1"]
+            ]
+          },
+          {
+            "slug": "giao-day-tang",
+            "title": "Các giá trị chung của hai dãy tăng",
+            "statement": "Hai dãy tăng nghiêm ngặt đã sắp xếp. In các giá trị xuất hiện trong cả hai dãy theo thứ tự tăng.",
+            "input": "n m, rồi n phần tử của dãy thứ nhất và m phần tử của dãy thứ hai.",
+            "output": "In các giá trị chung, hoặc NONE nếu không có.",
+            "constraints": "1 ≤ n,m ≤ 2·10⁵; |aᵢ| ≤ 10⁹.",
+            "difficulty": "MEDIUM",
+            "solution": "import sys, math, heapq, bisect\nfrom collections import Counter, deque\nD = sys.stdin.read().split()\nn,m,*v=map(int,D); a,b=v[:n],v[n:]; i=j=0; result=[]\nwhile i<n and j<m:\n    if a[i]==b[j]: result.append(a[i]); i+=1; j+=1\n    elif a[i]<b[j]: i+=1\n    else: j+=1\nprint(*result if result else [\"NONE\"])\n",
+            "cases": [
+              ["4 5\n1 2 7 9\n2 3 5 7 11", "2 7"],
+              ["1 1\n9\n9", "9"],
+              ["3 3\n1 2 3\n4 5 6", "NONE"],
+              ["3 4\n-8 -6 0\n-9 -8 0 1", "-8 0"]
+            ]
+          },
+          {
+            "slug": "doan-duong-ngan-nhat",
+            "title": "Đoạn dương ngắn nhất đạt ngân sách",
+            "statement": "Mỗi khoản thu là số dương. Tìm độ dài nhỏ nhất của đoạn liên tiếp có tổng ít nhất S.",
+            "input": "n S, sau đó n khoản thu dương.",
+            "output": "Độ dài nhỏ nhất, hoặc 0 nếu không có đoạn đủ tổng.",
+            "constraints": "1 ≤ n ≤ 2·10⁵, 1 ≤ aᵢ ≤ 10⁹, 1 ≤ S ≤ 10¹⁴.",
+            "difficulty": "MEDIUM",
+            "solution": "import sys, math, heapq, bisect\nfrom collections import Counter, deque\nD = sys.stdin.read().split()\nn,s,*a=map(int,D); left=total=0; best=n+1\nfor right,x in enumerate(a):\n    total+=x\n    while total>=s:\n        best=min(best,right-left+1); total-=a[left]; left+=1\nprint(best if best<=n else 0)\n",
+            "cases": [
+              ["6 7\n2 3 1 2 4 3", "2"],
+              ["1 9\n9", "1"],
+              ["3 20\n1 4 2", "0"],
+              ["5 16\n3 3 5 5 3", "4"]
+            ]
+          },
+          {
+            "slug": "dem-cap-gan",
+            "title": "Đếm cặp lệch không quá d",
+            "statement": "Đếm cặp chỉ số i < j có |a[i] − a[j]| ≤ d. Các phần tử bằng nhau ở vị trí khác nhau tạo thành các cặp riêng.",
+            "input": "n d, tiếp theo n số nguyên.",
+            "output": "Số cặp thỏa mãn.",
+            "constraints": "1 ≤ n ≤ 2·10⁵, 0 ≤ d ≤ 2·10⁹, |aᵢ| ≤ 10⁹.",
+            "difficulty": "HARD",
+            "solution": "import sys, math, heapq, bisect\nfrom collections import Counter, deque\nD = sys.stdin.read().split()\nn,d,*a=map(int,D); a.sort(); left=ans=0\nfor right,x in enumerate(a):\n    while x-a[left]>d: left+=1\n    ans+=right-left\nprint(ans)\n",
+            "cases": [
+              ["5 2\n1 6 3 4 2", "6"],
+              ["1 0\n8", "0"],
+              ["4 0\n4 4 4 4", "6"],
+              ["5 100\n-4 -2 0 2 4", "10"]
+            ]
+          }
+        ],
+        "questions": [
+          {
+            "prompt": "Sau khi sắp xếp giá, vì sao chỉ cần kiểm tra chênh lệch của các cặp kề nhau?",
+            "options": [
+              "Vì chỉ hai giá đầu tiên quan trọng",
+              "Vì chênh lệch luôn bằng 1",
+              "Vì thứ tự ban đầu được giữ",
+              "Khoảng cách của cặp xa bằng tổng các khoảng kề không âm"
+            ],
+            "correct": 3,
+            "explanation": "Một cặp xa không thể nhỏ hơn tất cả các khoảng kề nằm giữa hai phần tử."
+          },
+          {
+            "prompt": "Khi lấy giao hai dãy tăng, nếu a[i] nhỏ hơn b[j] thì tăng con trỏ nào?",
+            "options": ["i", "j", "Cả i và j ngay lập tức", "Không tăng con trỏ nào"],
+            "correct": 0,
+            "explanation": "a[i] không thể xuất hiện ở phần còn lại của dãy b vì mọi giá trị còn lại ít nhất bằng b[j]."
+          },
+          {
+            "prompt": "Điều kiện nào giúp bỏ biên trái trong bài đoạn đạt ngân sách làm tổng giảm?",
+            "options": [
+              "Phần tử cuối là lớn nhất",
+              "Mọi phần tử đều dương",
+              "Dãy được sắp xếp giảm",
+              "Kích thước n là số chẵn"
+            ],
+            "correct": 1,
+            "explanation": "Bỏ một phần tử dương làm giảm tổng, nên có thể kiểm tra đoạn ngắn hơn."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "slug": "chuoi-va-bang-bam",
+    "title": "Chuỗi và bảng băm",
+    "description": "Luyện đọc và biến đổi chuỗi, đếm tần suất rồi kết hợp bảng băm với cửa sổ trượt.",
+    "chapters": [
+      {
+        "slug": "xu-ly-chuoi",
+        "title": "Xử lý ký tự và nhóm liên tiếp",
+        "topic": "Chuỗi",
+        "description": "Phân biệt thứ tự ký tự, vị trí và các nhóm liên tục. Dùng ASCII thường trong bài chấm để tập trung thuật toán.",
+        "problems": [
+          {
+            "slug": "ngoai-nguon-palindrome",
+            "title": "Mã đọc xuôi ngược giống nhau",
+            "statement": "Một mã gồm chữ cái ASCII thường và chữ số. Kiểm tra mã có giống chính nó khi đọc từ phải sang trái.",
+            "input": "Một chuỗi s không chứa khoảng trắng.",
+            "output": "YES hoặc NO.",
+            "constraints": "1 ≤ |s| ≤ 2·10⁵.",
+            "difficulty": "EASY",
+            "solution": "import sys, math, heapq, bisect\nfrom collections import Counter, deque\nD = sys.stdin.read().split()\ns=D[0]; print(\"YES\" if s==s[::-1] else \"NO\")\n",
+            "cases": [
+              ["abcba", "YES"],
+              ["1", "YES"],
+              ["abca", "NO"],
+              ["a11a", "YES"]
+            ]
+          },
+          {
+            "slug": "nhom-ky-tu",
+            "title": "Mã hóa theo nhóm ký tự liên tiếp",
+            "statement": "Thay mỗi nhóm ký tự bằng nhau liên tiếp bằng cặp gồm ký tự và số lần lặp. Hai nhóm cách nhau bởi ký tự khác phải được giữ riêng.",
+            "input": "Một chuỗi s gồm chữ cái thường.",
+            "output": "In các cặp dạng a3, ngăn nhau bằng dấu cách.",
+            "constraints": "1 ≤ |s| ≤ 2·10⁵.",
+            "difficulty": "EASY",
+            "solution": "import sys, math, heapq, bisect\nfrom collections import Counter, deque\nD = sys.stdin.read().split()\nfrom itertools import groupby\nprint(*(c+str(sum(1 for _ in group)) for c,group in groupby(D[0])))\n",
+            "cases": [
+              ["aaabbcca", "a3 b2 c2 a1"],
+              ["z", "z1"],
+              ["zzzzzz", "z6"],
+              ["abababa", "a1 b1 a1 b1 a1 b1 a1"]
+            ]
+          },
+          {
+            "slug": "tien-to-chung",
+            "title": "Tiền tố chung của hai mã",
+            "statement": "Tìm đoạn đầu dài nhất xuất hiện ở đầu cả hai mã. Hai mã so sánh ký tự bình thường.",
+            "input": "Hai chuỗi a và b không chứa khoảng trắng.",
+            "output": "In tiền tố chung, hoặc NONE nếu rỗng.",
+            "constraints": "1 ≤ |a|,|b| ≤ 2·10⁵.",
+            "difficulty": "EASY",
+            "solution": "import sys, math, heapq, bisect\nfrom collections import Counter, deque\nD = sys.stdin.read().split()\na,b=D; i=0\nwhile i<min(len(a),len(b)) and a[i]==b[i]: i+=1\nprint(a[:i] or \"NONE\")\n",
+            "cases": [
+              ["bkp123 bkp157", "bkp1"],
+              ["x xyz", "x"],
+              ["a b", "NONE"],
+              ["practice practice", "practice"]
+            ]
+          },
+          {
+            "slug": "tim-mau-cham",
+            "title": "So khớp mẫu chứa dấu chấm",
+            "statement": "Mẫu p có ký tự \".\" đại diện cho đúng một ký tự bất kỳ. Kiểm tra mẫu có khớp toàn bộ chuỗi s không.",
+            "input": "Hai chuỗi p và s.",
+            "output": "YES nếu khớp toàn bộ, ngược lại NO.",
+            "constraints": "1 ≤ |p|,|s| ≤ 2·10⁵; s gồm chữ cái thường.",
+            "difficulty": "MEDIUM",
+            "solution": "import sys, math, heapq, bisect\nfrom collections import Counter, deque\nD = sys.stdin.read().split()\np,s=D; print(\"YES\" if len(p)==len(s) and all(x==\".\" or x==y for x,y in zip(p,s)) else \"NO\")\n",
+            "cases": [
+              ["a.c abc", "YES"],
+              ["... xyz", "YES"],
+              ["a.. ab", "NO"],
+              ["ab. axc", "NO"]
+            ]
+          }
+        ],
+        "questions": [
+          {
+            "prompt": "Chuỗi aaabba có bao nhiêu nhóm ký tự liên tiếp?",
+            "options": ["2", "3", "4", "6"],
+            "correct": 1,
+            "explanation": "Các nhóm là aaa, bb và a."
+          },
+          {
+            "prompt": "Tiền tố chung dài nhất của code và coder là gì?",
+            "options": ["cod", "coder", "code", "NONE"],
+            "correct": 2,
+            "explanation": "Toàn bộ chuỗi ngắn hơn khớp từ đầu chuỗi dài hơn."
+          },
+          {
+            "prompt": "Mẫu a.. có khớp toàn bộ chuỗi ab không?",
+            "options": [
+              "Có, dấu chấm khớp chuỗi rỗng",
+              "Có, vì bắt đầu bằng a",
+              "Chỉ khi b là chữ hoa",
+              "Không"
+            ],
+            "correct": 3,
+            "explanation": "Mỗi dấu chấm phải khớp đúng một ký tự, nên mẫu cần độ dài 3."
+          }
+        ]
+      },
+      {
+        "slug": "tan-suat",
+        "title": "Tần suất và nhận diện mẫu lặp",
+        "topic": "Chuỗi",
+        "description": "Dùng bảng băm để đếm mà vẫn giữ quy tắc xuất kết quả. So sánh chữ ký tần suất với kiểm tra thứ tự.",
+        "problems": [
+          {
+            "slug": "hoan-vi-ky-tu",
+            "title": "Hai chuỗi có cùng bộ chữ cái",
+            "statement": "Kiểm tra xem có thể hoán vị các ký tự của chuỗi a để thu được chuỗi b. Số lần xuất hiện của từng ký tự phải khớp.",
+            "input": "Hai chuỗi a và b gồm chữ cái thường.",
+            "output": "YES hoặc NO.",
+            "constraints": "1 ≤ |a|,|b| ≤ 2·10⁵.",
+            "difficulty": "EASY",
+            "solution": "import sys, math, heapq, bisect\nfrom collections import Counter, deque\nD = sys.stdin.read().split()\na,b=D; print(\"YES\" if Counter(a)==Counter(b) else \"NO\")\n",
+            "cases": [
+              ["listen silent", "YES"],
+              ["a a", "YES"],
+              ["aabb abbc", "NO"],
+              ["abc ab", "NO"]
+            ]
+          },
+          {
+            "slug": "ky-tu-duy-nhat",
+            "title": "Ký tự duy nhất xuất hiện đầu tiên",
+            "statement": "Tìm vị trí đầu tiên có ký tự chỉ xuất hiện đúng một lần trong cả chuỗi.",
+            "input": "Một chuỗi s chữ thường.",
+            "output": "In vị trí đánh số từ 1, hoặc -1 nếu không có.",
+            "constraints": "1 ≤ |s| ≤ 2·10⁵.",
+            "difficulty": "EASY",
+            "solution": "import sys, math, heapq, bisect\nfrom collections import Counter, deque\nD = sys.stdin.read().split()\ns=D[0]; freq=Counter(s); print(next((i for i,c in enumerate(s,1) if freq[c]==1),-1))\n",
+            "cases": [
+              ["swiss", "2"],
+              ["aaaa", "-1"],
+              ["a", "1"],
+              ["aabbcd", "5"]
+            ]
+          },
+          {
+            "slug": "tu-pho-bien",
+            "title": "Từ xuất hiện nhiều nhất",
+            "statement": "Chọn từ có tần suất lớn nhất trong danh sách. Nếu có nhiều từ bằng nhau về tần suất, chọn từ nhỏ nhất theo thứ tự từ điển ASCII.",
+            "input": "n, sau đó n từ chữ thường.",
+            "output": "In từ kết quả và tần suất, cách nhau một dấu cách.",
+            "constraints": "1 ≤ n ≤ 2·10⁵, tổng độ dài các từ ≤ 10⁶.",
+            "difficulty": "MEDIUM",
+            "solution": "import sys, math, heapq, bisect\nfrom collections import Counter, deque\nD = sys.stdin.read().split()\nfreq=Counter(D[1:]); word=min(freq,key=lambda w:(-freq[w],w)); print(word,freq[word])\n",
+            "cases": [
+              ["6\ntree heap tree map heap map", "heap 2"],
+              ["1\nx", "x 1"],
+              ["5\nz a z a q", "a 2"],
+              ["4\nsame same same same", "same 4"]
+            ]
+          },
+          {
+            "slug": "chenh-lech-ky-tu",
+            "title": "Số lần đổi ký tự để hoán vị khớp",
+            "statement": "Hai chuỗi a và b có cùng độ dài. Mỗi lần được thay một ký tự của a. Tìm số lần thay ít nhất để a sau đó có thể hoán vị thành b.",
+            "input": "Hai chuỗi a và b gồm chữ thường, cùng độ dài.",
+            "output": "Số lần thay nhỏ nhất.",
+            "constraints": "1 ≤ |a| = |b| ≤ 2·10⁵.",
+            "difficulty": "MEDIUM",
+            "solution": "import sys, math, heapq, bisect\nfrom collections import Counter, deque\nD = sys.stdin.read().split()\na,b=D; print(sum((Counter(a)-Counter(b)).values()))\n",
+            "cases": [
+              ["aabb bccc", "3"],
+              ["aaaa aaaa", "0"],
+              ["aaaa bbbb", "4"],
+              ["algorithm logaritmh", "0"]
+            ]
+          }
+        ],
+        "questions": [
+          {
+            "prompt": "Muốn kiểm tra hai chuỗi có thể hoán vị thành nhau, điều kiện đủ nào sau đây đúng?",
+            "options": [
+              "Chỉ cần độ dài bằng nhau",
+              "Ký tự đầu giống nhau",
+              "Tần suất từng ký tự bằng nhau",
+              "Có cùng số ký tự khác nhau"
+            ],
+            "correct": 2,
+            "explanation": "Có thể ghép mỗi lần xuất hiện của ký tự ở chuỗi này với một lần ở chuỗi kia."
+          },
+          {
+            "prompt": "Trong swiss, vị trí đầu tiên của ký tự chỉ xuất hiện một lần là bao nhiêu?",
+            "options": ["1", "3", "5", "2"],
+            "correct": 3,
+            "explanation": "Ký tự w ở vị trí 2 chỉ xuất hiện một lần."
+          },
+          {
+            "prompt": "Nếu từ heap và tree đều xuất hiện 4 lần và đứng đầu về tần suất, chọn từ nào theo thứ tự từ điển tăng?",
+            "options": ["heap", "tree", "Cả hai trên cùng một dòng", "Từ xuất hiện cuối cùng"],
+            "correct": 0,
+            "explanation": "Ký tự h đứng trước t theo ASCII."
+          }
+        ]
+      },
+      {
+        "slug": "cua-so-chuoi",
+        "title": "Cửa sổ trượt trên chuỗi",
+        "topic": "Chuỗi",
+        "description": "Duy trì tần suất trong một đoạn đang xét thay vì xây dựng bảng băm mới cho mỗi vị trí.",
+        "problems": [
+          {
+            "slug": "chuoi-khong-lap",
+            "title": "Đoạn dài nhất không lặp ký tự",
+            "statement": "Tìm độ dài đoạn con liên tiếp dài nhất mà không có ký tự nào xuất hiện hơn một lần.",
+            "input": "Một chuỗi s gồm chữ cái thường.",
+            "output": "Độ dài đoạn dài nhất.",
+            "constraints": "1 ≤ |s| ≤ 2·10⁵.",
+            "difficulty": "MEDIUM",
+            "solution": "import sys, math, heapq, bisect\nfrom collections import Counter, deque\nD = sys.stdin.read().split()\nlast={}; left=best=0\nfor right,c in enumerate(D[0]):\n    left=max(left,last.get(c,-1)+1); last[c]=right\n    best=max(best,right-left+1)\nprint(best)\n",
+            "cases": [
+              ["abcaef", "5"],
+              ["z", "1"],
+              ["aaaa", "1"],
+              ["abcde", "5"]
+            ]
+          },
+          {
+            "slug": "nguyen-am-cua-so",
+            "title": "Nhiều nguyên âm nhất trong k ký tự",
+            "statement": "Xét mọi đoạn con dài đúng k. Tìm số nguyên âm nhiều nhất trong một đoạn. Nguyên âm gồm a, e, i, o, u.",
+            "input": "Chuỗi chữ thường s và số nguyên k.",
+            "output": "Số nguyên âm lớn nhất.",
+            "constraints": "1 ≤ k ≤ |s| ≤ 2·10⁵.",
+            "difficulty": "MEDIUM",
+            "solution": "import sys, math, heapq, bisect\nfrom collections import Counter, deque\nD = sys.stdin.read().split()\ns,k=D[0],int(D[1]); v=set(\"aeiou\"); cur=sum(c in v for c in s[:k]); best=cur\nfor i in range(k,len(s)):\n    cur+=(s[i] in v)-(s[i-k] in v); best=max(best,cur)\nprint(best)\n",
+            "cases": [
+              ["bienxanh 4", "2"],
+              ["a 1", "1"],
+              ["zzzz 2", "0"],
+              ["aeiou 5", "5"]
+            ]
+          },
+          {
+            "slug": "tim-anagram-tat-ca",
+            "title": "Các vị trí chứa hoán vị của mẫu",
+            "statement": "Tìm mọi đoạn liên tiếp của s có thể hoán vị thành p. Báo vị trí bắt đầu của từng đoạn theo thứ tự tăng.",
+            "input": "Chuỗi s và mẫu p, đều gồm chữ thường.",
+            "output": "Các vị trí bắt đầu đánh số từ 1, hoặc NONE.",
+            "constraints": "1 ≤ |s|,|p| ≤ 2·10⁵.",
+            "difficulty": "HARD",
+            "solution": "import sys, math, heapq, bisect\nfrom collections import Counter, deque\nD = sys.stdin.read().split()\ns,p=D; k=len(p); target=Counter(p); window=Counter(); out=[]\nfor i,c in enumerate(s):\n    window[c]+=1\n    if i>=k:\n        old=s[i-k]; window[old]-=1\n        if window[old]==0: del window[old]\n    if i>=k-1 and window==target: out.append(i-k+2)\nprint(*out if out else [\"NONE\"])\n",
+            "cases": [
+              ["cbaebabacd abc", "1 7"],
+              ["a a", "1"],
+              ["abc abcd", "NONE"],
+              ["aaaa aa", "1 2 3"]
+            ]
+          },
+          {
+            "slug": "doan-phu-mau",
+            "title": "Độ dài đoạn phủ đủ ký tự mẫu",
+            "statement": "Tìm độ dài nhỏ nhất của đoạn liên tiếp trong s chứa đủ số lần xuất hiện của từng ký tự trong p. Thứ tự trong đoạn có thể khác p.",
+            "input": "Hai chuỗi chữ thường s và p.",
+            "output": "Độ dài nhỏ nhất, hoặc -1 nếu không tồn tại.",
+            "constraints": "1 ≤ |s|,|p| ≤ 2·10⁵.",
+            "difficulty": "HARD",
+            "solution": "import sys, math, heapq, bisect\nfrom collections import Counter, deque\nD = sys.stdin.read().split()\ns,p=D; need=Counter(p); have=Counter(); missing=len(p); l=0; best=len(s)+1\nfor r,c in enumerate(s):\n    if have[c]<need[c]: missing-=1\n    have[c]+=1\n    while missing==0:\n        best=min(best,r-l+1); old=s[l]; l+=1; have[old]-=1\n        if have[old]<need[old]: missing+=1\nprint(best if best<=len(s) else -1)\n",
+            "cases": [
+              ["adobecodebanc abc", "4"],
+              ["a a", "1"],
+              ["a aa", "-1"],
+              ["bbbaaab aaa", "3"]
+            ]
+          }
+        ],
+        "questions": [
+          {
+            "prompt": "Khi gặp lại ký tự c, vì sao không được kéo biên trái lùi về bên trái?",
+            "options": [
+              "Vì sẽ thay đổi ký tự c",
+              "Vì chỉ được phép duyệt chuỗi một ký tự",
+              "Vì biên trái luôn bằng 0",
+              "Đoạn mới sẽ đưa các ký tự trùng đã loại bỏ trở lại"
+            ],
+            "correct": 3,
+            "explanation": "Biên trái chỉ tiến để bảo toàn điều kiện không trùng của cửa sổ."
+          },
+          {
+            "prompt": "Khi cửa sổ dài k trượt sang phải một vị trí, cần thay đổi tần suất của bao nhiêu vị trí?",
+            "options": [
+              "Hai vị trí, một vào và một ra",
+              "Một vị trí",
+              "Cả k vị trí",
+              "Không vị trí nào"
+            ],
+            "correct": 0,
+            "explanation": "Các ký tự ở phần giao giữa hai cửa sổ được giữ nguyên."
+          },
+          {
+            "prompt": "Mẫu aab được phủ bởi đoạn aba không?",
+            "options": [
+              "Không, vì a không liền nhau",
+              "Có",
+              "Không, vì b phải đứng cuối",
+              "Chỉ có khi đoạn dài hơn 3"
+            ],
+            "correct": 1,
+            "explanation": "Đoạn chứa hai chữ a và một chữ b, đúng tần suất mẫu."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "slug": "sap-xep-va-tim-kiem",
+    "title": "Sắp xếp và tìm kiếm nhị phân",
+    "description": "Tiếp nối kỹ năng quét mảng. Luyện sắp theo nhiều tiêu chí, truy vấn mốc trên dãy đã sắp và tìm kiếm trên đáp án.",
+    "chapters": [
+      {
+        "slug": "thu-tu",
+        "title": "Quy tắc so sánh và sắp xếp",
+        "topic": "Sắp xếp",
+        "description": "Viết rõ tiêu chí chính, tiêu chí phụ và những trường hợp phải giữ thứ tự gốc.",
+        "problems": [
+          {
+            "slug": "xep-hang-nhom",
+            "title": "Xếp hạng đội theo điểm và mã",
+            "statement": "Xếp các đội theo điểm giảm dần. Các đội bằng điểm được xếp theo mã tăng dần.",
+            "input": "n, tiếp theo n dòng gồm mã ASCII và điểm.",
+            "output": "Một mã đội trên mỗi dòng theo thứ tự xếp hạng.",
+            "constraints": "1 ≤ n ≤ 10⁵; mã ASCII duy nhất, dài tối đa 20; 0 ≤ điểm ≤ 10⁹.",
+            "difficulty": "EASY",
+            "solution": "import sys, math, heapq, bisect\nfrom collections import Counter, deque\nD = sys.stdin.read().split()\nrows=[(D[i],int(D[i+1])) for i in range(1,len(D),2)]\nprint(*(a for a,_ in sorted(rows,key=lambda r:(-r[1],r[0]))),sep=\"\\n\")\n",
+            "cases": [
+              ["4\nB 5\nC 9\nA 5\nD 7", "C\nD\nA\nB"],
+              ["1\nX 0", "X"],
+              ["3\nZ 10\nA 10\nX 10", "A\nX\nZ"],
+              ["2\nG 0\nH 1", "H\nG"]
+            ]
+          },
+          {
+            "slug": "nen-toa-do",
+            "title": "Nén hạng các tọa độ",
+            "statement": "Mỗi tọa độ được thay bằng hạng của nó trong danh sách các tọa độ phân biệt đã sắp tăng. Hạng bắt đầu từ 1; các tọa độ bằng nhau có cùng hạng.",
+            "input": "Dòng đầu là n. Dòng sau gồm n số nguyên.",
+            "output": "Dãy hạng tương ứng theo thứ tự nhập.",
+            "constraints": "1 ≤ n ≤ 2·10⁵, |aᵢ| ≤ 10⁹.",
+            "difficulty": "MEDIUM",
+            "solution": "import sys, math, heapq, bisect\nfrom collections import Counter, deque\nD = sys.stdin.read().split()\na=list(map(int,D[1:])); rank={x:i for i,x in enumerate(sorted(set(a)),1)}; print(*(rank[x] for x in a))\n",
+            "cases": [
+              ["5\n9 -2 9 4 -2", "3 1 3 2 1"],
+              ["1\n8", "1"],
+              ["4\n0 0 0 0", "1 1 1 1"],
+              ["4\n100 -100 10 0", "4 1 3 2"]
+            ]
+          },
+          {
+            "slug": "lich-hop",
+            "title": "Chọn nhiều cuộc họp nhất",
+            "statement": "Một phòng chỉ dùng cho một cuộc họp tại một thời điểm. Cho các khoảng [a,b) và tìm số cuộc họp tối đa có thể chọn.",
+            "input": "n, sau đó n cặp thời điểm bắt đầu và kết thúc.",
+            "output": "Số cuộc họp tối đa.",
+            "constraints": "1 ≤ n ≤ 2·10⁵; 0 ≤ a < b ≤ 10⁹.",
+            "difficulty": "MEDIUM",
+            "solution": "import sys, math, heapq, bisect\nfrom collections import Counter, deque\nD = sys.stdin.read().split()\nv=list(map(int,D[1:])); events=sorted(zip(v[::2],v[1::2]),key=lambda e:e[1]); end=0; count=0\nfor a,b in events:\n    if a>=end: count+=1; end=b\nprint(count)\n",
+            "cases": [
+              ["5\n0 6\n1 3\n3 5\n5 9\n5 7", "3"],
+              ["1\n8 12", "1"],
+              ["3\n1 7\n2 6\n3 5", "1"],
+              ["3\n0 1\n1 2\n2 3", "3"]
+            ]
+          },
+          {
+            "slug": "dem-nghich-the",
+            "title": "Đếm nghịch thế của dãy",
+            "statement": "Đếm các cặp i < j nhưng a[i] > a[j]. Các giá trị bằng nhau không tạo nghịch thế.",
+            "input": "Dòng đầu là n. Dòng sau gồm n số nguyên.",
+            "output": "Số cặp nghịch thế.",
+            "constraints": "1 ≤ n ≤ 10⁵, |aᵢ| ≤ 10⁹.",
+            "difficulty": "HARD",
+            "solution": "import sys, math, heapq, bisect\nfrom collections import Counter, deque\nD = sys.stdin.read().split()\ndef go(a):\n    if len(a)<2: return a,0\n    m=len(a)//2; l,x=go(a[:m]); r,y=go(a[m:]); i=j=0; out=[]; c=x+y\n    while i<len(l) and j<len(r):\n        if l[i]<=r[j]: out.append(l[i]); i+=1\n        else: out.append(r[j]); j+=1; c+=len(l)-i\n    return out+l[i:]+r[j:],c\nprint(go(list(map(int,D[1:])))[1])\n",
+            "cases": [
+              ["5\n2 4 1 3 5", "3"],
+              ["1\n0", "0"],
+              ["4\n4 3 2 1", "6"],
+              ["5\n2 2 1 1 2", "4"]
+            ]
+          }
+        ],
+        "questions": [
+          {
+            "prompt": "Hai đội bằng điểm có mã B2 và A9. Đội nào xếp trước theo mã tăng?",
+            "options": ["B2", "A9", "Đội nhập sau", "Cả hai luôn cùng vị trí"],
+            "correct": 1,
+            "explanation": "Chữ A đứng trước chữ B ở ký tự đầu tiên."
+          },
+          {
+            "prompt": "Trong nén tọa độ, quan hệ nào giữa hai giá trị được giữ lại?",
+            "options": [
+              "Hiệu chính xác",
+              "Tổng hai giá trị",
+              "Thứ tự so sánh và quan hệ bằng nhau",
+              "Tích hai giá trị"
+            ],
+            "correct": 2,
+            "explanation": "Hạng bảo toàn thứ tự, còn độ chênh giá trị gốc có thể đổi."
+          },
+          {
+            "prompt": "Khi trộn hai nửa đã sắp, nếu phần tử bên phải nhỏ hơn phần tử hiện tại bên trái thì thêm bao nhiêu nghịch thế?",
+            "options": [
+              "Một nghịch thế duy nhất",
+              "Số phần tử còn lại ở nửa phải",
+              "Không thêm nghịch thế",
+              "Số phần tử còn lại ở nửa trái"
+            ],
+            "correct": 3,
+            "explanation": "Mọi phần tử còn lại ở trái đều ít nhất bằng phần tử trái hiện tại."
+          }
+        ]
+      },
+      {
+        "slug": "moc-va-truy-van",
+        "title": "Vị trí biên trên dãy đã sắp",
+        "topic": "Tìm kiếm nhị phân",
+        "description": "Làm rõ mốc đầu tiên thỏa điều kiện và cách chọn điểm gần nhất khi có giá trị trùng.",
+        "problems": [
+          {
+            "slug": "vi-tri-chen-dau",
+            "title": "Vị trí chèn trước các phần tử bằng nhau",
+            "statement": "Trong dãy không giảm, chọn vị trí chèn x nhỏ nhất để dãy sau khi chèn vẫn không giảm.",
+            "input": "n x, sau đó n số đã sắp không giảm.",
+            "output": "Vị trí chèn đánh số từ 1, trong khoảng 1 đến n+1.",
+            "constraints": "1 ≤ n ≤ 2·10⁵, |aᵢ|,|x| ≤ 10⁹.",
+            "difficulty": "EASY",
+            "solution": "import sys, math, heapq, bisect\nfrom collections import Counter, deque\nD = sys.stdin.read().split()\nn,x,*a=map(int,D); print(bisect.bisect_left(a,x)+1)\n",
+            "cases": [
+              ["5 3\n1 3 3 4 9", "2"],
+              ["1 99\n1", "2"],
+              ["2 -5\n3 6", "1"],
+              ["4 0\n-3 -2 -1 0", "4"]
+            ]
+          },
+          {
+            "slug": "dem-trong-khoang-gia",
+            "title": "Đếm sản phẩm trong khoảng giá",
+            "statement": "Với mỗi khoảng giá đóng [l,r], đếm số sản phẩm có giá nằm trong khoảng. Mỗi sản phẩm có cùng giá vẫn được đếm riêng.",
+            "input": "n q, n giá không giảm, rồi q cặp l r.",
+            "output": "Số sản phẩm cho từng truy vấn.",
+            "constraints": "1 ≤ n,q ≤ 2·10⁵, 0 ≤ l ≤ r ≤ 10⁹.",
+            "difficulty": "MEDIUM",
+            "solution": "import sys, math, heapq, bisect\nfrom collections import Counter, deque\nD = sys.stdin.read().split()\nv=list(map(int,D)); n,q=v[:2]; a=v[2:2+n]\nfor i in range(2+n,2+n+q*2,2):\n    l,r=v[i:i+2]; print(bisect.bisect_right(a,r)-bisect.bisect_left(a,l))\n",
+            "cases": [
+              ["5 3\n1 2 2 7 9\n2 2\n3 6\n1 9", "2\n0\n5"],
+              ["1 1\n3\n0 2", "0"],
+              ["3 1\n4 4 4\n4 4", "3"],
+              ["3 2\n0 5 8\n0 0\n8 9", "1\n1"]
+            ]
+          },
+          {
+            "slug": "moc-do-gan-nhat",
+            "title": "Chọn mốc đo gần nhất",
+            "statement": "Các mốc đo đã sắp tăng. Với mỗi thời điểm x chọn mốc gần nhất; nếu hai mốc cách x bằng nhau thì chọn mốc nhỏ hơn.",
+            "input": "n q, n mốc đã sắp rồi q truy vấn x.",
+            "output": "Một mốc cho mỗi truy vấn.",
+            "constraints": "1 ≤ n,q ≤ 2·10⁵, |mốc|,|x| ≤ 10⁹.",
+            "difficulty": "MEDIUM",
+            "solution": "import sys, math, heapq, bisect\nfrom collections import Counter, deque\nD = sys.stdin.read().split()\nv=list(map(int,D)); n,q=v[:2]; a=v[2:n+2]\nfor x in v[n+2:]:\n    i=bisect.bisect_left(a,x)\n    print(min(a[max(i-1,0):min(i+1,n)],key=lambda t:(abs(t-x),t)))\n",
+            "cases": [
+              ["4 3\n0 4 8 12\n2 11 20", "0\n12\n12"],
+              ["1 2\n5\n4 6", "5\n5"],
+              ["4 1\n1 1 4 9\n1", "1"],
+              ["4 2\n-8 -5 3 5\n-10 0", "-8\n3"]
+            ]
+          },
+          {
+            "slug": "tim-trong-day-xoay",
+            "title": "Tìm giá trị sau khi xoay dãy tăng",
+            "statement": "Một dãy tăng nghiêm ngặt được xoay bằng cách đưa một đoạn đầu xuống cuối. Tìm vị trí của x trong dãy đã xoay.",
+            "input": "n x và n số của dãy đã xoay.",
+            "output": "Vị trí từ 1 hoặc -1 nếu không tìm thấy.",
+            "constraints": "1 ≤ n ≤ 2·10⁵, các giá trị phân biệt.",
+            "difficulty": "HARD",
+            "solution": "import sys, math, heapq, bisect\nfrom collections import Counter, deque\nD = sys.stdin.read().split()\nn,x,*a=map(int,D); lo=0; hi=n-1; ans=-1\nwhile lo<=hi:\n    m=(lo+hi)//2\n    if a[m]==x: ans=m+1; break\n    if a[lo]<=a[m]:\n        if a[lo]<=x<a[m]: hi=m-1\n        else: lo=m+1\n    elif a[m]<x<=a[hi]: lo=m+1\n    else: hi=m-1\nprint(ans)\n",
+            "cases": [
+              ["7 1\n4 5 6 7 0 1 2", "6"],
+              ["1 3\n3", "1"],
+              ["5 8\n7 9 1 2 4", "-1"],
+              ["5 -1\n-3 -2 -1 4 6", "3"]
+            ]
+          }
+        ],
+        "questions": [
+          {
+            "prompt": "Vị trí chèn nhỏ nhất của 2 trong [1, 2, 2, 5] theo chỉ số từ 1 là bao nhiêu?",
+            "options": ["1", "3", "2", "4"],
+            "correct": 2,
+            "explanation": "Chèn trước lần xuất hiện đầu tiên của 2 giữ cho dãy không giảm."
+          },
+          {
+            "prompt": "Đếm phần tử bằng x qua hai mốc chèn cần phép tính nào?",
+            "options": [
+              "Cộng hai mốc",
+              "Lấy mốc đầu tiên trừ mốc sau cùng",
+              "Chia hai mốc",
+              "Mốc ngay sau x cuối cùng trừ mốc x đầu tiên"
+            ],
+            "correct": 3,
+            "explanation": "Hiệu giữa hai mốc là kích thước khối các giá trị x."
+          },
+          {
+            "prompt": "Ở mỗi bước tìm trên dãy tăng đã xoay, thông tin nào giúp bỏ nửa dãy?",
+            "options": [
+              "Ít nhất một nửa quanh điểm giữa vẫn được sắp tăng",
+              "Hai nửa luôn tăng",
+              "Giá trị giữa là nhỏ nhất",
+              "Dãy không có điểm xoay"
+            ],
+            "correct": 0,
+            "explanation": "So sánh x với hai đầu của nửa tăng để quyết định nửa cần giữ."
+          }
+        ]
+      },
+      {
+        "slug": "tim-dap-an",
+        "title": "Tìm kiếm nhị phân trên đáp án",
+        "topic": "Tìm kiếm nhị phân",
+        "description": "Xây dựng hàm kiểm tra khả thi. Chứng minh điều kiện đổi một chiều khi tăng hoặc giảm ứng viên.",
+        "problems": [
+          {
+            "slug": "cat-day",
+            "title": "Cắt dây thành đoạn nguyên dài nhất",
+            "statement": "Mỗi sợi dây có chiều dài nguyên. Chọn độ dài nguyên dương L rồi cắt ít nhất k đoạn dài đúng L. Phần dư được bỏ qua. Tìm L lớn nhất.",
+            "input": "n k và n độ dài dây.",
+            "output": "L lớn nhất hoặc 0 nếu không thể cắt đủ.",
+            "constraints": "1 ≤ n ≤ 10⁵, 1 ≤ k ≤ 10⁹, 1 ≤ độ dài ≤ 10⁹.",
+            "difficulty": "MEDIUM",
+            "solution": "import sys, math, heapq, bisect\nfrom collections import Counter, deque\nD = sys.stdin.read().split()\nn,k,*a=map(int,D); lo=0; hi=max(a)+1\nwhile hi-lo>1:\n    m=(lo+hi)//2\n    if sum(x//m for x in a)>=k: lo=m\n    else: hi=m\nprint(lo)\n",
+            "cases": [
+              ["4 11\n802 743 457 539", "200"],
+              ["1 5\n4", "0"],
+              ["2 1\n3 11", "11"],
+              ["2 4\n4 4", "2"]
+            ]
+          },
+          {
+            "slug": "van-chuyen-theo-ngay",
+            "title": "Tải trọng tàu tối thiểu",
+            "statement": "Vận chuyển các kiện theo thứ tự trong d ngày. Mỗi ngày lấy liên tiếp các kiện còn lại sao cho tổng trọng lượng không vượt tải trọng. Tìm tải trọng tối thiểu.",
+            "input": "n d và n trọng lượng theo thứ tự.",
+            "output": "Tải trọng nhỏ nhất.",
+            "constraints": "1 ≤ d ≤ n ≤ 10⁵; 1 ≤ trọng lượng ≤ 10⁹.",
+            "difficulty": "HARD",
+            "solution": "import sys, math, heapq, bisect\nfrom collections import Counter, deque\nD = sys.stdin.read().split()\nn,d,*a=map(int,D)\ndef ok(limit):\n    days=1; load=0\n    for x in a:\n        if load+x>limit: days+=1; load=0\n        load+=x\n    return days<=d\nlo=max(a)-1; hi=sum(a)\nwhile hi-lo>1:\n    m=(lo+hi)//2\n    if ok(m): hi=m\n    else: lo=m\nprint(hi)\n",
+            "cases": [
+              ["5 3\n3 2 2 4 1", "5"],
+              ["1 1\n9", "9"],
+              ["4 1\n4 2 3 1", "10"],
+              ["4 4\n4 2 3 1", "4"]
+            ]
+          },
+          {
+            "slug": "khoang-cach-cam-moc",
+            "title": "Đặt cột có khoảng cách nhỏ nhất lớn nhất",
+            "statement": "Có n vị trí nguyên phân biệt. Chọn đúng k vị trí để khoảng cách nhỏ nhất giữa hai cột liên tiếp được chọn lớn nhất.",
+            "input": "n k và danh sách n tọa độ, có thể chưa sắp xếp.",
+            "output": "Giá trị lớn nhất của khoảng cách nhỏ nhất.",
+            "constraints": "2 ≤ k ≤ n ≤ 10⁵, 0 ≤ tọa độ ≤ 10⁹.",
+            "difficulty": "HARD",
+            "solution": "import sys, math, heapq, bisect\nfrom collections import Counter, deque\nD = sys.stdin.read().split()\nn,k,*a=map(int,D); a.sort()\ndef ok(m):\n    last=a[0]; count=1\n    for x in a[1:]:\n        if x-last>=m: count+=1; last=x\n    return count>=k\nlo=0; hi=a[-1]-a[0]+1\nwhile hi-lo>1:\n    m=(lo+hi)//2\n    if ok(m): lo=m\n    else: hi=m\nprint(lo)\n",
+            "cases": [
+              ["5 3\n1 2 8 4 9", "3"],
+              ["2 2\n0 100", "100"],
+              ["4 4\n0 5 7 20", "2"],
+              ["5 2\n50 1 3 7 10", "49"]
+            ]
+          },
+          {
+            "slug": "thoi-gian-san-xuat",
+            "title": "Thời gian để hoàn thành k sản phẩm",
+            "statement": "Máy thứ i hoàn thành một sản phẩm sau mỗi a[i] phút. Tất cả máy bắt đầu cùng lúc và làm việc liên tục. Tìm thời điểm sớm nhất đã đủ k sản phẩm.",
+            "input": "n k và n thời gian a[i].",
+            "output": "Số phút nguyên nhỏ nhất.",
+            "constraints": "1 ≤ n ≤ 10⁵, 1 ≤ k,aᵢ ≤ 10⁹.",
+            "difficulty": "HARD",
+            "solution": "import sys, math, heapq, bisect\nfrom collections import Counter, deque\nD = sys.stdin.read().split()\nn,k,*a=map(int,D); lo=0; hi=min(a)*k\nwhile hi-lo>1:\n    m=(lo+hi)//2\n    if sum(m//x for x in a)>=k: hi=m\n    else: lo=m\nprint(hi)\n",
+            "cases": [
+              ["3 7\n3 2 5", "8"],
+              ["1 7\n6", "42"],
+              ["3 1\n3 9 4", "3"],
+              ["3 10\n2 2 2", "8"]
+            ]
+          }
+        ],
+        "questions": [
+          {
+            "prompt": "Trong bài cắt dây, khi tăng độ dài đoạn L thì số đoạn cắt được thay đổi ra sao?",
+            "options": [
+              "Luôn tăng",
+              "Có thể tăng hoặc giảm tùy dạng dữ liệu",
+              "Luôn giữ nguyên",
+              "Không tăng"
+            ],
+            "correct": 3,
+            "explanation": "Mỗi dây dài x cho floor(x/L) đoạn. Giá trị này không tăng khi L tăng."
+          },
+          {
+            "prompt": "Cận dưới tự nhiên của tải trọng tàu là gì?",
+            "options": [
+              "Trọng lượng kiện nặng nhất",
+              "Trọng lượng kiện nhẹ nhất",
+              "Tổng trọng lượng chia cho số kiện và làm tròn xuống",
+              "0 trong mọi trường hợp"
+            ],
+            "correct": 0,
+            "explanation": "Mỗi kiện phải được vận chuyển nguyên vẹn trong một ngày."
+          },
+          {
+            "prompt": "Một máy mất 4 phút cho một sản phẩm. Sau đúng 11 phút máy đã hoàn thành mấy sản phẩm?",
+            "options": ["1", "2", "3", "4"],
+            "correct": 1,
+            "explanation": "Sản phẩm hoàn thành ở phút 4 và phút 8."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "slug": "stack-queue-heap",
+    "title": "Stack, queue và heap",
+    "description": "Luyện mô phỏng thao tác thêm và lấy phần tử. Sau đó học cách giữ ứng viên theo thứ tự xuất hiện hoặc độ ưu tiên.",
+    "chapters": [
+      {
+        "slug": "stack",
+        "title": "Ngăn xếp và ứng viên gần nhất",
+        "topic": "Ngăn xếp/Hàng đợi",
+        "description": "Bắt đầu từ ghép cặp, sau đó dùng ngăn xếp đơn điệu để bỏ những ứng viên không còn hữu ích.",
+        "problems": [
+          {
+            "slug": "ngoac-dung",
+            "title": "Kiểm tra ngoặc với ba loại cặp",
+            "statement": "Chuỗi gồm (), [] và {}. Kiểm tra mỗi dấu đóng có khớp dấu mở gần nhất chưa đóng hay không, và cuối chuỗi đã đóng hết.",
+            "input": "Một chuỗi s gồm các dấu ngoặc.",
+            "output": "YES hoặc NO.",
+            "constraints": "1 ≤ |s| ≤ 2·10⁵.",
+            "difficulty": "EASY",
+            "solution": "import sys, math, heapq, bisect\nfrom collections import Counter, deque\nD = sys.stdin.read().split()\nmatch={\")\":\"(\",\"]\":\"[\",\"}\":\"{\"}; stack=[]; ok=True\nfor c in D[0]:\n    if c not in match: stack.append(c)\n    elif not stack or stack.pop()!=match[c]: ok=False; break\nprint(\"YES\" if ok and not stack else \"NO\")\n",
+            "cases": [
+              ["{[()()]}", "YES"],
+              ["([)]", "NO"],
+              ["(", "NO"],
+              ["(){}", "YES"]
+            ]
+          },
+          {
+            "slug": "do-sau-ngoac",
+            "title": "Độ sâu lồng tối đa",
+            "statement": "Cho một chuỗi ngoặc tròn đúng. Tìm số dấu mở chưa được đóng nhiều nhất ở bất kỳ thời điểm nào khi đọc từ trái sang phải.",
+            "input": "Một chuỗi ngoặc tròn đúng.",
+            "output": "Độ sâu lồng lớn nhất.",
+            "constraints": "2 ≤ |s| ≤ 2·10⁵.",
+            "difficulty": "EASY",
+            "solution": "import sys, math, heapq, bisect\nfrom collections import Counter, deque\nD = sys.stdin.read().split()\nheight=best=0\nfor c in D[0]:\n    height+=1 if c==\"(\" else -1\n    best=max(best,height)\nprint(best)\n",
+            "cases": [
+              ["(()(()))", "3"],
+              ["()", "1"],
+              ["()()()", "1"],
+              ["(((())))", "4"]
+            ]
+          },
+          {
+            "slug": "ngay-am-hon",
+            "title": "Chờ đến ngày có nhiệt độ cao hơn",
+            "statement": "Với mỗi ngày, tìm số ngày phải chờ tới ngày gần nhất phía sau có nhiệt độ lớn hơn. Nếu không có ngày đó, trả 0.",
+            "input": "Dòng đầu là n. Dòng sau gồm n số nguyên.",
+            "output": "In n số ngày chờ theo thứ tự ban đầu.",
+            "constraints": "1 ≤ n ≤ 2·10⁵, |aᵢ| ≤ 10⁹.",
+            "difficulty": "MEDIUM",
+            "solution": "import sys, math, heapq, bisect\nfrom collections import Counter, deque\nD = sys.stdin.read().split()\na=list(map(int,D[1:])); ans=[0]*len(a); stack=[]\nfor i,t in enumerate(a):\n    while stack and a[stack[-1]]<t:\n        j=stack.pop(); ans[j]=i-j\n    stack.append(i)\nprint(*ans)\n",
+            "cases": [
+              ["8\n73 74 75 71 69 72 76 73", "1 1 4 2 1 1 0 0"],
+              ["1\n10", "0"],
+              ["4\n5 5 5 5", "0 0 0 0"],
+              ["4\n4 1 2 6", "3 1 1 0"]
+            ]
+          },
+          {
+            "slug": "khung-chu-nhat-cot",
+            "title": "Hình chữ nhật lớn nhất dưới dãy cột",
+            "statement": "Dãy gồm n cột sát nhau, mỗi cột rộng 1. Tìm diện tích hình chữ nhật lớn nhất nằm trọn bên dưới đường bao của các cột.",
+            "input": "n và n chiều cao.",
+            "output": "Diện tích lớn nhất.",
+            "constraints": "1 ≤ n ≤ 2·10⁵, 0 ≤ chiều cao ≤ 10⁹.",
+            "difficulty": "HARD",
+            "solution": "import sys, math, heapq, bisect\nfrom collections import Counter, deque\nD = sys.stdin.read().split()\na=list(map(int,D[1:]))+[0]; stack=[]; best=0\nfor i,h in enumerate(a):\n    start=i\n    while stack and stack[-1][1]>h:\n        start,old=stack.pop(); best=max(best,old*(i-start))\n    stack.append((start,h))\nprint(best)\n",
+            "cases": [
+              ["6\n2 1 5 6 2 3", "10"],
+              ["1\n9", "9"],
+              ["4\n0 0 0 0", "0"],
+              ["4\n3 3 3 3", "12"]
+            ]
+          }
+        ],
+        "questions": [
+          {
+            "prompt": "Khi đọc dấu đóng, cấu trúc nào giúp lấy dấu mở chưa ghép gần nhất?",
+            "options": [
+              "Hàng đợi",
+              "Ngăn xếp",
+              "Bảng tần suất không lưu vị trí",
+              "Heap theo vị trí tăng"
+            ],
+            "correct": 1,
+            "explanation": "Dấu mở vừa đưa vào phải được kiểm tra trước các dấu cũ."
+          },
+          {
+            "prompt": "Nhiệt độ bằng nhau có giải quyết một ngày đang chờ nhiệt độ cao hơn không?",
+            "options": [
+              "Có, vì đã tới ngày khác",
+              "Có nếu cách đúng một ngày",
+              "Không",
+              "Chỉ khi ngày đó có nhiệt độ dương"
+            ],
+            "correct": 2,
+            "explanation": "Đề yêu cầu lớn hơn nghiêm ngặt."
+          },
+          {
+            "prompt": "Trong biểu đồ cột, vì sao gặp cột thấp hơn thì phải chốt diện tích của cột cao trên đỉnh stack?",
+            "options": [
+              "Vì mọi cột phía sau đều thấp hơn",
+              "Vì cột cao nhất chỉ rộng 1",
+              "Vì không còn cột nào bên trái",
+              "Hình chữ nhật với chiều cao đó không thể kéo qua cột thấp"
+            ],
+            "correct": 3,
+            "explanation": "Đây là biên phải đầu tiên chặn chiều cao đang xét."
+          }
+        ]
+      },
+      {
+        "slug": "queue",
+        "title": "Hàng đợi và cửa sổ có thứ tự",
+        "topic": "Ngăn xếp/Hàng đợi",
+        "description": "Mô phỏng FIFO rồi học deque để vừa bỏ ứng viên cũ ở đầu vừa giữ thứ tự ứng viên ở cuối.",
+        "problems": [
+          {
+            "slug": "hang-cho-quay",
+            "title": "Mô phỏng xếp hàng tại quầy",
+            "statement": "Lệnh ADD x thêm khách x vào cuối hàng, lệnh SERVE gọi khách đứng đầu. In mã được gọi hoặc EMPTY khi hàng trống.",
+            "input": "q rồi q lệnh ADD x hoặc SERVE. Có ít nhất một lệnh SERVE.",
+            "output": "Một kết quả cho mỗi lệnh SERVE.",
+            "constraints": "1 ≤ q ≤ 2·10⁵, 1 ≤ x ≤ 10⁹.",
+            "difficulty": "EASY",
+            "solution": "import sys, math, heapq, bisect\nfrom collections import Counter, deque\nD = sys.stdin.read().split()\nline=deque(); i=1\nwhile i<len(D):\n    if D[i]==\"ADD\": line.append(D[i+1]); i+=2\n    else: print(line.popleft() if line else \"EMPTY\"); i+=1\n",
+            "cases": [
+              ["5\nADD 5\nADD 3\nSERVE\nSERVE\nSERVE", "5\n3\nEMPTY"],
+              ["1\nSERVE", "EMPTY"],
+              ["3\nSERVE\nADD 99\nSERVE", "EMPTY\n99"],
+              ["6\nADD 2\nSERVE\nADD 4\nADD 8\nSERVE\nSERVE", "2\n4\n8"]
+            ]
+          },
+          {
+            "slug": "nguoi-cuoi-vong-tron",
+            "title": "Người cuối cùng trong vòng tròn",
+            "statement": "Có n người đánh số từ 1 đến n trong vòng tròn. Bắt đầu đếm tại người 1, bỏ người thứ k rồi tiếp tục từ người kế tiếp cho tới khi còn một người.",
+            "input": "Hai số nguyên n và k.",
+            "output": "Số hiệu người còn lại.",
+            "constraints": "1 ≤ n ≤ 2·10⁵, 1 ≤ k ≤ 10⁹.",
+            "difficulty": "MEDIUM",
+            "solution": "import sys, math, heapq, bisect\nfrom collections import Counter, deque\nD = sys.stdin.read().split()\nn,k=map(int,D); pos=0\nfor size in range(2,n+1): pos=(pos+k)%size\nprint(pos+1)\n",
+            "cases": [
+              ["7 3", "4"],
+              ["1 100", "1"],
+              ["8 1", "8"],
+              ["5 12", "3"]
+            ]
+          },
+          {
+            "slug": "so-am-dau-tien-cua-so",
+            "title": "Số âm đầu tiên trong mỗi cửa sổ",
+            "statement": "Xét mọi đoạn liên tiếp độ dài k. Với mỗi đoạn, in số âm xuất hiện đầu tiên hoặc 0 nếu đoạn đó không có số âm.",
+            "input": "n k và n số nguyên.",
+            "output": "Các kết quả trên một dòng theo thứ tự cửa sổ.",
+            "constraints": "1 ≤ k ≤ n ≤ 2·10⁵, |aᵢ| ≤ 10⁹.",
+            "difficulty": "MEDIUM",
+            "solution": "import sys, math, heapq, bisect\nfrom collections import Counter, deque\nD = sys.stdin.read().split()\nn,k,*a=map(int,D); neg=deque(); out=[]\nfor i,x in enumerate(a):\n    if x<0: neg.append(i)\n    while neg and neg[0]<=i-k: neg.popleft()\n    if i>=k-1: out.append(a[neg[0]] if neg else 0)\nprint(*out)\n",
+            "cases": [
+              ["5 3\n-2 3 -4 2 7", "-2 -4 -4"],
+              ["1 1\n-4", "-4"],
+              ["4 2\n1 2 3 4", "0 0 0"],
+              ["6 2\n0 -1 -3 0 4 -8", "-1 -1 -3 0 -8"]
+            ]
+          },
+          {
+            "slug": "cuc-dai-cua-so",
+            "title": "Cực đại của mọi cửa sổ độ dài k",
+            "statement": "Với mỗi đoạn liên tiếp dài đúng k, in giá trị lớn nhất trong đoạn.",
+            "input": "n k và n giá trị.",
+            "output": "Dãy gồm n−k+1 giá trị cực đại.",
+            "constraints": "1 ≤ k ≤ n ≤ 2·10⁵, |aᵢ| ≤ 10⁹.",
+            "difficulty": "HARD",
+            "solution": "import sys, math, heapq, bisect\nfrom collections import Counter, deque\nD = sys.stdin.read().split()\nn,k,*a=map(int,D); indices=deque(); out=[]\nfor i,x in enumerate(a):\n    while indices and indices[0]<=i-k: indices.popleft()\n    while indices and a[indices[-1]]<=x: indices.pop()\n    indices.append(i)\n    if i>=k-1: out.append(a[indices[0]])\nprint(*out)\n",
+            "cases": [
+              ["8 3\n1 3 -1 -3 5 3 6 7", "3 3 5 5 6 7"],
+              ["1 1\n9", "9"],
+              ["5 5\n-8 -2 -3 -1 -7", "-1"],
+              ["4 2\n2 2 2 2", "2 2 2"]
+            ]
+          }
+        ],
+        "questions": [
+          {
+            "prompt": "Khách A vào trước khách B và quầy dùng FIFO. Ai được gọi trước?",
+            "options": ["B", "Khách có mã nhỏ hơn", "A", "Phụ thuộc giá trị của mã"],
+            "correct": 2,
+            "explanation": "FIFO phục vụ theo thứ tự vào hàng."
+          },
+          {
+            "prompt": "Khi lưu số âm bằng chỉ số trong deque, vì sao cần chỉ số thay cho giá trị?",
+            "options": [
+              "Vì chỉ số luôn âm",
+              "Vì giá trị âm không lưu được",
+              "Vì sẽ làm mất thứ tự cửa sổ",
+              "Chỉ số cho biết phần tử đã ra khỏi cửa sổ hay chưa"
+            ],
+            "correct": 3,
+            "explanation": "Các giá trị bằng nhau có thể xuất hiện ở nhiều vị trí, nên giá trị không đủ nhận diện thời điểm rời đoạn."
+          },
+          {
+            "prompt": "Trong deque cực đại, gặp số mới bằng hoặc lớn hơn phần tử cuối thì làm gì với phần tử cuối?",
+            "options": [
+              "Loại nó khỏi deque",
+              "Đưa phần tử cuối vào đầu",
+              "In nó ra ngay",
+              "Giữ nó và bỏ phần tử mới"
+            ],
+            "correct": 0,
+            "explanation": "Số mới ít nhất lớn bằng và ở lại cửa sổ lâu hơn, nên số cũ không cần làm ứng viên."
+          }
+        ]
+      },
+      {
+        "slug": "heap",
+        "title": "Hàng đợi ưu tiên và heap",
+        "topic": "Ngăn xếp/Hàng đợi",
+        "description": "Ưu tiên theo giá trị và quy tắc phá hòa. Dùng heap để giảm công việc khi chỉ cần phần tử nhỏ nhất, lớn nhất hoặc hạng k.",
+        "problems": [
+          {
+            "slug": "ngan-xe-uu-tien",
+            "title": "Xử lý công việc có ưu tiên",
+            "statement": "Lệnh ADD x p đưa công việc mã x với mức p vào hệ thống. Lệnh NEXT lấy công việc có p nhỏ nhất; nếu bằng p, lấy mã x nhỏ hơn.",
+            "input": "q, sau đó q lệnh ADD x p hoặc NEXT. Có ít nhất một NEXT.",
+            "output": "Mã công việc cho mỗi NEXT, hoặc EMPTY.",
+            "constraints": "1 ≤ q ≤ 2·10⁵; 1 ≤ x ≤ 10⁹, |p| ≤ 10⁹.",
+            "difficulty": "EASY",
+            "solution": "import sys, math, heapq, bisect\nfrom collections import Counter, deque\nD = sys.stdin.read().split()\nh=[]; i=1\nwhile i<len(D):\n    if D[i]==\"ADD\": heapq.heappush(h,(int(D[i+2]),int(D[i+1]))); i+=3\n    else: print(heapq.heappop(h)[1] if h else \"EMPTY\"); i+=1\n",
+            "cases": [
+              ["6\nADD 2 5\nADD 1 5\nNEXT\nADD 9 0\nNEXT\nNEXT", "1\n9\n2"],
+              ["1\nNEXT", "EMPTY"],
+              ["3\nADD 10 -1\nADD 2 1\nNEXT", "10"],
+              ["3\nADD 9 5\nNEXT\nNEXT", "9\nEMPTY"]
+            ]
+          },
+          {
+            "slug": "gop-ho-so-chi-phi",
+            "title": "Gộp hồ sơ với chi phí thấp nhất",
+            "statement": "Mỗi lần gộp hai hồ sơ có chi phí bằng tổng kích thước chúng và cho một hồ sơ mới có kích thước bằng tổng đó. Tính chi phí nhỏ nhất để còn một hồ sơ.",
+            "input": "Dòng đầu là n. Dòng sau gồm n số nguyên.",
+            "output": "Tổng chi phí gộp nhỏ nhất.",
+            "constraints": "1 ≤ n ≤ 2·10⁵, 1 ≤ kích thước ≤ 10⁹.",
+            "difficulty": "MEDIUM",
+            "solution": "import sys, math, heapq, bisect\nfrom collections import Counter, deque\nD = sys.stdin.read().split()\na=list(map(int,D[1:])); heapq.heapify(a); total=0\nwhile len(a)>1:\n    value=heapq.heappop(a)+heapq.heappop(a); total+=value; heapq.heappush(a,value)\nprint(total)\n",
+            "cases": [
+              ["4\n10 20 30 40", "190"],
+              ["1\n9", "0"],
+              ["3\n1 1 1", "5"],
+              ["4\n1 1 1 100", "108"]
+            ]
+          },
+          {
+            "slug": "hang-k-truc-tiep",
+            "title": "Giá trị lớn thứ k khi dữ liệu tới dần",
+            "statement": "Sau mỗi lần nhận một số mới, in giá trị lớn thứ k trong toàn bộ các số đã nhận. Các số bằng nhau vẫn chiếm vị trí riêng.",
+            "input": "n k và n số theo thứ tự đến.",
+            "output": "In n dòng. In NONE khi chưa đủ k số.",
+            "constraints": "1 ≤ k ≤ n ≤ 2·10⁵, |aᵢ| ≤ 10⁹.",
+            "difficulty": "MEDIUM",
+            "solution": "import sys, math, heapq, bisect\nfrom collections import Counter, deque\nD = sys.stdin.read().split()\nn,k,*a=map(int,D); heap=[]\nfor x in a:\n    if len(heap)<k: heapq.heappush(heap,x)\n    elif x>heap[0]: heapq.heapreplace(heap,x)\n    print(heap[0] if len(heap)==k else \"NONE\")\n",
+            "cases": [
+              ["6 3\n4 9 2 7 10 8", "NONE\nNONE\n2\n4\n7\n8"],
+              ["1 1\n-4", "-4"],
+              ["4 4\n1 2 3 4", "NONE\nNONE\nNONE\n1"],
+              ["5 2\n3 3 2 5 1", "NONE\n3\n3\n3\n3"]
+            ]
+          },
+          {
+            "slug": "phan-phong-toi-thieu",
+            "title": "Số phòng tối thiểu cho lịch chồng nhau",
+            "statement": "Mỗi cuộc họp chiếm một phòng trong khoảng [bắt đầu, kết thúc). Tìm số phòng ít nhất để tổ chức đồng thời tất cả các cuộc họp.",
+            "input": "n và n cặp a b là thời điểm bắt đầu, kết thúc.",
+            "output": "Số phòng tối thiểu.",
+            "constraints": "1 ≤ n ≤ 2·10⁵, 0 ≤ a < b ≤ 10⁹.",
+            "difficulty": "HARD",
+            "solution": "import sys, math, heapq, bisect\nfrom collections import Counter, deque\nD = sys.stdin.read().split()\nv=list(map(int,D[1:])); active=[]; best=0\nfor start,end in sorted(zip(v[::2],v[1::2])):\n    while active and active[0]<=start: heapq.heappop(active)\n    heapq.heappush(active,end); best=max(best,len(active))\nprint(best)\n",
+            "cases": [
+              ["4\n0 30\n5 10\n15 25\n25 35", "2"],
+              ["1\n10 20", "1"],
+              ["3\n0 5\n5 10\n10 12", "1"],
+              ["4\n1 8\n2 9\n3 10\n4 11", "4"]
+            ]
+          }
+        ],
+        "questions": [
+          {
+            "prompt": "Để luôn lấy công việc có mức p nhỏ nhất, lựa chọn nào phù hợp với nhiều lần thêm công việc?",
+            "options": ["Ngăn xếp", "Danh sách theo thứ tự vào", "Hàng đợi FIFO", "Min-heap"],
+            "correct": 3,
+            "explanation": "Min-heap lấy phần tử nhỏ nhất nhanh và giữ thứ tự ưu tiên khi thêm."
+          },
+          {
+            "prompt": "Nếu min-heap luôn giữ k số lớn nhất đã gặp, số nào nằm ở gốc heap?",
+            "options": [
+              "Số lớn thứ k",
+              "Số lớn nhất",
+              "Số nhỏ nhất trong toàn bộ dữ liệu",
+              "Số đến gần đây nhất"
+            ],
+            "correct": 0,
+            "explanation": "Gốc là số nhỏ nhất trong nhóm k số lớn nhất."
+          },
+          {
+            "prompt": "Hai cuộc họp [1,3) và [3,5) có cần hai phòng không?",
+            "options": [
+              "Có, vì có chung mốc 3",
+              "Không, dùng chung một phòng được",
+              "Có, vì mỗi cuộc họp phải có phòng riêng mãi mãi",
+              "Chỉ dùng chung nếu cả hai cùng bắt đầu ở 1"
+            ],
+            "correct": 1,
+            "explanation": "Cuộc đầu đã giải phóng phòng đúng thời điểm cuộc sau bắt đầu."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "slug": "cay-va-do-thi",
+    "title": "Duyệt đồ thị và xử lý cây",
+    "description": "Bắt đầu từ danh sách kề và BFS, sau đó xét tính chất của đồ thị và truy vấn trên cây. Nên học sau mảng và hàng đợi.",
+    "chapters": [
+      {
+        "slug": "bfs",
+        "title": "Danh sách kề và BFS",
+        "topic": "Đồ thị",
+        "description": "Mô hình hóa đỉnh, cạnh và vùng có thể đi tới. Dùng hàng đợi để duyệt theo số bước tăng dần.",
+        "problems": [
+          {
+            "slug": "bac-cua-dinh",
+            "title": "Bậc của từng đỉnh trong mạng vô hướng",
+            "statement": "Cho một mạng liên kết vô hướng. Đếm số cạnh kề mỗi đỉnh. Đỉnh không có cạnh kề có bậc 0.",
+            "input": "n m, sau đó m cặp u v nối hai đỉnh phân biệt.",
+            "output": "In n bậc theo thứ tự đỉnh 1 đến n.",
+            "constraints": "1 ≤ n ≤ 2·10⁵, 0 ≤ m ≤ 2·10⁵; cặp cạnh không lặp.",
+            "difficulty": "EASY",
+            "solution": "import sys, math, heapq, bisect\nfrom collections import Counter, deque\nD = sys.stdin.read().split()\nn,m,*a=map(int,D); deg=[0]*(n+1)\nfor u,v in zip(a[::2],a[1::2]): deg[u]+=1; deg[v]+=1\nprint(*deg[1:])\n",
+            "cases": [
+              ["5 3\n1 2\n1 4\n2 4", "2 2 0 2 0"],
+              ["1 0", "0"],
+              ["4 0", "0 0 0 0"],
+              ["4 3\n4 3\n4 2\n1 4", "1 1 1 3"]
+            ]
+          },
+          {
+            "slug": "so-diem-tham-duoc",
+            "title": "Số trạm đến được từ trạm xuất phát",
+            "statement": "Mạng đường đi vô hướng. Từ trạm s, đếm số trạm có thể đi tới, tính cả trạm xuất phát.",
+            "input": "n m s, tiếp theo m cạnh u v.",
+            "output": "Số trạm có thể tới.",
+            "constraints": "1 ≤ n ≤ 2·10⁵, 0 ≤ m ≤ 2·10⁵; 1 ≤ s ≤ n.",
+            "difficulty": "EASY",
+            "solution": "import sys, math, heapq, bisect\nfrom collections import Counter, deque\nD = sys.stdin.read().split()\nn,m,s,*a=map(int,D); g=[[] for _ in range(n+1)]\nfor u,v in zip(a[::2],a[1::2]): g[u].append(v); g[v].append(u)\nseen={s}; todo=[s]\nwhile todo:\n    for v in g[todo.pop()]:\n        if v not in seen: seen.add(v); todo.append(v)\nprint(len(seen))\n",
+            "cases": [
+              ["6 3 2\n1 2\n2 3\n5 6", "3"],
+              ["1 0 1", "1"],
+              ["4 1 4\n1 2", "1"],
+              ["4 4 1\n1 2\n2 3\n3 4\n4 1", "4"]
+            ]
+          },
+          {
+            "slug": "xe-buyt-buoc-ngan",
+            "title": "Số chặng xe buýt ít nhất",
+            "statement": "Mỗi tuyến kết nối hai trạm, đi hai chiều và tính là một chặng. Tìm số chặng ít nhất từ trạm s đến trạm t.",
+            "input": "n m s t và m cạnh u v.",
+            "output": "Số chặng ít nhất hoặc -1 nếu không có tuyến đi tới.",
+            "constraints": "1 ≤ n ≤ 2·10⁵, 0 ≤ m ≤ 2·10⁵, 1 ≤ s,t ≤ n.",
+            "difficulty": "MEDIUM",
+            "solution": "import sys, math, heapq, bisect\nfrom collections import Counter, deque\nD = sys.stdin.read().split()\nn,m,s,t,*a=map(int,D); g=[[] for _ in range(n+1)]\nfor u,v in zip(a[::2],a[1::2]): g[u].append(v); g[v].append(u)\nd=[-1]*(n+1); d[s]=0; q=deque([s])\nwhile q:\n    u=q.popleft()\n    if u==t: break\n    for v in g[u]:\n        if d[v]<0: d[v]=d[u]+1; q.append(v)\nprint(d[t])\n",
+            "cases": [
+              ["5 5 1 5\n1 2\n2 3\n3 5\n1 4\n4 5", "2"],
+              ["1 0 1 1", "0"],
+              ["4 1 1 4\n1 2", "-1"],
+              ["4 3 4 1\n1 2\n2 3\n3 4", "3"]
+            ]
+          },
+          {
+            "slug": "loi-ra-me-cung",
+            "title": "Đường ra ngắn nhất trong mê cung lưới",
+            "statement": "Trên lưới, S là vị trí xuất phát, E là lối ra và # là ô bị chắn. Đi từng bước theo bốn hướng trực giao. Tìm số bước tới E ít nhất.",
+            "input": "h w, sau đó h dòng chiều dài w gồm ., #, đúng một S và đúng một E.",
+            "output": "Số bước ít nhất hoặc -1 nếu không có đường.",
+            "constraints": "1 ≤ h,w ≤ 500, h·w ≥ 2.",
+            "difficulty": "MEDIUM",
+            "solution": "import sys, math, heapq, bisect\nfrom collections import Counter, deque\nD = sys.stdin.read().split()\nh,w=map(int,D[:2]); g=D[2:]; s=next((r,c) for r in range(h) for c in range(w) if g[r][c]==\"S\"); q=deque([(*s,0)]); seen={s}; ans=-1\nwhile q:\n    r,c,d=q.popleft()\n    if g[r][c]==\"E\": ans=d; break\n    for rr,cc in [(r-1,c),(r+1,c),(r,c-1),(r,c+1)]:\n        if 0<=rr<h and 0<=cc<w and (rr,cc) not in seen and g[rr][cc]!=\"#\":\n            seen.add((rr,cc)); q.append((rr,cc,d+1))\nprint(ans)\n",
+            "cases": [
+              ["3 4\nS..#\n##..\n...E", "5"],
+              ["1 2\nSE", "1"],
+              ["1 3\nS#E", "-1"],
+              ["3 3\nS..\n.#.\nE..", "2"]
+            ]
+          }
+        ],
+        "questions": [
+          {
+            "prompt": "Đồ thị có cạnh 1–2 và 1–3. Bậc của đỉnh 1 bằng bao nhiêu?",
+            "options": ["1", "2", "3", "0"],
+            "correct": 1,
+            "explanation": "Hai cạnh có chung đầu mút ở đỉnh 1."
+          },
+          {
+            "prompt": "Trong BFS tìm số chặng ít nhất, đánh dấu đỉnh đã thăm vào lúc nào để tránh đưa vào hàng đợi nhiều lần?",
+            "options": [
+              "Chỉ khi lấy đỉnh ra khỏi hàng đợi",
+              "Khi chương trình kết thúc",
+              "Khi đưa đỉnh vào hàng đợi lần đầu",
+              "Trước khi khởi tạo đỉnh xuất phát"
+            ],
+            "correct": 2,
+            "explanation": "Các lần phát hiện sau sẽ thấy đỉnh đã được đánh dấu."
+          },
+          {
+            "prompt": "Vì sao BFS phù hợp để tính số bước ngắn nhất trong mê cung này?",
+            "options": [
+              "Vì luôn rẽ phải",
+              "Vì không có ô tường",
+              "Vì số bước không phụ thuộc đường đi",
+              "Mọi bước đều có cùng chi phí"
+            ],
+            "correct": 3,
+            "explanation": "BFS duyệt theo từng lớp số bước tăng dần."
+          }
+        ]
+      },
+      {
+        "slug": "kiem-tra-do-thi",
+        "title": "Thành phần liên thông và quan hệ thứ tự",
+        "topic": "Đồ thị",
+        "description": "Dùng duyệt nhiều lần để tách các nhóm. Kiểm tra ràng buộc tô màu và quan hệ công việc trước sau.",
+        "problems": [
+          {
+            "slug": "dem-nhom-lien-thong",
+            "title": "Đếm nhóm trong mạng liên lạc",
+            "statement": "Hai đỉnh ở cùng một nhóm nếu đi được qua các cạnh hai chiều từ đỉnh này sang đỉnh kia. Hãy đếm số nhóm, kể cả một đỉnh đứng riêng.",
+            "input": "n m và danh sách m cạnh vô hướng.",
+            "output": "Số thành phần liên thông.",
+            "constraints": "1 ≤ n ≤ 2·10⁵, 0 ≤ m ≤ 2·10⁵.",
+            "difficulty": "EASY",
+            "solution": "import sys, math, heapq, bisect\nfrom collections import Counter, deque\nD = sys.stdin.read().split()\nn,m,*a=map(int,D); parent=list(range(n+1)); size=[1]*(n+1); groups=n\ndef root(x):\n    while parent[x]!=x: parent[x]=parent[parent[x]]; x=parent[x]\n    return x\nfor u,v in zip(a[::2],a[1::2]):\n    u,v=root(u),root(v)\n    if u!=v:\n        if size[u]<size[v]: u,v=v,u\n        parent[v]=u; size[u]+=size[v]; groups-=1\nprint(groups)\n",
+            "cases": [
+              ["5 3\n1 2\n2 3\n4 5", "2"],
+              ["1 0", "1"],
+              ["4 0", "4"],
+              ["3 3\n1 2\n2 3\n3 1", "1"]
+            ]
+          },
+          {
+            "slug": "dao-lon-nhat",
+            "title": "Diện tích vùng đất liên thông lớn nhất",
+            "statement": "Lưới gồm đất 1 và nước 0. Hai ô đất thuộc cùng vùng khi nối nhau theo bốn hướng. Tìm diện tích vùng đất lớn nhất.",
+            "input": "h w, tiếp theo h chuỗi độ dài w gồm 0 và 1.",
+            "output": "Diện tích cực đại hoặc 0 khi toàn nước.",
+            "constraints": "1 ≤ h,w ≤ 500.",
+            "difficulty": "MEDIUM",
+            "solution": "import sys, math, heapq, bisect\nfrom collections import Counter, deque\nD = sys.stdin.read().split()\nh,w=map(int,D[:2]); g=[list(s) for s in D[2:]]; best=0\nfor i in range(h):\n    for j in range(w):\n        if g[i][j]!=\"1\": continue\n        g[i][j]=\"0\"; q=[(i,j)]; area=0\n        while q:\n            r,c=q.pop(); area+=1\n            for rr,cc in [(r-1,c),(r+1,c),(r,c-1),(r,c+1)]:\n                if 0<=rr<h and 0<=cc<w and g[rr][cc]==\"1\": g[rr][cc]=\"0\"; q.append((rr,cc))\n        best=max(best,area)\nprint(best)\n",
+            "cases": [
+              ["3 5\n11000\n11011\n00001", "4"],
+              ["1 1\n0", "0"],
+              ["2 2\n10\n01", "1"],
+              ["2 2\n11\n11", "4"]
+            ]
+          },
+          {
+            "slug": "chia-hai-nhom",
+            "title": "Chia hai nhóm các cặp có xung đột",
+            "statement": "Mỗi cạnh nối một cặp người không thể ở cùng nhóm. Xác định có thể chia tất cả người vào hai nhóm để mọi cạnh nối hai nhóm khác nhau không.",
+            "input": "n m và m cặp u v.",
+            "output": "YES nếu chia được, ngược lại NO.",
+            "constraints": "1 ≤ n ≤ 2·10⁵, 0 ≤ m ≤ 2·10⁵.",
+            "difficulty": "MEDIUM",
+            "solution": "import sys, math, heapq, bisect\nfrom collections import Counter, deque\nD = sys.stdin.read().split()\nn,m,*a=map(int,D); g=[[] for _ in range(n+1)]\nfor u,v in zip(a[::2],a[1::2]): g[u].append(v); g[v].append(u)\ncolor=[-1]*(n+1); ok=True\nfor s in range(1,n+1):\n    if color[s]>=0: continue\n    color[s]=0; todo=[s]\n    while todo:\n        u=todo.pop()\n        for v in g[u]:\n            if color[v]<0: color[v]=1-color[u]; todo.append(v)\n            elif color[v]==color[u]: ok=False\nprint(\"YES\" if ok else \"NO\")\n",
+            "cases": [
+              ["3 3\n1 2\n2 3\n3 1", "NO"],
+              ["4 4\n1 2\n2 3\n3 4\n4 1", "YES"],
+              ["3 0", "YES"],
+              ["6 4\n1 2\n4 5\n5 6\n6 4", "NO"]
+            ]
+          },
+          {
+            "slug": "lich-cong-viec-topo",
+            "title": "Lập lịch công việc theo điều kiện trước sau",
+            "statement": "Cạnh có hướng u→v nghĩa là phải xong u trước v. In thứ tự hợp lệ nhỏ nhất theo thứ tự từ điển của số hiệu công việc, hoặc báo có vòng phụ thuộc.",
+            "input": "n m và m cặp u v theo hướng u→v.",
+            "output": "Dãy n số hiệu, hoặc CYCLE nếu không thể lập lịch.",
+            "constraints": "1 ≤ n ≤ 2·10⁵, 0 ≤ m ≤ 2·10⁵.",
+            "difficulty": "HARD",
+            "solution": "import sys, math, heapq, bisect\nfrom collections import Counter, deque\nD = sys.stdin.read().split()\nn,m,*a=map(int,D); g=[[] for _ in range(n+1)]; deg=[0]*(n+1)\nfor u,v in zip(a[::2],a[1::2]): g[u].append(v); deg[v]+=1\nh=[i for i in range(1,n+1) if not deg[i]]; heapq.heapify(h); order=[]\nwhile h:\n    u=heapq.heappop(h); order.append(u)\n    for v in g[u]:\n        deg[v]-=1\n        if not deg[v]: heapq.heappush(h,v)\nprint(*order if len(order)==n else [\"CYCLE\"])\n",
+            "cases": [
+              ["4 3\n2 4\n1 4\n1 3", "1 2 3 4"],
+              ["1 0", "1"],
+              ["3 3\n1 2\n2 3\n3 1", "CYCLE"],
+              ["5 2\n3 5\n2 4", "1 2 3 4 5"]
+            ]
+          }
+        ],
+        "questions": [
+          {
+            "prompt": "Theo quy tắc nối bốn hướng, hai ô đất chỉ chạm nhau ở góc có tự nối với nhau không?",
+            "options": [
+              "Có",
+              "Có nếu chúng ở gần viền",
+              "Không",
+              "Có nếu không có ô nước bao quanh"
+            ],
+            "correct": 2,
+            "explanation": "Chỉ các ô chung cạnh mới được nối trực tiếp."
+          },
+          {
+            "prompt": "Một chu trình có số cạnh lẻ có thể tô hai màu để hai đỉnh kề khác màu không?",
+            "options": [
+              "Có với mọi chu trình",
+              "Có nếu chọn màu khác ở đỉnh đầu",
+              "Chỉ cần chu trình có 3 đỉnh",
+              "Không"
+            ],
+            "correct": 3,
+            "explanation": "Khi đi vòng theo chu trình, số lần đổi màu lẻ khiến cạnh cuối bị xung đột."
+          },
+          {
+            "prompt": "Với thuật toán Kahn, nếu còn công việc chưa xử lý và không còn đỉnh bậc vào 0 thì điều gì xảy ra?",
+            "options": [
+              "Phần còn lại chứa chu trình phụ thuộc",
+              "Mọi công việc còn lại có thể chạy cùng lúc",
+              "Chỉ có một công việc chưa xử lý",
+              "Có thể chọn tùy ý một công việc để tiếp tục"
+            ],
+            "correct": 0,
+            "explanation": "Trong đồ thị có hướng hữu hạn không chu trình luôn có ít nhất một đỉnh bậc vào 0."
+          }
+        ]
+      },
+      {
+        "slug": "cay-goc",
+        "title": "Cây có gốc và truy vấn tổ tiên",
+        "topic": "Cấu trúc cây",
+        "description": "Đặt gốc, xác định cha và cây con, rồi khai thác tính duy nhất của đường đi trên cây.",
+        "problems": [
+          {
+            "slug": "cha-tung-nut",
+            "title": "Cha trực tiếp của từng nút",
+            "statement": "Cho một cây vô hướng, chọn nút 1 làm gốc. Xác định cha của mọi nút. Cha của gốc được quy ước bằng 0.",
+            "input": "n và n−1 cạnh u v của cây.",
+            "output": "In n số cha theo thứ tự nút.",
+            "constraints": "1 ≤ n ≤ 2·10⁵.",
+            "difficulty": "EASY",
+            "solution": "import sys, math, heapq, bisect\nfrom collections import Counter, deque\nD = sys.stdin.read().split()\nn,*a=map(int,D); g=[[] for _ in range(n+1)]\nfor u,v in zip(a[::2],a[1::2]): g[u].append(v); g[v].append(u)\np=[0]*(n+1); order=[1]\nfor u in order:\n    for v in g[u]:\n        if v!=p[u]: p[v]=u; order.append(v)\nprint(*p[1:])\n",
+            "cases": [
+              ["5\n1 3\n3 2\n3 4\n1 5", "0 3 1 3 1"],
+              ["1", "0"],
+              ["3\n3 2\n1 3", "0 3 1"],
+              ["5\n4 1\n2 4\n3 4\n5 3", "0 4 4 1 3"]
+            ]
+          },
+          {
+            "slug": "kich-thuoc-tung-cay-con",
+            "title": "Kích thước cây con của mỗi nút",
+            "statement": "Lấy đỉnh 1 làm gốc của cây. Với mỗi đỉnh, đếm số đỉnh thuộc cây con của nó, tính cả chính đỉnh đó.",
+            "input": "n và n−1 cạnh vô hướng của cây.",
+            "output": "In n kích thước cây con theo thứ tự nút.",
+            "constraints": "1 ≤ n ≤ 2·10⁵.",
+            "difficulty": "MEDIUM",
+            "solution": "import sys, math, heapq, bisect\nfrom collections import Counter, deque\nD = sys.stdin.read().split()\nn,*a=map(int,D); g=[[] for _ in range(n+1)]\nfor u,v in zip(a[::2],a[1::2]): g[u].append(v); g[v].append(u)\np=[0]*(n+1); order=[1]; size=[1]*(n+1)\nfor u in order:\n    for v in g[u]:\n        if v!=p[u]: p[v]=u; order.append(v)\nfor u in order[:0:-1]: size[p[u]]+=size[u]\nprint(*size[1:])\n",
+            "cases": [
+              ["5\n1 2\n1 3\n3 4\n3 5", "5 1 3 1 1"],
+              ["1", "1"],
+              ["4\n1 2\n2 3\n3 4", "4 3 2 1"],
+              ["4\n1 2\n1 3\n1 4", "4 1 1 1"]
+            ]
+          },
+          {
+            "slug": "duong-kinh-cay",
+            "title": "Đường đi dài nhất giữa hai nút",
+            "statement": "Cho một cây không trọng số. Tìm số cạnh nhiều nhất trên đường đi giữa hai nút bất kỳ. Đường đi từ nút tới chính nó có 0 cạnh.",
+            "input": "n và n−1 cạnh của cây.",
+            "output": "Số cạnh của đường kính.",
+            "constraints": "1 ≤ n ≤ 2·10⁵.",
+            "difficulty": "MEDIUM",
+            "solution": "import sys, math, heapq, bisect\nfrom collections import Counter, deque\nD = sys.stdin.read().split()\nn,*a=map(int,D); g=[[] for _ in range(n+1)]\nfor u,v in zip(a[::2],a[1::2]): g[u].append(v); g[v].append(u)\ndef far(s):\n    q=deque([(s,0,0)]); last=(s,0)\n    while q:\n        u,p,d=q.popleft(); last=(u,d)\n        for v in g[u]:\n            if v!=p: q.append((v,u,d+1))\n    return last\nprint(far(far(1)[0])[1])\n",
+            "cases": [
+              ["5\n1 2\n2 3\n3 4\n3 5", "3"],
+              ["1", "0"],
+              ["4\n1 2\n1 3\n1 4", "2"],
+              ["3\n1 2\n2 3", "2"]
+            ]
+          },
+          {
+            "slug": "to-tien-chung-gan-nhat",
+            "title": "Tổ tiên chung gần nhất của hai nút",
+            "statement": "Cây có gốc 1. Với mỗi cặp u và v, tìm tổ tiên chung có độ sâu lớn nhất. Mỗi nút được tính là tổ tiên của chính nó.",
+            "input": "n q, n−1 cạnh của cây, sau đó q cặp u v.",
+            "output": "In một tổ tiên chung gần nhất cho mỗi truy vấn.",
+            "constraints": "1 ≤ n,q ≤ 10⁵.",
+            "difficulty": "HARD",
+            "solution": "import sys, math, heapq, bisect\nfrom collections import Counter, deque\nD = sys.stdin.read().split()\ndata=list(map(int,D)); n,q=data[:2]; e=data[2:2*n]; g=[[] for _ in range(n+1)]\nfor u,v in zip(e[::2],e[1::2]): g[u].append(v); g[v].append(u)\nd=[0]*(n+1); p=[0]*(n+1); order=[1]\nfor u in order:\n    for v in g[u]:\n        if v!=p[u]: p[v]=u; d[v]=d[u]+1; order.append(v)\nup=[p]\nfor _ in range(n.bit_length()-1):\n    prev=up[-1]; up.append([prev[x] for x in prev])\nfor i in range(2*n,len(data),2):\n    u,v=data[i:i+2]\n    if d[u]<d[v]: u,v=v,u\n    delta=d[u]-d[v]\n    for k,p in enumerate(up):\n        if (delta>>k)&1: u=p[u]\n    if u!=v:\n        for p in reversed(up):\n            if p[u]!=p[v]: u,v=p[u],p[v]\n        u=up[0][u]\n    print(u)\n",
+            "cases": [
+              ["5 3\n1 2\n1 3\n2 4\n2 5\n4 5\n3 5\n2 4", "2\n1\n2"],
+              ["1 1\n1 1", "1"],
+              ["4 2\n1 2\n2 3\n3 4\n4 3\n4 1", "3\n1"],
+              ["4 2\n1 4\n2 4\n3 4\n2 3\n3 3", "4\n3"]
+            ]
+          }
+        ],
+        "questions": [
+          {
+            "prompt": "Kích thước cây con của một nút lá bằng bao nhiêu?",
+            "options": ["0", "2", "Bằng số nút trong cả cây", "1"],
+            "correct": 3,
+            "explanation": "Nút lá chỉ có chính nó trong cây con."
+          },
+          {
+            "prompt": "Đường đi giữa hai nút bất kỳ trong một cây có bao nhiêu lựa chọn?",
+            "options": [
+              "Một đường đi đơn duy nhất",
+              "Không quá hai",
+              "Tối thiểu hai",
+              "Phụ thuộc hướng đặt gốc"
+            ],
+            "correct": 0,
+            "explanation": "Nếu có hai đường đi đơn khác nhau, chúng tạo ra chu trình."
+          },
+          {
+            "prompt": "Khi tìm LCA bằng nhảy nhị phân, vì sao bước đầu thường đưa hai nút về cùng độ sâu?",
+            "options": [
+              "Để biến cây thành đồ thị có hướng bất kỳ",
+              "Để có thể nâng đồng thời hai nút và so sánh tổ tiên ở cùng mức",
+              "Để xóa nhánh sâu hơn khỏi cây",
+              "Vì LCA luôn nằm ở cùng độ sâu với nút sâu hơn"
+            ],
+            "correct": 1,
+            "explanation": "Nếu độ sâu chênh nhau, các bước nâng đồng thời không gặp nhau tại cùng cấp."
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "slug": "quy-hoach-dong-thuc-hanh",
+    "title": "Quy hoạch động từ trạng thái đến tối ưu",
+    "description": "Bắt đầu với trạng thái một chiều, mở rộng sang lưới và hai chuỗi, rồi luyện phân biệt ba lô 0/1 với trường hợp dùng lại.",
+    "chapters": [
+      {
+        "slug": "trang-thai-mot-chieu",
+        "title": "Quy hoạch động một chiều",
+        "topic": "Quy hoạch động",
+        "description": "Xác định lời giải của một tiền tố, trạng thái đầu và công thức lấy từ những trạng thái nhỏ hơn.",
+        "problems": [
+          {
+            "slug": "leo-bac-thang",
+            "title": "Đếm cách leo cầu thang",
+            "statement": "Có n bậc. Mỗi bước được leo một hoặc hai bậc. Đếm số thứ tự bước khác nhau để đến đúng bậc n.",
+            "input": "Một số nguyên n.",
+            "output": "Số cách modulo 1.000.000.007.",
+            "constraints": "0 ≤ n ≤ 2·10⁵.",
+            "difficulty": "EASY",
+            "solution": "import sys, math, heapq, bisect\nfrom collections import Counter, deque\nD = sys.stdin.read().split()\nn=int(D[0]); a=b=1\nfor _ in range(n): a,b=b,(a+b)%1000000007\nprint(a)\n",
+            "cases": [
+              ["5", "8"],
+              ["0", "1"],
+              ["1", "1"],
+              ["100", "782204094"]
+            ]
+          },
+          {
+            "slug": "nhay-tren-da",
+            "title": "Chi phí nhảy qua các phiến đá",
+            "statement": "Từ đá i có thể nhảy tới i+1 hoặc i+2. Chi phí là độ chênh tuyệt đối độ cao. Tìm chi phí nhỏ nhất từ đá 1 đến đá n.",
+            "input": "Dòng đầu là n. Dòng sau gồm n số nguyên.",
+            "output": "Chi phí nhỏ nhất.",
+            "constraints": "1 ≤ n ≤ 2·10⁵; |độ cao| ≤ 10⁹.",
+            "difficulty": "MEDIUM",
+            "solution": "import sys, math, heapq, bisect\nfrom collections import Counter, deque\nD = sys.stdin.read().split()\nh=list(map(int,D[1:])); a=b=0\nfor i in range(1,len(h)):\n    cost=b+abs(h[i]-h[i-1])\n    if i>1: cost=min(cost,a+abs(h[i]-h[i-2]))\n    a,b=b,cost\nprint(b)\n",
+            "cases": [
+              ["4\n10 30 40 20", "30"],
+              ["1\n-10", "0"],
+              ["3\n4 100 5", "1"],
+              ["5\n5 5 5 5 5", "0"]
+            ]
+          },
+          {
+            "slug": "chon-qua-khong-ke",
+            "title": "Chọn quà tránh hai ô kề nhau",
+            "statement": "Mỗi ô có một số điểm, có thể âm. Chọn một số ô sao cho không có hai ô kề nhau và tổng điểm lớn nhất. Được phép bỏ tất cả.",
+            "input": "Dòng đầu là n. Dòng sau gồm n số nguyên.",
+            "output": "Tổng điểm tối đa.",
+            "constraints": "1 ≤ n ≤ 2·10⁵, |aᵢ| ≤ 10⁹.",
+            "difficulty": "MEDIUM",
+            "solution": "import sys, math, heapq, bisect\nfrom collections import Counter, deque\nD = sys.stdin.read().split()\nskip=take=0\nfor x in map(int,D[1:]): skip,take=max(skip,take),skip+x\nprint(max(skip,take))\n",
+            "cases": [
+              ["5\n2 7 9 3 1", "12"],
+              ["1\n-10", "0"],
+              ["5\n-1 -2 -3 -4 -5", "0"],
+              ["4\n8 9 9 8", "17"]
+            ]
+          },
+          {
+            "slug": "day-con-tang-dai",
+            "title": "Dãy con tăng dài nhất có thể bỏ phần tử",
+            "statement": "Tìm độ dài lớn nhất của dãy con tăng nghiêm ngặt. Có thể bỏ phần tử nhưng không đổi thứ tự các phần tử giữ lại.",
+            "input": "Dòng đầu là n. Dòng sau gồm n số nguyên.",
+            "output": "Độ dài dãy con tăng dài nhất.",
+            "constraints": "1 ≤ n ≤ 2·10⁵, |aᵢ| ≤ 10⁹.",
+            "difficulty": "HARD",
+            "solution": "import sys, math, heapq, bisect\nfrom collections import Counter, deque\nD = sys.stdin.read().split()\ntails=[]\nfor x in map(int,D[1:]):\n    i=bisect.bisect_left(tails,x)\n    if i==len(tails): tails.append(x)\n    else: tails[i]=x\nprint(len(tails))\n",
+            "cases": [
+              ["8\n10 9 2 5 3 7 101 18", "4"],
+              ["1\n-7", "1"],
+              ["4\n5 5 5 5", "1"],
+              ["5\n1 2 3 4 5", "5"]
+            ]
+          }
+        ],
+        "questions": [
+          {
+            "prompt": "Có bao nhiêu cách đến bậc 0 nếu đang ở bậc 0?",
+            "options": ["0", "1", "2", "Không xác định được"],
+            "correct": 1,
+            "explanation": "Cách hợp lệ là chưa thực hiện bước nào."
+          },
+          {
+            "prompt": "Khi đến đá i bằng một bước nhảy, công thức chỉ cần xem xét từ các vị trí nào?",
+            "options": ["Mọi phiến đá trước i", "Chỉ i−1", "i−1 và i−2 nếu tồn tại", "i và i+1"],
+            "correct": 2,
+            "explanation": "Đề cho phép nhảy một hoặc hai vị trí về phía trước."
+          },
+          {
+            "prompt": "Dãy con có yêu cầu các vị trí giữ lại phải nằm kề nhau trong mảng gốc không?",
+            "options": [
+              "Có, mọi vị trí phải kề nhau",
+              "Có nếu dãy gồm số âm",
+              "Chỉ khi độ dài là 2",
+              "Không, chỉ cần giữ thứ tự"
+            ],
+            "correct": 3,
+            "explanation": "Điều kiện liên tiếp dùng cho đoạn, còn dãy con cho phép bỏ các vị trí ở giữa."
+          }
+        ]
+      },
+      {
+        "slug": "luoi-va-chuoi",
+        "title": "Quy hoạch động hai chiều",
+        "topic": "Quy hoạch động",
+        "description": "Luyện trạng thái theo tọa độ hoặc theo độ dài của hai tiền tố. Phân biệt bài đếm số cách và bài tối ưu chi phí.",
+        "problems": [
+          {
+            "slug": "duong-tren-luoi-chan",
+            "title": "Đếm đường đi trên lưới có vật cản",
+            "statement": "Đếm số đường từ ô trên trái tới ô dưới phải. Chỉ bước xuống hoặc sang phải và tránh mọi ô #.",
+            "input": "h w rồi h dòng gồm . hoặc #.",
+            "output": "Số đường modulo 1.000.000.007.",
+            "constraints": "1 ≤ h,w ≤ 10³.",
+            "difficulty": "EASY",
+            "solution": "import sys, math, heapq, bisect\nfrom collections import Counter, deque\nD = sys.stdin.read().split()\nh,w=map(int,D[:2]); dp=[0]*w; dp[0]=1\nfor row in D[2:]:\n    for c,ch in enumerate(row):\n        if ch==\"#\": dp[c]=0\n        elif c: dp[c]=(dp[c]+dp[c-1])%1000000007\nprint(dp[-1])\n",
+            "cases": [
+              ["3 3\n...\n.#.\n...", "2"],
+              ["1 1\n.", "1"],
+              ["1 1\n#", "0"],
+              ["2 3\n...\n..#", "0"]
+            ]
+          },
+          {
+            "slug": "chi-phi-duong-luoi",
+            "title": "Đường đi qua lưới có tổng phí nhỏ nhất",
+            "statement": "Mỗi ô có một khoản phí, tính cả ô đầu và cuối. Chỉ đi xuống hoặc sang phải. Tìm tổng phí nhỏ nhất để tới góc dưới phải.",
+            "input": "h w, sau đó h dòng mỗi dòng w mức phí.",
+            "output": "Tổng phí nhỏ nhất.",
+            "constraints": "1 ≤ h,w ≤ 10³, 0 ≤ phí ≤ 10⁹.",
+            "difficulty": "MEDIUM",
+            "solution": "import sys, math, heapq, bisect\nfrom collections import Counter, deque\nD = sys.stdin.read().split()\nh,w,*a=map(int,D); dp=[10**30]*w; dp[0]=0\nfor i,x in enumerate(a):\n    j=i%w; dp[j]=x+min(dp[j],dp[j-1] if j else 10**30)\nprint(dp[-1])\n",
+            "cases": [
+              ["3 3\n1 3 1\n1 5 1\n4 2 1", "7"],
+              ["1 1\n8", "8"],
+              ["3 1\n1\n2\n3", "6"],
+              ["2 3\n0 0 9\n4 0 0", "0"]
+            ]
+          },
+          {
+            "slug": "day-chung-hai-chuoi",
+            "title": "Độ dài dãy con chung của hai chuỗi",
+            "statement": "Tìm độ dài lớn nhất của một dãy ký tự xuất hiện theo cùng thứ tự trong cả a và b. Các ký tự giữ lại có thể cách nhau.",
+            "input": "Hai chuỗi a và b gồm chữ thường.",
+            "output": "Độ dài dãy con chung dài nhất.",
+            "constraints": "1 ≤ |a|,|b| ≤ 1500.",
+            "difficulty": "MEDIUM",
+            "solution": "import sys, math, heapq, bisect\nfrom collections import Counter, deque\nD = sys.stdin.read().split()\na,b=D; old=[0]*(len(b)+1)\nfor x in a:\n    row=[0]\n    for i,y in enumerate(b,1): row.append(old[i-1]+1 if x==y else max(row[-1],old[i]))\n    old=row\nprint(old[-1])\n",
+            "cases": [
+              ["abcde ace", "3"],
+              ["abc xyz", "0"],
+              ["a a", "1"],
+              ["abc bac", "2"]
+            ]
+          },
+          {
+            "slug": "khoang-cach-chinh-sua",
+            "title": "Khoảng cách chỉnh sửa giữa hai mã",
+            "statement": "Mỗi thao tác thêm, xóa hoặc thay đúng một ký tự có chi phí 1. Tính số thao tác tối thiểu để biến chuỗi a thành chuỗi b.",
+            "input": "Hai chuỗi a và b gồm chữ thường.",
+            "output": "Số thao tác tối thiểu.",
+            "constraints": "1 ≤ |a|,|b| ≤ 1500.",
+            "difficulty": "HARD",
+            "solution": "import sys, math, heapq, bisect\nfrom collections import Counter, deque\nD = sys.stdin.read().split()\na,b=D; old=list(range(len(b)+1))\nfor i,x in enumerate(a,1):\n    row=[i]\n    for j,y in enumerate(b,1): row.append(min(old[j]+1,row[-1]+1,old[j-1]+(x!=y)))\n    old=row\nprint(old[-1])\n",
+            "cases": [
+              ["kitten sitting", "3"],
+              ["a a", "0"],
+              ["a bbbbb", "5"],
+              ["algorithm logarithm", "3"]
+            ]
+          }
+        ],
+        "questions": [
+          {
+            "prompt": "Nếu ô đích là vật cản, có bao nhiêu đường hợp lệ?",
+            "options": ["1", "Bằng số đường tới ô ngay trước đích", "0", "Bằng diện tích lưới"],
+            "correct": 2,
+            "explanation": "Đường hợp lệ không thể đi vào ô bị chắn."
+          },
+          {
+            "prompt": "Trong bài đường đi tối thiểu trên lưới, tại một ô giữa lưới có thể đến từ đâu?",
+            "options": [
+              "Ô phía dưới hoặc ô bên phải",
+              "Bất kỳ ô kề nào",
+              "Chỉ từ ô đường chéo trên trái",
+              "Ô phía trên hoặc ô bên trái"
+            ],
+            "correct": 3,
+            "explanation": "Chỉ được đi xuống và sang phải."
+          },
+          {
+            "prompt": "Nếu chuyển một tiền tố dài k thành chuỗi rỗng, cần bao nhiêu thao tác chỉnh sửa tối thiểu?",
+            "options": ["k lần xóa", "0", "k lần thay", "Một lần xóa duy nhất"],
+            "correct": 0,
+            "explanation": "Mỗi thao tác xóa chỉ loại được một ký tự."
+          }
+        ]
+      },
+      {
+        "slug": "ba-lo-va-tien",
+        "title": "Ba lô và các bài tổng mục tiêu",
+        "topic": "Quy hoạch động",
+        "description": "Xét thứ tự cập nhật trạng thái để phân biệt chọn mỗi phần tử một lần, dùng lại loại vật và đếm số tổ hợp.",
+        "problems": [
+          {
+            "slug": "chia-do-hai-nhom",
+            "title": "Chia đồ thành hai nhóm bằng tổng",
+            "statement": "Cho trọng lượng n vật. Kiểm tra có thể chia tất cả vật thành hai nhóm có tổng trọng lượng bằng nhau không. Mỗi vật phải thuộc đúng một nhóm.",
+            "input": "Dòng đầu là n. Dòng sau gồm n số nguyên.",
+            "output": "YES nếu chia được, ngược lại NO.",
+            "constraints": "1 ≤ n ≤ 200, 1 ≤ trọng lượng ≤ 1000.",
+            "difficulty": "EASY",
+            "solution": "import sys, math, heapq, bisect\nfrom collections import Counter, deque\nD = sys.stdin.read().split()\na=list(map(int,D[1:])); total=sum(a); mask=1\nif total%2: print(\"NO\")\nelse:\n    for x in a: mask|=mask<<x\n    print(\"YES\" if (mask>>(total//2))&1 else \"NO\")\n",
+            "cases": [
+              ["4\n1 5 11 5", "YES"],
+              ["3\n1 2 4", "NO"],
+              ["1\n4", "NO"],
+              ["2\n1000 1000", "YES"]
+            ]
+          },
+          {
+            "slug": "gia-tri-ba-lo",
+            "title": "Giá trị tối đa của ba lô 0/1",
+            "statement": "Ba lô có sức chứa W. Mỗi món có trọng lượng và giá trị, chỉ được chọn tối đa một lần. Tối đa hóa tổng giá trị mà không vượt W.",
+            "input": "n W, tiếp theo n cặp trọng lượng và giá trị.",
+            "output": "Tổng giá trị lớn nhất.",
+            "constraints": "1 ≤ n ≤ 200, 0 ≤ W ≤ 2000, trọng lượng dương, giá trị không âm.",
+            "difficulty": "MEDIUM",
+            "solution": "import sys, math, heapq, bisect\nfrom collections import Counter, deque\nD = sys.stdin.read().split()\nn,W,*v=map(int,D); dp=[0]*(W+1)\nfor w,x in zip(v[::2],v[1::2]):\n    for c in range(W,w-1,-1): dp[c]=max(dp[c],dp[c-w]+x)\nprint(dp[W])\n",
+            "cases": [
+              ["3 6\n2 7\n4 11\n5 20", "20"],
+              ["2 0\n1 4\n2 5", "0"],
+              ["1 5\n7 99", "0"],
+              ["4 7\n1 1\n2 8\n3 10\n4 12", "22"]
+            ]
+          },
+          {
+            "slug": "doi-tien-it-dong-nhat",
+            "title": "Đổi tiền với ít đồng xu nhất",
+            "statement": "Có n mệnh giá phân biệt, mỗi mệnh giá dùng được không giới hạn. Tìm số đồng xu ít nhất có tổng đúng S.",
+            "input": "n S và n mệnh giá dương.",
+            "output": "Số đồng xu nhỏ nhất hoặc -1 nếu không đổi được.",
+            "constraints": "1 ≤ n ≤ 50, 0 ≤ S ≤ 10⁴; mệnh giá ≤ 10⁴.",
+            "difficulty": "MEDIUM",
+            "solution": "import sys, math, heapq, bisect\nfrom collections import Counter, deque\nD = sys.stdin.read().split()\nn,S,*coins=map(int,D); dp=[0]+[S+1]*S\nfor total in range(1,S+1):\n    dp[total]=min((dp[total-c]+1 for c in coins if c<=total),default=S+1)\nprint(dp[S] if dp[S]<=S else -1)\n",
+            "cases": [
+              ["3 11\n1 2 5", "3"],
+              ["2 0\n3 8", "0"],
+              ["2 7\n4 6", "-1"],
+              ["3 6\n1 3 4", "2"]
+            ]
+          },
+          {
+            "slug": "dem-to-hop-doi-tien",
+            "title": "Đếm tổ hợp mệnh giá đổi tiền",
+            "statement": "Có thể dùng không giới hạn mỗi mệnh giá. Đếm số tổ hợp có tổng S; hai cách chỉ khác thứ tự các đồng xu được xem là một.",
+            "input": "n S và n mệnh giá nguyên dương phân biệt.",
+            "output": "Số cách modulo 1.000.000.007.",
+            "constraints": "1 ≤ n ≤ 50, 0 ≤ S ≤ 10⁴; mệnh giá ≤ 10⁴.",
+            "difficulty": "HARD",
+            "solution": "import sys, math, heapq, bisect\nfrom collections import Counter, deque\nD = sys.stdin.read().split()\nn,S,*coins=map(int,D); dp=[1]+[0]*S\nfor c in coins:\n    for x in range(c,S+1): dp[x]=(dp[x]+dp[x-c])%1000000007\nprint(dp[S])\n",
+            "cases": [
+              ["3 5\n1 2 5", "4"],
+              ["1 0\n8", "1"],
+              ["2 3\n4 6", "0"],
+              ["2 6\n2 3", "2"]
+            ]
+          }
+        ],
+        "questions": [
+          {
+            "prompt": "Trong ba lô 0/1 một chiều, vì sao duyệt dung lượng theo chiều giảm?",
+            "options": [
+              "Để luôn chọn món nhẹ nhất",
+              "Để không cần lưu giá trị",
+              "Để chuyển thành bài đếm đường đi",
+              "Để đọc trạng thái trước khi món hiện tại được dùng"
+            ],
+            "correct": 3,
+            "explanation": "Duyệt tăng có thể dùng lại giá trị vừa cập nhật từ chính món đó."
+          },
+          {
+            "prompt": "Nếu tổng trọng lượng T là số lẻ, có thể chia hết các vật thành hai nhóm nguyên trọng lượng bằng nhau không?",
+            "options": [
+              "Không",
+              "Có nếu có một vật lẻ",
+              "Có nếu mọi vật đều bằng nhau",
+              "Có nếu số vật là số chẵn"
+            ],
+            "correct": 0,
+            "explanation": "Hai tổng nguyên bằng nhau phải cộng thành một số chẵn."
+          },
+          {
+            "prompt": "Hai cách 1+2 và 2+1 được tính mấy tổ hợp đổi tiền?",
+            "options": ["2", "1", "0", "3"],
+            "correct": 1,
+            "explanation": "Hai cách có cùng số lượng đồng xu ở từng mệnh giá."
+          }
+        ]
+      }
+    ]
+  }
+]

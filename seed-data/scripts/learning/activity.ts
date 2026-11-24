@@ -1,6 +1,6 @@
 import learningDataSource from '@learning/database/data-source';
 
-import { insertRows, SeedDataError, stableUuid } from '../seed-utils';
+import { insertRows, SeedDataError, seedStride, stableUuid } from '../seed-utils';
 import type { DemoAttemptedProblem, DemoSolve } from '../submission/seed';
 
 import type { LearningFixtures } from './seed';
@@ -34,16 +34,18 @@ export function planQuizActivity(
   const questions = new Map(fixtures.questions.map((question) => [question.id, question]));
   const attempts: QuizAttemptRow[] = [];
   const answers: QuizAnswerRow[] = [];
+  const stride = seedStride(fixtures.quizzes.length);
   for (const userId of studentIds) {
     const index = Number.parseInt(userId.slice(0, 8), 16);
-    const count = 6 + ((index * 9) % 30);
+    const count = Math.min(6 + ((index * 9) % 30), fixtures.quizzes.length);
     for (let slot = 0; slot < count; slot++) {
-      const quiz = fixtures.quizzes[(index * 11 + slot * 37) % fixtures.quizzes.length]!;
+      const quiz = fixtures.quizzes[(index * 11 + slot * stride) % fixtures.quizzes.length]!;
       const attemptId = stableUuid(`ui-seed:quiz-attempt:${userId}:${quiz.id}`);
       const inProgress = slot === 0 && index % 5 === 0;
       const total = quiz.questions.length;
-      const correctCount = 3 + ((index * 5 + slot * 3) % (total - 2));
-      const duration = 10 * 60_000;
+      const minimumCorrect = Math.floor(total / 3);
+      const correctCount = minimumCorrect + ((index * 5 + slot * 3) % (total - minimumCorrect + 1));
+      const duration = Math.max(10, total) * 60_000;
       const latestStart = now.getTime() - duration;
       const earliestStart = Math.min(latestStart, Date.parse(quiz.publishedAt));
       const startedAt = new Date(
@@ -63,7 +65,7 @@ export function planQuizActivity(
         inProgress ? null : finishedAt,
       ]);
       for (const [position, item] of quiz.questions.entries()) {
-        if (inProgress && position >= 3) break;
+        if (inProgress && position >= Math.min(3, total - 1)) break;
         const question = questions.get(item.questionId)!;
         const correct = (position + index) % total < correctCount;
         const option = question.options.find((candidate) => candidate.isCorrect === correct)!;

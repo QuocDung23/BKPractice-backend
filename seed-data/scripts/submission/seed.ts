@@ -2,7 +2,7 @@ import { getLeaderboardPeriod } from '@learning/modules/leaderboard/leaderboard'
 import submissionDataSource from '@submission/database/data-source';
 
 import type { LearningFixtures } from '../learning/seed';
-import { insertRows, SeedDataError, stableUuid } from '../seed-utils';
+import { insertRows, SeedDataError, seedStride, stableUuid } from '../seed-utils';
 
 const DAY_MS = 86_400_000;
 type Problem = LearningFixtures['problems'][number];
@@ -43,6 +43,7 @@ const solutions: Record<string, string> = {
 };
 
 export function pythonSolution(problem: Problem): string {
+  if (problem.referenceSolution) return problem.referenceSolution;
   const exercise = problem.key.slice(-2);
   const solution = solutions[exercise];
   if (!solution || !problem.languages.includes('python')) {
@@ -70,16 +71,16 @@ export function planSubmissions(
     getLeaderboardPeriod('month', now).from.getTime(),
   );
   const recentDuration = Math.min(DAY_MS, now.getTime() - latestPeriodStart);
+  const stride = seedStride(problems.length);
   return studentIds.flatMap((userId) => {
     const index = Number.parseInt(userId.slice(0, 8), 16);
-    const solved = 16 + ((index * 37) % 100);
-    const attempted = 5 + (index % 12);
-    const runs = 5 + (index % 9);
+    const solved = Math.min(16 + ((index * 37) % 100), problems.length);
+    const attempted = Math.min(5 + (index % 12), problems.length - solved);
+    const runs = Math.min(5 + (index % 9), problems.length);
     const rows: DemoSubmission[] = [];
 
     function add(slot: number, status: Status, resultAt: Date): void {
-      // 37 is coprime with the 250 exercises in the checked Learning catalog.
-      const problem = problems[(index * 19 + slot * 37) % problems.length]!;
+      const problem = problems[(index * 19 + slot * stride) % problems.length]!;
       rows.push({
         id: stableUuid(`ui-seed:submission:${userId}:${problem.id}:${status}`),
         userId,

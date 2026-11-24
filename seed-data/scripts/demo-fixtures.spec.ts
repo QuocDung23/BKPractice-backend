@@ -3,7 +3,7 @@ import { getLeaderboardPeriod } from '@learning/modules/leaderboard/leaderboard'
 import { planCommunity } from './community/seed';
 import { readDemoLecturers, readDemoStudentIds } from './identity/seed';
 import { planQuizActivity } from './learning/activity';
-import { readLearningFixtures } from './learning/seed';
+import { countLearningFixtures, readLearningFixtures } from './learning/seed';
 import { stableUuid } from './seed-utils';
 import { planSubmissions } from './submission/seed';
 
@@ -12,6 +12,46 @@ describe('linked demo seed fixtures', () => {
   const now = new Date('2026-11-24T08:15:00.000Z');
   const students = Array.from({ length: 22 }, (_, index) => stableUuid(`test-student:${index}`));
   const lecturers = readDemoLecturers();
+
+  it('selects just the new curriculum with unique exercises and ordered chapters', () => {
+    const curriculum = readLearningFixtures(true);
+    expect(countLearningFixtures(curriculum)).toEqual({
+      courses: 7,
+      chapters: 21,
+      problems: 84,
+      questions: 63,
+      quizzes: 21,
+    });
+    expect(readLearningFixtures(true)).toEqual(curriculum);
+    expect(countLearningFixtures(catalog)).toMatchObject({ courses: 12, problems: 334 });
+    expect(new Set(curriculum.problems.map(({ title }) => title)).size).toBe(84);
+    expect(new Set(catalog.problems.map(({ slug }) => slug)).size).toBe(334);
+    const difficulty = { EASY: 0, MEDIUM: 1, HARD: 2 };
+    for (const course of curriculum.courses) {
+      expect(course.chapters.map(({ displayOrder }) => displayOrder)).toEqual([0, 1, 2]);
+      for (const chapter of course.chapters) {
+        const exercises = curriculum.problems.filter(
+          ({ chapterKey }) => chapterKey === chapter.key,
+        );
+        expect(exercises).toHaveLength(4);
+        const levels = exercises.map((problem) => difficulty[problem.difficulty]);
+        expect(levels).toEqual([...levels].sort((a, b) => a - b));
+        for (const exercise of exercises) {
+          expect(exercise.referenceSolution).toBeTruthy();
+          expect(exercise.testCases.map(({ isHidden }) => isHidden)).toEqual([
+            false,
+            true,
+            true,
+            true,
+          ]);
+          expect(exercise.testCases.reduce((sum, { score }) => sum + score, 0)).toBe(100);
+        }
+        const quizzes = curriculum.quizzes.filter(({ chapterKey }) => chapterKey === chapter.key);
+        expect(quizzes).toHaveLength(1);
+        expect(quizzes[0]?.questions.map(({ displayOrder }) => displayOrder)).toEqual([0, 1, 2]);
+      }
+    }
+  });
 
   it('only plans lecturer accounts and requires explicit IDs for student activity', () => {
     expect(lecturers).toHaveLength(13);

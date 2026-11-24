@@ -1,7 +1,7 @@
 import { planCommunity, seedCommunity } from './community/seed';
 import { readDemoLecturers, readDemoStudentIds, seedIdentity } from './identity/seed';
 import { planQuizActivity, seedLearningActivity } from './learning/activity';
-import { readLearningFixtures, seedLearningDatabase } from './learning/seed';
+import { countLearningFixtures, readLearningFixtures, seedLearningDatabase } from './learning/seed';
 import { SeedDataError } from './seed-utils';
 import { planSubmissions, seedSubmissions } from './submission/seed';
 
@@ -21,11 +21,7 @@ async function main(): Promise<void> {
     studentAccountsCreated: 0,
     existingTestStudents: studentIds.length,
     lecturers: lecturers.length,
-    courses: fixtures.courses.length,
-    chapters: fixtures.courses.reduce((total, course) => total + course.chapters.length, 0),
-    problems: fixtures.problems.length,
-    questions: fixtures.questions.length,
-    quizzes: fixtures.quizzes.length,
+    ...countLearningFixtures(fixtures),
     submissions: submissions.length,
     solves: submissions.filter(({ status }) => status === 'ACCEPTED').length,
     runs: submissions.filter(({ status }) => status === 'EXECUTED').length,
