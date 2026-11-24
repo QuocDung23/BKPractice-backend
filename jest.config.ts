@@ -9,6 +9,9 @@ const config: Config = {
   coverageDirectory: 'coverage',
   testEnvironment: 'node',
   moduleNameMapper: {
+    '^@/common/auth/(.*)$': '<rootDir>/apps/community-service/src/common/auth/$1',
+    '^@/common/auth$': '<rootDir>/apps/community-service/src/common/auth',
+    '^@/modules/posts/(.*)$': '<rootDir>/apps/community-service/src/modules/posts/$1',
     '^@/modules/quizzes/(.*)$': '<rootDir>/apps/learning-service/src/modules/quizzes/$1',
     '^@/modules/progress/(.*)$': '<rootDir>/apps/learning-service/src/modules/progress/$1',
     '^@/modules/problems/(.*)$': '<rootDir>/apps/learning-service/src/modules/problems/$1',

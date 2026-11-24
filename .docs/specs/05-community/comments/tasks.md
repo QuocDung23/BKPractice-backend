@@ -263,3 +263,50 @@ visibleToViewer, acceptsInteraction }` hoặc `NotFoundError`; được `Comment
 
 > File này là danh sách kiểm tra triển khai, không phải đặc tả. Không thêm yêu cầu và không âm thầm
 > thay đổi `spec.md` hay `plan.md` đã Approved trong lúc thực hiện.
+
+## Existing endpoint validation patch - 2026-11-24
+
+The owner authorized the bounded validation patch on existing APIs. Execution details: [request validation plan](../../../pm/plan/community/posts/2026-11-24-request-validation.md).
+
+- [x] Reject whitespace-only content after trim and enforce the existing trimmed length limits.
+- [x] Return 400 for malformed Post UUIDs on existing comment/like routes.
+- [x] Enforce matching Post scope/target UUIDs and reject unrelated targets.
+- [x] Verify through 49 Community tests, lint, typecheck and Community build; record the work note.
+
+These entries cover the existing endpoint patch only. Full domain value objects, complete feature DTOs/controllers and other larger tasks above remain open; the full COM-002 dependency gate is not claimed complete.
+
+## Existing hidden-interaction / Post-like patch - 2026-11-24
+
+Owner-requested bounded repair: [execution plan](../../../pm/plan/community/posts/2026-11-24-hidden-interactions-likes.md).
+
+- [x] Enforce hidden-Post interaction policy and reject replies to hidden parent comments.
+- [x] Replace the existing Post toggle with PUT/DELETE, each returning `{ liked, likeCount }` with HTTP 200.
+- [x] Use transactions, scoped deletion and conflict-safe insertion with the existing unique constraint.
+- [x] Verify 63 Community tests, PostgreSQL SQL generation, lint, typecheck and Community build; document frontend migration and remaining live-database verification.
+
+This patch does not complete the larger feature tasks or the full COM-003 dependency gate. Comment reactions, full feed projections and soft-delete workflows remain open. No database migration is included.
+
+## Paginated root comment reading - 2026-11-24
+
+- [x] Add GET /api/community/posts/:id/comments with validated page/pageSize and typed Swagger page response.
+- [x] Apply Post/root/reply visibility, stable oldest-first ordering, visible totals and grouped reply counts in a REPEATABLE READ snapshot.
+- [x] Return author-only moderation status using existing is_hidden; map plain response fields.
+- [x] Verify 65 regression tests, 26 isolated PostgreSQL/HTTP cases, lint, typecheck and Community build.
+
+Evidence: [root comment work note](../../../worked/community/posts/2026-11-24-comment-list.md). This implements the existing-schema root-reading slice only; separate reply reading, lifecycle and full architectural feature tasks remain open.
+
+## Paginated reply reading - 2026-11-24
+
+- [x] Add GET /api/community/comments/:commentId/replies with reused query validation, typed DTOs and Swagger.
+- [x] Enforce root/Post/reply visibility, root-only targets, oldest-first ordering and snapshot-consistent visible totals.
+- [x] Map reply parent IDs and author-only moderation status without relation graphs.
+- [x] Verify 65 regression tests, 41 isolated PostgreSQL/HTTP cases, lint, typecheck and Community build.
+
+Evidence: [reply-list work note](../../../worked/community/posts/2026-11-24-reply-list.md). Lifecycle, Comment reactions and full architectural extraction remain open.
+
+## Bounded author lifecycle slice (2026-11-25)
+
+User explicitly selected detail/paging/filter and author edit/soft-delete first; author enrichment and realtime deferred. Execution plan: [post lifecycle](../../../pm/plan/community/posts/2026-11-24-post-lifecycle.md). Full feature checklist above remains open: title, management lists, restoration and full architecture extraction are not claimed complete.
+
+- [x] Verify implemented ownership checks, soft deletion, deleted-ancestor visibility and interaction blocking against isolated PostgreSQL (70 tests passed).
+- [x] Verify API regression, lint, typecheck and Community build; evidence: [worked entry](../../../worked/community/posts/2026-11-24-post-lifecycle.md).

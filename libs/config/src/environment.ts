@@ -43,6 +43,7 @@ const serviceSchemas: Record<ServiceName, z.ZodObject> = {
     LEARNING_SERVICE_URL: url,
     SUBMISSION_SERVICE_URL: url,
     COMMUNITY_SERVICE_URL: url,
+    COMMUNITY_GATEWAY_SECRET: secret,
     REDIS_URL: url,
     CORS_ORIGINS: origins.default('http://localhost:3001'),
     AUTH_MOBILE_LOGIN_REDIRECT_URL: url.optional(),
@@ -113,6 +114,7 @@ const serviceSchemas: Record<ServiceName, z.ZodObject> = {
   'community-service': commonSchema.extend({
     COMMUNITY_SERVICE_PORT: port.default(3005),
     COMMUNITY_DATABASE_URL: url,
+    COMMUNITY_GATEWAY_SECRET: secret,
   }),
 };
 

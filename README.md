@@ -256,3 +256,62 @@ accepted progress updates, and basic post/comment/reply/like operations. Full le
 permission guards inside every service, assignment scoring, recommendations, bookmarks/reports UI,
 moderation workflows, password recovery, email verification, outbox-based exactly-once event
 publication, and complete FUNCTION/OOP harness generators are subsequent phases.
+
+### Community Gateway authentication
+
+Gateway and Community require the same private `COMMUNITY_GATEWAY_SECRET` (at least 32 random characters). Set it in each service's runtime environment before starting or restarting either service; the value in `.env.example` is a placeholder. Never put this secret in frontend environment variables. Requests to `/api/community/*` must go through the authenticated API Gateway; direct requests with only `x-auth-user-id` return `401`. Docker exposes port 3005 only on `127.0.0.1`. Keep inter-service traffic private or use TLS when services run on separate hosts. Community still starts separately with `pnpm dev:community`.
+
+### Community Post likes: API change
+
+`POST /api/community/posts/:id/reactions/like` has been removed. Frontend callers must use `PUT` to enable their own like and `DELETE` to disable it. Both return HTTP 200 with `{ liked, likeCount }`; retrying the same operation keeps the requested state. Send no body (an empty object is also accepted); client user IDs, reaction types and counts are rejected.
+
+Hidden posts return 404 for nonauthors on either operation. The author receives 409 when enabling a like or creating a comment on a hidden post, but can disable their own like. Existing likes are preserved when content is hidden. Replies to hidden parent comments return 404. These changes use the existing schema and require no migration. Comment likes remain future feature work. Post detail now includes viewer reaction fields.
+
+### Real PostgreSQL Community checks
+
+With Docker Desktop and the Compose PostgreSQL service running, execute:
+
+```sh
+node scripts/test-community-postgres.mjs
+```
+
+This uses the development PostgreSQL bootstrap user `bkpractice`, creates a separate random database/role, runs the real Community migration and HTTP integration tests, then removes only those test resources. It does not use application credentials or alter active service data. Coverage includes 20 simultaneous like/unlike requests, hidden-content policies, row-lock races and transaction rollback after a forced database failure. An expected 500 error log appears during the rollback test. The suite is skipped in ordinary pnpm test runs unless the runner supplies its isolated test URL.
+
+### Reaction state in the Post feed
+
+Authenticated `GET /api/community/posts` now includes numeric `likeCount` and boolean `likedByMe` on each Post. The flag belongs to the authenticated caller; it is not client-selectable. Reload this endpoint after like/unlike to read the persisted state. Posts without reactions return `0`/`false`. Counts are aggregated in one additional query for the returned Post IDs, with the paginated response described below.
+
+### Paginated root comments
+
+Authenticated `GET /api/community/posts/:id/comments?page=1&pageSize=20` returns `{ items, page, pageSize, total }`. Defaults are page 1 and size 20; size may be 1..50. Page must be a positive safe integer. Only visible root comments count toward total, ordered oldest first with UUID as a tie-breaker. Each item has `replyCount` counting only replies visible to the caller. A comment author also receives `moderation.status` (`VISIBLE` or `HIDDEN`); other callers do not receive moderation metadata. Hidden Posts return 404 to nonauthors. Out-of-range pages return empty items while preserving total. This endpoint returns roots; use the separate paginated replies endpoint for reply contents. No migration is required.
+
+### Paginated replies
+
+Authenticated `GET /api/community/comments/:commentId/replies?page=1&pageSize=20` reads replies of a root comment and returns `{ items, page, pageSize, total }`. Defaults/limits match root-comment paging. Each item includes its `parentCommentId`, without nested replies or a replyCount. Both the root and its Post must be visible to the caller; missing/inaccessible roots or a reply used as a root return 404. Hidden replies are visible only to their author, who also receives moderation.status. Owning the Post/root does not grant access to another author's hidden reply. No migration is required.
+
+### Community post detail, pagination and own-content changes
+
+Run `corepack pnpm migration:run:community` before restarting Community. The lifecycle migration adds nullable `edited_at` / `deleted_at` to posts/comments and read indexes; existing content is retained. It was verified on an isolated database, not applied automatically to the application database. Reverting it discards deletion/edit markers and can make deleted content visible again.
+
+All routes require the Gateway Bearer token:
+
+| Method | Path                                                   | Result                                              |
+| ------ | ------------------------------------------------------ | --------------------------------------------------- |
+| GET    | `/api/community/posts?page=1&pageSize=20&scope=GLOBAL` | `{ items, page, pageSize, total }`                  |
+| GET    | `/api/community/posts/:id`                             | Post including `likeCount`, `likedByMe`, `editedAt` |
+| PATCH  | `/api/community/posts/:id`                             | Updated Post, HTTP 200                              |
+| DELETE | `/api/community/posts/:id`                             | Soft delete, HTTP 204                               |
+| PATCH  | `/api/community/comments/:id`                          | Updated Comment/reply, HTTP 200                     |
+| DELETE | `/api/community/comments/:id`                          | Soft delete, HTTP 204                               |
+
+PATCH body: `{ "content": "Updated content" }`. Post limit 10000, comment limit 5000, after trimming. Empty content, raw HTML outside Markdown code, unsafe inline Markdown links and immutable fields are rejected. No body is required for DELETE; unexpected fields are rejected.
+
+Post feed uses default 20/max 50 per page, ordered `createdAt DESC, id DESC` without pinned priority. Optional filters: `scope`, `problemId`, `courseId`; both target filters together or a target inconsistent with scope produce 400. Out-of-range pages return empty items and the visible total. Frontend must read `response.items` instead of treating the response as an array. Public post projections omit storage flags; authors receive `deletedAt` and `moderation.status`.
+
+Only the author can edit/delete: visible content of someone else gives 403; missing/concealed content gives 404; editing/deleting one's already deleted content gives 409. Deletion preserves comments/replies/likes. Deleted posts disappear from normal reads for everyone and block interactions; deleting a root comment also removes its replies from the visible thread. Deleted replies do not count toward replyCount. Edit does not unhide moderated content. Own-content management lists, restoration, post titles, author enrichment, realtime and full COM-001/002 extraction remain separate work.
+
+### Community release checks
+
+The pre-push and server rollout checklist is in [Community deployment checklist](.docs/pm/plan/community/posts/2026-11-25-deployment-checklist.md). Gateway and Community need the same private COMMUNITY_GATEWAY_SECRET. Their production replacement must follow a successful Community migration; the server-owned bkpractice-deploy helper is not in this repository and must implement that ordering.
+
+Community database tests run automatically in the existing GitHub verification job. The runner uses COMMUNITY_TEST_POSTGRES_CONTAINER and COMMUNITY_TEST_POSTGRES_USER for its CI service container, or local Docker Compose when no container is specified. Every run creates and removes its own database and role. The runner invokes the installed Jest CLI directly, without assuming a system Corepack installation path. Community migration run/revert accept environment-injected configuration even when no physical .env file exists in the migration image.

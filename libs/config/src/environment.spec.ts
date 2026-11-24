@@ -170,3 +170,27 @@ describe('Identity configuration', () => {
     );
   });
 });
+
+describe('Community Gateway credential configuration', () => {
+  const gateway = {
+    JWT_ACCESS_SECRET: 'a'.repeat(32),
+    IDENTITY_SERVICE_URL: 'http://identity',
+    LEARNING_SERVICE_URL: 'http://learning',
+    SUBMISSION_SERVICE_URL: 'http://submission',
+    COMMUNITY_SERVICE_URL: 'http://community',
+    REDIS_URL: 'redis://localhost:6379',
+  };
+  it.each([
+    ['api-gateway' as const, gateway],
+    ['community-service' as const, { COMMUNITY_DATABASE_URL: 'postgresql://localhost/community' }],
+  ])('requires a strong private credential for %s', (service, environment) => {
+    expect(() => validateEnvironment(service)(environment)).toThrow('COMMUNITY_GATEWAY_SECRET');
+    expect(() =>
+      validateEnvironment(service)({ ...environment, COMMUNITY_GATEWAY_SECRET: 'short' }),
+    ).toThrow('COMMUNITY_GATEWAY_SECRET');
+    expect(
+      validateEnvironment(service)({ ...environment, COMMUNITY_GATEWAY_SECRET: 'c'.repeat(32) })
+        .COMMUNITY_GATEWAY_SECRET,
+    ).toBe('c'.repeat(32));
+  });
+});

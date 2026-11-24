@@ -118,7 +118,7 @@ services:
     environment:
       COMMUNITY_DATABASE_URL: postgresql://${POSTGRES_USER:-bkpractice}:${POSTGRES_PASSWORD}@postgres:5432/bkpractice_community
       HEALTH_PORT: 3005
-    ports: ['3005:3005']
+    ports: ['127.0.0.1:3005:3005']
 
   judge-service:
     <<: *app
