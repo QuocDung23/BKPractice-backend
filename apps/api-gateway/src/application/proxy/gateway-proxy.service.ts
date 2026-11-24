@@ -25,6 +25,7 @@ import { firstValueFrom } from 'rxjs';
 import {
   communityPrefixes,
   identityPrefixes,
+  leaderboardPath,
   learningPrefixes,
   learningRoutes,
   responseHeaders,
@@ -47,7 +48,7 @@ export class GatewayProxyService {
 
   constructor(
     private readonly http: HttpService,
-    config: ConfigService,
+    private readonly config: ConfigService,
   ) {
     this.targets = [
       {
@@ -102,6 +103,12 @@ export class GatewayProxyService {
     delete headers.host;
     delete headers['content-length'];
     if (!AUTH_COOKIE_REQUEST_ROUTES.has(`${request.method} ${request.path}`)) delete headers.cookie;
+    if (target.service === 'Learning' && leaderboardPath.test(request.path)) {
+      const secret = this.config.get<string>('INTERNAL_SERVICE_SECRET');
+      if (!secret) throw createUpstreamUnavailableError(target.service);
+      headers['x-internal-service-secret'] = secret;
+      response.setHeader('Cache-Control', 'private, no-store');
+    }
 
     const accountImport = request.method === 'POST' && request.path === '/api/auth/accounts/import';
     const multipart =

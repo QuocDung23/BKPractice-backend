@@ -13,6 +13,7 @@ export class Progress {
   @Column({ name: 'problem_id', type: 'uuid' }) problemId!: string;
   @Column({ type: 'enum', enum: ProgressStatus }) status!: ProgressStatus;
   @Column({ name: 'best_score', type: 'integer', default: 0 }) bestScore!: number;
+  @Column({ name: 'awarded_xp', type: 'integer', nullable: true }) awardedXp!: number | null;
   @Column({ name: 'solved_at', type: 'timestamptz', nullable: true }) solvedAt!: Date | null;
   @Column({ name: 'last_event_id', type: 'uuid', nullable: true }) lastEventId!: string | null;
   @UpdateDateColumn({ name: 'updated_at', type: 'timestamptz' }) updatedAt!: Date;

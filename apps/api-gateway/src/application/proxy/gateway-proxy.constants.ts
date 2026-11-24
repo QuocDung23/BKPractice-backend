@@ -1,6 +1,8 @@
 export const responseHeaders = ['content-type', 'content-length', 'etag', 'last-modified'];
+export const leaderboardPath = /^\/api\/leaderboard\/?$/;
 
 export const learningRoutes: ReadonlyArray<readonly [string, RegExp]> = [
+  ['GET', leaderboardPath],
   ['GET', /^\/api\/question-bank\/questions\/?$/],
   ['POST', /^\/api\/question-bank\/questions\/?$/],
   ['GET', /^\/api\/question-bank\/questions\/[^/]+\/?$/],
@@ -89,6 +91,7 @@ export const learningPrefixes = [
   '/api/topics',
   '/api/courses',
   '/api/progress',
+  '/api/leaderboard',
   '/api/recommendations',
 ];
 

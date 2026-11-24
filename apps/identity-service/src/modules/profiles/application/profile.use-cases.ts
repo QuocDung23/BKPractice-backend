@@ -52,6 +52,21 @@ export class ProfileUseCases {
     return { displayName: result.displayName, avatar: result.avatar, bio: result.bio };
   }
 
+  async listLeaderboardStudents(userIds: string[], includeProfiles: boolean) {
+    const students = await this.profiles.listLeaderboardStudents(userIds);
+    if (!includeProfiles) return students.map(({ userId }) => ({ userId }));
+
+    return Promise.all(
+      students.map(async ({ userId, displayName, avatarReference }) => ({
+        userId,
+        displayName: displayName?.trim() || 'Sinh viên',
+        avatar: avatarReference
+          ? await this.avatars.signReadUrl(userId, avatarReference).catch(() => null)
+          : null,
+      })),
+    );
+  }
+
   async searchProfiles(query: string, page: number, limit: number): Promise<ProfileSearchPage> {
     const name = typeof query === 'string' ? query.trim() : '';
     const nameLength = Array.from(name).length;

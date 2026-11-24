@@ -12,6 +12,13 @@ export interface IdentityProfileContext {
 
 export interface ProfileRepository {
   find(userId: string): Promise<ProfileRecord | null>;
+  listLeaderboardStudents(userIds: string[]): Promise<
+    {
+      userId: string;
+      displayName: string | null;
+      avatarReference: string | null;
+    }[]
+  >;
   searchByDisplayName(
     query: string,
     page: number,

@@ -13,7 +13,8 @@ import {
   type ProfileRecord,
 } from '@/modules/profiles/domain';
 import { Profile } from '@/modules/profiles/infrastructure/persistence/profile.entity';
-import { User } from '@/modules/users/infrastructure/persistence';
+import { RoleName } from '@/modules/rbac/domain';
+import { AccountStatus, User } from '@/modules/users/infrastructure/persistence/user.entity';
 
 function mapProfile(profile: Profile, userId: string): ProfileRecord {
   return {
@@ -46,6 +47,22 @@ export class TypeormProfileAccountContext implements IdentityProfileContext {
 @Injectable()
 export class TypeormProfileRepository implements ProfileRepository {
   constructor(private readonly database: DataSource) {}
+
+  async listLeaderboardStudents(userIds: string[]) {
+    return this.database
+      .getRepository(User)
+      .createQueryBuilder('user')
+      .innerJoin('user.roles', 'role', 'role.name = :role', { role: RoleName.Student })
+      .leftJoin(Profile, 'profile', 'profile.user_id = user.id')
+      .select('user.id', 'userId')
+      .addSelect('COALESCE(profile.displayName, user.displayName)', 'displayName')
+      .addSelect('profile.avatarReference', 'avatarReference')
+      .where('user.id IN (:...userIds)', { userIds })
+      .andWhere('user.status = :status', { status: AccountStatus.Active })
+      .andWhere('user.isSystemAccount = false')
+      .andWhere('user.deletedAt IS NULL')
+      .getRawMany<{ userId: string; displayName: string | null; avatarReference: string | null }>();
+  }
 
   async find(userId: string): Promise<ProfileRecord | null> {
     const profile = await this.findEntity(this.database.manager, userId);

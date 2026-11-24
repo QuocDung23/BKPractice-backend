@@ -4,7 +4,10 @@ import {
   assertTestDatabase,
   learningDataSourceOptions,
   TEST_DATABASE_URL,
+  upsertProblem,
 } from '@learning/modules/courses/testing/course-db.helpers';
+import { LeaderboardReaders } from '@learning/modules/leaderboard/leaderboard-readers';
+import { ConfigService } from '@nestjs/config';
 import { DataSource } from 'typeorm';
 
 import { ApplyAcceptedSubmissionUseCase } from '@/modules/progress/application/use-cases';
@@ -28,6 +31,7 @@ describeIntegration('Progress accepted event persistence (real PostgreSQL)', () 
     dataSource = new DataSource(learningDataSourceOptions());
     await dataSource.initialize();
     await dataSource.runMigrations();
+    await upsertProblem(dataSource, { id: problemId });
     const context = new ProgressTransactionContext(dataSource);
     repository = new ProgressTypeOrmRepository(context);
     runner = new ProgressTransactionRunner(context);
@@ -38,6 +42,7 @@ describeIntegration('Progress accepted event persistence (real PostgreSQL)', () 
     if (!dataSource?.isInitialized) return;
     await dataSource.query('DELETE FROM progress_event_receipts WHERE user_id = $1', [userId]);
     await dataSource.query('DELETE FROM progress WHERE user_id = $1', [userId]);
+    await dataSource.query('DELETE FROM problems WHERE id = $1', [problemId]);
     await dataSource.destroy();
   });
 
@@ -64,18 +69,48 @@ describeIntegration('Progress accepted event persistence (real PostgreSQL)', () 
     ]);
     expect(await useCase.execute(first)).toBe('DUPLICATE');
 
-    const rows: Array<{ best_score: number; solved_at: Date }> = await dataSource.query(
-      'SELECT best_score, solved_at FROM progress WHERE user_id = $1 AND problem_id = $2',
-      [userId, problemId],
-    );
+    const rows: Array<{ best_score: number; solved_at: Date; awarded_xp: number }> =
+      await dataSource.query(
+        'SELECT best_score, solved_at, awarded_xp FROM progress WHERE user_id = $1 AND problem_id = $2',
+        [userId, problemId],
+      );
     expect(rows).toHaveLength(1);
     expect(rows[0]?.best_score).toBe(100);
     expect(rows[0]?.solved_at).toEqual(new Date(second.occurredAt));
+    expect(rows[0]?.awarded_xp).toBe(10);
 
+    await dataSource.query("UPDATE problems SET difficulty = 'HARD' WHERE id = $1", [problemId]);
     const repeated = { ...first, eventId: randomUUID(), submissionId: randomUUID(), score: 60 };
     expect(
       (await Promise.all([useCase.execute(repeated), useCase.execute(repeated)])).sort(),
     ).toEqual(['APPLIED', 'DUPLICATE']);
+    expect(
+      await dataSource.query(
+        'SELECT awarded_xp FROM progress WHERE user_id = $1 AND problem_id = $2',
+        [userId, problemId],
+      ),
+    ).toEqual([{ awarded_xp: 10 }]);
+
+    const reader = new LeaderboardReaders(dataSource, new ConfigService());
+    const from = new Date(second.occurredAt);
+    const to = new Date(Date.parse(first.occurredAt) + 1);
+    expect((await reader.listScores(from, to)).find((score) => score.userId === userId)).toEqual({
+      userId,
+      solved: 1,
+      xp: 10,
+      lastSolvedAt: from,
+    });
+    expect(
+      (await reader.listScores(new Date(from.getTime() - 1), from)).some(
+        (score) => score.userId === userId,
+      ),
+    ).toBe(false);
+    await dataSource.query("UPDATE problems SET publish_status = 'ON_HOLD' WHERE id = $1", [
+      problemId,
+    ]);
+    expect((await reader.listScores(from, to)).some((score) => score.userId === userId)).toBe(
+      false,
+    );
   });
 
   it('rolls back the receipt when progress persistence fails, then accepts a retry', async () => {
