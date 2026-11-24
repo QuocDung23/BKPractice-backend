@@ -30,6 +30,7 @@ import {
   learningRoutes,
   responseHeaders,
   submissionPrefixes,
+  submissionStatusPath,
   submissionRoutes,
 } from '@/application/proxy/gateway-proxy.constants';
 
@@ -107,6 +108,9 @@ export class GatewayProxyService {
       const secret = this.config.get<string>('INTERNAL_SERVICE_SECRET');
       if (!secret) throw createUpstreamUnavailableError(target.service);
       headers['x-internal-service-secret'] = secret;
+      response.setHeader('Cache-Control', 'private, no-store');
+    }
+    if (target.service === 'Submission' && submissionStatusPath.test(request.path)) {
       response.setHeader('Cache-Control', 'private, no-store');
     }
 

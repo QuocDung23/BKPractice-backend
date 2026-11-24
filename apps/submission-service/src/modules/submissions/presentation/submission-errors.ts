@@ -31,6 +31,16 @@ export const SUBMISSION_ERRORS = {
     message:
       'Không thể nộp bài: bài tập không tồn tại, chưa được công bố hoặc ngôn ngữ đã chọn chưa được bật cho bài này. Hãy kiểm tra lại bài tập và ngôn ngữ.',
   },
+  alreadySubmitted: {
+    status: HttpStatus.CONFLICT,
+    code: 'SUBMISSION_ALREADY_SUBMITTED',
+    message: 'Bạn đã giải bài này rồi.',
+  },
+  submissionInProgress: {
+    status: HttpStatus.CONFLICT,
+    code: 'SUBMISSION_IN_PROGRESS',
+    message: 'Bài của bạn đang chấm. Vui lòng chờ kết quả.',
+  },
   judgePackageUnavailable: {
     status: HttpStatus.SERVICE_UNAVAILABLE,
     code: 'SUBMISSION_JUDGE_PACKAGE_UNAVAILABLE',

@@ -695,7 +695,11 @@ databaseTests('UC02 practice API - Gateway, Submission and PostgreSQL', () => {
       for (const language of ['c', 'cpp', 'java', 'python'] as const) {
         const result = await gw('POST', '/api/submissions', {
           token: bearer,
-          body: submitBody({ language, sourceCode: sources[language] }),
+          body: submitBody({
+            problemId: randomUUID(),
+            language,
+            sourceCode: sources[language],
+          }),
         });
         expect(result.status).toBe(202);
       }
@@ -842,6 +846,10 @@ databaseTests('UC02 practice API - Gateway, Submission and PostgreSQL', () => {
       const items = history.body.items as Json[];
       expect(items).toHaveLength(1);
       expect(items[0]).toMatchObject({ kind: 'SUBMIT', status: 'INTERNAL_ERROR' });
+      judge.fail = false;
+      expect(
+        (await gw('POST', '/api/submissions', { token: bearer, body: submitBody() })).status,
+      ).toBe(202);
     });
 
     it('[SUB-12] Submit without a token returns 401 and creates no row', async () => {
@@ -870,25 +878,73 @@ databaseTests('UC02 practice API - Gateway, Submission and PostgreSQL', () => {
       expect(dup.status).toBe(401);
     });
 
-    it('[SUB-15] resubmitting the same body creates a new record each time and every record counts as one attempt', async () => {
-      const first = await submitOk();
-      const second = await submitOk();
-      const third = await submitOk();
-      expect(new Set([first, second, third]).size).toBe(3);
-      expect(await counts.count([student], [problemId])).toEqual([
-        { userId: student, problemId, count: 3 },
+    it('[SUB-15] blocks concurrent grading, allows a retry after a wrong answer and locks after Accepted', async () => {
+      const bearer = await token(student);
+      const statusPath = `/api/submissions/problems/${problemId}/status`;
+      expect((await gw('GET', statusPath, { token: bearer })).body).toEqual({
+        state: 'READY',
+        submissionId: null,
+      });
+      const results = await Promise.all([
+        gw('POST', '/api/submissions', { token: bearer, body: submitBody() }),
+        gw('POST', '/api/submissions', { token: bearer, body: submitBody() }),
       ]);
+      expect(results.map((item) => item.status).sort()).toEqual([202, 409]);
+      const firstId = results.find((item) => item.status === 202)?.body.id as string;
+      expect(results.find((item) => item.status === 409)?.body).toMatchObject({
+        code: 'SUBMISSION_IN_PROGRESS',
+      });
+      expect(judge.jobs).toHaveLength(1);
+      expect(await counts.count([student], [problemId])).toEqual([
+        { userId: student, problemId, count: 1 },
+      ]);
+      expect((await gw('GET', statusPath, { token: bearer })).body).toEqual({
+        state: 'JUDGING',
+        submissionId: firstId,
+      });
+      expect((await gw('GET', statusPath, { token: await token(other) })).body).toEqual({
+        state: 'READY',
+        submissionId: null,
+      });
+
+      await feedVerdict(firstId, 'SUBMIT', {
+        status: 'WRONG_ANSWER',
+        passedTests: 1,
+        totalTests: 2,
+      });
+      expect((await gw('GET', statusPath, { token: bearer })).body).toEqual({
+        state: 'READY',
+        submissionId: firstId,
+      });
+      expect(await rows('SELECT 1 FROM submission_accepted_outbox')).toHaveLength(0);
+
+      const correctId = await submitOk();
+      await feedVerdict(correctId, 'SUBMIT', { status: 'ACCEPTED', passedTests: 2, totalTests: 2 });
+      expect((await gw('GET', statusPath, { token: bearer })).body).toEqual({
+        state: 'SOLVED',
+        submissionId: correctId,
+      });
+      const repeat = await gw('POST', '/api/submissions', { token: bearer, body: submitBody() });
+      expect(repeat.status).toBe(409);
+      expect(repeat.body.code).toBe('SUBMISSION_ALREADY_SUBMITTED');
+      expect(judge.jobs).toHaveLength(2);
+      expect(await rows('SELECT 1 FROM submission_accepted_outbox')).toHaveLength(1);
+      await submitOk(other);
     });
 
-    it('[SUB-16] Submission service imposes no per-user rate limit: 30 consecutive submits are all accepted (SUB-002 v1)', async () => {
+    it('[SUB-16] 30 consecutive official submits for distinct problems are accepted', async () => {
       const bearer = await token(student);
-      for (let index = 0; index < 30; index += 1) {
-        const result = await gw('POST', '/api/submissions', { token: bearer, body: submitBody() });
+      const problems = Array.from({ length: 30 }, () => randomUUID());
+      for (const id of problems) {
+        const result = await gw('POST', '/api/submissions', {
+          token: bearer,
+          body: submitBody({ problemId: id }),
+        });
         expect(result.status).toBe(202);
       }
-      expect(await counts.count([student], [problemId])).toEqual([
-        { userId: student, problemId, count: 30 },
-      ]);
+      const attempts = await counts.count([student], problems);
+      expect(attempts).toHaveLength(30);
+      expect(attempts.every(({ count }) => count === 1)).toBe(true);
     });
   });
 
@@ -1061,7 +1117,7 @@ databaseTests('UC02 practice API - Gateway, Submission and PostgreSQL', () => {
     it('[HIS-01] GET /api/submissions lists only the caller records, newest first, with total and no internal fields', async () => {
       const bearer = await token(student);
       const first = await submitOk();
-      const second = await submitOk();
+      const second = await submitOk(student, { problemId: randomUUID() });
       await submitOk(other);
       const result = await gw('GET', '/api/submissions', { token: bearer });
       expect(result.status).toBe(200);
@@ -1094,7 +1150,9 @@ databaseTests('UC02 practice API - Gateway, Submission and PostgreSQL', () => {
     it('[HIS-03] cursor pagination with limit=2 walks 5 records without gaps or duplicates', async () => {
       const bearer = await token(student);
       const created: string[] = [];
-      for (let index = 0; index < 5; index += 1) created.unshift(await submitOk());
+      for (let index = 0; index < 5; index += 1) {
+        created.unshift(await submitOk(student, { problemId: randomUUID() }));
+      }
       const seen: string[] = [];
       let path = '/api/submissions?limit=2';
       for (let page = 0; page < 5 && path; page += 1) {

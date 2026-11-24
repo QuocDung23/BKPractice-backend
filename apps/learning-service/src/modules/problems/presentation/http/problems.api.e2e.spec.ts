@@ -79,6 +79,17 @@ describe('Problems API end-to-end contract', () => {
     expect(snapshot?.publishStatus).toBe('DRAFT');
   });
 
+  it('generates a slug and UUID for each draft when no slug is supplied', async () => {
+    const payload = createProblemPayload({ slug: undefined, title: 'Đếm số' });
+    const first = await post('/api/problems', payload);
+    const second = await post('/api/problems', payload);
+
+    expect(first).toMatchObject({ status: 201, body: { slug: 'dem-so' } });
+    expect(second).toMatchObject({ status: 201, body: { slug: 'dem-so-2' } });
+    expect(first.body.id).toEqual(expect.stringMatching(/^[0-9a-f-]{36}$/));
+    expect(second.body.id).not.toBe(first.body.id);
+  });
+
   it('rejects a student creating a problem', async () => {
     const response = await post('/api/problems', createProblemPayload(), studentHeaders());
 

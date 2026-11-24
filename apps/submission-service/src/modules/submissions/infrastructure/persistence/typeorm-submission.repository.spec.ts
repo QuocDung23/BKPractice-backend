@@ -1,9 +1,12 @@
+import { AlreadySubmittedError } from '@submission/modules/submissions/domain/already-submitted.error';
 import type { SubmitVerdictPersistenceInput } from '@submission/modules/submissions/domain/ports/submission-repository.port';
 import {
+  createSubmitRecord,
   SubmissionKind,
   SubmissionStatus,
 } from '@submission/modules/submissions/domain/submission-record';
 import type { DataSource, EntityManager, Repository } from 'typeorm';
+import { QueryFailedError } from 'typeorm';
 
 import { SubmissionAcceptedOutbox } from './submission-accepted-outbox.entity';
 import { Submission } from './submission.entity';
@@ -34,6 +37,71 @@ function entity(overrides: Partial<Submission> = {}): Submission {
 }
 
 describe('TypeormSubmissionRepository', () => {
+  it.each([
+    [null, 'READY'],
+    [SubmissionStatus.WrongAnswer, 'READY'],
+    [SubmissionStatus.Queued, 'JUDGING'],
+    [SubmissionStatus.Accepted, 'SOLVED'],
+  ] as const)('maps the submission verdict %s to eligibility %s', async (status, state) => {
+    const previous = status === null ? null : entity({ status });
+    const builder = {
+      select: jest.fn().mockReturnThis(),
+      where: jest.fn().mockReturnThis(),
+      andWhere: jest.fn().mockReturnThis(),
+      orderBy: jest.fn().mockReturnThis(),
+      addOrderBy: jest.fn().mockReturnThis(),
+      setParameters: jest.fn().mockReturnThis(),
+      limit: jest.fn().mockReturnThis(),
+      getOne: jest.fn().mockResolvedValue(previous),
+    };
+    const submissions = {
+      createQueryBuilder: jest.fn().mockReturnValue(builder),
+    } as unknown as Repository<Submission>;
+    const repository = new TypeormSubmissionRepository(submissions, {} as DataSource);
+
+    await expect(repository.getProblemSubmissionState('owner-id', 'problem-id')).resolves.toEqual({
+      state,
+      submissionId: previous?.publicId ?? null,
+    });
+    expect(builder.where).toHaveBeenCalledWith(expect.stringContaining('submission.userId'), {
+      userId: 'owner-id',
+      problemId: 'problem-id',
+    });
+    expect(builder.andWhere).toHaveBeenCalledWith('submission.kind = :kind', {
+      kind: SubmissionKind.Submit,
+    });
+  });
+
+  it('maps a race on the official attempt index to a duplicate submission', async () => {
+    const insertError = new QueryFailedError(
+      'INSERT',
+      [],
+      Object.assign(new Error('duplicate key'), {
+        code: '23505',
+        constraint: 'UQ_submissions_official_attempt',
+      }),
+    );
+    const submissions = {
+      create: jest.fn().mockImplementation((value: unknown) => value),
+      save: jest.fn().mockRejectedValue(insertError),
+    } as unknown as jest.Mocked<Repository<Submission>>;
+    const repository = new TypeormSubmissionRepository(submissions, {} as DataSource);
+    const input = createSubmitRecord({
+      userId: 'owner-id',
+      problemId: 'problem-id',
+      language: 'python',
+      sourceCode: 'print(1)',
+      now: new Date(),
+    });
+
+    await expect(repository.saveOfficialSubmission(input)).rejects.toBeInstanceOf(
+      AlreadySubmittedError,
+    );
+    expect(submissions.create).toHaveBeenCalledWith(
+      expect.objectContaining({ officialAttempt: true }),
+    );
+  });
+
   it('finds detail by public ID first without trying the legacy ID', async () => {
     const submissions = {
       findOne: jest.fn().mockResolvedValue(entity({ result: undefined })),
@@ -146,7 +214,23 @@ describe('TypeormSubmissionRepository dispatch and expiry', () => {
     ).resolves.toBeNull();
   });
 
-  it('expires PENDING and QUEUED records of both kinds created before the cutoff', async () => {
+  it('releases the official attempt when marking a failed dispatch', async () => {
+    const submissions = {
+      update: jest.fn().mockResolvedValue({ affected: 1 }),
+      findOneBy: jest.fn().mockResolvedValue(entity()),
+    } as unknown as jest.Mocked<Repository<Submission>>;
+    const now = new Date();
+    const repository = new TypeormSubmissionRepository(submissions, {} as DataSource);
+
+    await repository.markFailedToDispatch('id-1', now);
+
+    expect(submissions.update).toHaveBeenCalledWith(
+      { id: 'id-1', status: SubmissionStatus.Pending },
+      { status: SubmissionStatus.InternalError, updatedAt: now, officialAttempt: false },
+    );
+  });
+
+  it('releases expired submissions while keeping the stale Run status filter', async () => {
     const submissions = {
       query: jest.fn().mockResolvedValue([[], 0]),
     } as unknown as jest.Mocked<Repository<Submission>>;
@@ -161,13 +245,14 @@ describe('TypeormSubmissionRepository dispatch and expiry', () => {
     ).resolves.toEqual([]);
 
     const [sql, params] = submissions.query.mock.calls[0]!;
-    const whereClause = String(sql).split('WHERE')[1]!.split('RETURNING')[0];
-    expect(whereClause).not.toMatch(/"kind"/);
+    expect(sql).toContain('"official_attempt" = false');
+    expect(sql).toContain(`"status" IN ($3, $4) OR ("kind" = 'SUBMIT' AND "status" = $5)`);
     expect(params).toEqual([
       SubmissionStatus.InternalError,
       now,
       SubmissionStatus.Pending,
       SubmissionStatus.Queued,
+      SubmissionStatus.Running,
       cutoff,
     ]);
   });
@@ -359,11 +444,20 @@ describe('TypeormSubmissionRepository Submit verdicts', () => {
     expect(manager.insert).not.toHaveBeenCalled();
   });
 
-  it('writes no outbox row for a verdict that is not officially accepted', async () => {
-    const { manager, repository } = transactionWith([updatedRow]);
+  it('releases a failed attempt and writes no outbox row', async () => {
+    const { builder, manager, repository } = transactionWith([
+      { ...updatedRow, status: SubmissionStatus.WrongAnswer },
+    ]);
 
-    await repository.applySubmitVerdictOnce({ ...input, acceptedEvent: null });
+    await repository.applySubmitVerdictOnce({
+      ...input,
+      verdict: { ...input.verdict, status: SubmissionStatus.WrongAnswer },
+      acceptedEvent: null,
+    });
 
+    expect(builder.set).toHaveBeenCalledWith(
+      expect.objectContaining({ officialAttempt: false, status: SubmissionStatus.WrongAnswer }),
+    );
     expect(manager.insert).toHaveBeenCalledTimes(1);
   });
 });

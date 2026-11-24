@@ -1,3 +1,5 @@
+import { AllowFailedSubmissionRetries1792515607000 } from '@submission/database/migrations/1792515607000-AllowFailedSubmissionRetries';
+import { AlreadySubmittedError } from '@submission/modules/submissions/domain/already-submitted.error';
 import type {
   PersistedSubmissionRecord,
   SubmitVerdictPersistenceInput,
@@ -110,6 +112,63 @@ describeIntegration('TypeormSubmissionRepository', () => {
     expect(results.filter((row) => row !== null)).toHaveLength(1);
     expect(await dataSource.getRepository(SubmissionResult).count()).toBe(1);
     expect(await dataSource.getRepository(SubmissionAcceptedOutbox).count()).toBe(1);
+  });
+
+  it('reserves one official attempt across connections and allows a retry after dispatch fails', async () => {
+    const attempts = await Promise.allSettled([
+      repository.saveOfficialSubmission(submitRecord()),
+      repository.saveOfficialSubmission(submitRecord()),
+    ]);
+    const [winner] = attempts.filter((attempt) => attempt.status === 'fulfilled');
+    const [duplicate] = attempts.filter((attempt) => attempt.status === 'rejected');
+    expect(winner).toBeDefined();
+    expect(duplicate?.reason).toBeInstanceOf(AlreadySubmittedError);
+    expect(await repository.getProblemSubmissionState(OWNER_ID, PROBLEM_ID)).toMatchObject({
+      state: 'JUDGING',
+    });
+    expect(await dataSource.getRepository(Submission).count()).toBe(1);
+
+    await repository.markFailedToDispatch(winner!.value.id, NOW);
+    expect(await repository.getProblemSubmissionState(OWNER_ID, PROBLEM_ID)).toEqual({
+      state: 'READY',
+      submissionId: winner!.value.publicId,
+    });
+    await repository.saveOfficialSubmission(submitRecord());
+    expect(await repository.getProblemSubmissionState(OWNER_ID, PROBLEM_ID)).toMatchObject({
+      state: 'JUDGING',
+    });
+    expect(await dataSource.getRepository(Submission).count()).toBe(2);
+  });
+
+  it('unlocks historical failures and gives existing Accepted submissions priority', async () => {
+    const failure = await repository.saveOfficialSubmission(submitRecord());
+    const accepted = await repository.save(submitRecord());
+    const otherProblem = '6832170d-de82-41f7-a82c-57b71efbf55d';
+    const failedOnly = await repository.saveOfficialSubmission({
+      ...submitRecord(),
+      problemId: otherProblem,
+    });
+    const rows = dataSource.getRepository(Submission);
+    await rows.update([failure.id, failedOnly.id], { status: SubmissionStatus.WrongAnswer });
+    await rows.update(accepted.id, { status: SubmissionStatus.Accepted });
+
+    await dataSource.transaction(async ({ queryRunner }) => {
+      if (!queryRunner) throw new Error('Expected a transaction query runner');
+      await new AllowFailedSubmissionRetries1792515607000().up(queryRunner);
+    });
+
+    expect((await rows.findBy({ officialAttempt: true })).map(({ id }) => id)).toEqual([
+      accepted.id,
+    ]);
+    expect(await repository.getProblemSubmissionState(OWNER_ID, PROBLEM_ID)).toEqual({
+      state: 'SOLVED',
+      submissionId: accepted.publicId,
+    });
+    expect(await repository.getProblemSubmissionState(OWNER_ID, otherProblem)).toEqual({
+      state: 'READY',
+      submissionId: failedOnly.publicId,
+    });
+    expect(await rows.count()).toBe(3);
   });
 
   it('pages through records that share one created_at without repeating or skipping any', async () => {

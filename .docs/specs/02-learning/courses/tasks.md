@@ -247,3 +247,8 @@ phần kiểm chứng đã xong. Các mục N/A là những mục duy nhất đ�
       hold/delete/republish và đổi Quiz revision dùng trạng thái root hiện tại.
 - [x] **LRN-003-T035 — Verify/bàn giao.** Chạy test liên quan, lint/typecheck/build, cập nhật task và
       worked entry; ghi rõ baseline hoặc test PostgreSQL chưa chạy.
+
+## Định danh tự động — 2026-11-24
+
+- [x] Sinh slug từ tiêu đề khi API tạo nháp nhận yêu cầu không có slug. Giữ hỗ trợ slug tường minh.
+- [x] Kiểm thử thử lại khi slug đã tồn tại hoặc hai yêu cầu ghi trùng.

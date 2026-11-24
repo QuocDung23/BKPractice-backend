@@ -11,7 +11,7 @@ import type {
 export class CourseRequestMapper {
   static toCreateCommand(body: CreateCourseRequestDto): CreateCourseCommand {
     return {
-      slug: new CourseSlug(body.slug),
+      ...(body.slug === undefined ? {} : { slug: new CourseSlug(body.slug) }),
       title: new CourseTitle(body.title),
       description: new CourseDescription(body.description ?? null),
     };

@@ -6,7 +6,6 @@ import { CreateProblemRequestDto } from './create-problem.request.dto';
 import { UpdateProblemRequestDto } from './update-problem.request.dto';
 
 const VALID_CREATE = {
-  slug: 'two-sum',
   title: 'Two Sum',
   statement:
     'Given an array of integers, return the indices of two numbers that add up to a target.',
@@ -19,6 +18,12 @@ describe('CreateProblemRequestDto', () => {
     await expect(errorsOf(CreateProblemRequestDto, VALID_CREATE)).resolves.toEqual([]);
   });
 
+  it.each(['', null])('rejects an explicit invalid slug %s', async (slug) => {
+    await expect(errorsOf(CreateProblemRequestDto, { ...VALID_CREATE, slug })).resolves.toEqual([
+      'slug',
+    ]);
+  });
+
   it('rejects missing required fields and invalid enum values', async () => {
     const missing = await errorsOf(CreateProblemRequestDto, {});
     const invalid = await errorsOf(CreateProblemRequestDto, {
@@ -28,9 +33,7 @@ describe('CreateProblemRequestDto', () => {
       difficulty: 'INSANE',
     });
 
-    expect(missing).toEqual(
-      expect.arrayContaining(['slug', 'title', 'statement', 'problemType', 'difficulty']),
-    );
+    expect(missing).toEqual(['title', 'statement', 'problemType', 'difficulty']);
     expect(invalid).toEqual(expect.arrayContaining(['slug', 'problemType', 'difficulty']));
   });
 

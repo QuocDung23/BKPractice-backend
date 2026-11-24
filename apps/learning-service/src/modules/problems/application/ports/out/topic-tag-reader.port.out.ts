@@ -9,4 +9,5 @@ export interface TopicTagReader {
   findTopicNames(ids: readonly string[]): Promise<ReadonlyMap<string, string>>;
   findTagNames(ids: readonly string[]): Promise<ReadonlyMap<string, string>>;
   listTopics(): Promise<readonly TopicCatalogEntry[]>;
+  listTags(): Promise<readonly TopicCatalogEntry[]>;
 }

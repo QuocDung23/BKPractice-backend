@@ -2,6 +2,7 @@ import {
   Body,
   Controller,
   Get,
+  Header,
   HttpCode,
   HttpStatus,
   Param,
@@ -9,14 +10,26 @@ import {
   Post,
   Query,
 } from '@nestjs/common';
-import { ApiAcceptedResponse, ApiOkResponse, ApiTags } from '@nestjs/swagger';
+import {
+  ApiAcceptedResponse,
+  ApiConflictResponse,
+  ApiOkResponse,
+  ApiParam,
+  ApiTags,
+} from '@nestjs/swagger';
 import { GetSubmissionDetailUseCase } from '@submission/modules/submissions/application/get-submission-detail.use-case';
 import { ListSubmissionHistoryUseCase } from '@submission/modules/submissions/application/list-submission-history.use-case';
 import { SubmitCodeUseCase } from '@submission/modules/submissions/application/submit-code.use-case';
+import { AlreadySubmittedError } from '@submission/modules/submissions/domain/already-submitted.error';
 import {
   JudgePackageUnavailableError,
   ProblemNotSubmittableError,
 } from '@submission/modules/submissions/domain/ports/learning-judge-package.port';
+import {
+  PROBLEM_SUBMISSION_STATES,
+  type ProblemSubmissionState,
+} from '@submission/modules/submissions/domain/submission-record';
+import { ProblemSubmissionParamsDto } from '@submission/modules/submissions/presentation/dto/problem-submission-params.dto';
 
 import { TrustedOwner } from './decorators/trusted-owner.decorator';
 import { ListSubmissionHistoryQueryDto } from './dto/list-submission-history.query.dto';
@@ -42,6 +55,9 @@ export class SubmissionsController {
   @Post('submissions')
   @HttpCode(HttpStatus.ACCEPTED)
   @ApiAcceptedResponse({ type: SubmitCodeResponseDto })
+  @ApiConflictResponse({
+    description: 'The problem is already solved or a submission is being graded.',
+  })
   async submit(
     @TrustedOwner() ownerId: string,
     @Body() dto: SubmitCodeRequestDto,
@@ -56,8 +72,35 @@ export class SubmissionsController {
       if (error instanceof JudgePackageUnavailableError) {
         throw createSubmissionError(SUBMISSION_ERRORS.judgePackageUnavailable);
       }
+      if (error instanceof AlreadySubmittedError) {
+        throw createSubmissionError(
+          error.state === 'SOLVED'
+            ? SUBMISSION_ERRORS.alreadySubmitted
+            : SUBMISSION_ERRORS.submissionInProgress,
+        );
+      }
       throw error;
     }
+  }
+
+  @Get('submissions/problems/:problemId/status')
+  @Header('Cache-Control', 'private, no-store')
+  @ApiParam({ name: 'problemId', schema: { type: 'string', format: 'uuid' } })
+  @ApiOkResponse({
+    schema: {
+      type: 'object',
+      required: ['state', 'submissionId'],
+      properties: {
+        state: { type: 'string', enum: [...PROBLEM_SUBMISSION_STATES] },
+        submissionId: { type: 'string', format: 'uuid', nullable: true },
+      },
+    },
+  })
+  async getProblemSubmissionStatus(
+    @TrustedOwner() ownerId: string,
+    @Param() { problemId }: ProblemSubmissionParamsDto,
+  ): Promise<ProblemSubmissionState> {
+    return this.submitCode.getProblemSubmissionState(ownerId, problemId);
   }
 
   @Get('submissions')

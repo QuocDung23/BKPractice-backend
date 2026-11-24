@@ -1,9 +1,11 @@
 import {
+  DuplicateCourseSlugError,
   CourseNotFoundError,
   CourseNotReadyError,
   ForbiddenError,
 } from '@/modules/courses/application/errors';
 import {
+  CreateCourseUseCase,
   DeleteCourseUseCase,
   DetachQuizUseCase,
   HoldCourseUseCase,
@@ -12,6 +14,7 @@ import {
   RestoreCourseUseCase,
 } from '@/modules/courses/application/use-cases';
 import { InvalidCourseState } from '@/modules/courses/domain/errors';
+import { CourseTitle } from '@/modules/courses/domain/value-objects';
 import {
   courseWithProblem,
   courseWithQuiz,
@@ -52,6 +55,30 @@ describe('Course lifecycle use cases', () => {
   const restore = () =>
     new RestoreCourseUseCase(kit.authorization, kit.repository, kit.transactions, kit.views);
   const remove = () => new DeleteCourseUseCase(kit.authorization, kit.repository, kit.transactions);
+
+  describe('CreateCourseUseCase', () => {
+    it('uses a new slug after a stored slug and a competing insert collide', async () => {
+      kit.seed(draftCourse('do-an'));
+      jest
+        .spyOn(kit.repository, 'save')
+        .mockRejectedValueOnce(new DuplicateCourseSlugError('Course slug is already in use'));
+      const create = new CreateCourseUseCase(
+        kit.authorization,
+        kit.views,
+        kit.repository,
+        kit.transactions,
+      );
+
+      const result = await create.execute(admin(), {
+        title: new CourseTitle('Đồ án'),
+        description: null,
+      });
+
+      expect(result.slug).toBe('do-an-3');
+      expect(kit.repository.store.size).toBe(2);
+      expect(kit.repository.saveCount).toBe(1);
+    });
+  });
 
   describe('PublishCourseUseCase', () => {
     it('publishes a course that has a published problem and reports it ready', async () => {

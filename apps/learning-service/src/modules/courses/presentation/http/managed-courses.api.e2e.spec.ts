@@ -301,6 +301,18 @@ describe('Courses API (18 routes of the LRN-003 plan)', () => {
     expect(denied.status).toBe(400);
   });
 
+  it('generates unique slugs from the title when no slug is supplied', async () => {
+    const body = { title: 'Đồ án lập trình' };
+    const first = await call('POST', '/api/courses', { body });
+    const second = await call('POST', '/api/courses', { body });
+    const reserved = await call('POST', '/api/courses', { body: { title: 'Managed' } });
+
+    expect(first).toMatchObject({ status: 201, body: { slug: 'do-an-lap-trinh' } });
+    expect(second).toMatchObject({ status: 201, body: { slug: 'do-an-lap-trinh-2' } });
+    expect(reserved).toMatchObject({ status: 201, body: { slug: 'managed-2' } });
+    expect(first.body.id).not.toBe(second.body.id);
+  });
+
   it.each(['managed', 'Managed', 'MANAGED', ' managed '])(
     'rejects reserved slug %s without persisting a course',
     async (slug) => {

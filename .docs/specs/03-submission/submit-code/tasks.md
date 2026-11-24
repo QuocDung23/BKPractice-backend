@@ -198,3 +198,11 @@ thực tế; tích một mục nghĩa là mục đó đã hoàn thành và đã 
 - [x] Xác minh Submission không chứa biên dịch, runner hay sandbox.
 - [x] Xác minh Submission không giả định Learning có consumer nào.
 - [x] Xác minh bản triển khai khớp với mục Tuân thủ kiến trúc của `plan.md`.
+
+## Một lần nộp chính thức cho mỗi bài — 2026-11-24
+
+- [x] Chặn yêu cầu trùng khi bài đang chấm. Mở lại lượt nộp khi Judge trả kết quả thất bại.
+- [x] Giữ khóa khi có bài nộp `ACCEPTED` và dùng chỉ mục duy nhất để xử lý yêu cầu đồng thời.
+- [x] Cung cấp trạng thái `READY`, `JUDGING`, `SOLVED` cùng mã lượt nộp cho frontend.
+- [x] Chuyển đổi khóa cũ và giữ toàn bộ lịch sử. Bài sai có thể nộp lại sau migration.
+- [ ] Chạy migration và kiểm thử đồng thời trên PostgreSQL kiểm thử.

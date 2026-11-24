@@ -1,3 +1,4 @@
+import { AlreadySubmittedError } from '@submission/modules/submissions/domain/already-submitted.error';
 import type { JudgeJobPort } from '@submission/modules/submissions/domain/ports/judge-job.port';
 import { ProblemNotSubmittableError } from '@submission/modules/submissions/domain/ports/learning-judge-package.port';
 import type {
@@ -47,7 +48,8 @@ function setup() {
     getPackage: jest.fn().mockResolvedValue(judgePackage),
   } as jest.Mocked<LearningJudgePackagePort>;
   const repository = {
-    save: jest.fn().mockResolvedValue(saved),
+    getProblemSubmissionState: jest.fn().mockResolvedValue({ state: 'READY', submissionId: null }),
+    saveOfficialSubmission: jest.fn().mockResolvedValue(saved),
     markQueued: jest.fn().mockResolvedValue({ ...saved, status: SubmissionStatus.Queued }),
     markFailedToDispatch: jest.fn().mockResolvedValue(null),
   } as unknown as jest.Mocked<SubmissionRepositoryPort>;
@@ -63,7 +65,7 @@ describe('SubmitCodeUseCase', () => {
     const acceptance = await useCase.execute(input);
 
     expect(learning.getPackage).toHaveBeenCalledWith(input.problemId, 'python');
-    expect(repository.save).toHaveBeenCalledWith(
+    expect(repository.saveOfficialSubmission).toHaveBeenCalledWith(
       expect.objectContaining({
         kind: SubmissionKind.Submit,
         status: SubmissionStatus.Pending,
@@ -95,8 +97,51 @@ describe('SubmitCodeUseCase', () => {
     learning.getPackage.mockRejectedValue(new ProblemNotSubmittableError());
 
     await expect(useCase.execute(input)).rejects.toBeInstanceOf(ProblemNotSubmittableError);
-    expect(repository.save).not.toHaveBeenCalled();
+    expect(repository.saveOfficialSubmission).not.toHaveBeenCalled();
     expect(judge.publish).not.toHaveBeenCalled();
+  });
+
+  it.each(['JUDGING', 'SOLVED'] as const)(
+    'rejects a submission while the problem is %s',
+    async (state) => {
+      const { learning, repository, judge, useCase } = setup();
+      repository.getProblemSubmissionState.mockResolvedValue({
+        state,
+        submissionId: saved.publicId,
+      });
+
+      await expect(useCase.execute(input)).rejects.toMatchObject({ state });
+      expect(repository.getProblemSubmissionState).toHaveBeenCalledWith(
+        input.userId,
+        input.problemId,
+      );
+      expect(learning.getPackage).not.toHaveBeenCalled();
+      expect(repository.saveOfficialSubmission).not.toHaveBeenCalled();
+      expect(judge.publish).not.toHaveBeenCalled();
+    },
+  );
+
+  it('never publishes the request that loses a concurrent insert', async () => {
+    const { repository, judge, useCase } = setup();
+    repository.saveOfficialSubmission.mockRejectedValue(new AlreadySubmittedError());
+
+    repository.getProblemSubmissionState
+      .mockResolvedValueOnce({ state: 'READY', submissionId: null })
+      .mockResolvedValueOnce({ state: 'SOLVED', submissionId: saved.publicId });
+
+    await expect(useCase.execute(input)).rejects.toMatchObject({ state: 'SOLVED' });
+    expect(judge.publish).not.toHaveBeenCalled();
+  });
+
+  it('accepts a new attempt even when a failed submission is already in the history', async () => {
+    const { repository, judge, useCase } = setup();
+    repository.getProblemSubmissionState.mockResolvedValue({
+      state: 'READY',
+      submissionId: 'previous-submission-id',
+    });
+
+    await expect(useCase.execute(input)).resolves.toMatchObject({ id: saved.publicId });
+    expect(judge.publish).toHaveBeenCalledTimes(1);
   });
 
   it('ends the record as INTERNAL_ERROR instead of QUEUED when dispatch fails', async () => {

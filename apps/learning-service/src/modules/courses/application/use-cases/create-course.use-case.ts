@@ -1,3 +1,8 @@
+import {
+  createSlugBase,
+  createSlugCandidate,
+  SLUG_ATTEMPTS,
+} from '@learning/application/slug-generation';
 import type { TransactionRunner } from '@learning/modules/problems/application/ports/out/transaction-runner.port.out';
 import { Inject, Injectable } from '@nestjs/common';
 
@@ -14,7 +19,7 @@ import { COURSE_REPOSITORY, COURSE_TRANSACTION_RUNNER } from '@/modules/courses/
 import { Course } from '@/modules/courses/domain';
 import { DomainValidationError } from '@/modules/courses/domain/errors';
 import type { CourseRepository } from '@/modules/courses/domain/repositories';
-import { CreatedBy } from '@/modules/courses/domain/value-objects';
+import { CourseSlug, CreatedBy } from '@/modules/courses/domain/value-objects';
 
 @Injectable()
 export class CreateCourseUseCase implements ICreateCoursePortIn {
@@ -27,22 +32,35 @@ export class CreateCourseUseCase implements ICreateCoursePortIn {
 
   async execute(principal: Principal, command: CreateCourseCommand): Promise<ManagedCourseResult> {
     this.authorization.requirePermission(principal, 'course:create');
-    if (command.slug.value.toLowerCase() === 'managed') {
+    const requestedSlug = command.slug;
+    if (requestedSlug?.value.toLowerCase() === 'managed') {
       throw new DomainValidationError('slug', 'This slug is reserved for course management');
     }
-    const course = await this.transactionRunner.run(async () => {
-      if (!(await this.repository.isSlugAvailable(command.slug.value))) {
-        throw new DuplicateCourseSlugError('Course slug is already in use');
-      }
+    const base = createSlugBase(command.title.value, 'hoc-phan');
+    const firstCandidate = base === 'managed' ? 1 : 0;
+
+    for (let attempt = 0; attempt < SLUG_ATTEMPTS; attempt += 1) {
+      const slug =
+        requestedSlug ?? new CourseSlug(createSlugCandidate(base, firstCandidate + attempt));
       const created = Course.create({
-        slug: command.slug,
+        slug,
         title: command.title,
         description: command.description,
         createdBy: new CreatedBy(principal.userId),
       });
-      await this.repository.save(created);
-      return created;
-    });
-    return this.views.toManaged(course);
+      try {
+        await this.transactionRunner.run(async () => {
+          if (!(await this.repository.isSlugAvailable(slug.value))) {
+            throw new DuplicateCourseSlugError('Course slug is already in use');
+          }
+          await this.repository.save(created);
+        });
+      } catch (error) {
+        if (requestedSlug || !(error instanceof DuplicateCourseSlugError)) throw error;
+        continue;
+      }
+      return this.views.toManaged(created);
+    }
+    throw new DuplicateCourseSlugError('Could not allocate a course slug');
   }
 }

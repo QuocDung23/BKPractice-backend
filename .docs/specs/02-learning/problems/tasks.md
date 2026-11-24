@@ -587,3 +587,8 @@ code là chưa đủ.
 
 > File này là một danh sách kiểm tra triển khai, không phải một đặc tả. Không thêm yêu cầu và không
 > âm thầm thay đổi `spec.md` hay `plan.md` đã Approved trong lúc thực hiện các công việc này.
+
+## Định danh và danh mục thẻ — 2026-11-24
+
+- [x] Sinh slug từ tiêu đề và thử lại khi vi phạm ràng buộc slug hoặc UUID.
+- [x] Cung cấp danh mục thẻ dạng tên và ID qua Gateway để giảng viên chọn khi tạo bài.

@@ -1,4 +1,5 @@
 import { ConcurrentModificationError } from '@learning/modules/problems/application/errors/concurrent-modification.error';
+import { DuplicateProblemIdError } from '@learning/modules/problems/domain/errors/duplicate-problem-id.error';
 import { DuplicateSlugError } from '@learning/modules/problems/domain/errors/duplicate-slug.error';
 import { buildProblem } from '@learning/modules/problems/domain/testing/problem-test.factory';
 import { PublishStatus as EntityPublishStatus } from '@learning/modules/problems/entities/problem.entity';
@@ -28,6 +29,22 @@ describe('ProblemTypeOrmRepository unit', () => {
     const repository = new ProblemTypeOrmRepository(contextWith(manager), mapper);
 
     await expect(repository.save(problem)).rejects.toBeInstanceOf(DuplicateSlugError);
+  });
+
+  it('maps a duplicate generated problem ID without writing relations', async () => {
+    const driverError = Object.assign(new Error('duplicate key'), {
+      code: '23505',
+      constraint: 'problems_pkey',
+      detail: `Key (id)=(${PROBLEM_ID}) already exists.`,
+    });
+    const manager = {
+      insert: jest.fn().mockRejectedValue(new QueryFailedError('INSERT', [], driverError)),
+      query: jest.fn(),
+    };
+    const repository = new ProblemTypeOrmRepository(contextWith(manager), mapper);
+
+    await expect(repository.save(buildProblem())).rejects.toBeInstanceOf(DuplicateProblemIdError);
+    expect(manager.query).not.toHaveBeenCalled();
   });
 
   it('rethrows unrelated unique violations', async () => {

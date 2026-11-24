@@ -42,6 +42,14 @@ describe('Topic catalog API', () => {
     expect(response.body).toEqual({ items: [{ id: 'topic-arrays', name: 'Mảng' }] });
   });
 
+  it('returns the tag catalog separately and requires authentication', async () => {
+    expect((await get('/api/tags')).status).toBe(401);
+    expect(await get('/api/tags', studentHeaders())).toEqual({
+      status: 200,
+      body: { items: [{ id: 'tag-beginner', name: 'Cơ bản' }] },
+    });
+  });
+
   it('returns an empty catalog without an error', async () => {
     harness.topics.setCatalog([]);
 

@@ -16,6 +16,10 @@ import {
 import type { Relation } from 'typeorm';
 
 @Entity('submissions')
+@Index('UQ_submissions_official_attempt', ['userId', 'problemId'], {
+  unique: true,
+  where: `"official_attempt" AND "kind" = 'SUBMIT'`,
+})
 export class Submission {
   @PrimaryGeneratedColumn('uuid') id!: string;
   @Column({
@@ -32,6 +36,8 @@ export class Submission {
   @Column({ name: 'problem_id', type: 'uuid', nullable: true })
   problemId!: string | null;
   @Column({ type: 'enum', enum: SubmissionKind }) kind!: SubmissionKind;
+  @Column({ name: 'official_attempt', type: 'boolean', default: false })
+  officialAttempt!: boolean;
   @Column({ type: 'varchar', length: 20 }) language!: SupportedLanguage;
   @Column({ name: 'source_code', type: 'text' }) sourceCode!: string;
   @Column({ type: 'text', nullable: true }) stdin!: string | null;
