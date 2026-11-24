@@ -1,12 +1,13 @@
 import 'reflect-metadata';
 
-import { createHash } from 'node:crypto';
 import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 
 import learningDataSource from '@learning/database/data-source';
 import { seedTaxonomy } from '@learning/database/seed-taxonomy';
 import { type EntityManager } from 'typeorm';
+
+import { insertRows, SeedDataError, stableUuid } from '../seed-utils';
 
 interface Course {
   id: string;
@@ -84,23 +85,12 @@ interface Quiz {
   displayOrder: number;
 }
 
-class SeedDataError extends Error {}
 const createdAt = '2026-11-21T00:00:00.000Z';
-const namespace = Buffer.from('cbd1c9f01eb14d639c2e414ce456a502', 'hex');
-
-function stableUuid(name: string): string {
-  const bytes = createHash('sha1').update(namespace).update(name).digest().subarray(0, 16);
-  bytes[6] = (bytes[6]! & 0x0f) | 0x50;
-  bytes[8] = (bytes[8]! & 0x3f) | 0x80;
-  const hex = bytes.toString('hex');
-  return `${hex.slice(0, 8)}-${hex.slice(8, 12)}-${hex.slice(12, 16)}-${hex.slice(16, 20)}-${hex.slice(20)}`;
-}
-
 function readJson<T>(relativePath: string): T {
   return JSON.parse(readFileSync(resolve(process.cwd(), relativePath), 'utf8')) as T;
 }
 
-function readFixtures() {
+export function readLearningFixtures() {
   const courses = readJson<Course[]>('seed-data/data/learning/courses.json');
   const problems = courses.flatMap((_, index) =>
     readJson<Problem[]>(
@@ -163,32 +153,12 @@ function readFixtures() {
   return { courses, problems, questions, quizzes };
 }
 
-async function insertRows(
-  manager: EntityManager,
-  table: string,
-  columns: string[],
-  rows: unknown[][],
-  conflict = '(id)',
-): Promise<void> {
-  const batchSize = Math.max(1, Math.floor(60000 / columns.length));
-  for (let offset = 0; offset < rows.length; offset += batchSize) {
-    const batch = rows.slice(offset, offset + batchSize);
-    const params = batch.flat();
-    const values = batch
-      .map(
-        (_, rowIndex) =>
-          `(${columns.map((__, colIndex) => `$${rowIndex * columns.length + colIndex + 1}`).join(',')})`,
-      )
-      .join(',');
-    await manager.query(
-      `INSERT INTO ${table} (${columns.join(',')}) VALUES ${values} ON CONFLICT ${conflict} DO NOTHING`,
-      params,
-    );
-  }
-}
+export type LearningFixtures = ReturnType<typeof readLearningFixtures>;
 
-async function seedLearning(manager: EntityManager): Promise<void> {
-  const { courses, problems, questions, quizzes } = readFixtures();
+async function seedLearning(
+  manager: EntityManager,
+  { courses, problems, questions, quizzes }: LearningFixtures,
+): Promise<void> {
   await seedTaxonomy(manager);
   const topicRows: { id: string; name: string }[] = await manager.query(
     'SELECT id, name FROM topics',
@@ -477,17 +447,16 @@ async function seedLearning(manager: EntityManager): Promise<void> {
     throw new SeedDataError('Learning fixture row counts did not match the requested dataset.');
 }
 
-export async function seedLearningDatabase(): Promise<{
+export async function seedLearningDatabase(fixtures = readLearningFixtures()): Promise<{
   courses: number;
   chapters: number;
   problems: number;
   questions: number;
   quizzes: number;
 }> {
-  const fixtures = readFixtures();
   await learningDataSource.initialize();
   try {
-    await learningDataSource.transaction((manager) => seedLearning(manager));
+    await learningDataSource.transaction((manager) => seedLearning(manager, fixtures));
   } finally {
     await learningDataSource.destroy();
   }

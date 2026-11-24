@@ -8,17 +8,26 @@ import { seedRbac } from '@identity/database/seed-rbac';
 import * as argon2 from 'argon2';
 import { type EntityManager } from 'typeorm';
 
-interface DemoUser {
+import { SeedDataError, stableUuid } from '../seed-utils';
+
+export interface DemoUser {
   id: string;
   studentId: string | null;
   displayName: string;
   email: string;
   role: 'STUDENT' | 'LECTURER';
+  bio?: string;
 }
 
-class SeedDataError extends Error {}
+function readStudentCount(): number {
+  const count = Number(process.env.SEED_DEMO_STUDENTS ?? '200');
+  if (!Number.isInteger(count) || count < 1 || count > 1000) {
+    throw new SeedDataError('SEED_DEMO_STUDENTS must be an integer from 1 to 1000.');
+  }
+  return count;
+}
 
-function readUsers(): DemoUser[] {
+export function readDemoUsers(studentCount = readStudentCount()): DemoUser[] {
   const users = JSON.parse(
     readFileSync(resolve(process.cwd(), 'seed-data/data/identity/users.json'), 'utf8'),
   ) as DemoUser[];
@@ -29,7 +38,34 @@ function readUsers(): DemoUser[] {
     users.some((user) => !user.id || !user.displayName || !user.email)
   )
     throw new SeedDataError('Identity fixture must contain two students and one lecturer.');
-  return users;
+  const surnames = ['Nguyễn', 'Trần', 'Lê', 'Phạm', 'Hoàng', 'Võ', 'Đặng', 'Phan', 'Bùi', 'Đỗ'];
+  const middleNames = ['Minh', 'Gia', 'Thanh', 'Khánh', 'Hải', 'Nhật', 'Ngọc'];
+  const givenNames = ['An', 'Bảo', 'Chi', 'Duy', 'Giang', 'Hà', 'Huy', 'Linh', 'Nam', 'Vy'];
+  return users.concat(
+    Array.from({ length: studentCount + 12 }, (_, index): DemoUser => {
+      const isLecturer = index >= studentCount;
+      const number = isLecturer ? index - studentCount + 1 : index + 1;
+      const suffix = String(number).padStart(4, '0');
+      const key = isLecturer ? `lecturer-${suffix}` : `student-${suffix}`;
+      const nameIndex = isLecturer ? number + 39 : number - 1;
+      return {
+        id: stableUuid(`ui-seed:identity:${key}`),
+        studentId: isLecturer ? null : `99000${suffix}`,
+        displayName: [
+          surnames[nameIndex % surnames.length],
+          middleNames[Math.floor(nameIndex / surnames.length) % middleNames.length],
+          givenNames[
+            Math.floor(nameIndex / (surnames.length * middleNames.length)) % givenNames.length
+          ],
+        ].join(' '),
+        email: `${key}@bkpractice.example.test`,
+        role: isLecturer ? 'LECTURER' : 'STUDENT',
+        bio: isLecturer
+          ? 'Hồ sơ giảng viên mô phỏng dùng để kiểm thử BKPractice.'
+          : 'Sinh viên mô phỏng đang luyện tập cấu trúc dữ liệu và giải thuật.',
+      };
+    }),
+  );
 }
 
 async function seedUsers(
@@ -50,11 +86,10 @@ async function seedUsers(
       id: string;
       student_id: string | null;
       email: string;
-      display_name: string | null;
       status: string;
       deleted_at: Date | null;
     }[] = await manager.query(
-      `SELECT id, student_id, email, display_name, status, deleted_at
+      `SELECT id, student_id, email, status, deleted_at
          FROM users
         WHERE id = $1 OR LOWER(email) = LOWER($2)
            OR ($3::varchar IS NOT NULL AND student_id = $3)
@@ -69,7 +104,6 @@ async function seedUsers(
       (existing.id !== user.id ||
         existing.student_id !== user.studentId ||
         existing.email.toLowerCase() !== user.email.toLowerCase() ||
-        existing.display_name !== user.displayName ||
         existing.status !== 'ACTIVE' ||
         existing.deleted_at !== null)
     )
@@ -85,17 +119,11 @@ async function seedUsers(
       );
     }
 
-    const profiles: { display_name: string }[] = await manager.query(
-      'SELECT display_name FROM profiles WHERE user_id = $1 FOR UPDATE',
-      [user.id],
+    await manager.query(
+      `INSERT INTO profiles (user_id, display_name, avatar_url, bio)
+       VALUES ($1, $2, NULL, $3) ON CONFLICT (user_id) DO NOTHING`,
+      [user.id, user.displayName, user.bio ?? null],
     );
-    if (profiles.length && profiles[0]!.display_name !== user.displayName)
-      throw new SeedDataError(`Profile fixture conflicts for ${user.email}.`);
-    if (!profiles.length)
-      await manager.query(
-        'INSERT INTO profiles (user_id, display_name, avatar_url, bio) VALUES ($1, $2, NULL, NULL)',
-        [user.id, user.displayName],
-      );
 
     const expectedRoleId = roleIds.get(user.role);
     if (!expectedRoleId) throw new SeedDataError(`Missing Identity role ${user.role}.`);
@@ -112,11 +140,10 @@ async function seedUsers(
   }
 }
 
-export async function seedIdentity(): Promise<number> {
+export async function seedIdentity(users = readDemoUsers()): Promise<number> {
   const password = process.env.ACCOUNT_IMPORT_PASSWORD;
   if (!password || password.length > 128)
     throw new SeedDataError('Set a valid ACCOUNT_IMPORT_PASSWORD in the environment.');
-  const users = readUsers();
   await identityDataSource.initialize();
   try {
     await identityDataSource.transaction((manager) => seedUsers(manager, users, password));
