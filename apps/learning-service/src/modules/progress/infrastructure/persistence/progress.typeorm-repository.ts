@@ -6,6 +6,12 @@ import type { ProgressRepository, SolvedProblemPage } from '@/modules/progress/d
 import { Progress, ProgressStatus } from '@/modules/progress/entities';
 import { ProgressTransactionContext } from '@/modules/progress/infrastructure/persistence/progress-transaction-context';
 
+function xpForProblem(problemIdParameter: string): string {
+  return `(SELECT CASE problem.difficulty
+             WHEN 'EASY' THEN 10 WHEN 'MEDIUM' THEN 20 WHEN 'HARD' THEN 30
+           END FROM problems problem WHERE problem.id = ${problemIdParameter})`;
+}
+
 @Injectable()
 export class ProgressTypeOrmRepository implements ProgressRepository {
   constructor(private readonly context: ProgressTransactionContext) {}
@@ -65,8 +71,8 @@ export class ProgressTypeOrmRepository implements ProgressRepository {
 
   async insertIfAbsent(progress: ProblemProgress): Promise<boolean> {
     const rows: unknown = await this.context.requireManager().query(
-      `INSERT INTO progress (user_id, problem_id, status, best_score, solved_at, last_event_id)
-       VALUES ($1, $2, 'SOLVED', $3, $4, $5)
+      `INSERT INTO progress (user_id, problem_id, status, best_score, solved_at, last_event_id, awarded_xp)
+       VALUES ($1, $2, 'SOLVED', $3, $4, $5, ${xpForProblem('$2')})
        ON CONFLICT (user_id, problem_id) DO NOTHING RETURNING id`,
       [
         progress.userId,
@@ -103,15 +109,20 @@ export class ProgressTypeOrmRepository implements ProgressRepository {
   }
 
   async save(progress: ProblemProgress): Promise<void> {
-    const result = await this.context.requireManager().getRepository(Progress).update(
-      { userId: progress.userId, problemId: progress.problemId },
-      {
+    const result = await this.context
+      .requireManager()
+      .createQueryBuilder()
+      .update(Progress)
+      .set({
         status: ProgressStatus.Solved,
         bestScore: progress.bestScore,
         solvedAt: progress.solvedAt,
         lastEventId: progress.lastEventId,
-      },
-    );
+        awardedXp: () => `COALESCE(awarded_xp, ${xpForProblem(':problemId')})`,
+      })
+      .where({ userId: progress.userId, problemId: progress.problemId })
+      .setParameter('problemId', progress.problemId)
+      .execute();
     if (result.affected !== 1) throw new Error('Progress disappeared during accepted submission');
   }
 }

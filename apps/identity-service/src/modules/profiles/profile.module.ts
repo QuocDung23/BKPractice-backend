@@ -17,10 +17,11 @@ import {
   TypeormProfileRepository,
 } from '@/modules/profiles/infrastructure';
 import { ProfileController } from '@/modules/profiles/presentation';
+import { LeaderboardProfilesController } from '@/modules/profiles/presentation/leaderboard-profiles.controller';
 
 @Module({
   imports: [AuthModule],
-  controllers: [ProfileController],
+  controllers: [ProfileController, LeaderboardProfilesController],
   providers: [
     TypeormProfileAccountContext,
     TypeormProfileRepository,
@@ -41,6 +42,6 @@ import { ProfileController } from '@/modules/profiles/presentation';
 })
 export class ProfileModule implements NestModule {
   configure(consumer: MiddlewareConsumer): void {
-    consumer.apply(RequestIdMiddleware).forRoutes(ProfileController);
+    consumer.apply(RequestIdMiddleware).forRoutes(ProfileController, LeaderboardProfilesController);
   }
 }

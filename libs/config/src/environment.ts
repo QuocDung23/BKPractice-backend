@@ -37,6 +37,7 @@ const origins = z.string().refine(
 const serviceSchemas: Record<ServiceName, z.ZodObject> = {
   'api-gateway': commonSchema.extend({
     API_GATEWAY_PORT: port.default(3000),
+    INTERNAL_SERVICE_SECRET: secret.optional(),
     JWT_ACCESS_SECRET: secret,
     IDENTITY_SERVICE_URL: url,
     LEARNING_SERVICE_URL: url,

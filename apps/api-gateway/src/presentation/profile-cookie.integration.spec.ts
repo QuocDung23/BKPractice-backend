@@ -112,6 +112,7 @@ describe('Learning authenticated transport', () => {
   const secret = 'a'.repeat(32);
   const config = new ConfigService({
     JWT_ACCESS_SECRET: secret,
+    INTERNAL_SERVICE_SECRET: 'test-leaderboard-gateway-secret',
     CORS_ORIGINS: 'https://app.example',
     IDENTITY_SERVICE_URL: 'http://identity:3001',
     LEARNING_SERVICE_URL: 'http://learning:3002',
@@ -144,6 +145,7 @@ describe('Learning authenticated transport', () => {
     ['POST', '/api/problems/id/test-cases'],
     ['GET', '/api/courses'],
     ['GET', '/api/progress/me/problems'],
+    ['GET', '/api/leaderboard'],
     ['GET', '/api/recommendations'],
   ];
   function createRequest(method: string, path: string): Request {
@@ -213,13 +215,17 @@ describe('Learning authenticated transport', () => {
           'x-request-id': expect.any(String) as unknown,
         }),
       );
-      for (const header of [
-        'cookie',
-        'x-internal-service-secret',
-        'x-internal-other',
-        'x-auth-other',
-      ])
+      for (const header of ['cookie', 'x-internal-other', 'x-auth-other'])
         expect(options.headers).not.toHaveProperty(header);
+      if (path === '/api/leaderboard') {
+        expect(options.headers).toHaveProperty(
+          'x-internal-service-secret',
+          'test-leaderboard-gateway-secret',
+        );
+        expect(response.setHeader).toHaveBeenCalledWith('Cache-Control', 'private, no-store');
+      } else {
+        expect(options.headers).not.toHaveProperty('x-internal-service-secret');
+      }
       expect(response.setHeader).toHaveBeenCalledWith(
         'x-request-id',
         request.headers['x-request-id'],

@@ -5,6 +5,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
 import { CoursesModule } from './modules/courses/courses.module';
+import { LeaderboardModule } from './modules/leaderboard/leaderboard.module';
 import { learningEntities } from './modules/learning.entities';
 import { ProblemsModule } from './modules/problems/problems.module';
 import { ProgressModule } from './modules/progress/progress.module';
@@ -24,6 +25,7 @@ import { QuizzesModule } from '@/modules/quizzes/quizzes.module';
     QuizzesModule,
     CoursesModule,
     ProgressModule,
+    LeaderboardModule,
     HealthModule.forService('learning-service'),
   ],
 })

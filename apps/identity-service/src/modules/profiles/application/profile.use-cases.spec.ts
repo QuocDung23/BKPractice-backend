@@ -39,6 +39,7 @@ describe('ProfileUseCases', () => {
     };
     repository = {
       find: jest.fn(async () => saved),
+      listLeaderboardStudents: jest.fn(async () => []),
       searchByDisplayName: jest.fn(async () => ({ items: [], hasMore: false })),
       loadOrCreate: jest.fn(async (userId, name) => {
         saved ??= {
@@ -144,6 +145,29 @@ describe('ProfileUseCases', () => {
     await expect(cases.getPublic('student-id')).rejects.toThrow('not_found');
   });
 
+  it('signs avatars only for leaderboard rows that need display profiles', async () => {
+    jest.mocked(repository.listLeaderboardStudents).mockResolvedValue([
+      { userId: 'student-id', displayName: ' Nguyễn An ', avatarReference: 'private-avatar' },
+      { userId: 'student-no-profile', displayName: null, avatarReference: null },
+    ]);
+    jest.mocked(avatars.signReadUrl).mockResolvedValue('https://example.com/signed-avatar');
+    const ids = ['student-id', 'student-no-profile'];
+
+    await expect(cases.listLeaderboardStudents(ids, false)).resolves.toEqual([
+      { userId: 'student-id' },
+      { userId: 'student-no-profile' },
+    ]);
+    expect(avatars.signReadUrl).not.toHaveBeenCalled();
+    await expect(cases.listLeaderboardStudents(ids, true)).resolves.toEqual([
+      {
+        userId: 'student-id',
+        displayName: 'Nguyễn An',
+        avatar: 'https://example.com/signed-avatar',
+      },
+      { userId: 'student-no-profile', displayName: 'Sinh viên', avatar: null },
+    ]);
+  });
+
   it('searches the trimmed Profile name and returns only public fields with signed avatars', async () => {
     jest.mocked(repository.searchByDisplayName).mockResolvedValueOnce({
       items: [
@@ -154,7 +178,11 @@ describe('ProfileUseCases', () => {
     });
     expect(await cases.searchProfiles('  Nguyễn  ', 2, 2)).toEqual({
       items: [
-        { userId: 'other-id', displayName: 'Nguyễn An', avatar: 'https://signed.example/avatar-key' },
+        {
+          userId: 'other-id',
+          displayName: 'Nguyễn An',
+          avatar: 'https://signed.example/avatar-key',
+        },
         { userId: 'third-id', displayName: 'Nguyễn Bình', avatar: null },
       ],
       page: 2,
