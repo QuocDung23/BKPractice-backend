@@ -670,16 +670,17 @@ describe('Courses API (18 routes of the LRN-003 plan)', () => {
       expect(stored.body.description).toBeNull();
     });
 
-    it('rejects missing, mistyped and empty fields with details', async () => {
-      for (const body of [
-        { slug: 'x' },
-        { title: 'X' },
-        { slug: 1, title: 'X' },
-        { slug: 'x', title: '   ' },
-      ]) {
-        const res = await call('POST', '/api/courses', { body });
-        expect(res.status).toBe(400);
-      }
+    it.each([
+      { reason: 'a missing title', body: { slug: 'x' } },
+      { reason: 'a numeric title', body: { title: 1 } },
+      { reason: 'a blank title', body: { title: '   ' } },
+      { reason: 'a numeric slug', body: { slug: 1, title: 'X' } },
+      { reason: 'an empty slug', body: { slug: '', title: 'X' } },
+      { reason: 'a null slug', body: { slug: null, title: 'X' } },
+    ])('rejects $reason without storing a course', async ({ body }) => {
+      const res = await call('POST', '/api/courses', { body });
+      expect(res.status).toBe(400);
+      expect(repository.saveCount).toBe(0);
     });
 
     it('rejects invalid pagination, ids and reorder payloads', async () => {
