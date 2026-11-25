@@ -46,6 +46,11 @@ jobs:
           test/uc02-practice-submission.integration.spec.ts
           test/uc03-problem-bank.integration.spec.ts
           apps/learning-service/src/modules/courses/courses.module.integration.spec.ts
+      - name: Run isolated Community PostgreSQL suite
+        env:
+          COMMUNITY_TEST_POSTGRES_CONTAINER: ${{ job.services.postgres.id }}
+          COMMUNITY_TEST_POSTGRES_USER: ci
+        run: node scripts/test-community-postgres.mjs
       - run: pnpm build
 
   publish:

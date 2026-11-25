@@ -101,6 +101,11 @@ export class GatewayProxyService {
     for (const header of Object.keys(headers)) {
       if (header.startsWith('x-internal-')) delete headers[header];
     }
+    if (target.service === 'Community') {
+      headers['x-internal-community-secret'] = this.config.getOrThrow<string>(
+        'COMMUNITY_GATEWAY_SECRET',
+      );
+    }
     delete headers.host;
     delete headers['content-length'];
     if (!AUTH_COOKIE_REQUEST_ROUTES.has(`${request.method} ${request.path}`)) delete headers.cookie;

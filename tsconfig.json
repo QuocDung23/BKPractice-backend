@@ -41,7 +41,10 @@
       "@/infrastructure/persistence": ["apps/learning-service/src/infrastructure/persistence"],
       "@/modules/problems/*": ["apps/learning-service/src/modules/problems/*"],
       "@/modules/progress/*": ["apps/learning-service/src/modules/progress/*"],
-      "@/modules/quizzes/*": ["apps/learning-service/src/modules/quizzes/*"]
+      "@/modules/quizzes/*": ["apps/learning-service/src/modules/quizzes/*"],
+      "@/common/auth": ["apps/community-service/src/common/auth"],
+      "@/common/auth/*": ["apps/community-service/src/common/auth/*"],
+      "@/modules/posts/*": ["apps/community-service/src/modules/posts/*"]
     }
   },
   "include": [

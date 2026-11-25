@@ -12,6 +12,7 @@ const config = new ConfigService({
   LEARNING_SERVICE_URL: 'http://learning.internal:3002',
   SUBMISSION_SERVICE_URL: 'http://submission.internal:3003',
   COMMUNITY_SERVICE_URL: 'http://community.internal:3005',
+  COMMUNITY_GATEWAY_SECRET: 'test-community-secret-32-characters',
 });
 
 function createRequest(method: string, path: string): Request {

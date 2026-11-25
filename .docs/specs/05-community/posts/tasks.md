@@ -38,7 +38,7 @@ không thêm hành vi ngoài `spec.md` và không thay đổi `plan.md`.
 
 ## Nền dùng chung trong Community
 
-- [ ] **COM-001-T004 — Guard định danh tin cậy.** Tạo `common/auth/` với `TrustedUserGuard` (đọc
+- [x] **COM-001-T004 — Guard định danh tin cậy.** Tạo `common/auth/` với `TrustedUserGuard` (đọc
       `x-auth-user-id`, thiếu hoặc không phải UUID → `401`) và decorator `@TrustedPrincipal()` ở
       `trusted-principal.decorator.ts`, trả `Principal { userId, permissions }` (`x-auth-permissions`
       thiếu → tập rỗng).
@@ -279,3 +279,44 @@ acceptsInteraction }` hoặc `NotFoundError`; được `PostsModule` export cho 
 
 > File này là danh sách kiểm tra triển khai, không phải đặc tả. Không thêm yêu cầu và không âm thầm
 > thay đổi `spec.md` hay `plan.md` đã Approved trong lúc thực hiện.
+
+## Authentication boundary patch - 2026-11-24
+
+COM-001-T004 was completed and verified under the owner-approved [Gateway authentication scope addendum](../../../pm/plan/community/posts/2026-11-24-gateway-auth-boundary.md). The patch additionally authenticates the Gateway hop with a dedicated credential and restricts Docker publication. Other implementation tasks remain open. The old plan survey says Community has no tests; the checkout already contained 9 tests before this patch, and these were run successfully.
+
+## Existing endpoint validation patch - 2026-11-24
+
+The owner authorized the bounded validation patch on existing APIs. Execution details: [request validation plan](../../../pm/plan/community/posts/2026-11-24-request-validation.md).
+
+- [x] Reject whitespace-only content after trim and enforce the existing trimmed length limits.
+- [x] Return 400 for malformed Post UUIDs on existing comment/like routes.
+- [x] Enforce matching Post scope/target UUIDs and reject unrelated targets.
+- [x] Verify through 49 Community tests, lint, typecheck and Community build; record the work note.
+
+These entries cover the existing endpoint patch only. Full domain value objects, complete feature DTOs/controllers and other larger tasks above remain open; the full COM-002 dependency gate is not claimed complete.
+
+## Existing hidden-interaction / Post-like patch - 2026-11-24
+
+Owner-requested bounded repair: [execution plan](../../../pm/plan/community/posts/2026-11-24-hidden-interactions-likes.md).
+
+- [x] Enforce hidden-Post interaction policy and reject replies to hidden parent comments.
+- [x] Replace the existing Post toggle with PUT/DELETE, each returning `{ liked, likeCount }` with HTTP 200.
+- [x] Use transactions, scoped deletion and conflict-safe insertion with the existing unique constraint.
+- [x] Verify 63 Community tests, PostgreSQL SQL generation, lint, typecheck and Community build; document frontend migration and remaining live-database verification.
+
+This patch does not complete the larger feature tasks or the full COM-003 dependency gate. Comment reactions, full feed projections and soft-delete workflows remain open. No database migration is included.
+
+## Existing feed reaction state - 2026-11-24
+
+- [x] Add numeric likeCount and caller-specific likedByMe to the current Post list using one grouped reaction query; skip that query for an empty feed.
+- [x] Preserve visibility, ordering and the 50-item limit; document the typed Swagger response.
+- [x] Verify 65 Community regression/unit tests and 11 isolated real PostgreSQL/HTTP cases, lint, typecheck and Community build.
+
+Evidence: [feed reaction work note](../../../worked/community/posts/2026-11-24-feed-reactions.md). This implements the current list projection only; full detail/Comment projections and other unfinished tasks remain open.
+
+## Bounded author lifecycle slice (2026-11-25)
+
+User explicitly selected detail/paging/filter and author edit/soft-delete first; author enrichment and realtime deferred. Execution plan: [post lifecycle](../../../pm/plan/community/posts/2026-11-24-post-lifecycle.md). Full feature checklist above remains open: title, management lists, restoration and full architecture extraction are not claimed complete.
+
+- [x] Verify implemented ownership checks, soft deletion, deleted-ancestor visibility and interaction blocking against isolated PostgreSQL (70 tests passed).
+- [x] Verify API regression, lint, typecheck and Community build; evidence: [worked entry](../../../worked/community/posts/2026-11-24-post-lifecycle.md).
