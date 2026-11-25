@@ -13,7 +13,7 @@ export class ListTopicsUseCase implements IListTopicsPortIn {
     private readonly topicTagReader: TopicTagReader,
   ) {}
 
-  async execute(): Promise<readonly TopicCatalogEntry[]> {
-    return this.topicTagReader.listTopics();
+  async execute(catalog: 'topics' | 'tags' = 'topics'): Promise<readonly TopicCatalogEntry[]> {
+    return catalog === 'tags' ? this.topicTagReader.listTags() : this.topicTagReader.listTopics();
   }
 }

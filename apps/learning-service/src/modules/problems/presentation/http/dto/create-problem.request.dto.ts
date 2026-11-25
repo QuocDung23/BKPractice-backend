@@ -30,11 +30,15 @@ import {
 } from './content.dto';
 
 export class CreateProblemRequestDto {
-  @ApiProperty({ maxLength: 220 })
+  @ApiPropertyOptional({
+    maxLength: 220,
+    description: 'Generated from the title when omitted. Unique and immutable.',
+  })
+  @ValidateIf((_, value) => value !== undefined)
   @IsString()
   @Length(1, 220)
   @Matches(/^[a-z0-9]+(?:-[a-z0-9]+)*$/)
-  slug!: string;
+  slug?: string;
 
   @ApiProperty({ maxLength: 200 })
   @IsString()

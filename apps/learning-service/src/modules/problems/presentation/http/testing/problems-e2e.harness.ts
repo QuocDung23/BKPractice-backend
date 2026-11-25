@@ -34,6 +34,8 @@ import { RepublishProblemUseCase } from '@learning/modules/problems/application/
 import { RestoreProblemUseCase } from '@learning/modules/problems/application/use-cases/restore-problem.use-case';
 import { SoftDeleteProblemUseCase } from '@learning/modules/problems/application/use-cases/soft-delete-problem.use-case';
 import { UpdateProblemUseCase } from '@learning/modules/problems/application/use-cases/update-problem.use-case';
+import { DuplicateProblemIdError } from '@learning/modules/problems/domain/errors/duplicate-problem-id.error';
+import { DuplicateSlugError } from '@learning/modules/problems/domain/errors/duplicate-slug.error';
 import { Problem } from '@learning/modules/problems/domain/problem.aggregate';
 import type { ProblemSnapshot } from '@learning/modules/problems/domain/problem.aggregate';
 import type { ProblemRepository } from '@learning/modules/problems/domain/repositories/problem.repository.port.out';
@@ -224,6 +226,13 @@ export class InMemoryProblemRepository implements ProblemRepository {
   async save(problem: Problem, expectedUpdatedAt?: Date): Promise<void> {
     const current = this.stored.get(problem.id.value);
 
+    if (expectedUpdatedAt === undefined) {
+      if (current) throw new DuplicateProblemIdError();
+      if ([...this.stored.values()].some((item) => item.slug.value === problem.slug.value)) {
+        throw new DuplicateSlugError(problem.slug.value);
+      }
+    }
+
     if (
       expectedUpdatedAt !== undefined &&
       current !== undefined &&
@@ -350,6 +359,10 @@ export class InMemoryTopicTagReader implements TopicTagReader {
 
   async listTopics(): Promise<readonly TopicCatalogEntry[]> {
     return this.catalog;
+  }
+
+  async listTags(): Promise<readonly TopicCatalogEntry[]> {
+    return [{ id: 'tag-beginner', name: 'Cơ bản' }];
   }
 
   setCatalog(catalog: readonly TopicCatalogEntry[]): void {

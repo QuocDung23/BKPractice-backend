@@ -61,7 +61,7 @@ export class ProblemRequestMapper {
     };
 
     return {
-      slug: new Slug(dto.slug),
+      ...(dto.slug === undefined ? {} : { slug: new Slug(dto.slug) }),
       title: new ProblemTitle(dto.title),
       statement: new ProblemStatement(dto.statement),
       inputSpecification: nullableString(dto.inputSpecification, InputSpecification),

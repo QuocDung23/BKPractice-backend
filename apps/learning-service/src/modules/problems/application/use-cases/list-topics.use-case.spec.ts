@@ -9,6 +9,7 @@ function createReader(overrides: Partial<TopicTagReader> = {}): TopicTagReader {
     findTopicNames: jest.fn(),
     findTagNames: jest.fn(),
     listTopics: jest.fn(),
+    listTags: jest.fn(),
     ...overrides,
   };
 }

@@ -1,12 +1,13 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
-import { IsNotEmpty, IsOptional, IsString, Matches, MaxLength } from 'class-validator';
+import { IsNotEmpty, IsOptional, IsString, Matches, MaxLength, ValidateIf } from 'class-validator';
 
 export class CreateCourseRequestDto {
-  @ApiProperty({
+  @ApiPropertyOptional({
     maxLength: 220,
     description:
-      'Unique, immutable after creation. The slug managed is reserved (case-insensitive).',
+      'Generated from the title when omitted. Unique and immutable. The slug managed is reserved.',
   })
+  @ValidateIf((_, value) => value !== undefined)
   @IsString()
   @IsNotEmpty()
   @MaxLength(220)
@@ -14,7 +15,7 @@ export class CreateCourseRequestDto {
     message:
       'slug chỉ gồm chữ thường a-z, số 0-9 và dấu gạch ngang, không bắt đầu/kết thúc bằng gạch ngang.',
   })
-  slug!: string;
+  slug?: string;
 
   @ApiProperty({ maxLength: 200 })
   @IsString()

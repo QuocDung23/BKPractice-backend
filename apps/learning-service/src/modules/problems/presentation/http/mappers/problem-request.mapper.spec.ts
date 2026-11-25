@@ -68,7 +68,7 @@ describe('ProblemRequestMapper', () => {
       ],
     });
 
-    expect(command.slug.value).toBe('two-sum');
+    expect(command.slug?.value).toBe('two-sum');
     expect(command.title.value).toBe('Two Sum');
     expect(command.statement.value).toBe('Find two numbers.');
     expect(command.inputSpecification?.value).toBe('An array and a target.');

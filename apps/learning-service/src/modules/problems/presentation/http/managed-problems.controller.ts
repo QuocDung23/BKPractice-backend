@@ -115,7 +115,7 @@ export class ManagedProblemsController {
   @ApiOperation({
     summary: 'Create a draft problem',
     description:
-      'Creates a new DRAFT problem. Requires ADMIN role and problem:create permission. The slug must be unique. Minimum required fields: slug, title, statement, problemType, difficulty. Other fields use sensible defaults.',
+      'Creates a new DRAFT problem. Requires problem:create permission. The slug is generated from the title unless supplied. Required fields: title, statement, problemType, difficulty.',
   })
   @ApiOkResponse({ type: ManagedProblemResponseDto, description: 'Created draft problem' })
   @ApiBadRequestResponse({ description: 'Validation error, duplicate slug, or unknown reference' })

@@ -39,6 +39,17 @@ và [`docs/architecture/submission-service.md`](../../../architecture/submission
 use case, cùng repository, judge-job, learning-client, realtime và accepted-event port. Kế hoạch này
 bám đúng danh sách đó.
 
+## Nộp lại sau khi chấm thất bại
+
+Luồng được chủ sở hữu xác nhận ngày 2026-11-24. Mỗi tài khoản có tối đa một lượt đang chấm trên
+mỗi bài. Kết quả thất bại giải phóng lượt, còn `ACCEPTED` khóa nộp cho bài đã giải. Submission ghi
+phán quyết và cập nhật khóa trong cùng thao tác ghi. Sự kiện `submission.accepted` dùng contract
+hiện có, Learning ghi XP cho lần giải đúng đầu tiên.
+
+`GET /api/submissions/problems/:problemId/status` trả `state` và `submissionId` cho chủ sở hữu đã
+xác thực. `READY` cho phép nộp, `JUDGING` biểu thị một lượt đang chờ kết quả, `SOLVED` biểu thị một
+lượt đã đạt `ACCEPTED`. Migration chuyển đổi khóa của các bản ghi có sẵn và giữ lịch sử nộp.
+
 ## Ảnh hưởng tới mã nguồn hiện có
 
 | Tệp hiện có                                         | Vấn đề cần xử lý                                                                                      |

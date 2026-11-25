@@ -38,10 +38,11 @@ export class VerifyPasswordResetOtp {
   async execute(email: string, otp: string): Promise<{ resetToken: string }> {
     await this.store.assertAvailable();
     const account = await this.accounts.findByEmail(email);
-    if (!canResetPassword(account)) throw new PasswordResetFailure('invalid_request');
+    if (!canResetPassword(account))
+      throw new PasswordResetFailure('invalid_request', 'otp_invalid');
     const resetToken = randomBytes(32).toString('base64url');
     const userId = await this.store.verifyOtp(account.userId, account.email, otp, resetToken);
-    if (userId !== account.userId) throw new PasswordResetFailure('invalid_request');
+    if (userId !== account.userId) throw new PasswordResetFailure('invalid_request', 'otp_invalid');
     return { resetToken };
   }
 }
@@ -53,6 +54,6 @@ export class ResetPasswordWithGrant {
     if (newPassword.length < 8 || newPassword.length > 128)
       throw new PasswordResetFailure('invalid_request', 'password_length');
     if (!(await this.accounts.resetPasswordWithGrant(resetToken, newPassword)))
-      throw new PasswordResetFailure('invalid_request');
+      throw new PasswordResetFailure('invalid_request', 'reset_session_invalid');
   }
 }

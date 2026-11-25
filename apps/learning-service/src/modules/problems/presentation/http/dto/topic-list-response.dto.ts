@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 
-import { TopicResponseDto } from './problem-response.dto';
+import { TagResponseDto, TopicResponseDto } from './problem-response.dto';
 
 /**
  * LRN-010: the topic catalog is a dictionary for filters. It has no pagination and no
@@ -9,4 +9,9 @@ import { TopicResponseDto } from './problem-response.dto';
 export class TopicListResponseDto {
   @ApiProperty({ type: [TopicResponseDto] })
   items!: TopicResponseDto[];
+}
+
+export class TagListResponseDto {
+  @ApiProperty({ type: [TagResponseDto] })
+  items!: TagResponseDto[];
 }

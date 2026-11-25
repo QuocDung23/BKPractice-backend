@@ -1,14 +1,5 @@
-import {
-  Controller,
-  ForbiddenException,
-  Get,
-  Header,
-  Inject,
-  Query,
-  ServiceUnavailableException,
-  UseFilters,
-  UseGuards,
-} from '@nestjs/common';
+import { AppHttpException } from '@app/common';
+import { Controller, Get, Header, Inject, Query, UseFilters, UseGuards } from '@nestjs/common';
 import { ApiBearerAuth, ApiOperation, ApiPropertyOptional, ApiTags } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
 import { IsIn, IsInt, Max, Min } from 'class-validator';
@@ -59,12 +50,27 @@ export class LeaderboardController {
   @Header('Cache-Control', 'private, no-store')
   @ApiOperation({ summary: 'Rank active students by practice XP in the current week or month' })
   async get(@TrustedPrincipal() principal: Principal, @Query() query: LeaderboardQueryDto) {
-    if (!principal.roles.includes('STUDENT')) throw new ForbiddenException();
+    if (!principal.roles.includes('STUDENT'))
+      throw new AppHttpException(
+        403,
+        'LEADERBOARD_STUDENT_REQUIRED',
+        'Bảng xếp hạng luyện tập dành cho tài khoản sinh viên.',
+      );
     try {
       return await this.getLeaderboard(query, principal.userId);
     } catch (error) {
-      if (error instanceof IneligibleLeaderboardViewer) throw new ForbiddenException();
-      if (error instanceof LeaderboardProfilesUnavailable) throw new ServiceUnavailableException();
+      if (error instanceof IneligibleLeaderboardViewer)
+        throw new AppHttpException(
+          403,
+          'LEADERBOARD_VIEWER_INELIGIBLE',
+          'Bảng xếp hạng chỉ dành cho tài khoản sinh viên đang hoạt động.',
+        );
+      if (error instanceof LeaderboardProfilesUnavailable)
+        throw new AppHttpException(
+          503,
+          'LEADERBOARD_PROFILES_UNAVAILABLE',
+          'Chưa lấy được hồ sơ sinh viên để hiển thị bảng xếp hạng. Vui lòng thử lại sau ít phút.',
+        );
       throw error;
     }
   }

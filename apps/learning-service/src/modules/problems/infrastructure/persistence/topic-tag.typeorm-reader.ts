@@ -35,9 +35,17 @@ export class TopicTagTypeOrmReader implements TopicTagReader {
   }
 
   async listTopics(): Promise<readonly TopicCatalogEntry[]> {
+    return this.listCatalog('topics');
+  }
+
+  async listTags(): Promise<readonly TopicCatalogEntry[]> {
+    return this.listCatalog('tags');
+  }
+
+  private async listCatalog(table: 'topics' | 'tags'): Promise<readonly TopicCatalogEntry[]> {
     const rows: NameRow[] = await this.transactionContext
       .getManager()
-      .query('SELECT "id", "name" FROM "topics" ORDER BY "name" ASC');
+      .query(`SELECT "id", "name" FROM "${table}" ORDER BY "name" ASC`);
 
     return rows.map((row) => ({ id: row.id, name: row.name }));
   }

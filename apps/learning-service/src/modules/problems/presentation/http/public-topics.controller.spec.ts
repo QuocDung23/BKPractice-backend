@@ -25,6 +25,15 @@ describe('PublicTopicsController', () => {
     await expect(controller.list(new ListTopicsQueryDto())).resolves.toEqual({ items: [] });
   });
 
+  it('returns the tag catalog when asked for tags', async () => {
+    const tags = [{ id: 'tag-1', name: 'Cơ bản' }];
+    const listTopics = { execute: jest.fn().mockResolvedValue(tags) };
+    const controller = createController({ listTopics });
+
+    await expect(controller.listTags(new ListTopicsQueryDto())).resolves.toEqual({ items: tags });
+    expect(listTopics.execute).toHaveBeenCalledWith('tags');
+  });
+
   it('rejects query parameters through the global validation pipe', async () => {
     const listTopics = { execute: jest.fn() };
     createController({ listTopics });

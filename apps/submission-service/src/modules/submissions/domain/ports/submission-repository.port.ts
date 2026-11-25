@@ -3,6 +3,8 @@ import type {
   SubmissionHistoryFilter,
 } from '@submission/modules/submissions/domain/submission-history';
 import type {
+  NewOfficialSubmission,
+  ProblemSubmissionState,
   SubmissionKind,
   SubmissionRecord,
   SubmissionStatus,
@@ -88,6 +90,8 @@ export interface SubmissionDetailRecord extends PersistedSubmissionRecord {
 
 export interface SubmissionRepositoryPort {
   save(record: SubmissionRecord): Promise<PersistedSubmissionRecord>;
+  saveOfficialSubmission(record: NewOfficialSubmission): Promise<PersistedSubmissionRecord>;
+  getProblemSubmissionState(userId: string, problemId: string): Promise<ProblemSubmissionState>;
   findById(id: string): Promise<PersistedSubmissionRecord | null>;
   /**
    * Owner first, then the filter, ordered `createdAt DESC, publicId DESC`, starting after `cursor`.

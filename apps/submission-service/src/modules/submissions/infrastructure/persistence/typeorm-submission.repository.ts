@@ -1,6 +1,7 @@
 import type { SupportedLanguage } from '@app/contracts';
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { AlreadySubmittedError } from '@submission/modules/submissions/domain/already-submitted.error';
 import type { AcceptedEventOutboxPort } from '@submission/modules/submissions/domain/ports/accepted-event-outbox.port';
 import type { AcceptedProgressEvent } from '@submission/modules/submissions/domain/ports/accepted-event.port';
 import type {
@@ -16,13 +17,17 @@ import type {
   HistoryCursor,
   SubmissionHistoryFilter,
 } from '@submission/modules/submissions/domain/submission-history';
-import type { SubmissionRecord } from '@submission/modules/submissions/domain/submission-record';
+import type {
+  NewOfficialSubmission,
+  ProblemSubmissionState,
+  SubmissionRecord,
+} from '@submission/modules/submissions/domain/submission-record';
 import {
   SubmissionKind,
   SubmissionStatus,
   isTerminal,
 } from '@submission/modules/submissions/domain/submission-record';
-import { DataSource, IsNull, Repository } from 'typeorm';
+import { DataSource, IsNull, QueryFailedError, Repository } from 'typeorm';
 
 import { SubmissionAcceptedOutbox } from './submission-accepted-outbox.entity';
 import { Submission, SubmissionResult } from './submission.entity';
@@ -39,12 +44,66 @@ export class TypeormSubmissionRepository
   ) {}
 
   async save(record: SubmissionRecord): Promise<PersistedSubmissionRecord> {
+    return this.persist(record, false);
+  }
+
+  async saveOfficialSubmission(record: NewOfficialSubmission): Promise<PersistedSubmissionRecord> {
+    try {
+      return await this.persist(record, true);
+    } catch (error) {
+      if (error instanceof QueryFailedError) {
+        const driver = error.driverError as { code?: string; constraint?: string };
+        if (driver.code === '23505' && driver.constraint === 'UQ_submissions_official_attempt') {
+          throw new AlreadySubmittedError();
+        }
+      }
+      throw error;
+    }
+  }
+
+  async getProblemSubmissionState(
+    userId: string,
+    problemId: string,
+  ): Promise<ProblemSubmissionState> {
+    const record = await this.submissions
+      .createQueryBuilder('submission')
+      .select(['submission.publicId', 'submission.status'])
+      .where('submission.userId = :userId AND submission.problemId = :problemId', {
+        userId,
+        problemId,
+      })
+      .andWhere('submission.kind = :kind', { kind: SubmissionKind.Submit })
+      .orderBy(
+        'CASE WHEN submission.status = :accepted THEN 0 WHEN submission.status IN (:...openStatuses) THEN 1 ELSE 2 END',
+      )
+      .addOrderBy('submission.createdAt', 'DESC')
+      .addOrderBy('submission.publicId', 'DESC')
+      .setParameters({ accepted: SubmissionStatus.Accepted, openStatuses })
+      .limit(1)
+      .getOne();
+
+    return {
+      state:
+        record?.status === SubmissionStatus.Accepted
+          ? 'SOLVED'
+          : record && !isTerminal(record.status)
+            ? 'JUDGING'
+            : 'READY',
+      submissionId: record?.publicId ?? null,
+    };
+  }
+
+  private async persist(
+    record: SubmissionRecord,
+    officialAttempt: boolean,
+  ): Promise<PersistedSubmissionRecord> {
     const entity = this.submissions.create({
       ...(record.id ? { id: record.id } : {}),
       ...(record.publicId ? { publicId: record.publicId } : {}),
       userId: record.userId,
       problemId: record.problemId,
       kind: record.kind,
+      ...(officialAttempt ? { officialAttempt: true } : {}),
       language: record.language as SupportedLanguage,
       sourceCode: record.sourceCode,
       stdin: record.stdin,
@@ -126,7 +185,9 @@ export class TypeormSubmissionRepository
   }
 
   markFailedToDispatch(id: string, now: Date): Promise<PersistedSubmissionRecord | null> {
-    return this.transitionPending(id, SubmissionStatus.InternalError, now);
+    return this.transitionPending(id, SubmissionStatus.InternalError, now, {
+      officialAttempt: false,
+    });
   }
 
   applyRunResultOnce(input: RunResultPersistenceInput): Promise<PersistedSubmissionRecord | null> {
@@ -173,6 +234,7 @@ export class TypeormSubmissionRepository
           runtimeMs: verdict.runtimeMs,
           memoryKb: verdict.memoryKb,
           acceptedEventId: acceptedEvent?.eventId ?? null,
+          ...(verdict.status === SubmissionStatus.Accepted ? {} : { officialAttempt: false }),
           updatedAt: input.now,
         })
         .where('id = :id AND kind = :kind AND status IN (:...openStatuses)', {
@@ -232,9 +294,9 @@ export class TypeormSubmissionRepository
     // TypeORM's PostgreSQL driver returns [rows, affected] for raw UPDATE statements.
     const [rows] = await this.submissions.query<[RawSubmissionRow[], number]>(
       `UPDATE "submissions"
-       SET "status" = $1, "updated_at" = $2
-       WHERE "status" IN ($3, $4)
-         AND "created_at" <= $5
+       SET "status" = $1, "updated_at" = $2, "official_attempt" = false
+       WHERE ("status" IN ($3, $4) OR ("kind" = 'SUBMIT' AND "status" = $5))
+         AND "created_at" <= $6
        RETURNING "id", "public_id", "user_id", "problem_id", "kind", "language",
                  "source_code", "stdin", "status", "created_at", "updated_at"`,
       [
@@ -242,6 +304,7 @@ export class TypeormSubmissionRepository
         now,
         SubmissionStatus.Pending,
         SubmissionStatus.Queued,
+        SubmissionStatus.Running,
         cutoff,
       ],
     );
@@ -252,10 +315,11 @@ export class TypeormSubmissionRepository
     id: string,
     status: SubmissionStatus,
     now: Date,
+    update?: Pick<Submission, 'officialAttempt'>,
   ): Promise<PersistedSubmissionRecord | null> {
     const result = await this.submissions.update(
       { id, status: SubmissionStatus.Pending },
-      { status, updatedAt: now },
+      { status, updatedAt: now, ...update },
     );
     if (result.affected !== 1) return null;
     return this.findById(id);

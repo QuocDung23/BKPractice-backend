@@ -1,3 +1,8 @@
+import {
+  createSlugBase,
+  createSlugCandidate,
+  SLUG_ATTEMPTS,
+} from '@learning/application/slug-generation';
 import type { CreateProblemCommand } from '@learning/modules/problems/application/command/create-problem.command';
 import { UnknownReferenceError } from '@learning/modules/problems/application/errors/unknown-reference.error';
 import type { UnknownReference } from '@learning/modules/problems/application/errors/unknown-reference.error';
@@ -8,6 +13,7 @@ import type { TransactionRunner } from '@learning/modules/problems/application/p
 import { ProblemResultMapper } from '@learning/modules/problems/application/results/problem-result.mapper';
 import type { ManagedProblemDetailResult } from '@learning/modules/problems/application/results/problem.results';
 import { ProblemAuthorizationService } from '@learning/modules/problems/application/services/problem-authorization.service';
+import { DuplicateProblemIdError } from '@learning/modules/problems/domain/errors/duplicate-problem-id.error';
 import { DuplicateSlugError } from '@learning/modules/problems/domain/errors/duplicate-slug.error';
 import { Problem } from '@learning/modules/problems/domain/problem.aggregate';
 import type { ProblemRepository } from '@learning/modules/problems/domain/repositories/problem.repository.port.out';
@@ -15,6 +21,7 @@ import { ContentFormatValidator } from '@learning/modules/problems/domain/servic
 import { PublishValidator } from '@learning/modules/problems/domain/services/publish.validator';
 import {
   CreatedBy,
+  Slug,
   TagReference,
   TestSuiteSummary,
   TopicReference,
@@ -60,12 +67,13 @@ export class CreateProblemUseCase implements ICreateProblemPortIn {
       throw new UnknownReferenceError(references);
     }
 
-    if (!(await this.repository.isSlugAvailable(command.slug.value))) {
-      throw new DuplicateSlugError(command.slug.value);
+    const requestedSlug = command.slug;
+    if (requestedSlug && !(await this.repository.isSlugAvailable(requestedSlug.value))) {
+      throw new DuplicateSlugError(requestedSlug.value);
     }
 
-    const problem = Problem.create({
-      slug: command.slug,
+    const base = createSlugBase(command.title.value, 'bai-tap');
+    const input = {
       title: command.title,
       statement: command.statement,
       inputSpecification: command.inputSpecification,
@@ -82,15 +90,26 @@ export class CreateProblemUseCase implements ICreateProblemPortIn {
       functionContracts: command.functionContracts,
       oopContracts: command.oopContracts,
       createdBy: new CreatedBy(principal.userId),
-    });
+    };
+    let slugCollisions = base === 'managed' ? 1 : 0;
 
-    problem.attachTestSuiteSummary(TestSuiteSummary.empty());
-    this.contentValidator.assertSafe(problem);
+    for (let attempt = 1; ; attempt += 1) {
+      const slug = requestedSlug ?? new Slug(createSlugCandidate(base, slugCollisions));
+      const problem = Problem.create({ ...input, slug });
+      problem.attachTestSuiteSummary(TestSuiteSummary.empty());
+      this.contentValidator.assertSafe(problem);
 
-    await this.transactionRunner.run(() => this.repository.save(problem));
+      try {
+        await this.transactionRunner.run(() => this.repository.save(problem));
+      } catch (error) {
+        if (attempt >= SLUG_ATTEMPTS) throw error;
+        if (!requestedSlug && error instanceof DuplicateSlugError) slugCollisions += 1;
+        else if (!(error instanceof DuplicateProblemIdError)) throw error;
+        continue;
+      }
 
-    const readiness = this.publishValidator.validate(problem, { slugAvailable: true });
-
-    return this.resultMapper.toManagedDetail(problem, readiness);
+      const readiness = this.publishValidator.validate(problem, { slugAvailable: true });
+      return this.resultMapper.toManagedDetail(problem, readiness);
+    }
   }
 }

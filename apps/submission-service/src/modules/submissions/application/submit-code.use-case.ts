@@ -1,6 +1,8 @@
+import { AlreadySubmittedError } from '@submission/modules/submissions/domain/already-submitted.error';
 import type { JudgeJobPort } from '@submission/modules/submissions/domain/ports/judge-job.port';
 import type { LearningJudgePackagePort } from '@submission/modules/submissions/domain/ports/learning-judge-package.port';
 import type { SubmissionRepositoryPort } from '@submission/modules/submissions/domain/ports/submission-repository.port';
+import type { ProblemSubmissionState } from '@submission/modules/submissions/domain/submission-record';
 import {
   SubmissionKind,
   SubmissionStatus,
@@ -31,10 +33,23 @@ export class SubmitCodeUseCase {
     private readonly now: () => Date = () => new Date(),
   ) {}
 
+  getProblemSubmissionState(userId: string, problemId: string): Promise<ProblemSubmissionState> {
+    return this.repository.getProblemSubmissionState(userId, problemId);
+  }
+
   async execute(input: SubmitCodeInput): Promise<SubmitCodeAcceptance> {
-    // Fetched first: a refused or unreachable package must leave no record (SUB-002-FR-021).
+    const { userId, problemId } = input;
+    const { state } = await this.getProblemSubmissionState(userId, problemId);
+    if (state !== 'READY') throw new AlreadySubmittedError(state);
+
     const judgePackage = await this.learning.getPackage(input.problemId, input.language);
-    const saved = await this.repository.save(createSubmitRecord({ ...input, now: this.now() }));
+    const saved = await this.repository
+      .saveOfficialSubmission(createSubmitRecord({ ...input, now: this.now() }))
+      .catch(async (error: unknown) => {
+        if (!(error instanceof AlreadySubmittedError)) throw error;
+        const current = await this.getProblemSubmissionState(userId, problemId);
+        throw new AlreadySubmittedError(current.state === 'SOLVED' ? 'SOLVED' : 'JUDGING');
+      });
 
     try {
       await this.judge.publish({

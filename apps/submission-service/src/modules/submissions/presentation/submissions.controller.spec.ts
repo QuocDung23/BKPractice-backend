@@ -2,6 +2,7 @@ import { AppHttpException } from '@app/common';
 import type { GetSubmissionDetailUseCase } from '@submission/modules/submissions/application/get-submission-detail.use-case';
 import type { ListSubmissionHistoryUseCase } from '@submission/modules/submissions/application/list-submission-history.use-case';
 import type { SubmitCodeUseCase } from '@submission/modules/submissions/application/submit-code.use-case';
+import { AlreadySubmittedError } from '@submission/modules/submissions/domain/already-submitted.error';
 import {
   JudgePackageUnavailableError,
   ProblemNotSubmittableError,
@@ -100,6 +101,8 @@ describe('SubmissionsController Submit', () => {
   it.each([
     [new ProblemNotSubmittableError(), 404, 'SUBMISSION_PROBLEM_NOT_SUBMITTABLE'],
     [new JudgePackageUnavailableError(), 503, 'SUBMISSION_JUDGE_PACKAGE_UNAVAILABLE'],
+    [new AlreadySubmittedError('JUDGING'), 409, 'SUBMISSION_IN_PROGRESS'],
+    [new AlreadySubmittedError('SOLVED'), 409, 'SUBMISSION_ALREADY_SUBMITTED'],
   ])('maps %p to its HTTP error', async (cause, status, code) => {
     const submitCode = { execute: jest.fn().mockRejectedValue(cause) };
 
@@ -110,5 +113,20 @@ describe('SubmissionsController Submit', () => {
     expect(error).toBeInstanceOf(AppHttpException);
     expect((error as AppHttpException).getStatus()).toBe(status);
     expect((error as AppHttpException).code).toBe(code);
+  });
+
+  it('reports official submission status scoped to the trusted owner and problem', async () => {
+    const status = { state: 'JUDGING', submissionId: 'submission-id' };
+    const submitCode = { getProblemSubmissionState: jest.fn().mockResolvedValue(status) };
+
+    await expect(
+      controllerWith({ submitCode }).getProblemSubmissionStatus(OWNER_ID, {
+        problemId: submitBody.problemId,
+      }),
+    ).resolves.toEqual(status);
+    expect(submitCode.getProblemSubmissionState).toHaveBeenCalledWith(
+      OWNER_ID,
+      submitBody.problemId,
+    );
   });
 });

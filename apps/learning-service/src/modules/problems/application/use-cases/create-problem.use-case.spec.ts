@@ -3,6 +3,7 @@ import { UnknownReferenceError } from '@learning/modules/problems/application/er
 import type { TransactionRunner } from '@learning/modules/problems/application/ports/out/transaction-runner.port.out';
 import type { ProblemResultMapper } from '@learning/modules/problems/application/results/problem-result.mapper';
 import type { ProblemAuthorizationService } from '@learning/modules/problems/application/services/problem-authorization.service';
+import { DuplicateProblemIdError } from '@learning/modules/problems/domain/errors/duplicate-problem-id.error';
 import { DuplicateSlugError } from '@learning/modules/problems/domain/errors/duplicate-slug.error';
 import { Problem } from '@learning/modules/problems/domain/problem.aggregate';
 import type { ContentFormatValidator } from '@learning/modules/problems/domain/services/content-format.validator';
@@ -88,6 +89,26 @@ describe('CreateProblemUseCase', () => {
     expect(repository.save).not.toHaveBeenCalled();
   });
 
+  it('retries generated slug and UUID collisions in separate transactions', async () => {
+    const repository = repositoryMock();
+    const transactionRunner = transactionRunnerMock();
+    const useCase = createUseCase({ repository, transactionRunner });
+    repository.save
+      .mockRejectedValueOnce(new DuplicateSlugError('dem-so'))
+      .mockRejectedValueOnce(new DuplicateProblemIdError())
+      .mockResolvedValueOnce(undefined);
+
+    await useCase.execute(
+      PRINCIPAL,
+      command({ slug: undefined, title: new ProblemTitle('Đếm số') }),
+    );
+
+    const saved = (repository.save.mock.calls as [Problem][]).map(([problem]) => problem);
+    expect(saved.map((problem) => problem.slug.value)).toEqual(['dem-so', 'dem-so-2', 'dem-so-2']);
+    expect(new Set(saved.map((problem) => problem.id.value)).size).toBe(3);
+    expect(transactionRunner.run).toHaveBeenCalledTimes(3);
+  });
+
   it('propagates authorization failures without touching the repository', async () => {
     const authorization = authorizationMock();
     const repository = repositoryMock();
@@ -170,6 +191,7 @@ function topicTagReaderMock() {
     findTopicNames: jest.fn(),
     findTagNames: jest.fn(),
     listTopics: jest.fn().mockResolvedValue([]),
+    listTags: jest.fn().mockResolvedValue([]),
   };
 }
 

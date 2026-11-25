@@ -2,6 +2,7 @@ import { randomUUID } from 'node:crypto';
 
 import type { SupportedLanguage } from '@app/contracts';
 import { ConcurrentModificationError } from '@learning/modules/problems/application/errors/concurrent-modification.error';
+import { DuplicateProblemIdError } from '@learning/modules/problems/domain/errors/duplicate-problem-id.error';
 import { DuplicateSlugError } from '@learning/modules/problems/domain/errors/duplicate-slug.error';
 import type { Problem } from '@learning/modules/problems/domain/problem.aggregate';
 import type {
@@ -266,7 +267,7 @@ export class ProblemTypeOrmRepository implements ProblemRepository {
           this.mapper.toInsertValues(problem) as QueryDeepPartialEntity<ProblemEntity>,
         );
       } catch (error) {
-        this.rethrowUniqueSlug(error, problem.slug.value);
+        this.rethrowInsertConflict(error, problem.slug.value);
       }
     } else {
       const values = {
@@ -417,7 +418,7 @@ export class ProblemTypeOrmRepository implements ProblemRepository {
     );
   }
 
-  private rethrowUniqueSlug(error: unknown, slug: string): never {
+  private rethrowInsertConflict(error: unknown, slug: string): never {
     if (error instanceof QueryFailedError) {
       const driverError = error.driverError as {
         code?: string;
@@ -432,6 +433,12 @@ export class ProblemTypeOrmRepository implements ProblemRepository {
 
       if (driverError.code === '23505' && text.includes('slug')) {
         throw new DuplicateSlugError(slug);
+      }
+      if (
+        driverError.code === '23505' &&
+        (driverError.constraint === 'problems_pkey' || driverError.detail?.startsWith('Key (id)='))
+      ) {
+        throw new DuplicateProblemIdError();
       }
     }
 

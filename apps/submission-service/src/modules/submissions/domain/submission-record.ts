@@ -17,6 +17,13 @@ export enum SubmissionStatus {
   InternalError = 'INTERNAL_ERROR',
 }
 
+export const PROBLEM_SUBMISSION_STATES = ['READY', 'JUDGING', 'SOLVED'] as const;
+
+export interface ProblemSubmissionState {
+  readonly state: (typeof PROBLEM_SUBMISSION_STATES)[number];
+  readonly submissionId: string | null;
+}
+
 export interface SubmissionRecord {
   readonly id: string | null;
   readonly publicId: string | null;
@@ -73,7 +80,14 @@ export interface CreateSubmitRecordInput {
   readonly now: Date;
 }
 
-export function createSubmitRecord(input: CreateSubmitRecordInput): SubmissionRecord {
+export type NewOfficialSubmission = SubmissionRecord & {
+  readonly id: null;
+  readonly publicId: null;
+  readonly problemId: string;
+  readonly kind: SubmissionKind.Submit;
+};
+
+export function createSubmitRecord(input: CreateSubmitRecordInput): NewOfficialSubmission {
   return {
     id: null,
     publicId: null,

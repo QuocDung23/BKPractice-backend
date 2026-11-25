@@ -398,6 +398,7 @@ describe('Learning route transport', () => {
     ['GET', '/api/progress/courses/courseId-1/students'],
     ['GET', '/api/recommendations'],
     ['GET', '/api/topics'],
+    ['GET', '/api/tags'],
   ];
   const config = new ConfigService({
     IDENTITY_SERVICE_URL: 'http://identity:3001',
@@ -451,6 +452,7 @@ describe('Learning route transport', () => {
     ['GET', '/api/topicsX'],
     ['GET', '/api/topics/id'],
     ['POST', '/api/topics'],
+    ['POST', '/api/tags'],
     ['GET', '/api/classes/enrolled'],
     ['GET', '/api/assignments/id'],
     ['GET', '/api/progress/me/assignments/id'],
@@ -567,6 +569,7 @@ describe('Submission HTTP boundary (GW-008–010)', () => {
     ['POST', '/api/submissions', 202],
     ['GET', '/api/submissions', 200],
     ['GET', '/api/submissions/public-id', 200],
+    ['GET', '/api/submissions/problems/problem-id/status', 200],
   ])('preserves %s %s and its upstream response', async (method, path, status) => {
     const body = { sourceCode: 'opaque', language: 'cpp' };
     const data = { opaque: true };

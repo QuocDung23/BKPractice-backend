@@ -16,7 +16,7 @@ import type {
 } from '@learning/modules/problems/domain/value-objects';
 
 export interface CreateProblemCommand {
-  readonly slug: Slug;
+  readonly slug?: Slug;
   readonly title: ProblemTitle;
   readonly statement: ProblemStatement;
   readonly inputSpecification: InputSpecification | null;

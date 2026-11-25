@@ -1,5 +1,6 @@
 export const responseHeaders = ['content-type', 'content-length', 'etag', 'last-modified'];
 export const leaderboardPath = /^\/api\/leaderboard\/?$/;
+export const submissionStatusPath = /^\/api\/submissions\/problems\/[^/]+\/status\/?$/;
 
 export const learningRoutes: ReadonlyArray<readonly [string, RegExp]> = [
   ['GET', leaderboardPath],
@@ -59,6 +60,7 @@ export const learningRoutes: ReadonlyArray<readonly [string, RegExp]> = [
   ['PUT', /^\/api\/problems\/[^/]+\/harnesses\/[^/]+\/?$/],
   ['DELETE', /^\/api\/problems\/[^/]+\/harnesses\/[^/]+\/?$/],
   ['GET', /^\/api\/topics\/?$/],
+  ['GET', /^\/api\/tags\/?$/],
   ['GET', /^\/api\/courses\/?$/],
   ['GET', /^\/api\/courses\/managed\/?$/],
   ['GET', /^\/api\/courses\/managed\/[^/]+\/?$/],
@@ -89,6 +91,7 @@ export const learningPrefixes = [
   '/api/quiz-attempts',
   '/api/problems',
   '/api/topics',
+  '/api/tags',
   '/api/courses',
   '/api/progress',
   '/api/leaderboard',
@@ -107,6 +110,7 @@ export const submissionRoutes: ReadonlyArray<readonly [string, RegExp]> = [
   ['POST', /^\/api\/submissions\/?$/],
   ['GET', /^\/api\/submissions\/?$/],
   ['GET', /^\/api\/submissions\/[^/]+\/?$/],
+  ['GET', submissionStatusPath],
 ];
 
 export const submissionPrefixes = ['/api/submissions', '/api/run'];
