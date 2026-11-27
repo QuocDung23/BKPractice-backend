@@ -7,11 +7,13 @@ theo hợp đồng header 1.4 và Question visibility 1.5 được chủ sở h�
 Code backend đã triển khai; kết quả kiểm chứng và giới hạn hiện hành ở [tasks](./tasks.md),
 [worked](../../../worked/learning/quizzes/2026-11-11-quiz-implementation.md) và
 [hướng dẫn vận hành](../../../pm/plan/learning/quizzes/README.md).
+Phần code cho XP Quiz đã được thêm theo T070–T073; kiểm thử chấp nhận và xác minh migration trên
+PostgreSQL còn chờ T074. Xem [worked entry](../../../worked/learning/quizzes/2026-11-27-quiz-xp-implementation.md).
 Không tự chuyển spec sang Verified khi quality gate toàn repo còn baseline lỗi.
 
 ## Đặc tả liên quan
 
-- Nguồn: [LRN-009 — Quiz và ngân hàng câu hỏi](./spec.md), 1.5, `Approved`, 2026-11-12.
+- Nguồn: [LRN-009 — Quiz và ngân hàng câu hỏi](./spec.md), 1.7, `Approved`, 2026-11-27.
 - Checklist: [tasks.md](./tasks.md). Mỗi task có đầu ra, kiểm chứng, phụ thuộc và truy vết.
 - Phụ thuộc: [LRN-003](../courses/spec.md), [LRN-006](../progress/spec.md),
   [LRN-008](../self-study/spec.md), [Identity RBAC](../../01-identity/rbac/spec.md).
@@ -37,6 +39,7 @@ Không tự chuyển spec sang Verified khi quality gate toàn repo còn baselin
 | G-05 / Q-007–008 | Limits/title/taxonomy/pagination/idempotency theo bảng Q của spec 1.3; permission riêng theo hành động.                                                                                   |
 | G-06             | Amendment lecturer-owner/admin-all đã đồng bộ vào LRN-008, Problems/TestCases/Courses, RBAC và architecture.                                                                              |
 | G-07             | Chủ sở hữu: “approved tất cả cho tôi”, 2026-11-11. Không còn gate chặn code.                                                                                                              |
+| G-08 / Q-009–010 | Pass đầu tiên theo user + Quiz cấp XP 10/20/30 theo độ khó revision; không thưởng lại hoặc backfill pass trước rollout. Dùng `finishedAt` để xếp kỳ.                                      |
 
 Các tham chiếu G/Q trong thiết kế dưới đây dùng quyết định đã duyệt ở bảng này.
 
@@ -106,7 +109,8 @@ mới cho database đã chạy, không chỉ sửa seed/catalog và không sửa
 | Course `QuizReference` / `quizRefs` | Duy nhất trong Chapter, thứ tự độc lập Problem, không cascade nội dung Quiz                                               | FR-013/014         |
 
 Giới hạn, state machine và chính sách chia sẻ lấy từ quyết định G-01/G-04/G-05 cuối cùng.
-Không thêm type đa đáp án, trọng số, bank nhiều cấp, XP hoặc engine luật tổng quát.
+Không thêm type đa đáp án, trọng số, bank nhiều cấp hoặc engine XP tổng quát; XP Quiz chỉ là award
+cố định theo G-08 tại lần pass đầu.
 
 ## Tầng application / Use case
 
@@ -474,3 +478,20 @@ mới nào được duyệt bởi draft này.
 Course links và Gateway routes. Không thêm dependency, queue hoặc service. Readiness/version updates
 được trả ở preview. Logging hiện dùng request/status Gateway và lỗi Quiz đã lọc, chưa có log duration
 riêng cho từng use case; không log đáp án hay payload. Chi tiết bằng chứng/gate ở worked và tasks.
+
+## Amendment 1.7 — XP Quiz và leaderboard (code đã triển khai, chờ kiểm chứng)
+
+- Bổ sung `difficulty` (`EASY`/`MEDIUM`/`HARD`) cho Quiz revision; publish làm giá trị bất biến.
+  Revision đã publish trước rollout được gán `EASY` để tính award tương lai. Việc migration này
+  không cấp XP.
+- Khi finish lần pass đầu tiên đạt 90% cho user + Quiz, ghi `awarded_xp` trên attempt thắng trong
+  cùng transaction với `passed`/`finished_at`. Partial unique index trên `(user_id, quiz_id)` cho
+  attempt có `awarded_xp > 0` ngăn cấp trùng. Người đã pass trước rollout không nhận XP
+  khi làm lại; không backfill attempt đã FINISHED.
+- Dùng transaction context/runner của Quizzes; không tạo XP service, event, outbox hoặc sửa
+  contract Submission. `finish` trả `xpAwarded` của attempt; replay trả cùng giá trị đã lưu.
+- Leaderboard hợp nhất XP từ `progress.awarded_xp` và Quiz attempts; giữ `solved` là số Problem,
+  thêm `quizzesPassed`, và đổi tie-break sang thời điểm award gần nhất. Chỉ Quiz đang `PUBLISHED`,
+  chưa xóa được tính vào ranking.
+- T070–T073 đã cập nhật persistence, finish response, leaderboard projection và Swagger. T074 còn
+  mở cho kiểm thử chấp nhận và xác minh migration trên PostgreSQL. Progress Course hiện tại không đổi.

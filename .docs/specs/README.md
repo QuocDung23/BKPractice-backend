@@ -108,21 +108,21 @@ Mỗi tính năng nằm trong thư mục service/domain đã định sẵn và c
 └── tasks.md
 ```
 
-| Tiền tố | Service sở hữu | Ví dụ                                                                                                                                                                                                                                                             |
-| ------- | -------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `ID-*`  | Identity       | `ID-001 Authentication`, `ID-002 Profile`, `ID-003 RBAC`                                                                                                                                                                                                          |
-| `LRN-*` | Learning       | `LRN-001 Problem Management`, `LRN-002 Test Case Management`, `LRN-003 Course Management`, `LRN-004 Class & Enrollment` (ngừng áp dụng), `LRN-005 Assignment Management` (ngừng áp dụng), `LRN-006 Progress`, `LRN-007 Recommendation`, `LRN-008 Learning tự học` |
-| `SUB-*` | Submission     | `SUB-001 Run Code`, `SUB-002 Submit Code`, `SUB-003 Submission History`, `SUB-004 Realtime Result`                                                                                                                                                                |
-| `JDG-*` | Judge          | `JDG-001 Standard Judge`, `JDG-002 Language Runners`, `JDG-003 Function Judge`, `JDG-004 OOP Judge`, `JDG-005 Sandbox`                                                                                                                                            |
-| `COM-*` | Community      | `COM-001 Posts`, `COM-002 Comments`, `COM-003 Reactions`, `COM-004 Bookmarks`, `COM-005 Moderation`                                                                                                                                                               |
+| Tiền tố | Service sở hữu | Ví dụ                                                                                                                                                                                                                                                                                                  |
+| ------- | -------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `ID-*`  | Identity       | `ID-001 Authentication`, `ID-002 Profile`, `ID-003 RBAC`                                                                                                                                                                                                                                               |
+| `LRN-*` | Learning       | `LRN-001 Problem Management`, `LRN-002 Test Case Management`, `LRN-003 Course Management`, `LRN-004 Class & Enrollment` (ngừng áp dụng), `LRN-005 Assignment Management` (ngừng áp dụng), `LRN-006 Progress`, `LRN-007 Recommendation`, `LRN-008 Learning tự học`, `LRN-009 Quiz và ngân hàng câu hỏi` |
+| `SUB-*` | Submission     | `SUB-001 Run Code`, `SUB-002 Submit Code`, `SUB-003 Submission History`, `SUB-004 Realtime Result`                                                                                                                                                                                                     |
+| `JDG-*` | Judge          | `JDG-001 Standard Judge`, `JDG-002 Language Runners`, `JDG-003 Function Judge`, `JDG-004 OOP Judge`, `JDG-005 Sandbox`                                                                                                                                                                                 |
+| `COM-*` | Community      | `COM-001 Posts`, `COM-002 Comments`, `COM-003 Reactions`, `COM-004 Bookmarks`, `COM-005 Moderation`                                                                                                                                                                                                    |
 
-Đặc tả Learning mới: [LRN-009 — Quiz và ngân hàng câu hỏi](02-learning/quizzes/spec.md)
-(`Proposed`, 2026-11-11). Tài liệu ghi nhận hướng Quiz cho mobile, ngân hàng dùng lại,
-phản hồi từng câu và ngưỡng hoàn thành 90%. Đã có [plan draft](02-learning/quizzes/plan.md)
-và [checklist chi tiết](02-learning/quizzes/tasks.md) để review; chưa có implementation.
+Đặc tả [LRN-009 — Quiz và ngân hàng câu hỏi](02-learning/quizzes/spec.md) đang `Approved` phiên bản
+1.7. MVP Quiz/ngân hàng đã triển khai; amendment 1.7 bổ sung XP một lần cho pass đầu tiên sau
+rollout (10/20/30 theo độ khó) và tích hợp XP đó vào [leaderboard](02-learning/leaderboard/spec.md).
+Plan và task implementation của amendment còn mở trong từng feature.
 
-Mã định danh là cố định sau khi được phê duyệt và không được tái sử dụng. Các ví dụ trên chỉ giữ chỗ
-cho quy ước đặt tên; chúng không phải là các đặc tả tính năng đã được triển khai hay đã Approved.
+Mã định danh là cố định sau khi được phê duyệt và không được tái sử dụng. Bảng trên minh hoạ quy
+ước mã; các feature spec hiện hành và trạng thái của chúng nằm trong thư mục tương ứng.
 
 ## Ví dụ: ID-001 Authentication
 
