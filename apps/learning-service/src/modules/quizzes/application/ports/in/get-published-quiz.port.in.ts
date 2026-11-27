@@ -4,5 +4,11 @@ export interface IGetPublishedQuizPortIn {
   execute(
     p: Principal,
     id: string,
-  ): Promise<{ id: string; title: string; description: string | null; questionCount: number }>;
+  ): Promise<{
+    id: string;
+    title: string;
+    description: string | null;
+    questionCount: number;
+    difficulty: 'EASY' | 'MEDIUM' | 'HARD';
+  }>;
 }

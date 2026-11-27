@@ -53,6 +53,7 @@ export interface QuizRevision {
   revision: number;
   title: string;
   description: string | null;
+  difficulty: Difficulty;
   publishedAt: Date | null;
   createdAt: Date;
   items: QuizItem[];
@@ -66,6 +67,7 @@ export interface AttemptState {
   totalQuestions: number;
   correctCount: number | null;
   passed: boolean | null;
+  awardedXp: number | null;
   startedAt: Date;
   finishedAt: Date | null;
 }
@@ -212,9 +214,11 @@ export class Quiz {
     hash: string,
     title: string,
     description: string | null,
+    difficulty: Difficulty = 'EASY',
   ): Quiz {
     validateText(title, 200, 'title');
     if (description !== null) validateText(description, 20000, 'description', true);
+    requireValue(['EASY', 'MEDIUM', 'HARD'].includes(difficulty), 'Invalid difficulty');
     const id = randomUUID();
     const now = new Date();
     return new Quiz(
@@ -235,6 +239,7 @@ export class Quiz {
         revision: 1,
         title,
         description,
+        difficulty,
         publishedAt: null,
         createdAt: now,
         items: [],
@@ -311,6 +316,7 @@ export class QuizAttempt {
     readonly state: AttemptState,
     readonly questions: QuestionRevision[],
     readonly answers: Answer[] = [],
+    readonly difficulty: Difficulty = 'EASY',
   ) {
     requireValue(
       questions.length > 0 &&
@@ -342,13 +348,22 @@ export class QuizAttempt {
     this.answers.push(answer);
     return answer;
   }
-  finish(): void {
-    if (this.state.status === 'FINISHED') return;
+  finish(): boolean {
+    if (this.state.status === 'FINISHED') return false;
     if (this.answers.length !== this.state.totalQuestions)
       throw new QuizError('CONFLICT', 'Answer every question before finishing');
     this.state.correctCount = this.answers.filter((a) => a.isCorrect).length;
     this.state.passed = this.state.correctCount * 100 >= this.state.totalQuestions * 90;
     this.state.status = 'FINISHED';
     this.state.finishedAt = new Date();
+    return true;
+  }
+  awardXp(): void {
+    requireValue(
+      this.state.status === 'FINISHED' && this.state.passed,
+      'Only a passed attempt earns XP',
+    );
+    requireValue(this.state.awardedXp === null, 'XP is already awarded');
+    this.state.awardedXp = { EASY: 10, MEDIUM: 20, HARD: 30 }[this.difficulty];
   }
 }

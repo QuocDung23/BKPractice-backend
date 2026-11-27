@@ -142,6 +142,7 @@ export class ManagedQuizzesController {
       title: body.title,
       description: body.description,
       clientRequestId: idempotencyKey.toLowerCase(),
+      difficulty: body.difficulty,
     });
   }
   @Patch(':id/draft')

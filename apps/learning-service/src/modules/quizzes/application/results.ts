@@ -47,6 +47,7 @@ export function toSummary(a: QuizAttempt) {
     percentage: ((a.state.correctCount ?? 0) * 100) / a.state.totalQuestions,
     thresholdPercentage: 90,
     passed: a.state.passed,
+    xpAwarded: a.state.awardedXp ?? 0,
     startedAt: a.state.startedAt,
     finishedAt: a.state.finishedAt,
   };
@@ -56,6 +57,7 @@ export function toLearnerAttempt(a: QuizAttempt) {
     id: a.state.id,
     quizId: a.state.quizId,
     quizRevisionId: a.state.quizRevisionId,
+    difficulty: a.difficulty,
     status: a.state.status,
     totalQuestions: a.state.totalQuestions,
     answeredCount: a.answers.length,

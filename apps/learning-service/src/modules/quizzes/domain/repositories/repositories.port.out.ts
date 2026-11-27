@@ -30,6 +30,8 @@ export abstract class QuizRepository {
 }
 export abstract class QuizAttemptRepository {
   abstract lockStart(userId: string, quizId: string): Promise<void>;
+  abstract lockReward(userId: string, quizId: string): Promise<void>;
+  abstract hasPassed(userId: string, quizId: string, excludingAttemptId: string): Promise<boolean>;
   abstract find(id: string, userId: string, lock?: boolean): Promise<QuizAttempt | null>;
   abstract active(userId: string, quizId: string): Promise<QuizAttempt | null>;
   abstract save(attempt: QuizAttempt): Promise<void>;

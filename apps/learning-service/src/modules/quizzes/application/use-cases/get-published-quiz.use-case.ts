@@ -13,7 +13,13 @@ export class GetPublishedQuizUseCase implements IGetPublishedQuizPortIn {
   async execute(
     _p: Principal,
     id: string,
-  ): Promise<{ id: string; title: string; description: string | null; questionCount: number }> {
+  ): Promise<{
+    id: string;
+    title: string;
+    description: string | null;
+    questionCount: number;
+    difficulty: 'EASY' | 'MEDIUM' | 'HARD';
+  }> {
     if (!(await this.access.isVisible(id))) throw new QuizError('NOT_FOUND', 'Quiz not available');
     const q = await this.quizzes.find(id);
     if (!q?.published) throw new QuizError('NOT_FOUND', 'Quiz not available');
@@ -22,6 +28,7 @@ export class GetPublishedQuizUseCase implements IGetPublishedQuizPortIn {
       title: q.published.title,
       description: q.published.description,
       questionCount: q.published.items.length,
+      difficulty: q.published.difficulty,
     };
   }
 }

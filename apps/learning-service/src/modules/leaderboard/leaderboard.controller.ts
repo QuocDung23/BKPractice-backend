@@ -1,6 +1,13 @@
 import { AppHttpException } from '@app/common';
 import { Controller, Get, Header, Inject, Query, UseFilters, UseGuards } from '@nestjs/common';
-import { ApiBearerAuth, ApiOperation, ApiPropertyOptional, ApiTags } from '@nestjs/swagger';
+import {
+  ApiBearerAuth,
+  ApiOkResponse,
+  ApiOperation,
+  ApiProperty,
+  ApiPropertyOptional,
+  ApiTags,
+} from '@nestjs/swagger';
 import { Type } from 'class-transformer';
 import { IsIn, IsInt, Max, Min } from 'class-validator';
 
@@ -38,6 +45,29 @@ class LeaderboardQueryDto {
   limit = 10;
 }
 
+class LeaderboardEntryDto {
+  @ApiProperty() userId!: string;
+  @ApiProperty() displayName!: string;
+  @ApiProperty({ type: String, nullable: true }) avatar!: string | null;
+  @ApiProperty({ type: Number, nullable: true }) rank!: number | null;
+  @ApiProperty() xp!: number;
+  @ApiProperty() solved!: number;
+  @ApiProperty() quizzesPassed!: number;
+}
+
+class LeaderboardResponseDto {
+  @ApiProperty({ enum: ['week', 'month'] }) period!: string;
+  @ApiProperty({ type: String, format: 'date-time' }) from!: string;
+  @ApiProperty({ type: String, format: 'date-time' }) to!: string;
+  @ApiProperty({ type: String, format: 'date-time' }) generatedAt!: string;
+  @ApiProperty({ type: [LeaderboardEntryDto] }) top!: LeaderboardEntryDto[];
+  @ApiProperty({ type: [LeaderboardEntryDto] }) rows!: LeaderboardEntryDto[];
+  @ApiProperty() totalItems!: number;
+  @ApiProperty() page!: number;
+  @ApiProperty() limit!: number;
+  @ApiProperty({ type: LeaderboardEntryDto }) me!: LeaderboardEntryDto;
+}
+
 @ApiTags('leaderboard')
 @ApiBearerAuth()
 @UseGuards(InternalServiceGuard, TrustedPrincipalGuard)
@@ -49,6 +79,7 @@ export class LeaderboardController {
   @Get()
   @Header('Cache-Control', 'private, no-store')
   @ApiOperation({ summary: 'Rank active students by practice XP in the current week or month' })
+  @ApiOkResponse({ type: LeaderboardResponseDto })
   async get(@TrustedPrincipal() principal: Principal, @Query() query: LeaderboardQueryDto) {
     if (!principal.roles.includes('STUDENT'))
       throw new AppHttpException(

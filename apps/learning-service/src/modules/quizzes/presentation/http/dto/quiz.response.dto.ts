@@ -24,6 +24,12 @@ export class QuizSummaryDto {
   @ApiProperty() percentage!: number;
   @ApiProperty({ example: 90 }) thresholdPercentage!: number;
   @ApiProperty() passed!: boolean;
+  @ApiProperty({
+    minimum: 0,
+    maximum: 30,
+    description: 'XP awarded by this attempt; zero when not eligible.',
+  })
+  xpAwarded!: number;
   @ApiProperty({ type: String, format: 'date-time' }) startedAt!: string;
   @ApiProperty({ type: String, format: 'date-time' }) finishedAt!: string;
 }
@@ -31,6 +37,7 @@ export class LearnerAttemptDto {
   @ApiProperty({ format: 'uuid' }) id!: string;
   @ApiProperty({ format: 'uuid' }) quizId!: string;
   @ApiProperty({ format: 'uuid' }) quizRevisionId!: string;
+  @ApiProperty({ enum: ['EASY', 'MEDIUM', 'HARD'] }) difficulty!: string;
   @ApiProperty({ enum: ['IN_PROGRESS', 'FINISHED'] }) status!: string;
   @ApiProperty() totalQuestions!: number;
   @ApiProperty() answeredCount!: number;
@@ -44,6 +51,7 @@ export class QuizIntroDto {
   @ApiProperty() title!: string;
   @ApiProperty({ nullable: true, type: String }) description!: string | null;
   @ApiProperty() questionCount!: number;
+  @ApiProperty({ enum: ['EASY', 'MEDIUM', 'HARD'] }) difficulty!: string;
 }
 export class CompletionDto {
   @ApiProperty() completed!: boolean;
@@ -93,6 +101,7 @@ export class QuizRevisionDto {
   @ApiProperty() revision!: number;
   @ApiProperty({ maxLength: 200 }) title!: string;
   @ApiProperty({ type: String, nullable: true, maxLength: 20000 }) description!: string | null;
+  @ApiProperty({ enum: ['EASY', 'MEDIUM', 'HARD'] }) difficulty!: string;
   @ApiProperty({ type: String, format: 'date-time' }) createdAt!: string;
   @ApiProperty({ type: String, format: 'date-time', nullable: true }) publishedAt!: string | null;
   @ApiProperty({ type: [QuizItemResponseDto], maxItems: 50 }) items!: QuizItemResponseDto[];
