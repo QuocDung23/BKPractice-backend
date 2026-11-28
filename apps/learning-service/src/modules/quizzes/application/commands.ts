@@ -15,6 +15,7 @@ export interface CreateQuizCommand {
   title: string;
   description: string | null;
   clientRequestId: string;
+  difficulty?: Difficulty;
 }
 export interface ShareCommand {
   userId: string;

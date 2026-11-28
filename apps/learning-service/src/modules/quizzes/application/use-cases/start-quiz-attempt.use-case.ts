@@ -49,10 +49,13 @@ export class StartQuizAttemptUseCase implements IStartQuizAttemptPortIn {
           totalQuestions: questions.length,
           correctCount: null,
           passed: null,
+          awardedXp: null,
           startedAt: new Date(),
           finishedAt: null,
         },
         questions,
+        [],
+        q.published.difficulty,
       );
       await this.attempts.save(a);
       return a;

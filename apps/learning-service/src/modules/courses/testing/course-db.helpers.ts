@@ -9,7 +9,9 @@ import { Lrn003CourseConstraints1700000009000 } from '@learning/database/migrati
 import { Lrn008SelfStudy1700000010000 } from '@learning/database/migrations/1700000010000-Lrn008SelfStudy';
 import { Lrn009CourseProblemHistory1700000011000 } from '@learning/database/migrations/1700000011000-Lrn009CourseProblemHistory';
 import { Lrn009QuizQuestionBank1700000011000 } from '@learning/database/migrations/1700000011000-Lrn009QuizQuestionBank';
+import { Lrn009QuestionBankVisibility1700000012000 } from '@learning/database/migrations/1700000012000-Lrn009QuestionBankVisibility';
 import { AddLeaderboardXp1700000015000 } from '@learning/database/migrations/1700000015000-AddLeaderboardXp';
+import { QuizDifficultyAndXpAwards1700000016000 } from '@learning/database/migrations/1700000016000-QuizDifficultyAndXpAwards';
 import { learningEntities } from '@learning/modules/learning.entities';
 import type { DataSource, DataSourceOptions } from 'typeorm';
 
@@ -25,7 +27,9 @@ export const ALL_LEARNING_MIGRATIONS = [
   Lrn008SelfStudy1700000010000,
   Lrn009CourseProblemHistory1700000011000,
   Lrn009QuizQuestionBank1700000011000,
+  Lrn009QuestionBankVisibility1700000012000,
   AddLeaderboardXp1700000015000,
+  QuizDifficultyAndXpAwards1700000016000,
 ];
 
 export const TEST_DATABASE_URL = process.env.TEST_DATABASE_URL;

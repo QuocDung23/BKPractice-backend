@@ -36,6 +36,7 @@ export class CreateQuizUseCase implements ICreateQuizPortIn {
         hash,
         command.title,
         command.description,
+        command.difficulty,
       );
       await this.quizzes.save(q);
       return q;

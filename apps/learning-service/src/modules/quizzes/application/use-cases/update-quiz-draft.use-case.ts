@@ -6,7 +6,7 @@ import { QuizRepository } from '@/modules/quizzes/application/ports/out';
 import { toManagedQuiz } from '@/modules/quizzes/application/results';
 import { QuizAuthorizationService } from '@/modules/quizzes/application/services/quiz-authorization.service';
 import type { Principal } from '@/modules/quizzes/domain';
-import { QuizError, validateText } from '@/modules/quizzes/domain';
+import { QuizError, requireValue, validateText } from '@/modules/quizzes/domain';
 import { QUIZ_TRANSACTION_RUNNER } from '@/modules/quizzes/quiz.tokens';
 @Injectable()
 export class UpdateQuizDraftUseCase implements IUpdateQuizDraftPortIn {
@@ -18,7 +18,11 @@ export class UpdateQuizDraftUseCase implements IUpdateQuizDraftPortIn {
   async execute(
     p: Principal,
     id: string,
-    command: { title?: string; description?: string | null },
+    command: {
+      title?: string;
+      description?: string | null;
+      difficulty?: 'EASY' | 'MEDIUM' | 'HARD';
+    },
   ): Promise<ReturnType<typeof toManagedQuiz>> {
     this.authorization.requirePermission(p, 'quiz:update');
     const q = await this.tx.run(async () => {
@@ -32,6 +36,10 @@ export class UpdateQuizDraftUseCase implements IUpdateQuizDraftPortIn {
           command.description === null
             ? null
             : validateText(command.description, 20000, 'description', true);
+      if (command.difficulty !== undefined) {
+        requireValue(['EASY', 'MEDIUM', 'HARD'].includes(command.difficulty), 'Invalid difficulty');
+        draft.difficulty = command.difficulty;
+      }
       await this.quizzes.save(q);
       return q;
     });

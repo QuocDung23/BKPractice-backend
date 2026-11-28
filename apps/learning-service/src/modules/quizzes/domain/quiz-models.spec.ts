@@ -32,6 +32,7 @@ function attempt(count = 10): QuizAttempt {
       status: 'IN_PROGRESS',
       correctCount: null,
       passed: null,
+      awardedXp: null,
       totalQuestions: count,
       startedAt: new Date(),
       finishedAt: null,

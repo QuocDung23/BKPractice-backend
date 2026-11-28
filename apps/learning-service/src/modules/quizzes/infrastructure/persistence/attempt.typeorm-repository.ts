@@ -10,6 +10,7 @@ import {
   QuizAnswerEntity,
   QuizAttemptEntity,
   QuizItemEntity,
+  QuizRevisionEntity,
 } from '@/modules/quizzes/infrastructure/persistence/quiz.entities';
 @Injectable()
 export class AttemptTypeOrmRepository extends QuizAttemptRepository {
@@ -18,6 +19,17 @@ export class AttemptTypeOrmRepository extends QuizAttemptRepository {
   }
   async lockStart(userId: string, quizId: string): Promise<void> {
     await this.context.lock('quiz-start:' + userId + ':' + quizId);
+  }
+  async lockReward(userId: string, quizId: string): Promise<void> {
+    await this.context.lock('quiz-reward:' + userId + ':' + quizId);
+  }
+  async hasPassed(userId: string, quizId: string, excludingAttemptId: string): Promise<boolean> {
+    const rows = await this.context.getManager().query<{ hasPassed: boolean }[]>(
+      `SELECT EXISTS(SELECT 1 FROM quiz_attempts
+       WHERE user_id=$1 AND quiz_id=$2 AND id<>$3 AND status='FINISHED' AND passed=true) AS "hasPassed"`,
+      [userId, quizId, excludingAttemptId],
+    );
+    return rows[0]?.hasPassed ?? false;
   }
   async find(id: string, userId: string, lock = false): Promise<QuizAttempt | null> {
     const m = this.context.getManager();
@@ -34,7 +46,15 @@ export class AttemptTypeOrmRepository extends QuizAttemptRepository {
       .orderBy('i.display_order', 'ASC')
       .getMany();
     const answers = await m.getRepository(QuizAnswerEntity).findBy({ attemptId: id });
-    return new QuizAttempt(row as AttemptState, questions as QuestionRevision[], answers);
+    const revision = await m
+      .getRepository(QuizRevisionEntity)
+      .findOneBy({ id: row.quizRevisionId });
+    return new QuizAttempt(
+      row as AttemptState,
+      questions as QuestionRevision[],
+      answers,
+      revision?.difficulty ?? 'EASY',
+    );
   }
   async active(userId: string, quizId: string): Promise<QuizAttempt | null> {
     const row = await this.context
@@ -80,6 +100,9 @@ export class AttemptTypeOrmRepository extends QuizAttemptRepository {
     const questions = questionIds.length
       ? await m.getRepository(BankQuestionRevisionEntity).findBy({ id: In(questionIds) })
       : [];
+    const quizRevisions = revisionIds.length
+      ? await m.getRepository(QuizRevisionEntity).findBy({ id: In(revisionIds) })
+      : [];
     const answers = rows.length
       ? await m.getRepository(QuizAnswerEntity).findBy({ attemptId: In(rows.map((r) => r.id)) })
       : [];
@@ -91,6 +114,7 @@ export class AttemptTypeOrmRepository extends QuizAttemptRepository {
             .filter((i) => i.quizRevisionId === r.quizRevisionId)
             .map((i) => questions.find((q) => q.id === i.questionRevisionId)! as QuestionRevision),
           answers.filter((a) => a.attemptId === r.id),
+          quizRevisions.find((revision) => revision.id === r.quizRevisionId)?.difficulty ?? 'EASY',
         ),
     );
     return { items, total, page: q.page, limit: q.limit };

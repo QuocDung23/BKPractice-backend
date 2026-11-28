@@ -71,6 +71,10 @@ export class CreateQuizDto {
   @IsString()
   @MaxLength(20000)
   description: string | null = null;
+  @ApiPropertyOptional({ enum: ['EASY', 'MEDIUM', 'HARD'], default: 'EASY' })
+  @IsOptional()
+  @IsIn(['EASY', 'MEDIUM', 'HARD'])
+  difficulty?: 'EASY' | 'MEDIUM' | 'HARD';
 }
 export class UpdateQuizDto {
   @ApiPropertyOptional({ maxLength: 200 }) @IsOptional() @IsString() @Length(1, 200) title?: string;
@@ -79,6 +83,10 @@ export class UpdateQuizDto {
   @IsString()
   @MaxLength(20000)
   description?: string | null;
+  @ApiPropertyOptional({ enum: ['EASY', 'MEDIUM', 'HARD'] })
+  @IsOptional()
+  @IsIn(['EASY', 'MEDIUM', 'HARD'])
+  difficulty?: 'EASY' | 'MEDIUM' | 'HARD';
 }
 export class QuizItemDto {
   @ApiProperty({ format: 'uuid' }) @Transform(normalizeUuid) @IsUUID() questionId!: string;

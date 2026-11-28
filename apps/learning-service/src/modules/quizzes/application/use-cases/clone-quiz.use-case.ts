@@ -44,7 +44,14 @@ export class CloneQuizUseCase implements ICloneQuizPortIn {
           ? source.published
           : null;
       if (!rev) throw new QuizError('NOT_FOUND', 'No usable revision');
-      const q = Quiz.create(p.userId, clientRequestId, hash, rev.title, rev.description);
+      const q = Quiz.create(
+        p.userId,
+        clientRequestId,
+        hash,
+        rev.title,
+        rev.description,
+        rev.difficulty,
+      );
       const revisions = await this.questions.revisions(rev.items.map((i) => i.questionRevisionId));
       const items: QuizItem[] = [];
       for (const item of rev.items) {

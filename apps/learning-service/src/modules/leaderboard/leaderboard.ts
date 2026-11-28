@@ -4,7 +4,8 @@ export interface LeaderboardScore {
   userId: string;
   xp: number;
   solved: number;
-  lastSolvedAt: Date;
+  quizzesPassed: number;
+  lastAwardedAt: Date;
 }
 
 export interface LeaderboardProfile {
@@ -17,6 +18,7 @@ export interface LeaderboardEntry extends LeaderboardProfile {
   rank: number | null;
   xp: number;
   solved: number;
+  quizzesPassed: number;
 }
 
 export interface LeaderboardQuery {
@@ -78,7 +80,7 @@ export async function getLeaderboard(
     .sort(
       (a, b) =>
         b.xp - a.xp ||
-        a.lastSolvedAt.getTime() - b.lastSolvedAt.getTime() ||
+        a.lastAwardedAt.getTime() - b.lastAwardedAt.getTime() ||
         a.userId.localeCompare(b.userId),
     )
     .map((score, index) => ({ ...score, rank: index + 1 }));
@@ -100,6 +102,7 @@ export async function getLeaderboard(
       rank: score?.rank ?? null,
       xp: score?.xp ?? 0,
       solved: score?.solved ?? 0,
+      quizzesPassed: score?.quizzesPassed ?? 0,
     };
   }
 

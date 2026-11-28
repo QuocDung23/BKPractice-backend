@@ -25,16 +25,27 @@ export class LeaderboardReaders implements LeaderboardSources {
 
   listScores(from: Date, to: Date): Promise<LeaderboardScore[]> {
     return this.database.query<LeaderboardScore[]>(
-      `SELECT p.user_id AS "userId",
-              SUM(p.awarded_xp)::integer AS xp,
-              COUNT(*)::integer AS solved,
-              MAX(p.solved_at) AS "lastSolvedAt"
-       FROM progress p
-       JOIN problems problem ON problem.id = p.problem_id
-       WHERE p.status = 'SOLVED' AND p.awarded_xp IS NOT NULL
-         AND p.solved_at >= $1 AND p.solved_at < $2
-         AND problem.publish_status = 'PUBLISHED' AND problem.deleted_at IS NULL
-       GROUP BY p.user_id`,
+      `WITH awards AS (
+         SELECT p.user_id, p.awarded_xp, p.solved_at AS awarded_at, 'PROBLEM' AS source
+         FROM progress p
+         JOIN problems problem ON problem.id = p.problem_id
+         WHERE p.status = 'SOLVED' AND p.awarded_xp IS NOT NULL
+           AND p.solved_at >= $1 AND p.solved_at < $2
+           AND problem.publish_status = 'PUBLISHED' AND problem.deleted_at IS NULL
+         UNION ALL
+         SELECT a.user_id, a.awarded_xp, a.finished_at AS awarded_at, 'QUIZ' AS source
+         FROM quiz_attempts a
+         JOIN quizzes q ON q.id = a.quiz_id
+         WHERE a.awarded_xp > 0 AND a.finished_at >= $1 AND a.finished_at < $2
+           AND q.status = 'PUBLISHED' AND q.deleted_at IS NULL
+       )
+       SELECT user_id AS "userId",
+              SUM(awarded_xp)::integer AS xp,
+              COUNT(*) FILTER (WHERE source = 'PROBLEM')::integer AS solved,
+              COUNT(*) FILTER (WHERE source = 'QUIZ')::integer AS "quizzesPassed",
+              MAX(awarded_at) AS "lastAwardedAt"
+       FROM awards
+       GROUP BY user_id`,
       [from, to],
     );
   }

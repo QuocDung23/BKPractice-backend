@@ -6,13 +6,17 @@
 > **Amendment 1.6 Approved 2026-11-12:** các bằng chứng lịch sử ghi “Progress không đổi” được thay
 > bởi T063–T069 bên dưới. Completion user + Quiz giữ nguyên; Course Progress nay tính Quiz theo
 > LRN-006 1.1 mà không thêm migration.
+>
+> **Amendment 1.7 Approved 2026-11-27:** XP Quiz được thêm theo Q-009/Q-010. MVP gốc đã bàn giao;
+> Code T070–T073 đã được thêm; các checkbox vẫn mở đến khi có kiểm chứng acceptance/DB. T074 còn mở.
+> Không backfill pass cũ.
 
 # LRN-009 — Checklist triển khai Quiz và ngân hàng câu hỏi
 
 ## Trạng thái và cách dùng
 
 **Hoàn tất**, ngày `2026-11-11`.
-Nguồn: [spec 1.5, Approved](./spec.md) và [plan đã duyệt](./plan.md), được lập theo yêu cầu chủ sở hữu.
+Nguồn: [spec 1.7, Approved](./spec.md), [plan](./plan.md) và quyết định XP đã duyệt.
 
 - Follow lần lượt T001–T062; không làm task code trước khi T001–T007 đóng và spec Approved.
 - Mọi task bắt đầu chưa hoàn thành. Chỉ đánh dấu `[x]` khi có đầu ra và bằng chứng kiểm chứng.
@@ -459,6 +463,28 @@ Nguồn: [spec 1.5, Approved](./spec.md) và [plan đã duyệt](./plan.md), đ�
       attempt hiện có: pass một lần hoàn thành theo user + Quiz, giữ qua fail sau và revision mới.
 - [x] **LRN-009-T064 — Visibility regression.** Progress loại Quiz ON_HOLD/xoá/gỡ link và tự tính lại
       completion cũ khi Quiz được publish/restore/gắn lại; không event và không migration.
+
+## Amendment 1.7 — XP Quiz và leaderboard (verification pending)
+
+Code cho độ khó revision, award trong finish, summary response và leaderboard projection đã được
+triển khai; `pnpm typecheck` pass. Các task dưới đây còn mở vì chưa chạy test hoặc migration trên
+PostgreSQL. Xem [worked entry](../../../worked/learning/quizzes/2026-11-27-quiz-xp-implementation.md).
+
+- [ ] **LRN-009-T070 — Độ khó Quiz revision.** Lưu/đọc `EASY`/`MEDIUM`/`HARD` trên revision,
+      bất biến sau publish; migration gán `EASY` cho revision cũ mà không cấp XP. Kiểm draft update,
+      publish, migration up/down và không làm đổi attempt lịch sử.
+- [ ] **LRN-009-T071 — Award XP khi finish lần pass đầu.** Trong transaction finish, cấp 10/20/30 XP
+      theo difficulty revision cho pass đầu của user + Quiz; advisory transaction lock và partial unique
+      index ngăn concurrent/retry
+      duplicate. Không cấp nếu user đã pass trước rollout hoặc attempt đã FINISHED trước rollout.
+- [ ] **LRN-009-T072 — Finish result và retry.** Thêm `xpAwarded` vào response; fail/repeat pass trả 0,
+      attempt được thưởng replay cùng số XP đã lưu. Client không thể gửi XP hoặc độ khó có thẩm quyền.
+- [ ] **LRN-009-T073 — Leaderboard projection.** Cộng Quiz awards với Problem XP trong đúng kỳ;
+      giữ `solved` là số Problem, thêm `quizzesPassed`, tie-break bằng award time gần nhất và lọc
+      Quiz hiện PUBLISHED/chưa xóa.
+- [ ] **LRN-009-T074 — Migration, acceptance và bàn giao.** Kiểm rollout không backfill, attempt cũ,
+      active attempt, hai lượt pass đồng thời, revision/course replay, tie-break/đổi kỳ; chạy các
+      quality gates áp dụng và ghi worked entry khi implementation hoàn tất.
 
 ## Không áp dụng trong phạm vi hiện tại
 

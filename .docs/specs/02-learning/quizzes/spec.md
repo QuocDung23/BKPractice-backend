@@ -4,13 +4,13 @@
 
 Approved
 
-Phiên bản `1.6`; amendment Progress/Course được chủ sở hữu phê duyệt ngày `2026-11-12`. Toàn bộ
+Phiên bản `1.7`; amendment XP Quiz/leaderboard được chủ sở hữu yêu cầu cập nhật ngày `2026-11-27`.
+Amendment Progress/Course được chủ sở hữu phê duyệt ngày `2026-11-12`. Toàn bộ
 phương án MVP 1.5 được chủ sở hữu phê duyệt ngày `2026-11-11`; hợp đồng
 Idempotency-Key được chủ sở hữu duyệt ngày `2026-11-12`; ngân hàng câu hỏi dùng chung theo mặc
 định được chủ sở hữu xác nhận ngày `2026-11-12`.
-Phiên bản `1.0` đã được phê duyệt cùng ngày. Các quyết định chia sẻ Q-001 tới Q-008 được ghi ở
-bảng quyết định; amendment 1.5 thay đổi chính sách visibility của Question, còn scope Quiz giữ
-nguyên.
+Phiên bản `1.0` đã được phê duyệt cùng ngày. Các quyết định Q-001 tới Q-010 được ghi ở bảng quyết
+định; amendment 1.5 đổi visibility của Question, amendment 1.7 bổ sung XP Quiz và leaderboard.
 
 Giá trị hợp lệ: `Proposed` | `Approved` | `Implemented` | `Verified`.
 
@@ -23,7 +23,8 @@ ngày 2026-11-11; trạng thái hiện hành của hai file đó ghi ở đầu 
 
 Cho phép người quản lý soạn câu hỏi một lần trong ngân hàng, chọn lại chúng để tạo nhiều Quiz,
 và gắn Quiz vào các Chapter của Course. Người học làm Quiz trên mobile, nhận kết quả và giải
-thích ngay sau mỗi câu, rồi xem tổng kết. Quiz đạt từ 90% trở lên được ghi nhận hoàn thành.
+thích ngay sau mỗi câu, rồi xem tổng kết. Quiz đạt từ 90% trở lên được ghi nhận hoàn thành; lần
+pass đầu tiên sau rollout còn cấp XP vào bảng xếp hạng theo độ khó Quiz.
 
 ## Tác nhân
 
@@ -31,7 +32,7 @@ thích ngay sau mỗi câu, rồi xem tổng kết. Quiz đạt từ 90% trở l
   thuộc phạm vi của mình.
 - **ADMIN:** quản lý nội dung Learning của mọi người tạo, với quyền tương ứng.
 - **Người học đã xác thực:** làm Quiz, tiếp tục lượt đang làm, xem kết quả của chính mình.
-- **Learning:** sở hữu ngân hàng câu hỏi, Quiz, liên kết Chapter, lượt làm, chấm và lịch sử.
+- **Learning:** sở hữu ngân hàng câu hỏi, Quiz, liên kết Chapter, lượt làm, chấm, lịch sử và XP award.
 - **Identity / API Gateway:** cung cấp danh tính, vai trò, quyền đã xác minh và định tuyến.
 
 ## Bối cảnh
@@ -53,6 +54,8 @@ mới, không phải một loại Problem cần chạy mã qua Submission/Judge.
    hỏi riêng tư và cấp quyền dùng/nhân bản cho từng LECTURER. Người khác có thể dùng câu hỏi chung
    hoặc nhân bản thành bản riêng để chỉnh sửa; không sửa trực tiếp bản gốc. LECTURER chỉ sửa nội
    dung mình tạo; ADMIN quản lý mọi nội dung. Quiz vẫn riêng tư mặc định và chia sẻ có kiểm soát.
+9. Lượt pass đầu tiên của mỗi người học trên một Quiz cấp XP một lần, không phụ thuộc revision
+   hoặc Chapter/Course. Mức XP dựa trên độ khó của revision đã pass.
 
 ### Phạm vi bản đề xuất
 
@@ -110,7 +113,9 @@ chọn nhiều câu, sắp xếp, xuất bản, liên kết Chapter, làm từng
 ### Soạn Quiz và liên kết Chapter
 
 - **LRN-009-FR-008 — Tạo nháp:** Quiz MUST có định danh, tiêu đề, mô tả tuỳ chọn, người tạo và
-  trạng thái. Tạo mới MUST cho phép Quiz chưa có câu hỏi, ở `DRAFT`, không hiển thị cho người học.
+  trạng thái. Mỗi Quiz revision MUST có độ khó `EASY`, `MEDIUM` hoặc `HARD`; người soạn MAY đổi
+  độ khó khi revision là draft. Publish MUST cố định độ khó cùng nội dung revision. Tạo mới MUST
+  cho phép Quiz chưa có câu hỏi, ở `DRAFT`, không hiển thị cho người học.
 - **LRN-009-FR-009 — Danh sách câu:** Người có quyền MUST có thể thêm/bỏ nhiều câu và đổi thứ
   tự trong Quiz nháp. Một câu gốc MUST xuất hiện tối đa một lần trong cùng phiên bản Quiz;
   các phiên bản khác nhau của cùng câu gốc không được dùng để lách quy tắc này.
@@ -163,6 +168,19 @@ chọn nhiều câu, sắp xếp, xuất bản, liên kết Chapter, làm từng
 - **LRN-009-FR-025 — Lịch sử và làm lại:** Người học MUST xem được lịch sử và kết quả tốt nhất
   của chính mình, tiếp tục lượt chưa kết thúc hoặc bắt đầu lượt mới theo chính sách Q-006.
   Làm lại MUST NOT ghi đè lượt cũ hoặc sửa lựa chọn đã chấm.
+- **LRN-009-FR-027 — XP cho lần pass đầu tiên:** Khi một lượt `FINISHED` đạt ngưỡng 90% lần đầu
+  cho cặp (`userId`, `quizId`), Learning MUST cấp một khoản XP theo độ khó của Quiz revision trong
+  lượt đó: `EASY` 10, `MEDIUM` 20, `HARD` 30. Lượt không đạt, retry hoặc lần pass sau trên revision,
+  Chapter hay Course khác MUST NOT cấp thêm XP. Khoản cấp và kết quả kết thúc MUST được lưu nguyên
+  tử. Response kết thúc MUST trả `xpAwarded` là số XP cấp bởi lượt đó; nếu người học đã nhận XP
+  cho Quiz ở lượt trước thì giá trị là `0`. Replay cùng attempt MUST trả cùng kết quả và
+  `xpAwarded`. Lượt fail MUST NOT cấp XP; lần pass đầu tiên sau các lượt fail vẫn đủ điều kiện.
+  Sau khi đã cấp XP, mọi attempt tiếp theo MUST NOT cấp thêm.
+- **LRN-009-FR-028 — Ranh giới rollout XP:** Không backfill XP cho lượt pass đã kết thúc trước khi
+  tính năng XP được phát hành. Chỉ lượt pass đầu tiên của user + Quiz có `finishedAt` sau rollout
+  mới được thưởng. Nếu người học đã pass Quiz trước rollout thì retry sau rollout MUST NOT cấp XP.
+  Attempt còn `IN_PROGRESS` lúc rollout được xét theo thời điểm finish. Quiz revision đã publish
+  nhưng chưa có độ khó MUST được gán `EASY` để tính XP tương lai; việc gán này MUST NOT tạo XP.
 
 ## Quy tắc nghiệp vụ
 
@@ -192,6 +210,9 @@ Schema, index, cách lưu phiên bản/snapshot và API cụ thể thuộc plan 
 - `IN_PROGRESS` và `FINISHED` mô tả lượt làm; đạt/chưa đạt là kết quả riêng. Kết thúc lượt
   không đồng nghĩa đã hoàn thành Quiz.
 - Ví dụ 8/10 câu đúng: lượt kết thúc, tổng kết 80%, chưa đạt. 9/10: đạt, ghi nhận hoàn thành.
+- XP là phần thưởng riêng với Course completion. Lần pass đầu tiên cho user + Quiz cấp XP theo
+  độ khó của revision đã đạt; completion, XP và `finishedAt` phải nhất quán qua retry. Một Quiz
+  có thể xuất hiện ở nhiều Chapter/Course mà vẫn chỉ cấp XP một lần cho cùng người học.
 - Mở lại phần giải thích hoặc ôn câu sai MUST NOT thay đổi điểm lượt đã chấm. Chế độ ôn câu sai
   riêng chưa nằm trong yêu cầu triển khai bắt buộc; xem Q-002.
 
@@ -226,14 +247,14 @@ nội dung không mặc nhiên được mở lịch sử học cá nhân của m
 | ------------------------- | ---------------------------------------------------------- |
 | Tạo/sửa câu hỏi           | Nội dung, lựa chọn, đáp án đúng, giải thích, chủ đề/độ khó |
 | Tìm trong ngân hàng       | Từ khoá, bộ lọc và phân trang trong phạm vi được xem       |
-| Tạo/sửa Quiz              | Tiêu đề, mô tả, các ID câu hỏi/phiên bản có thứ tự         |
+| Tạo/sửa Quiz              | Tiêu đề, mô tả, độ khó, các ID câu hỏi/phiên bản có thứ tự |
 | Cập nhật câu trong Quiz   | Lựa chọn phiên bản mới một cách tường minh                 |
 | Gắn/gỡ/sắp xếp            | Course/Chapter đích, Quiz và vị trí/danh sách thứ tự       |
 | Bắt đầu/tiếp tục/kết thúc | Quiz hoặc lượt làm; danh tính luôn lấy từ principal        |
 | Trả lời                   | Lượt làm, câu hỏi và lựa chọn trong lượt đó                |
 
 Client MUST NOT được gán người tạo, người làm, đáp án có thẩm quyền trong luồng học, kết quả
-đúng/sai, điểm, trạng thái hoàn thành hoặc thời gian server. Kiểu ID, giới hạn độ dài, số lựa
+đúng/sai, điểm, trạng thái hoàn thành, XP awarded hoặc thời gian server. Kiểu ID, giới hạn độ dài, số lựa
 chọn/câu, kích thước bộ chọn và phân trang chờ Q-007; không coi thiếu giới hạn là cho phép vô hạn.
 
 ## Đầu ra
@@ -242,7 +263,8 @@ chọn/câu, kích thước bộ chọn và phân trang chờ Q-007; không coi 
   readiness; đủ để tìm/chọn hàng loạt, tiếp tục soạn và biết câu đang được Quiz nào sử dụng.
 - Trước trả lời: nội dung và lựa chọn của đề được phép học, không có đáp án/giải thích chưa mở.
 - Sau trả lời: lựa chọn đã ghi nhận, đúng/sai, đáp án đúng, giải thích của câu đó và tiến độ lượt.
-- Tổng kết/lịch sử: dữ liệu FR-024/025, đủ phân biệt kết thúc lượt với hoàn thành Quiz.
+- Tổng kết/lịch sử: dữ liệu FR-024/025, đủ phân biệt kết thúc lượt với hoàn thành Quiz; response
+  finish có `xpAwarded` theo FR-027.
 - Không có event RabbitMQ, Socket.IO hay luồng Judge bắt buộc. Progress đọc trực tiếp completion
   Quiz đã lưu trong Learning; không thêm event hoặc contract liên service.
 
@@ -259,6 +281,7 @@ chọn/câu, kích thước bộ chọn và phân trang chờ Q-007; không coi 
 | Kết thúc khi còn câu chưa trả lời                                      | `409`, lượt vẫn đang làm                                                      |
 | Lượt làm thuộc người khác                                              | `404`, không lộ danh tính, câu trả lời hoặc đáp án                            |
 | Lưu/chấm thất bại hoặc cập nhật đồng thời không hợp lệ                 | Rollback phần thay đổi, lỗi an toàn; retry không nhân đôi kết quả             |
+| Cấp XP lỗi hoặc hai lượt pass đồng thời                                | Lỗi lưu XP làm transaction finish rollback; request đồng thời chỉ cấp một lần |
 
 Thông báo lỗi MUST NOT chứa đáp án các câu chưa trả lời, snapshot đầy đủ, SQL, thông tin nhạy
 cảm hoặc dữ liệu cá nhân người khác. Những mã HTTP trên là hợp đồng đề xuất cho review.
@@ -277,6 +300,8 @@ cảm hoặc dữ liệu cá nhân người khác. Những mã HTTP trên là h�
   review nội dung, không có yêu cầu tự động phát hiện quan hệ ngữ nghĩa này.
 - Có thể lặp lại một Quiz đã thấy đáp án; điểm là chỉ báo luyện tập, không phải chứng nhận thi
   chống gian lận. Không bổ sung proctoring hoặc chặn làm lại ngoài Q-006.
+- Hai revision hoặc các Chapter khác nhau của cùng Quiz cùng đạt gần đồng thời: chỉ một khoản XP
+  cho user + Quiz được lưu; khoản đó dùng độ khó của revision thắng quyền cấp duy nhất.
 
 ## Yêu cầu bảo mật
 
@@ -295,6 +320,9 @@ cảm hoặc dữ liệu cá nhân người khác. Những mã HTTP trên là h�
   chấp nhận HTML/script thô và không thực thi code nhúng.
 - **LRN-009-SR-007:** Chấm, ghi nhận lựa chọn và hoàn tất MUST bảo đảm nguyên tử và retry an toàn;
   client không được thao túng thứ tự request để nâng điểm hoặc mở đáp án câu chưa trả lời.
+- **LRN-009-SR-008:** XP MUST chỉ được tính từ kết quả server đã lưu; client MUST NOT gửi số XP,
+  độ khó có thẩm quyền hoặc trạng thái đã được thưởng. Ràng buộc lưu trữ MUST ngăn cấp trùng cho
+  cùng user + Quiz kể cả khi có request đồng thời.
 
 ## Tiêu chí nghiệm thu
 
@@ -351,9 +379,19 @@ cảm hoặc dữ liệu cá nhân người khác. Những mã HTTP trên là h�
   cho phép thao tác hay xem lời giải của lượt đó.
 - **LRN-009-AC-025 (SR-003, SR-004, SR-006):** Không lộ đáp án chưa mở qua ngân hàng, preview, response,
   lỗi, log, Swagger hoặc HTML/script nhúng trong nội dung.
+- **LRN-009-AC-027 (FR-027):** Lượt đầu 9/10 được cộng 10/20/30 XP theo độ khó revision; 8/10
+  không được cộng. Pass lặp, pass revision mới hoặc pass cùng Quiz qua Course khác không cộng thêm;
+  `xpAwarded` bằng 0.
+- **LRN-009-AC-028 (FR-027, SR-008):** Hai lượt pass đồng thời cho cùng user + Quiz tạo đúng một
+  khoản XP; finish retry trả cùng `xpAwarded` đã lưu và không cấp trùng.
+- **LRN-009-AC-029 (FR-028):** Lượt pass đã kết thúc trước rollout không nhận XP; làm lại sau
+  rollout vẫn không được thưởng nếu user đã từng pass Quiz đó. Attempt đang làm dở lúc rollout
+  được thưởng nếu trở thành lượt pass đầu tiên sau khi finish.
+- **LRN-009-AC-030 (FR-028):** Revision đã publish trước rollout, chưa có độ khó, được gán EASY;
+  migration này không tạo XP hoặc thay đổi lịch sử attempt.
 
-Nguyên tắc Q-001 đã ghi trong FR-007/AC-007; nhân bản có FR-026/AC-026. Q-001 tới Q-008 đã được
-chốt trong quyết định dưới đây và amendment 1.5.
+Nguyên tắc Q-001 đã ghi trong FR-007/AC-007; nhân bản có FR-026/AC-026. Q-001 tới Q-010 đã được
+chốt trong quyết định dưới đây và các amendment tương ứng.
 
 ## Ngoài phạm vi
 
@@ -361,7 +399,8 @@ chốt trong quyết định dưới đây và amendment 1.5.
 - Chạy code, chấm tự luận, nhiều đáp án đúng hoặc điểm trọng số ở bản đầu đề xuất.
 - Class, Enrollment, Assignment, lịch thi, báo cáo điểm theo lớp hoặc proctoring.
 - Offline và đồng bộ xung đột nhiều thiết bị khi không có mạng.
-- XP, năng lượng, bảng xếp hạng, streak ngày học, phần thưởng và AI sinh/chấm câu hỏi.
+- Năng lượng, streak ngày học, phần thưởng khác và AI sinh/chấm câu hỏi. XP Quiz và bảng xếp hạng
+  được bao phủ bởi amendment 1.7.
 - Tự chọn đề ngẫu nhiên theo từng lượt, adaptive learning hoặc tự sinh đề theo tỷ lệ độ khó.
 - Tự thay đổi tỷ lệ hoàn thành Course, điều kiện mở khoá hoặc LRN-007 Recommendation.
 - Cố định schema sáu bảng đã trao đổi trước: mô hình đó thuộc đề xuất trước ngân hàng câu hỏi;
@@ -379,6 +418,7 @@ chốt trong quyết định dưới đây và amendment 1.5.
   truy cập DB Identity; userId/createdBy là định danh bên ngoài.
 - [LRN-003 Course](../courses/spec.md): mở rộng liên kết/hiển thị Chapter và kiểm quyền Course.
 - [LRN-006 Progress](../progress/spec.md): amendment 1.1 tính Quiz pass vào tiến độ Course.
+- [Leaderboard XP](../leaderboard/spec.md): cộng XP của lần pass Quiz đầu tiên vào ranking.
 - [LRN-008 Self-study](../self-study/spec.md): cần bản sửa đổi chính sách LECTURER/ADMIN trước
   triển khai; chưa sửa file Approved trong đợt này.
 - [ID-001 Authentication](../../01-identity/authentication/spec.md),
@@ -388,7 +428,7 @@ chốt trong quyết định dưới đây và amendment 1.5.
 - [Definition of Done](../../00-system/definition-of-done.md) và
   [working agreement](../../../agent/working-agreement.md).
 
-## Quyết định đã chốt (Q-001 tới Q-008)
+## Quyết định đã chốt (Q-001 tới Q-010)
 
 Chủ sở hữu phê duyệt toàn bộ gói MVP trong hội thoại ngày 2026-11-11. Phần này thay mọi câu
 “chờ Q”/“chưa chốt” trong bản 1.2 ở trên; không còn câu hỏi chặn implementation.
@@ -403,9 +443,12 @@ Chủ sở hữu phê duyệt toàn bộ gói MVP trong hội thoại ngày 2026
 | Q-006 | Không giới hạn thời gian/số lượt; một IN_PROGRESS/user/Quiz, start lặp trả lượt hiện có. First answer tính điểm; trả lời đủ rồi finish tường minh; same-answer replay cả sau finish.                                                                                                                                                                                                               |
 | Q-007 | Title 200; content/description/explanation 20.000 ký tự; option 5.000; 2–6 options/câu; 50 câu/Quiz; 50 Quiz/Chapter; page/limit mặc định 1/20, tối đa 100. API create/clone nhận UUID qua header `Idempotency-Key`; cùng key/payload trả cùng resource, cùng key khác payload trả 409. Không nhận key trong body. Permission question/quiz theo hành động, LECTURER/ADMIN; STUDENT không quản lý. |
 | Q-008 | Tái dùng Topic/Tag và EASY/MEDIUM/HARD hiện có trong Learning qua own read port.                                                                                                                                                                                                                                                                                                                   |
+| Q-009 | Lần pass đầu tiên đạt 90% của mỗi user + Quiz cấp một khoản XP theo độ khó immutable của Quiz revision: EASY 10, MEDIUM 20, HARD 30. Revision sau, attempt khác hoặc Chapter/Course khác không cấp thêm. Finish trả `xpAwarded`; retry trả kết quả đã lưu.                                                                                                                                         |
+| Q-010 | Không backfill các lượt pass đã kết thúc trước rollout. Lượt đầu pass sau rollout được thưởng; người đã pass trước đó không nhận XP khi làm lại. Attempt đang `IN_PROGRESS` tại rollout đủ điều kiện nếu đó là lần pass đầu tiên. Quiz revision cũ thiếu độ khó được gán EASY, không cấp XP do migration.                                                                                          |
 
-Plan/tasks được chủ sở hữu cho phép triển khai cùng gói này. Chính sách LECTURER owner/ADMIN
-mọi nội dung thay ADMIN-only của LRN-008; Class/Enrollment/Assignment vẫn ngoài phạm vi.
+Plan/tasks của MVP gốc được chủ sở hữu cho phép triển khai cùng gói đó. Amendment XP 1.7 được
+đặc tả ở đây; implementation còn mở trong plan/tasks mới. Chính sách LECTURER owner/ADMIN mọi
+nội dung thay ADMIN-only của LRN-008; Class/Enrollment/Assignment vẫn ngoài phạm vi.
 
 ## Lịch sử sửa đổi
 
@@ -417,6 +460,7 @@ mọi nội dung thay ADMIN-only của LRN-008; Class/Enrollment/Assignment vẫ
 | 2026-11-11 | 1.2       | Chủ sở hữu điều chỉnh, Codex ghi nhận | Thay chính sách 1.1 bằng riêng tư mặc định, chia sẻ có kiểm soát; dùng/nhân bản nhưng không sửa gốc. Thêm FR-026/AC-026 cho bản sao độc lập; scope/thu hồi chia sẻ còn cần chốt.                              |
 | 2026-11-12 | 1.4       | Chủ sở hữu xác nhận                   | Chuyển idempotency key của API create/clone từ body sang header `Idempotency-Key`; giữ nguyên chống retry trùng và lưu trữ trên root hiện có, không thêm bảng.                                                |
 | 2026-11-12 | 1.5       | Chủ sở hữu xác nhận, Codex ghi nhận   | Mở ngân hàng câu hỏi cho LECTURER theo mặc định; cho phép đặt câu private, clone thành bản riêng tư; Quiz tiếp tục private và chia sẻ có kiểm soát.                                                           |
+| 2026-11-27 | 1.7       | Chủ sở hữu yêu cầu cập nhật           | Thêm XP 10/20/30 cho lần pass đầu theo độ khó Quiz revision; chống cấp trùng qua revision/Course; không backfill pass cũ.                                                                                     |
 
 > `spec.md` mô tả CÁI GÌ. Bảng/cột, endpoint, class, port, migration và thứ tự triển khai thuộc
 > `plan.md` sau khi yêu cầu được review; không suy ra các phần đó đã tồn tại từ tài liệu này.
@@ -436,3 +480,12 @@ Question/Quiz, không tạo bảng mới.
 2026-11-12 — Chủ sở hữu xác nhận dùng ngân hàng câu hỏi chung cho feature hiện tại. Câu tạo mới
 dùng chung mặc định, có thể đánh dấu riêng tư khi tạo hoặc đổi trạng thái sau đó; LECTURER khác
 dùng câu chung hoặc clone sang bản riêng tư để sửa. Chỉ owner/ADMIN sửa câu gốc. Quyền Quiz không đổi.
+
+## Phê duyệt XP Quiz và leaderboard 1.7
+
+2026-11-27 — Chủ sở hữu yêu cầu đưa XP Quiz vào bảng xếp hạng và chọn chỉ thưởng các lần pass đầu
+tiên sau rollout, không backfill. Lần pass đầu tiên theo user + Quiz cấp XP một lần theo độ khó của
+revision (EASY 10, MEDIUM 20, HARD 30). Người đã pass trước rollout không nhận XP khi làm lại.
+Implementation được theo dõi trong [plan](./plan.md), [tasks](./tasks.md) và
+[worked entry](../../../worked/learning/quizzes/2026-11-27-quiz-xp-implementation.md); acceptance và
+PostgreSQL migration chưa được xác minh.

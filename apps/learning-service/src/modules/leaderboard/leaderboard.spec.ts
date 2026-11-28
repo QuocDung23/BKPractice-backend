@@ -24,7 +24,7 @@ describe('Vietnam leaderboard periods', () => {
 
 describe('XP leaderboard', () => {
   function score(userId: string, xp: number, solved: number, time: string): LeaderboardScore {
-    return { userId, xp, solved, lastSolvedAt: date(time) };
+    return { userId, xp, solved, quizzesPassed: 0, lastAwardedAt: date(time) };
   }
 
   const early = '2026-11-25T06:00:00Z';

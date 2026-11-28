@@ -1,6 +1,6 @@
 import { Column, Entity, PrimaryColumn } from 'typeorm';
 
-import type { QuestionOption } from '@/modules/quizzes/domain';
+import type { Difficulty, QuestionOption } from '@/modules/quizzes/domain';
 @Entity('quiz_bank_questions')
 export class BankQuestionEntity {
   @PrimaryColumn({ name: 'id', type: 'uuid' }) id!: string;
@@ -46,6 +46,7 @@ export class QuizRevisionEntity {
   @Column({ name: 'revision', type: 'integer' }) revision!: number;
   @Column({ name: 'title', type: 'text' }) title!: string;
   @Column({ name: 'description', type: 'text', nullable: true }) description!: string | null;
+  @Column({ name: 'difficulty', type: 'text', default: 'EASY' }) difficulty!: Difficulty;
   @Column({ name: 'published_at', type: 'timestamptz', nullable: true }) publishedAt!: Date | null;
   @Column({ name: 'created_at', type: 'timestamptz' }) createdAt!: Date;
 }
@@ -77,6 +78,7 @@ export class QuizAttemptEntity {
   @Column({ name: 'total_questions', type: 'integer' }) totalQuestions!: number;
   @Column({ name: 'correct_count', type: 'integer', nullable: true }) correctCount!: number | null;
   @Column({ name: 'passed', type: 'boolean', nullable: true }) passed!: boolean | null;
+  @Column({ name: 'awarded_xp', type: 'integer', nullable: true }) awardedXp!: number | null;
   @Column({ name: 'started_at', type: 'timestamptz' }) startedAt!: Date;
   @Column({ name: 'finished_at', type: 'timestamptz', nullable: true }) finishedAt!: Date | null;
 }

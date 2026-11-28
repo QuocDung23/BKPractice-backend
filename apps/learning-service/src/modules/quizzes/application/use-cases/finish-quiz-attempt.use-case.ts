@@ -17,7 +17,14 @@ export class FinishQuizAttemptUseCase implements IFinishQuizAttemptPortIn {
     const a = await this.tx.run(async () => {
       const a = await this.attempts.find(id, p.userId, true);
       if (!a) throw new QuizError('NOT_FOUND', 'Attempt not found');
-      a.finish();
+      await this.attempts.lockReward(p.userId, a.state.quizId);
+      const newlyFinished = a.finish();
+      if (
+        newlyFinished &&
+        a.state.passed &&
+        !(await this.attempts.hasPassed(p.userId, a.state.quizId, id))
+      )
+        a.awardXp();
       await this.attempts.save(a);
       return a;
     });
