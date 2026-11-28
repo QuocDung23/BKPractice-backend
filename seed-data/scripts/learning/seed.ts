@@ -1,6 +1,5 @@
 import 'reflect-metadata';
 
-import { createHash } from 'node:crypto';
 import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 
@@ -8,13 +7,18 @@ import learningDataSource from '@learning/database/data-source';
 import { seedTaxonomy } from '@learning/database/seed-taxonomy';
 import { type EntityManager } from 'typeorm';
 
-interface Course {
+import { insertRows, SeedDataError, stableUuid } from '../seed-utils';
+
+import { readCurriculum } from './curriculum';
+
+export interface Course {
   id: string;
   slug: string;
   title: string;
   description: string;
   createdBy: string;
   status: 'PUBLISHED';
+  createdAt?: string;
   chapters: {
     id: string;
     key: string;
@@ -24,7 +28,7 @@ interface Course {
     topicName: string;
   }[];
 }
-interface Problem {
+export interface Problem {
   id: string;
   key: string;
   courseKey: string;
@@ -52,8 +56,9 @@ interface Problem {
   }[];
   languages: string[];
   starterCodes: Record<string, string>;
+  referenceSolution?: string;
 }
-interface BankQuestion {
+export interface BankQuestion {
   id: string;
   revisionId: string;
   key: string;
@@ -68,7 +73,7 @@ interface BankQuestion {
   difficulty: 'EASY' | 'MEDIUM' | 'HARD';
   topicName: string;
 }
-interface Quiz {
+export interface Quiz {
   id: string;
   revisionId: string;
   key: string;
@@ -84,23 +89,12 @@ interface Quiz {
   displayOrder: number;
 }
 
-class SeedDataError extends Error {}
 const createdAt = '2026-11-21T00:00:00.000Z';
-const namespace = Buffer.from('cbd1c9f01eb14d639c2e414ce456a502', 'hex');
-
-function stableUuid(name: string): string {
-  const bytes = createHash('sha1').update(namespace).update(name).digest().subarray(0, 16);
-  bytes[6] = (bytes[6]! & 0x0f) | 0x50;
-  bytes[8] = (bytes[8]! & 0x3f) | 0x80;
-  const hex = bytes.toString('hex');
-  return `${hex.slice(0, 8)}-${hex.slice(8, 12)}-${hex.slice(12, 16)}-${hex.slice(16, 20)}-${hex.slice(20)}`;
-}
-
 function readJson<T>(relativePath: string): T {
   return JSON.parse(readFileSync(resolve(process.cwd(), relativePath), 'utf8')) as T;
 }
 
-function readFixtures() {
+function readLegacyFixtures(): LearningFixtures {
   const courses = readJson<Course[]>('seed-data/data/learning/courses.json');
   const problems = courses.flatMap((_, index) =>
     readJson<Problem[]>(
@@ -146,50 +140,114 @@ function readFixtures() {
     )
   )
     throw new SeedDataError('Chapter fixture counts or question options are invalid.');
-  const questionsById = new Map(questions.map((question) => [question.id, question]));
-  if (
-    quizzes.some((quiz) =>
-      quiz.questions.some((item) => {
-        const question = questionsById.get(item.questionId);
-        return (
-          !question ||
-          question.revisionId !== item.questionRevisionId ||
-          question.chapterKey !== quiz.chapterKey
-        );
-      }),
-    )
-  )
-    throw new SeedDataError('A quiz references a missing question or revision.');
   return { courses, problems, questions, quizzes };
 }
 
-async function insertRows(
-  manager: EntityManager,
-  table: string,
-  columns: string[],
-  rows: unknown[][],
-  conflict = '(id)',
-): Promise<void> {
-  const batchSize = Math.max(1, Math.floor(60000 / columns.length));
-  for (let offset = 0; offset < rows.length; offset += batchSize) {
-    const batch = rows.slice(offset, offset + batchSize);
-    const params = batch.flat();
-    const values = batch
-      .map(
-        (_, rowIndex) =>
-          `(${columns.map((__, colIndex) => `$${rowIndex * columns.length + colIndex + 1}`).join(',')})`,
-      )
-      .join(',');
-    await manager.query(
-      `INSERT INTO ${table} (${columns.join(',')}) VALUES ${values} ON CONFLICT ${conflict} DO NOTHING`,
-      params,
-    );
+export interface LearningFixtures {
+  courses: Course[];
+  problems: Problem[];
+  questions: BankQuestion[];
+  quizzes: Quiz[];
+}
+
+export function countLearningFixtures(fixtures: LearningFixtures) {
+  return {
+    courses: fixtures.courses.length,
+    chapters: fixtures.courses.reduce((count, course) => count + course.chapters.length, 0),
+    problems: fixtures.problems.length,
+    questions: fixtures.questions.length,
+    quizzes: fixtures.quizzes.length,
+  };
+}
+
+function validateFixtures({ courses, problems, questions, quizzes }: LearningFixtures): void {
+  const chapters = courses.flatMap((course) => course.chapters);
+  const chapterKeys = new Set(chapters.map((chapter) => chapter.key));
+  const questionById = new Map(questions.map((question) => [question.id, question]));
+  const identifierGroups = [
+    courses.map((course) => course.id),
+    courses.map((course) => course.slug),
+    chapters.map((chapter) => chapter.id),
+    chapters.map((chapter) => chapter.key),
+    problems.map((problem) => problem.id),
+    problems.map((problem) => problem.slug),
+    questions.map((question) => question.id),
+    questions.map((question) => question.revisionId),
+    quizzes.map((quiz) => quiz.id),
+    quizzes.map((quiz) => quiz.revisionId),
+  ];
+  if (identifierGroups.some((group) => new Set(group).size !== group.length)) {
+    throw new SeedDataError('Learning fixtures contain duplicate IDs, slugs or chapter keys.');
+  }
+  if ([...problems, ...questions].some(({ chapterKey }) => !chapterKeys.has(chapterKey))) {
+    throw new SeedDataError('A learning fixture references an unknown chapter.');
+  }
+  for (const quiz of quizzes) {
+    if (
+      !chapterKeys.has(quiz.chapterKey) ||
+      quiz.questions.length === 0 ||
+      new Set(quiz.questions.map((item) => item.questionId)).size !== quiz.questions.length ||
+      quiz.questions.some((item) => {
+        const question = questionById.get(item.questionId);
+        return (
+          question?.revisionId !== item.questionRevisionId ||
+          question.chapterKey !== quiz.chapterKey
+        );
+      })
+    ) {
+      throw new SeedDataError('A quiz points to an unknown or duplicate question revision.');
+    }
   }
 }
 
-async function seedLearning(manager: EntityManager): Promise<void> {
-  const { courses, problems, questions, quizzes } = readFixtures();
+export function readLearningFixtures(curriculumOnly = false): LearningFixtures {
+  const legacy = readLegacyFixtures();
+  const curriculum = readCurriculum(legacy.problems[0]!);
+  const fixtures = curriculumOnly
+    ? curriculum
+    : {
+        courses: [...legacy.courses, ...curriculum.courses],
+        problems: [...legacy.problems, ...curriculum.problems],
+        questions: [...legacy.questions, ...curriculum.questions],
+        quizzes: [...legacy.quizzes, ...curriculum.quizzes],
+      };
+  validateFixtures(fixtures);
+  return fixtures;
+}
+
+async function assertSlugsMatch(
+  manager: EntityManager,
+  table: 'courses' | 'problems',
+  fixtures: { id: string; slug: string }[],
+): Promise<void> {
+  const bySlug = new Map(fixtures.map(({ id, slug }) => [slug, id]));
+  const existing: { id: string; slug: string }[] = await manager.query(
+    `SELECT id, slug FROM ${table} WHERE slug = ANY($1::text[])`,
+    [[...bySlug.keys()]],
+  );
+  for (const { id, slug } of existing) {
+    if (bySlug.get(slug) !== id) {
+      throw new SeedDataError(
+        `Learning slug "${slug}" is already in use. No Learning seed changes were committed.`,
+      );
+    }
+  }
+}
+
+async function seedLearning(
+  manager: EntityManager,
+  { courses, problems, questions, quizzes }: LearningFixtures,
+): Promise<void> {
   await seedTaxonomy(manager);
+  await assertSlugsMatch(manager, 'courses', courses);
+  await assertSlugsMatch(manager, 'problems', problems);
+  const chapterByKey = new Map(
+    courses.flatMap((course) =>
+      course.chapters.map(
+        (chapter) => [chapter.key, { chapterId: chapter.id, courseId: course.id }] as const,
+      ),
+    ),
+  );
   const topicRows: { id: string; name: string }[] = await manager.query(
     'SELECT id, name FROM topics',
   );
@@ -221,8 +279,8 @@ async function seedLearning(manager: EntityManager): Promise<void> {
       c.description,
       c.createdBy,
       c.status,
-      createdAt,
-      createdAt,
+      c.createdAt ?? createdAt,
+      c.createdAt ?? createdAt,
       null,
     ]),
   );
@@ -318,18 +376,23 @@ async function seedLearning(manager: EntityManager): Promise<void> {
       ]),
     ),
   );
+  const nextProblemOrder = new Map<string, number>();
   await insertRows(
     manager,
     'chapter_problems',
     ['id', 'chapter_id', 'course_id', 'problem_id', 'display_order'],
-    problems.map((p, index) => [
-      stableUuid(`chapter-problem:${p.chapterKey}:${p.id}`),
-      courses[Number(p.courseKey.slice(1, 3)) - 1]!.chapters.find((ch) => ch.key === p.chapterKey)!
-        .id,
-      courses[Number(p.courseKey.slice(1, 3)) - 1]!.id,
-      p.id,
-      index % 10,
-    ]),
+    problems.map((p) => {
+      const { chapterId, courseId } = chapterByKey.get(p.chapterKey)!;
+      const displayOrder = nextProblemOrder.get(p.chapterKey) ?? 0;
+      nextProblemOrder.set(p.chapterKey, displayOrder + 1);
+      return [
+        stableUuid(`chapter-problem:${p.chapterKey}:${p.id}`),
+        chapterId,
+        courseId,
+        p.id,
+        displayOrder,
+      ];
+    }),
   );
 
   await insertRows(
@@ -438,20 +501,14 @@ async function seedLearning(manager: EntityManager): Promise<void> {
     ['id', 'chapter_id', 'quiz_id', 'display_order'],
     quizzes.map((q) => [
       stableUuid(`chapter-quiz:${q.chapterKey}:${q.id}`),
-      courses[Number(q.chapterKey.slice(1, 3)) - 1]!.chapters.find((ch) => ch.key === q.chapterKey)!
-        .id,
+      chapterByKey.get(q.chapterKey)!.chapterId,
       q.id,
       q.displayOrder,
     ]),
   );
 
-  const counts: {
-    courses: number;
-    chapters: number;
-    problems: number;
-    questions: number;
-    quizzes: number;
-  }[] = await manager.query(
+  const expected = countLearningFixtures({ courses, problems, questions, quizzes });
+  const counts: (typeof expected)[] = await manager.query(
     `SELECT (SELECT COUNT(*)::int FROM courses WHERE id = ANY($1::uuid[])) courses,
             (SELECT COUNT(*)::int FROM chapters WHERE id = ANY($2::uuid[])) chapters,
             (SELECT COUNT(*)::int FROM problems WHERE id = ANY($3::uuid[])) problems,
@@ -468,46 +525,40 @@ async function seedLearning(manager: EntityManager): Promise<void> {
   const count = counts[0];
   if (
     !count ||
-    count.courses !== 5 ||
-    count.chapters !== 25 ||
-    count.problems !== 250 ||
-    count.questions !== 600 ||
-    count.quizzes !== 125
+    Object.entries(count).some(([key, value]) => expected[key as keyof typeof expected] !== value)
   )
     throw new SeedDataError('Learning fixture row counts did not match the requested dataset.');
 }
 
-export async function seedLearningDatabase(): Promise<{
-  courses: number;
-  chapters: number;
-  problems: number;
-  questions: number;
-  quizzes: number;
-}> {
-  const fixtures = readFixtures();
+export async function seedLearningDatabase(
+  fixtures = readLearningFixtures(),
+): Promise<ReturnType<typeof countLearningFixtures>> {
   await learningDataSource.initialize();
   try {
-    await learningDataSource.transaction((manager) => seedLearning(manager));
+    await learningDataSource.transaction((manager) => seedLearning(manager, fixtures));
   } finally {
     await learningDataSource.destroy();
   }
-  return {
-    courses: fixtures.courses.length,
-    chapters: 25,
-    problems: fixtures.problems.length,
-    questions: fixtures.questions.length,
-    quizzes: fixtures.quizzes.length,
-  };
+  return countLearningFixtures(fixtures);
 }
 
 if (require.main === module) {
-  void seedLearningDatabase()
-    .then((counts) => process.stdout.write(`Learning demo data ready: ${JSON.stringify(counts)}\n`))
-    .catch((error: unknown) => {
-      process.stderr.write(
-        `${error instanceof SeedDataError ? error.message : 'Learning demo seed failed; check migrations and database configuration.'}\n`,
+  const main = async () => {
+    const fixtures = readLearningFixtures(process.argv.includes('--curriculum-only'));
+    if (process.argv.includes('--dry-run')) {
+      process.stdout.write(
+        `Learning demo plan: ${JSON.stringify(countLearningFixtures(fixtures))}\n`,
       );
-      process.exitCode = 1;
-      if (learningDataSource.isInitialized) void learningDataSource.destroy();
-    });
+      return;
+    }
+    const counts = await seedLearningDatabase(fixtures);
+    process.stdout.write(`Learning demo data ready: ${JSON.stringify(counts)}\n`);
+  };
+  void main().catch((error: unknown) => {
+    process.stderr.write(
+      `${error instanceof SeedDataError ? error.message : 'Learning demo seed failed; check migrations and database configuration.'}\n`,
+    );
+    process.exitCode = 1;
+    if (learningDataSource.isInitialized) void learningDataSource.destroy();
+  });
 }
